@@ -1,0 +1,8 @@
+__pycache__
+venv
+db.sqlite3
+.idea
+.vscode
+build
+dist
+.tar.gz
