@@ -16,8 +16,9 @@ from cardg import Ui_Frame
 from install import Installacion_App
 # Graficos de PyQt
 from PyQt5 import Qt
-from PyQt5.QtWidgets import (QMainWindow, QApplication, QFrame)
-from PyQt5.QtGui import QPixmap
+from PyQt5.QtWidgets import (QMainWindow, QApplication, QFrame, QSystemTrayIcon,
+                            QAction, QMenu)
+from PyQt5.QtGui import QPixmap, QIcon
 # Modulos para el scraping
 from bs4 import BeautifulSoup
 import urllib.request
@@ -36,6 +37,11 @@ class Ventana(QMainWindow):
         super(Ventana, self).__init__()
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
+        # Icono de sistema
+        self.createActions()
+        self.createTrayIcon()
+        self.trayIcon.show()
+        # Variable global
         global lista_app
         lista_app = self.Get_App()
         #self.descarga_iconos(lista_app)
@@ -48,6 +54,7 @@ class Ventana(QMainWindow):
         self.ui.statusBar.showMessage("Bienvenido a la store de deepines")
         #actualizar_db = threading.Thread(target=self.update_database())
         #actualizar_db.start()
+        self.showMessage("Deepines", "Bienvenido a DeepineStore")
     def listwidgetclicked(self, item):
         for i in range(self.ui.gridLayout.count()):
             self.ui.gridLayout.itemAt(i).widget().deleteLater()
@@ -178,6 +185,32 @@ class Ventana(QMainWindow):
             self.ui.statusBar.showMessage("Ha ocurrido un error, intentelo nuevamente mas tarde")
         finally:
             self.ui.statusBar.showMessage("Listado de aplicaciones actualizado")
+
+    def createActions(self):
+        self.minimizeAction = QAction("Minimizar", self, triggered=self.hide)
+        self.maximizeAction = QAction("Maximizar", self,
+                triggered=self.showMaximized)
+        self.restoreAction = QAction("Restaurar", self,
+                triggered=self.showNormal)
+        self.quitAction = QAction("Salir", self,
+                triggered=QApplication.instance().quit)
+
+    def createTrayIcon(self):
+         self.trayIconMenu = QMenu(self)
+         self.trayIconMenu.addAction(self.minimizeAction)
+         self.trayIconMenu.addAction(self.maximizeAction)
+         self.trayIconMenu.addAction(self.restoreAction)
+         self.trayIconMenu.addSeparator()
+         self.trayIconMenu.addAction(self.quitAction)
+
+         self.trayIcon = QSystemTrayIcon(self)
+         self.trayIcon.setToolTip("DeepineStore")
+         self.trayIcon.setIcon(QIcon('./resources/deepines_logo_beta.svg'))
+         self.trayIcon.setContextMenu(self.trayIconMenu)
+
+    def showMessage(self, titulo, texto):
+        icon = QSystemTrayIcon.MessageIcon(QSystemTrayIcon.Information)
+        self.trayIcon.showMessage(titulo,texto,icon,15000)
 
 class Card(QFrame):
     def __init__(self, titulo: str, descripcion: str, version: str):
