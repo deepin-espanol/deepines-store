@@ -1,27 +1,31 @@
-import sys, os, subprocess, cgitb
+import sys
+# Importamos las librerias necesarias
+from PyQt5.QtCore import QThread, QObject, pyqtSignal, pyqtSlot
 import time
-from threading import Thread, Lock
-from messageg import Ui_Dialog
 
-bloque = Lock()
-
-class Installacion_App(Thread):
-    def __init__(self, group=None, target=None, name=None,
-                 args=(), kwargs=None, *, daemon=None):
-        super().__init__(group=group, target=target, name=name,
-                         daemon=daemon)
-        self.arg1 = args
-
+# Creamos la clase y heredamos de QThread
+class External(QObject):
+    intReady = pyqtSignal(int, str)
+    
+    def __init__(self, app: str):
+        super(External, self).__init__()
+        #finished = pyqtSignal()
+        self.app = app
+    
+    @pyqtSlot()
     def run(self):
-        bloque.acquire()
-        
         try:
+            self.intReady.emit(1, self.app)
             # comandos para instalar la app
-            print("Comenzando Instalacion de %s" % self.arg1)
-            comando = 'apt install %s' % self.arg1
+            print("Comenzando Instalacion de la aplicacion")
+            comando = 'apt install {}'.format(self.app)
+            print(comando)
             #os.system(comando)
+            time.sleep(5)
         except:
+            self.intReady.emit(0, self.app)
             print("Algo a fallado")
         finally:
-            bloque.release()
+            self.intReady.emit(2, self.app)
+            #self.finished.emit()
             print("Proceso finalizado")

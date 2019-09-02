@@ -403,7 +403,7 @@ border: 0px solid;</string>
          <x>0</x>
          <y>0</y>
          <width>760</width>
-         <height>500</height>
+         <height>522</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="gridLayout"/>
@@ -411,12 +411,6 @@ border: 0px solid;</string>
      </widget>
     </item>
    </layout>
-  </widget>
-  <widget class="QStatusBar" name="statusBar">
-   <property name="styleSheet">
-    <string notr="true">color: rgb(65, 159, 217);
-background-color: rgba(16, 16, 16, 200);</string>
-   </property>
   </widget>
  </widget>
  <resources/>

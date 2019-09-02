@@ -12,12 +12,13 @@ import sys, os #, subprocess
 # Guis
 from maing import Ui_MainWindow
 from cardg import Ui_Frame
-# Clase Instalacion
-from install import Installacion_App
+# Para la Instalacion
+import install
+from PyQt5.QtCore import QThread
 # Graficos de PyQt
 from PyQt5 import Qt
 from PyQt5.QtWidgets import (QMainWindow, QApplication, QFrame, QSystemTrayIcon,
-                            QAction, QMenu)
+                            QAction, QMenu, QGraphicsBlurEffect)
 from PyQt5.QtGui import QPixmap, QIcon
 # Modulos para el scraping
 from bs4 import BeautifulSoup
@@ -26,8 +27,6 @@ import requests
 # Para obtener applicacion random
 import random
 from urllib.parse import urlparse
-# Para actualizar la db
-import threading
 
 
 global lista_app, total_apps, lista_inicio
@@ -44,21 +43,25 @@ class Ventana(QMainWindow):
         # Variable global
         global lista_app
         lista_app = self.Get_App()
-        #self.descarga_iconos(lista_app)
         inicio = self.Apps_inicio(lista_app)
         self.Listar_Apps(inicio)
         self.setAttribute(Qt.Qt.WA_TranslucentBackground, True )
         self.setAttribute(Qt.Qt.WA_NoSystemBackground, False)
         #self.setStyleSheet("background-color: rgba(16, 16, 16, 100);") 
+        
+        #self.ui.frame.setGraphicsEffect(QGraphicsBlurEffect())
+        #self.shadow = QGraphicsBlurEffect(self) #Efecto blur
+        #self.shadow.setBlurRadius(25)
+        #self.shadow.BlurHint(QGraphicsBlurEffect.PerformanceHint)
+        #self.setGraphicsEffect(self.shadow)
+
         self.ui.listWidget.itemClicked.connect(self.listwidgetclicked)
-        self.ui.statusBar.showMessage("Bienvenido a la store de deepines")
-        #actualizar_db = threading.Thread(target=self.update_database())
-        #actualizar_db.start()
-        self.showMessage("Deepines", "Bienvenido a DeepineStore")
+        
+
     def listwidgetclicked(self, item):
         for i in range(self.ui.gridLayout.count()):
             self.ui.gridLayout.itemAt(i).widget().deleteLater()
-        self.ui.frame.scrollContentsBy(0,0)
+
         if item.text() == "Inicio":
             self.Listar_Apps(lista_inicio)
             filtro = "inicio"
@@ -158,33 +161,9 @@ class Ventana(QMainWindow):
                 y = 0
                 x += 1
             y += 1
-            self.ui.gridLayout.addWidget(Card(lista[key][0], lista[key][1], lista[key][2]), x, y, 1, 1)
-    
-    ###############################################
-    #                                             #
-    # PROBAR LA OPCION DE WGET PARA DESCARGAR SVG #
-    #                                             #
-    ###############################################
-    #
-    #def descarga_iconos(self, lista_app):
-    #    print('Descargando iconos')
-    #
-    #    for key in lista_app:
-    #        if not os.path.exists('./resources/apps/' + str(lista_app[0])  + '.svg' ):
-    #            url = 'https://mirror.deepines.com/testing/app/icons/nuevos/' + lista_app[0]  + '.svg'
-    #            urllib.request.urlretrieve(url, './resources/apps')
-    #
-    #    print('Descarga finalizada')
-
-    def update_database(self):
-        try:
-            # comandos para instalar la app
-            comando = 'apt update'
-            os.system(comando)
-        except:
-            self.ui.statusBar.showMessage("Ha ocurrido un error, intentelo nuevamente mas tarde")
-        finally:
-            self.ui.statusBar.showMessage("Listado de aplicaciones actualizado")
+            self.card = Card(lista[key][0], lista[key][1], lista[key][2])
+            self.card.cd.boton_ver_card.clicked.connect(lambda: self.install_thread(lista[key][0]))
+            self.ui.gridLayout.addWidget(self.card, x, y, 1, 1)
 
     def createActions(self):
         self.minimizeAction = QAction("Minimizar", self, triggered=self.hide)
@@ -196,21 +175,41 @@ class Ventana(QMainWindow):
                 triggered=QApplication.instance().quit)
 
     def createTrayIcon(self):
-         self.trayIconMenu = QMenu(self)
-         self.trayIconMenu.addAction(self.minimizeAction)
-         self.trayIconMenu.addAction(self.maximizeAction)
-         self.trayIconMenu.addAction(self.restoreAction)
-         self.trayIconMenu.addSeparator()
-         self.trayIconMenu.addAction(self.quitAction)
+        self.trayIconMenu = QMenu(self)
+        self.trayIconMenu.addAction(self.minimizeAction)
+        self.trayIconMenu.addAction(self.maximizeAction)
+        self.trayIconMenu.addAction(self.restoreAction)
+        self.trayIconMenu.addSeparator()
+        self.trayIconMenu.addAction(self.quitAction)
 
-         self.trayIcon = QSystemTrayIcon(self)
-         self.trayIcon.setToolTip("DeepineStore")
-         self.trayIcon.setIcon(QIcon('./resources/deepines_logo_beta.svg'))
-         self.trayIcon.setContextMenu(self.trayIconMenu)
+        self.trayIcon = QSystemTrayIcon(self)
+        self.trayIcon.setToolTip("DeepineStore")
+        self.trayIcon.setIcon(QIcon('./resources/deepines_logo_beta.svg'))
+        self.trayIcon.setContextMenu(self.trayIconMenu)
 
-    def showMessage(self, titulo, texto):
-        icon = QSystemTrayIcon.MessageIcon(QSystemTrayIcon.Information)
-        self.trayIcon.showMessage(titulo,texto,icon,15000)
+    def showMessage(self, estado: int, app: str):
+        if estado == 1:
+            titulo = "Comenzando instalacion"
+            texto = "Instalando {}".format(app)
+        elif estado == 2:
+            titulo = "Instalacion Completada"
+            texto = "Se ha instalado correctamente {}".format(app)
+        # Message(Titulo, Texto, Icono, Duracion[ms])
+        # Icon{0:'NoIcon', 1:'Information', 2:'Warning', 3:'Critical'}
+        self.trayIcon.showMessage(titulo,texto,1,10000)
+
+    def install_thread(self, titulo:str):
+        # Probando el thread
+        # Creamos el objeto
+        self.obj = install.External(titulo)
+        self.thread = QThread()
+        self.obj.intReady.connect(self.showMessage)
+        self.obj.moveToThread(self.thread)
+        #self.obj.finished.connect(self.showMessage("Deepines", "Thread terminado", 0))
+        #self.obj.finished.connect(self.showMessage)
+        self.thread.started.connect(self.obj.run)
+        #self.thread.finished.connect(self.set_systrayicon)
+        self.thread.start()
 
 class Card(QFrame):
     def __init__(self, titulo: str, descripcion: str, version: str):
@@ -230,13 +229,6 @@ class Card(QFrame):
         self.cd.image_card.setPixmap(pixmap)
 
         
-        self.cd.boton_ver_card.clicked.connect(lambda: installar(titulo))
-
-def installar(titulo:str):
-    install = Installacion_App(args=titulo, daemon=False)
-    install.start()
-    
-
 if __name__ == '__main__':
   app = QApplication(sys.argv)
   win = Ventana()

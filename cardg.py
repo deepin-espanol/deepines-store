@@ -2,9 +2,10 @@
 
 # Form implementation generated from reading ui file 'guis/card.ui'
 #
-# Created by: PyQt5 UI code generator 5.12.2
+# Created by: PyQt5 UI code generator 5.13.0
 #
 # WARNING! All changes made in this file will be lost!
+
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
@@ -12,9 +13,9 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Frame(object):
     def setupUi(self, Frame):
         Frame.setObjectName("Frame")
-        Frame.resize(226, 249)
+        Frame.resize(230, 252)
         Frame.setMinimumSize(QtCore.QSize(226, 249))
-        Frame.setMaximumSize(QtCore.QSize(226, 16777215))
+        Frame.setMaximumSize(QtCore.QSize(230, 16777215))
         Frame.setStyleSheet("#Frame{\n"
 "    background-color: transparent;\n"
 "}\n"
@@ -31,8 +32,10 @@ class Ui_Frame(object):
         self.image_card = QtWidgets.QLabel(Frame)
         self.image_card.setMinimumSize(QtCore.QSize(208, 158))
         self.image_card.setMaximumSize(QtCore.QSize(208, 158))
-        self.image_card.setStyleSheet("background-color: rgb(45, 45, 45);\n"
-"border: 16px outset rgb(45, 45, 45);")
+        self.image_card.setStyleSheet("#image_card{\n"
+"  background-color: rgb(45, 45, 45);\n"
+"  border: 16px outset rgb(45, 45, 45);\n"
+"}")
         self.image_card.setText("")
         self.image_card.setScaledContents(False)
         self.image_card.setAlignment(QtCore.Qt.AlignCenter)
@@ -79,5 +82,3 @@ class Ui_Frame(object):
         _translate = QtCore.QCoreApplication.translate
         Frame.setWindowTitle(_translate("Frame", "Card"))
         self.boton_ver_card.setText(_translate("Frame", "Instalar"))
-
-
