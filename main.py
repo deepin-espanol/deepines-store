@@ -161,9 +161,11 @@ class Ventana(QMainWindow):
                 y = 0
                 x += 1
             y += 1
-            self.card = Card(lista[key][0], lista[key][1], lista[key][2])
-            self.card.cd.boton_ver_card.clicked.connect(lambda: self.install_thread(lista[key][0]))
-            self.ui.gridLayout.addWidget(self.card, x, y, 1, 1)
+            # Estas lineas las use para cuando tenia la funcion install_thread
+            # Dentro de la clase Ventana
+            #self.card = Card(lista[key][0], lista[key][1], lista[key][2])
+            #self.card.cd.boton_ver_card.clicked.connect(lambda: self.install_thread(lista[key][0]))
+            self.ui.gridLayout.addWidget(Card(lista[key][0], lista[key][1], lista[key][2]), x, y, 1, 1)
 
     def createActions(self):
         self.minimizeAction = QAction("Minimizar", self, triggered=self.hide)
@@ -198,18 +200,18 @@ class Ventana(QMainWindow):
         # Icon{0:'NoIcon', 1:'Information', 2:'Warning', 3:'Critical'}
         self.trayIcon.showMessage(titulo,texto,1,10000)
 
-    def install_thread(self, titulo:str):
-        # Probando el thread
-        # Creamos el objeto
-        self.obj = install.External(titulo)
-        self.thread = QThread()
-        self.obj.intReady.connect(self.showMessage)
-        self.obj.moveToThread(self.thread)
-        #self.obj.finished.connect(self.showMessage("Deepines", "Thread terminado", 0))
-        #self.obj.finished.connect(self.showMessage)
-        self.thread.started.connect(self.obj.run)
-        #self.thread.finished.connect(self.set_systrayicon)
-        self.thread.start()
+def install_thread(aplicacion:str):
+    # Si esta funcion esta dentro de la clase Ventana
+    # No me toma el nombre de la app que deberia
+    # Pero si manda el mensaje de notificacion
+    obj = install.External(aplicacion)
+    thread = QThread()
+    obj.intReady.connect(Ventana.showMessage)
+    obj.moveToThread(thread)
+    obj.finished.connect(thread.quit)
+    thread.started.connect(obj.run)
+    #self.thread.finished.connect(self.thread.quit())
+    thread.start()
 
 class Card(QFrame):
     def __init__(self, titulo: str, descripcion: str, version: str):
@@ -227,6 +229,8 @@ class Card(QFrame):
 
         pixmap = QPixmap(url)
         self.cd.image_card.setPixmap(pixmap)
+
+        self.cd.boton_ver_card.clicked.connect(lambda: install_thread(titulo))
 
         
 if __name__ == '__main__':
