@@ -1,22 +1,6 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-
-'''
-Creador en Agosto 2019
-@Autor: Sebastian Trujillo
-@Contacto: t.me/sebtrujillo
-@Descripcion: App store para el repositorio de deepines 
-'''
-
-import sys, os #, subprocess
-# Guis
-from maing import Ui_MainWindow
-from cardg import Ui_Frame
-# Para la Instalacion
-import install
-from PyQt5.QtCore import QThread
-# Graficos de PyQt
-from PyQt5 import Qt
+import sys
+import os
+# Modulos de pyqt5
 from PyQt5.QtWidgets import (QMainWindow, QApplication, QFrame, QSystemTrayIcon,
                             QAction, QMenu, QGraphicsBlurEffect)
 from PyQt5.QtGui import QPixmap, QIcon
@@ -24,78 +8,66 @@ from PyQt5.QtGui import QPixmap, QIcon
 from bs4 import BeautifulSoup
 import urllib.request
 import requests
-# Para obtener applicacion random
-import random
-from urllib.parse import urlparse
-
-
+# Guis o modulos locales
+from maing import Ui_MainWindow
+from cardg import Ui_Frame as Card
+# Variables globales
 global lista_app, total_apps, lista_inicio
 
 class Ventana(QMainWindow):
     def __init__(self):
         super(Ventana, self).__init__()
+        # Inicializamos la gui
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
-        # Icono de sistema
+        # Creamos el icono de sistema
         self.createActions()
         self.createTrayIcon()
         self.trayIcon.show()
-        # Variable global
+        # Variables globales
         global lista_app
+        # Almacenamos la lista, para cargarla solo al inicio
         lista_app = self.Get_App()
-        inicio = self.Apps_inicio(lista_app)
-        self.Listar_Apps(inicio)
-        self.setAttribute(Qt.Qt.WA_TranslucentBackground, True )
-        self.setAttribute(Qt.Qt.WA_NoSystemBackground, False)
-        #self.setStyleSheet("background-color: rgba(16, 16, 16, 100);") 
-        
-        #self.ui.frame.setGraphicsEffect(QGraphicsBlurEffect())
-        #self.shadow = QGraphicsBlurEffect(self) #Efecto blur
-        #self.shadow.setBlurRadius(25)
-        #self.shadow.BlurHint(QGraphicsBlurEffect.PerformanceHint)
-        #self.setGraphicsEffect(self.shadow)
+        self.Listar_Apps(lista_app)
+        # Probamos el mensaje
+        #self.messages("Bienvenido", "Cargando las aplicaciones", 1)
+        #self.trayIcon.showMessage("Bienvenido", "Cargando las aplicaciones", 1, 10000)
 
-        self.ui.listWidget.itemClicked.connect(self.listwidgetclicked)
-        
+    ################################################
+    #				SYSTRAY 					   #
+    def createActions(self):
+            self.minimizeAction = QAction("Minimizar", self, triggered=self.hide)
+            self.maximizeAction = QAction("Maximizar", self,
+                    triggered=self.showMaximized)
+            self.restoreAction = QAction("Restaurar", self,
+                    triggered=self.showNormal)
+            self.quitAction = QAction("Salir", self,
+                    triggered=QApplication.instance().quit)
 
-    def listwidgetclicked(self, item):
-        for i in range(self.ui.gridLayout.count()):
-            self.ui.gridLayout.itemAt(i).widget().deleteLater()
+    def createTrayIcon(self):
+        self.trayIconMenu = QMenu(self)
+        self.trayIconMenu.addAction(self.minimizeAction)
+        self.trayIconMenu.addAction(self.maximizeAction)
+        self.trayIconMenu.addAction(self.restoreAction)
+        self.trayIconMenu.addSeparator()
+        self.trayIconMenu.addAction(self.quitAction)
 
-        if item.text() == "Inicio":
-            self.Listar_Apps(lista_inicio)
-            filtro = "inicio"
-        elif item.text() == "Internet":
-            filtro = "web"
-        elif item.text() == "Mensajeria":
-            filtro = "net"
-        elif item.text() == "Música":
-            filtro = "sound"
-        elif item.text() == "Gráficos":
-            filtro = "graphics"
-        elif item.text() == "Video":
-            filtro = "video"
-        elif item.text() == "Juegos":
-            filtro = "games"
-        elif item.text() == "Ofimática":
-            filtro = "editors"
-        #elif item.text() == "Lectura":
-        #   filtro = "editors"
-        elif item.text() == "Desarrollo":
-            filtro = "devel"
-        elif item.text() == "Sistema":
-            filtro = "admin"
-        elif item.text() == "Otros":
-            filtro = "other"
-        else:
-            filtro = "0"
-        
-        if filtro != "inicio":
-            lista = self.Get_App_Filter(lista_app, filtro)
-            self.Listar_Apps(lista)
+        self.trayIcon = QSystemTrayIcon(self)
+        self.trayIcon.setToolTip("DeepineStore")
+        self.trayIcon.setIcon(QIcon('./resources/deepines_logo_beta.svg'))
+        self.trayIcon.setContextMenu(self.trayIconMenu)
+
+    def messages(self, titulo: str, texto: str, estado: int):
+        self.trayIcon.showMessage(titulo, texto, estado, 10000)
+
+    #				END SYSTRAY					   #
+    ################################################
+
+    ################################################
+    #          Obtener lista de apps               #
 
     def Get_App(self):
-
+        # Asignamos la url
         URL = "http://deepin.mooo.com:8082/deepines/paquetes.html"
 
         # Realizamos la petición a la web
@@ -129,29 +101,6 @@ class Ventana(QMainWindow):
         else:
             print("Status Code %d" % status_code)
 
-    def Get_App_Filter(self, lista_app, filtro):
-        lista_filtrada = {}
-        contador = 0
-        for key in lista_app:
-            if filtro == lista_app[key][3]:
-                lista_filtrada[contador] = lista_app[key]
-            elif lista_app[key][3] == "misc" and filtro == "other":
-                lista_filtrada[contador] = lista_app[key]
-            elif lista_app[key][3] == "utils" and filtro == "other":
-                lista_filtrada[contador] = lista_app[key]
-            contador += 1
-
-        return lista_filtrada
-        
-
-    def Apps_inicio(self, lista_app):
-        global total_apps, lista_inicio
-        lista_inicio = {}
-        for z in range(12):
-            key = random.randint(0, (total_apps-1))
-            lista_inicio[z] = lista_app[key]
-        return lista_inicio            
-
     def Listar_Apps(self, lista):
 
         y = 0
@@ -161,78 +110,12 @@ class Ventana(QMainWindow):
                 y = 0
                 x += 1
             y += 1
-            # Estas lineas las use para cuando tenia la funcion install_thread
-            # Dentro de la clase Ventana
-            #self.card = Card(lista[key][0], lista[key][1], lista[key][2])
-            #self.card.cd.boton_ver_card.clicked.connect(lambda: self.install_thread(lista[key][0]))
-            self.ui.gridLayout.addWidget(Card(lista[key][0], lista[key][1], lista[key][2]), x, y, 1, 1)
+            carta = Card(lista[key][0], lista[key][1], lista[key][2])
+            print(carta)
+            self.ui.gridLayout.addWidget(carta, x, y, 1, 1)
 
-    def createActions(self):
-        self.minimizeAction = QAction("Minimizar", self, triggered=self.hide)
-        self.maximizeAction = QAction("Maximizar", self,
-                triggered=self.showMaximized)
-        self.restoreAction = QAction("Restaurar", self,
-                triggered=self.showNormal)
-        self.quitAction = QAction("Salir", self,
-                triggered=QApplication.instance().quit)
 
-    def createTrayIcon(self):
-        self.trayIconMenu = QMenu(self)
-        self.trayIconMenu.addAction(self.minimizeAction)
-        self.trayIconMenu.addAction(self.maximizeAction)
-        self.trayIconMenu.addAction(self.restoreAction)
-        self.trayIconMenu.addSeparator()
-        self.trayIconMenu.addAction(self.quitAction)
 
-        self.trayIcon = QSystemTrayIcon(self)
-        self.trayIcon.setToolTip("DeepineStore")
-        self.trayIcon.setIcon(QIcon('./resources/deepines_logo_beta.svg'))
-        self.trayIcon.setContextMenu(self.trayIconMenu)
-
-    def showMessage(self, estado: int, app: str):
-        if estado == 1:
-            titulo = "Comenzando instalacion"
-            texto = "Instalando {}".format(app)
-        elif estado == 2:
-            titulo = "Instalacion Completada"
-            texto = "Se ha instalado correctamente {}".format(app)
-        # Message(Titulo, Texto, Icono, Duracion[ms])
-        # Icon{0:'NoIcon', 1:'Information', 2:'Warning', 3:'Critical'}
-        self.trayIcon.showMessage(titulo,texto,1,10000)
-
-def install_thread(aplicacion:str):
-    # Si esta funcion esta dentro de la clase Ventana
-    # No me toma el nombre de la app que deberia
-    # Pero si manda el mensaje de notificacion
-    obj = install.External(aplicacion)
-    thread = QThread()
-    obj.intReady.connect(Ventana.showMessage)
-    obj.moveToThread(thread)
-    obj.finished.connect(thread.quit)
-    thread.started.connect(obj.run)
-    #self.thread.finished.connect(self.thread.quit())
-    thread.start()
-
-class Card(QFrame):
-    def __init__(self, titulo: str, descripcion: str, version: str):
-        super(Card, self).__init__()
-        self.cd = Ui_Frame()
-        self.cd.setupUi(self)
-        self.cd.boton_ver_card.setToolTip(version)
-        self.cd.label_titulo_card.setText(titulo)
-        self.cd.image_card.setToolTip(descripcion)
-        
-        if not os.path.exists('./resources/apps/' + titulo  + '.svg'):
-            url = './resources/apps/no-img.svg'
-        else:
-            url = './resources/apps/' + titulo  + '.svg'
-
-        pixmap = QPixmap(url)
-        self.cd.image_card.setPixmap(pixmap)
-
-        self.cd.boton_ver_card.clicked.connect(lambda: install_thread(titulo))
-
-        
 if __name__ == '__main__':
   app = QApplication(sys.argv)
   win = Ventana()

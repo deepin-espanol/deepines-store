@@ -25,7 +25,24 @@
   </property>
   <property name="styleSheet">
    <string notr="true">#MainWindow{
-background-color: #fff;
+background-color: transparent;
+}
+QScrollBar:vertical {
+background-color: rgb(84, 84, 84);
+border-radius: 5px;
+}
+ QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical {
+	border: none;
+    background: none;
+    color: none;
+ }
+QScrollBar::add-line:horizontal {
+      border: none;
+      background: none;
+}
+QScrollBar::sub-line:horizontal {
+      border: none;
+      background: none;
 }</string>
   </property>
   <widget class="QWidget" name="centralwidget">
@@ -60,7 +77,7 @@ background-color: #fff;
        </size>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-color: rgba(49, 99, 149, 160);</string>
+       <string notr="true">background-color: rgba(16, 16, 16, 80);</string>
       </property>
       <property name="frameShape">
        <enum>QFrame::StyledPanel</enum>
@@ -128,7 +145,7 @@ background-color: #fff;
   padding-top:10px;
   padding-bottom:10px;
   border-radius: 10px;
-  background-color: rgba(49, 99, 149, 120);
+  background-color: rgba(16, 16, 16, 163);
 }
 #listWidget:item{
   padding: 5px 5px 5px 5px;
@@ -310,7 +327,7 @@ background-color: #fff;
          </property>
          <property name="styleSheet">
           <string notr="true">border-radius: 10px;
-background-color: rgba(49, 99, 149, 120);
+background-color: rgba(16, 16, 16, 122);
 color: white;</string>
          </property>
          <property name="frameShape">
@@ -368,7 +385,8 @@ border: 0px solid;</string>
     <item row="0" column="1" rowspan="2" colspan="3">
      <widget class="QScrollArea" name="frame">
       <property name="styleSheet">
-       <string notr="true">background-color: rgba(49, 99, 149, 120);</string>
+       <string notr="true">background-color: rgba(30, 30, 30, 120);
+</string>
       </property>
       <property name="verticalScrollBarPolicy">
        <enum>Qt::ScrollBarAlwaysOn</enum>

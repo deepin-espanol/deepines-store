@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'main.ui'
+# Form implementation generated from reading ui file 'guis/main.ui'
 #
 # Created by: PyQt5 UI code generator 5.13.0
 #
@@ -19,7 +19,24 @@ class Ui_MainWindow(object):
         icon.addPixmap(QtGui.QPixmap("./resources/deepines_logo_beta.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         MainWindow.setWindowIcon(icon)
         MainWindow.setStyleSheet("#MainWindow{\n"
-"background-color: #fff;\n"
+"background-color: transparent;\n"
+"}\n"
+"QScrollBar:vertical {\n"
+"background-color: rgb(84, 84, 84);\n"
+"border-radius: 5px;\n"
+"}\n"
+" QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical {\n"
+"    border: none;\n"
+"    background: none;\n"
+"    color: none;\n"
+" }\n"
+"QScrollBar::add-line:horizontal {\n"
+"      border: none;\n"
+"      background: none;\n"
+"}\n"
+"QScrollBar::sub-line:horizontal {\n"
+"      border: none;\n"
+"      background: none;\n"
 "}")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
@@ -30,7 +47,7 @@ class Ui_MainWindow(object):
         self.frame_2 = QtWidgets.QFrame(self.centralwidget)
         self.frame_2.setMinimumSize(QtCore.QSize(183, 0))
         self.frame_2.setMaximumSize(QtCore.QSize(183, 16777215))
-        self.frame_2.setStyleSheet("background-color: rgba(49, 99, 149, 160);")
+        self.frame_2.setStyleSheet("background-color: rgba(16, 16, 16, 80);")
         self.frame_2.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame_2.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame_2.setObjectName("frame_2")
@@ -50,7 +67,7 @@ class Ui_MainWindow(object):
 "  padding-top:10px;\n"
 "  padding-bottom:10px;\n"
 "  border-radius: 10px;\n"
-"  background-color: rgba(49, 99, 149, 120);\n"
+"  background-color: rgba(16, 16, 16, 163);\n"
 "}\n"
 "#listWidget:item{\n"
 "  padding: 5px 5px 5px 5px;\n"
@@ -136,7 +153,7 @@ class Ui_MainWindow(object):
         self.frame_4.setMinimumSize(QtCore.QSize(0, 30))
         self.frame_4.setMaximumSize(QtCore.QSize(16777215, 30))
         self.frame_4.setStyleSheet("border-radius: 10px;\n"
-"background-color: rgba(49, 99, 149, 120);\n"
+"background-color: rgba(16, 16, 16, 122);\n"
 "color: white;")
         self.frame_4.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame_4.setFrameShadow(QtWidgets.QFrame.Raised)
@@ -166,7 +183,8 @@ class Ui_MainWindow(object):
         self.gridLayout_3.addWidget(self.frame_4, 1, 0, 1, 1)
         self.gridLayout_2.addWidget(self.frame_2, 0, 0, 2, 1)
         self.frame = QtWidgets.QScrollArea(self.centralwidget)
-        self.frame.setStyleSheet("background-color: rgba(49, 99, 149, 120);")
+        self.frame.setStyleSheet("background-color: rgba(30, 30, 30, 120);\n"
+"")
         self.frame.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
         self.frame.setWidgetResizable(True)
         self.frame.setAlignment(QtCore.Qt.AlignCenter)
