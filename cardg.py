@@ -1,23 +1,16 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'card.ui'
+# Form implementation generated from reading ui file 'guis/card.ui'
 #
 # Created by: PyQt5 UI code generator 5.13.0
 #
 # WARNING! All changes made in this file will be lost!
 
-import os
+
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtGui import QPixmap
+
 
 class Ui_Frame(object):
-
-    def __init__(self, titulo: str, descripcion: str, version: str):
-        super(Ui_Frame, self).__init__()
-        self.titulo = titulo
-        self.descripcion = descripcion
-        self.version = version
-        
     def setupUi(self, Frame):
         Frame.setObjectName("Frame")
         Frame.resize(230, 252)
@@ -47,15 +40,13 @@ class Ui_Frame(object):
         self.image_card.setScaledContents(False)
         self.image_card.setAlignment(QtCore.Qt.AlignCenter)
         self.image_card.setObjectName("image_card")
-        pixmap = QPixmap(self.setPixmap(self.titulo))
-        self.image_card.setPixmap(pixmap)
         self.verticalLayout.addWidget(self.image_card)
         self.label_titulo_card = QtWidgets.QLabel(Frame)
         self.label_titulo_card.setMinimumSize(QtCore.QSize(0, 25))
         self.label_titulo_card.setMaximumSize(QtCore.QSize(16777215, 23))
         self.label_titulo_card.setStyleSheet("color: white;\n"
 "background-color: transparent;")
-        self.label_titulo_card.setText(self.titulo)
+        self.label_titulo_card.setText("")
         self.label_titulo_card.setScaledContents(False)
         self.label_titulo_card.setAlignment(QtCore.Qt.AlignCenter)
         self.label_titulo_card.setWordWrap(True)
@@ -90,15 +81,3 @@ class Ui_Frame(object):
         _translate = QtCore.QCoreApplication.translate
         Frame.setWindowTitle(_translate("Frame", "Card"))
         self.boton_ver_card.setText(_translate("Frame", "Instalar"))
-        self.boton_ver_card.setToolTip("Frame", str(self.version))
-        self.image_card.setToolTip("Frame", self.descripcion)
-
-    def setImage(self, titulo):
-        if not os.path.exists('./resources/apps/' + titulo  + '.svg'):
-            url = './resources/apps/no-img.svg'
-        else:
-            url = './resources/apps/' + titulo  + '.svg'
-
-        return url
-
-        

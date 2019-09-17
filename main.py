@@ -1,6 +1,7 @@
 import sys
 import os
 # Modulos de pyqt5
+from PyQt5.QtCore import QThread
 from PyQt5.QtWidgets import (QMainWindow, QApplication, QFrame, QSystemTrayIcon,
                             QAction, QMenu, QGraphicsBlurEffect)
 from PyQt5.QtGui import QPixmap, QIcon
@@ -10,7 +11,9 @@ import urllib.request
 import requests
 # Guis o modulos locales
 from maing import Ui_MainWindow
-from cardg import Ui_Frame as Card
+from cardg import Ui_Frame
+# QThread para instalar en segundo plano
+from install_thread import External
 # Variables globales
 global lista_app, total_apps, lista_inicio
 
@@ -57,15 +60,29 @@ class Ventana(QMainWindow):
         self.trayIcon.setIcon(QIcon('./resources/deepines_logo_beta.svg'))
         self.trayIcon.setContextMenu(self.trayIconMenu)
 
-    def messages(self, titulo: str, texto: str, estado: int):
-        self.trayIcon.showMessage(titulo, texto, estado, 10000)
+    def start_message(self, application: str):
+        self.trayIcon.showMessage("Comenzando la instalación",
+                        "Se ha comenzado la instalación de {}, en un "
+                        "momento estara lista.".format(application), 1, 10000)
+
+    def finish_message(self, application: str):
+        self.trayIcon.showMessage("Instalación completada",
+                        "Se ha instalado {} correctamente, "
+                        "esperamos que disfrute la aplicación.".format(application), 1, 10000)
+
+    def error_message(self, application: str):
+        self.trayIcon.showMessage("Ha ocurrido un error",
+                    "No se ha podido instalar {} correctamente, "
+                    "vuelva a intentarlo.".format(application), 1, 10000)
+
 
     #				END SYSTRAY					   #
     ################################################
 
     ################################################
-    #          Obtener lista de apps               #
+    #                Lista de apps                 #
 
+    #           Obtener lista de apps              #
     def Get_App(self):
         # Asignamos la url
         URL = "http://deepin.mooo.com:8082/deepines/paquetes.html"
@@ -101,6 +118,7 @@ class Ventana(QMainWindow):
         else:
             print("Status Code %d" % status_code)
 
+    #           Listar aplicaciones              #
     def Listar_Apps(self, lista):
 
         y = 0
@@ -111,9 +129,51 @@ class Ventana(QMainWindow):
                 x += 1
             y += 1
             carta = Card(lista[key][0], lista[key][1], lista[key][2])
-            print(carta)
             self.ui.gridLayout.addWidget(carta, x, y, 1, 1)
 
+    #                /Lista de apps                #
+    ################################################
+
+    def install_thread(self, app:str):
+        self.obj = External(app)
+        self.thread = QThread()
+        self.obj.start.connect(self.start_message)
+        self.obj.finish.connect(self.finish_message)
+        self.obj.error.connect(self.error_message)
+        self.obj.moveToThread(self.thread)
+        self.thread.started.connect(self.obj.run)
+        #self.thread.finished.connect(self.thread.quit)
+        self.thread.start()
+
+
+
+################################################
+#           Card para la aplicacion            #
+
+class Card(QFrame):
+    def __init__(self, titulo: str, descripcion: str, version: str):
+        super(Card, self).__init__()
+        self.cd = Ui_Frame()
+        self.cd.setupUi(self)
+        self.app = titulo
+        # Establecemos los atributos de la app
+        self.cd.boton_ver_card.setToolTip(version)
+        self.cd.label_titulo_card.setText(titulo)
+        self.cd.image_card.setToolTip(descripcion)
+        # Consultamos si existe el grafico de la app
+        if not os.path.exists('./resources/apps/' + titulo  + '.svg'):
+            url = './resources/apps/no-img.svg'
+        else:
+            url = './resources/apps/' + titulo  + '.svg'
+        # Establecemos la imagen
+        pixmap = QPixmap(url)
+        self.cd.image_card.setPixmap(pixmap)
+        # Conectamos a la funcion para instalar
+        self.cd.boton_ver_card.clicked.connect(Ventana.install_thread(Ventana(), titulo))
+        #self.cd.boton_ver_card.clicked.connect(lambda: Ventana.error_message(Ventana(), titulo))
+
+#           /Card para la aplicacion           #
+################################################
 
 
 if __name__ == '__main__':
