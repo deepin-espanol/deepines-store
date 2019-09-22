@@ -10,8 +10,8 @@ class External(QObject):
     finish = pyqtSignal(object)
     error = pyqtSignal(object)
     
-    def __init__(self, app: str, parent=None):
-        super(External, self).__init__(parent)
+    def __init__(self, app: str):
+        super(External, self).__init__()
         self.app = app
 
     @pyqtSlot()

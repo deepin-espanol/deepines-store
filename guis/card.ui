@@ -40,7 +40,7 @@ QToolTip {
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QLabel" name="image_card">
+    <widget class="QLabel" name="image_app">
      <property name="minimumSize">
       <size>
        <width>208</width>
@@ -54,7 +54,7 @@ QToolTip {
       </size>
      </property>
      <property name="styleSheet">
-      <string notr="true">#image_card{
+      <string notr="true">#image_app{
   background-color: rgba(49, 99, 149);
   border: 10px outset rgba(49, 99, 149);
 }</string>
@@ -71,7 +71,7 @@ QToolTip {
     </widget>
    </item>
    <item>
-    <widget class="QLabel" name="label_titulo_card">
+    <widget class="QLabel" name="lbl_name_app">
      <property name="minimumSize">
       <size>
        <width>0</width>
@@ -103,7 +103,7 @@ background-color: transparent;</string>
     </widget>
    </item>
    <item>
-    <widget class="QPushButton" name="boton_ver_card">
+    <widget class="QPushButton" name="btn_select_app">
      <property name="font">
       <font>
        <family>Segoe UI Semibold</family>
@@ -115,13 +115,13 @@ background-color: transparent;</string>
       <cursorShape>PointingHandCursor</cursorShape>
      </property>
      <property name="styleSheet">
-      <string notr="true">#boton_ver_card{
+      <string notr="true">#btn_select_app{
 padding: 7px;
 color: #000;
 border-radius: 5px;
 border: 2px solid rgb(142, 231, 255);
 }
-#boton_ver_card:hover{
+#btn_select_app:hover{
 padding: 7px;
 color:white;
 background-color: rgb(65, 159, 217);

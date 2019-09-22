@@ -23,10 +23,7 @@ class Ventana(QMainWindow):
         # Inicializamos la gui
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
-        # Creamos el icono de sistema
-        self.createActions()
-        self.createTrayIcon()
-        self.trayIcon.show()
+
         # Variables globales
         global lista_app
         # Almacenamos la lista, para cargarla solo al inicio
@@ -35,49 +32,9 @@ class Ventana(QMainWindow):
         # Probamos el mensaje
         #self.messages("Bienvenido", "Cargando las aplicaciones", 1)
         #self.trayIcon.showMessage("Bienvenido", "Cargando las aplicaciones", 1, 10000)
-
-    ################################################
-    #				SYSTRAY 					   #
-    def createActions(self):
-            self.minimizeAction = QAction("Minimizar", self, triggered=self.hide)
-            self.maximizeAction = QAction("Maximizar", self,
-                    triggered=self.showMaximized)
-            self.restoreAction = QAction("Restaurar", self,
-                    triggered=self.showNormal)
-            self.quitAction = QAction("Salir", self,
-                    triggered=QApplication.instance().quit)
-
-    def createTrayIcon(self):
-        self.trayIconMenu = QMenu(self)
-        self.trayIconMenu.addAction(self.minimizeAction)
-        self.trayIconMenu.addAction(self.maximizeAction)
-        self.trayIconMenu.addAction(self.restoreAction)
-        self.trayIconMenu.addSeparator()
-        self.trayIconMenu.addAction(self.quitAction)
-
-        self.trayIcon = QSystemTrayIcon(self)
-        self.trayIcon.setToolTip("DeepineStore")
-        self.trayIcon.setIcon(QIcon('./resources/deepines_logo_beta.svg'))
-        self.trayIcon.setContextMenu(self.trayIconMenu)
-
-    def start_message(self, application: str):
-        self.trayIcon.showMessage("Comenzando la instalación",
-                        "Se ha comenzado la instalación de {}, en un "
-                        "momento estara lista.".format(application), 1, 10000)
-
-    def finish_message(self, application: str):
-        self.trayIcon.showMessage("Instalación completada",
-                        "Se ha instalado {} correctamente, "
-                        "esperamos que disfrute la aplicación.".format(application), 1, 10000)
-
-    def error_message(self, application: str):
-        self.trayIcon.showMessage("Ha ocurrido un error",
-                    "No se ha podido instalar {} correctamente, "
-                    "vuelva a intentarlo.".format(application), 1, 10000)
+        self.ui.lbl_list_apps.setText("Seleccione las aplicaciones a instalar")
 
 
-    #				END SYSTRAY					   #
-    ################################################
 
     ################################################
     #                Lista de apps                 #
@@ -134,6 +91,9 @@ class Ventana(QMainWindow):
     #                /Lista de apps                #
     ################################################
 
+    ################################################
+    #                  Instalacion                 #
+
     def install_thread(self, app:str):
         self.obj = External(app)
         self.thread = QThread()
@@ -145,6 +105,8 @@ class Ventana(QMainWindow):
         #self.thread.finished.connect(self.thread.quit)
         self.thread.start()
 
+    #                 /Instalacion                 #
+    ################################################
 
 
 ################################################
@@ -155,11 +117,11 @@ class Card(QFrame):
         super(Card, self).__init__()
         self.cd = Ui_Frame()
         self.cd.setupUi(self)
-        self.app = titulo
         # Establecemos los atributos de la app
-        self.cd.boton_ver_card.setToolTip(version)
-        self.cd.label_titulo_card.setText(titulo)
-        self.cd.image_card.setToolTip(descripcion)
+        self.cd.btn_select_app.setText("Seleccionar")
+        self.cd.btn_select_app.setToolTip(version)
+        self.cd.lbl_name_app.setText(titulo)
+        self.cd.image_app.setToolTip(descripcion)
         # Consultamos si existe el grafico de la app
         if not os.path.exists('./resources/apps/' + titulo  + '.svg'):
             url = './resources/apps/no-img.svg'
@@ -167,9 +129,9 @@ class Card(QFrame):
             url = './resources/apps/' + titulo  + '.svg'
         # Establecemos la imagen
         pixmap = QPixmap(url)
-        self.cd.image_card.setPixmap(pixmap)
+        self.cd.image_app.setPixmap(pixmap)
         # Conectamos a la funcion para instalar
-        self.cd.boton_ver_card.clicked.connect(Ventana.install_thread(Ventana(), titulo))
+        #self.cd.btn_select_app.clicked.connect(lambda: Ventana.install_thread(Ventana(), titulo))
         #self.cd.boton_ver_card.clicked.connect(lambda: Ventana.error_message(Ventana(), titulo))
 
 #           /Card para la aplicacion           #
