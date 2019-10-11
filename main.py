@@ -16,6 +16,7 @@ from cardg import Ui_Frame
 from install_thread import External
 # Variables globales
 global lista_app, total_apps, lista_inicio
+global selected_apps
 
 class Ventana(QMainWindow):
     def __init__(self):
@@ -26,6 +27,8 @@ class Ventana(QMainWindow):
 
         # Variables globales
         global lista_app
+        global selected_apps
+        selected_apps = list()
         # Almacenamos la lista, para cargarla solo al inicio
         lista_app = self.Get_App()
         self.Listar_Apps(lista_app)
@@ -33,6 +36,7 @@ class Ventana(QMainWindow):
         #self.messages("Bienvenido", "Cargando las aplicaciones", 1)
         #self.trayIcon.showMessage("Bienvenido", "Cargando las aplicaciones", 1, 10000)
         self.ui.lbl_list_apps.setText("Seleccione las aplicaciones a instalar")
+        self.ui.btn_install.clicked.connect(self.contar_apps)
 
 
 
@@ -67,7 +71,8 @@ class Ventana(QMainWindow):
                 descripcion = entrada.find('td', {'class': 'description'}).getText()
                 version = entrada.find('td', {'class': 'version'}).getText()
                 categoria = entrada.find('td', {'class': 'section'}).getText()
-                lista[i] = (titulo, descripcion, version, categoria)
+                estado = 0
+                lista[i] = (titulo, descripcion, version, categoria, estado)
                 
                 total_apps += 1
 
@@ -90,6 +95,11 @@ class Ventana(QMainWindow):
 
     #                /Lista de apps                #
     ################################################
+
+    def contar_apps(self):
+        global selected_apps
+        cuenta = len(selected_apps)
+        self.ui.lbl_list_apps.setText("Seleccionada {} para instalar".format(cuenta))
 
     ################################################
     #                  Instalacion                 #
@@ -131,12 +141,53 @@ class Card(QFrame):
         pixmap = QPixmap(url)
         self.cd.image_app.setPixmap(pixmap)
         # Conectamos a la funcion para instalar
-        #self.cd.btn_select_app.clicked.connect(lambda: Ventana.install_thread(Ventana(), titulo))
-        #self.cd.boton_ver_card.clicked.connect(lambda: Ventana.error_message(Ventana(), titulo))
+        self.cd.btn_select_app.clicked.connect(lambda: self.select_app(titulo))
+    
+    def select_app(self, titulo):
+        global selected_apps
+        if titulo not in selected_apps:
+            selected_apps.append(titulo)
+            self.change_color_buton(0)
+        else:
+            selected_apps.remove(titulo)
+            self.change_color_buton(1)
 
+    def change_color_buton(self, estado: int):
+        if estado == 0:
+            self.cd.btn_select_app.setText("Deselecionar")
+            self.cd.btn_select_app.setStyleSheet(""
+                "background-color: rgb(234, 102, 70);"
+                "padding: 7px;"
+                "color: #000;"
+                "border-radius: 5px;"
+                "border: 2px solid rgb(142, 231, 255);"
+                "}"
+                "#btn_select_app:hover{"
+                "padding: 7px;"
+                "color:white;"
+                "background-color: rgb(65, 159, 217);"
+                "border-radius: 5px;"
+                "}"
+                "")
+            
+        else:
+            self.cd.btn_select_app.setText("Selecionar")
+            self.cd.btn_select_app.setStyleSheet(""
+                "padding: 7px;"
+                "color: #000;"
+                "border-radius: 5px;"
+                "border: 2px solid rgb(142, 231, 255);"
+                "}"
+                "#btn_select_app:hover{"
+                "padding: 7px;"
+                "color:white;"
+                "background-color: rgb(65, 159, 217);"
+                "border-radius: 5px;"
+                "}"
+                "")
+            
 #           /Card para la aplicacion           #
 ################################################
-
 
 if __name__ == '__main__':
   app = QApplication(sys.argv)

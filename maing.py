@@ -79,7 +79,6 @@ class Ui_MainWindow(object):
         self.btn_ver_app.setObjectName("btn_ver_app")
         self.horizontalLayout_3.addWidget(self.btn_ver_app)
         self.btn_install = QtWidgets.QPushButton(self.widget)
-        self.btn_install.setEnabled(False)
         self.btn_install.setMinimumSize(QtCore.QSize(80, 0))
         self.btn_install.setMaximumSize(QtCore.QSize(80, 16777215))
         self.btn_install.setStyleSheet("#btn_install{\n"
