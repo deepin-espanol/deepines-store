@@ -9,6 +9,8 @@ from PyQt5.QtGui import QPixmap, QIcon
 from bs4 import BeautifulSoup
 import urllib.request
 import requests
+# Para obtener applicacion random
+import random
 # Guis o modulos locales
 from maing import Ui_MainWindow
 from cardg import Ui_Frame
@@ -31,14 +33,56 @@ class Ventana(QMainWindow):
         selected_apps = list()
         # Almacenamos la lista, para cargarla solo al inicio
         lista_app = self.Get_App()
-        self.Listar_Apps(lista_app)
+        # Obtenemos aplicaciones para la lista de apps
+        inicio = self.Apps_inicio(lista_app)
+        # Listamos las apps
+        self.Listar_Apps(inicio)
         # Probamos el mensaje
         #self.messages("Bienvenido", "Cargando las aplicaciones", 1)
         #self.trayIcon.showMessage("Bienvenido", "Cargando las aplicaciones", 1, 10000)
         self.ui.lbl_list_apps.setText("Seleccione las aplicaciones a instalar")
         self.ui.btn_install.clicked.connect(self.contar_apps)
+        self.ui.listWidget.itemClicked.connect(self.listwidgetclicked)
 
+    ################################################
+    #                Filtro de apps                #
 
+    def listwidgetclicked(self, item):
+        for i in range(self.ui.gridLayout.count()):
+            self.ui.gridLayout.itemAt(i).widget().deleteLater()
+
+        if item.text() == "Inicio":
+            self.Listar_Apps(lista_inicio)
+            filtro = "inicio"
+        elif item.text() == "Internet":
+            filtro = "web"
+        elif item.text() == "Mensajeria":
+            filtro = "net"
+        elif item.text() == "Música":
+            filtro = "sound"
+        elif item.text() == "Gráficos":
+            filtro = "graphics"
+        elif item.text() == "Video":
+            filtro = "video"
+        elif item.text() == "Juegos":
+            filtro = "games"
+        elif item.text() == "Ofimática":
+            filtro = "editors"
+        #elif item.text() == "Lectura":
+        #   filtro = "editors"
+        elif item.text() == "Desarrollo":
+            filtro = "devel"
+        elif item.text() == "Sistema":
+            filtro = "admin"
+        elif item.text() == "Otros":
+            filtro = "other"
+        
+        if filtro != "inicio":
+            lista = self.Get_App_Filter(lista_app, filtro)
+            self.Listar_Apps(lista)
+
+    #               /Filtro de apps                #
+    ################################################
 
     ################################################
     #                Lista de apps                 #
@@ -79,6 +123,34 @@ class Ventana(QMainWindow):
             return lista
         else:
             print("Status Code %d" % status_code)
+
+    #           Filtrar aplicaciones             #
+    def Get_App_Filter(self, lista_app, filtro):
+        lista_filtrada = {}
+        contador = 0
+        for key in lista_app:
+            if filtro == lista_app[key][3]:
+                lista_filtrada[contador] = lista_app[key]
+            elif lista_app[key][3] == "misc" and filtro == "other":
+                lista_filtrada[contador] = lista_app[key]
+            elif lista_app[key][3] == "utils" and filtro == "other":
+                lista_filtrada[contador] = lista_app[key]
+            contador += 1
+
+        return lista_filtrada
+        
+    #           Aplicaciones Inicio              #
+    def Apps_inicio(self, lista_app):
+        global total_apps, lista_inicio
+        lista_inicio = {}
+        for z in range(12):
+            key = random.randint(0, (total_apps-1))
+            if key not in lista_inicio:
+                lista_inicio[z] = lista_app[key]
+            else:
+                z -= 1
+        return lista_inicio   
+
 
     #           Listar aplicaciones              #
     def Listar_Apps(self, lista):
@@ -153,7 +225,7 @@ class Card(QFrame):
             self.change_color_buton(1)
 
     def change_color_buton(self, estado: int):
-        if estado == 0:
+        if estado == 0: # App seleccionada
             self.cd.btn_select_app.setText("Deselecionar")
             self.cd.btn_select_app.setStyleSheet(""
                 "background-color: rgb(234, 102, 70);"
@@ -170,7 +242,7 @@ class Card(QFrame):
                 "}"
                 "")
             
-        else:
+        else: # App no seleccionada
             self.cd.btn_select_app.setText("Selecionar")
             self.cd.btn_select_app.setStyleSheet(""
                 "padding: 7px;"
