@@ -3,7 +3,7 @@ import os
 # Modulos de pyqt5
 from PyQt5.QtCore import QThread
 from PyQt5.QtWidgets import (QMainWindow, QApplication, QFrame, QSystemTrayIcon,
-                            QAction, QMenu, QGraphicsBlurEffect)
+                            QAction, QMenu, QGraphicsBlurEffect, QApplication)
 from PyQt5.QtGui import QPixmap, QIcon
 # Modulos para el scraping
 from bs4 import BeautifulSoup
@@ -14,6 +14,7 @@ import random
 # Guis o modulos locales
 from maing import Ui_MainWindow
 from cardg import Ui_Frame
+from dialog_install import Ui_Form as DInstall
 # QThread para instalar en segundo plano
 from install_thread import External
 # Variables globales
@@ -26,6 +27,7 @@ class Ventana(QMainWindow):
         # Inicializamos la gui
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
+        self.center()
 
         # Variables globales
         global lista_app
@@ -41,43 +43,51 @@ class Ventana(QMainWindow):
         #self.messages("Bienvenido", "Cargando las aplicaciones", 1)
         #self.trayIcon.showMessage("Bienvenido", "Cargando las aplicaciones", 1, 10000)
         self.ui.lbl_list_apps.setText("Seleccione las aplicaciones a instalar")
-        self.ui.btn_install.clicked.connect(self.contar_apps)
+        self.ui.btn_install.clicked.connect(self.ventana_install)
         self.ui.listWidget.itemClicked.connect(self.listwidgetclicked)
 
     ################################################
     #                Filtro de apps                #
 
     def listwidgetclicked(self, item):
+        filtro = list()
         for i in range(self.ui.gridLayout.count()):
             self.ui.gridLayout.itemAt(i).widget().deleteLater()
 
         if item.text() == "Inicio":
             self.Listar_Apps(lista_inicio)
-            filtro = "inicio"
+            filtro.append("inicio")
         elif item.text() == "Internet":
-            filtro = "web"
+            filtro.append("web")
         elif item.text() == "Mensajeria":
-            filtro = "net"
+            filtro.append("net")
         elif item.text() == "Música":
-            filtro = "sound"
+            filtro.append("sound")
         elif item.text() == "Gráficos":
-            filtro = "graphics"
+            filtro.append("graphics")
+            filtro.append("Media")
         elif item.text() == "Video":
-            filtro = "video"
+            filtro.append("video")
         elif item.text() == "Juegos":
-            filtro = "games"
+            filtro.append("games")
         elif item.text() == "Ofimática":
-            filtro = "editors"
+            filtro.append("editors")
         #elif item.text() == "Lectura":
         #   filtro = "editors"
         elif item.text() == "Desarrollo":
-            filtro = "devel"
+            filtro.append("devel")
+            filtro.append("shells")
         elif item.text() == "Sistema":
-            filtro = "admin"
+            filtro.append("admin")
         elif item.text() == "Otros":
-            filtro = "other"
-        
-        if filtro != "inicio":
+            filtro.append("other")
+            filtro.append("science")
+            filtro.append("x11")
+            filtro.append("base")
+            filtro.append("gnome")
+            filtro.append("default")
+
+        if "inicio" not in filtro:
             lista = self.Get_App_Filter(lista_app, filtro)
             self.Listar_Apps(lista)
 
@@ -105,7 +115,7 @@ class Ventana(QMainWindow):
             # Obtenemos todos los divs donde están las entradas
             entradas = html.find_all('tr')
             
-            lista = {}
+            lista = list()
             global total_apps
             total_apps = 0
             # Recorremos todas las entradas para extraer el título, autor y fecha
@@ -115,11 +125,12 @@ class Ventana(QMainWindow):
                 descripcion = entrada.find('td', {'class': 'description'}).getText()
                 version = entrada.find('td', {'class': 'version'}).getText()
                 categoria = entrada.find('td', {'class': 'section'}).getText()
-                estado = 0
-                lista[i] = (titulo, descripcion, version, categoria, estado)
+                estado = 1
+                lista_origen = [titulo, descripcion, version, categoria, estado]
+                lista.append(lista_origen)
                 
                 total_apps += 1
-
+            print(lista)
             return lista
         else:
             print("Status Code %d" % status_code)
@@ -128,13 +139,10 @@ class Ventana(QMainWindow):
     def Get_App_Filter(self, lista_app, filtro):
         lista_filtrada = {}
         contador = 0
-        for key in lista_app:
-            if filtro == lista_app[key][3]:
-                lista_filtrada[contador] = lista_app[key]
-            elif lista_app[key][3] == "misc" and filtro == "other":
-                lista_filtrada[contador] = lista_app[key]
-            elif lista_app[key][3] == "utils" and filtro == "other":
-                lista_filtrada[contador] = lista_app[key]
+        for elemento in lista_app:
+            if elemento[3] in filtro:
+                lista_filtrada[contador] = elemento
+
             contador += 1
 
         return lista_filtrada
@@ -162,7 +170,7 @@ class Ventana(QMainWindow):
                 y = 0
                 x += 1
             y += 1
-            carta = Card(lista[key][0], lista[key][1], lista[key][2])
+            carta = Card(lista[key][0], lista[key][1], lista[key][2], lista[key][4], self)
             self.ui.gridLayout.addWidget(carta, x, y, 1, 1)
 
     #                /Lista de apps                #
@@ -171,32 +179,46 @@ class Ventana(QMainWindow):
     def contar_apps(self):
         global selected_apps
         cuenta = len(selected_apps)
-        self.ui.lbl_list_apps.setText("Seleccionada {} para instalar".format(cuenta))
+        if cuenta == 0:
+            texto = "Seleccione las aplicaciones a instalar"
+        else:
+            if cuenta != 1:
+                articulo = "aplicaciones"
+            else:
+                articulo = "aplicacion"
+            texto = "Seleccionada {} {} para instalar".format(cuenta, articulo)
+        self.ui.lbl_list_apps.setText(texto)
 
     ################################################
     #                  Instalacion                 #
 
-    def install_thread(self, app:str):
-        self.obj = External(app)
-        self.thread = QThread()
-        self.obj.start.connect(self.start_message)
-        self.obj.finish.connect(self.finish_message)
-        self.obj.error.connect(self.error_message)
-        self.obj.moveToThread(self.thread)
-        self.thread.started.connect(self.obj.run)
-        #self.thread.finished.connect(self.thread.quit)
-        self.thread.start()
+    def ventana_install(self):
+        global selected_apps
+        self.modal = DInstall(self, selected_apps)
+        self.modal.show()
 
     #                 /Instalacion                 #
     ################################################
 
+    ################################################
+    #                   Centrar                    #
+    def center(self):
+        frameGm = self.frameGeometry()
+        screen = QApplication.desktop().screenNumber(QApplication.desktop().cursor().pos())
+        centerPoint = QApplication.desktop().screenGeometry(screen).center()
+        frameGm.moveCenter(centerPoint)
+        self.move(frameGm.topLeft())
+
+    #                  /Centrar                    #
+    ################################################
 
 ################################################
 #           Card para la aplicacion            #
 
 class Card(QFrame):
-    def __init__(self, titulo: str, descripcion: str, version: str):
+    def __init__(self, titulo: str, descripcion: str, version: str, estado: int, parent):
         super(Card, self).__init__()
+        self.parentWindow = parent
         self.cd = Ui_Frame()
         self.cd.setupUi(self)
         # Establecemos los atributos de la app
@@ -204,6 +226,7 @@ class Card(QFrame):
         self.cd.btn_select_app.setToolTip(version)
         self.cd.lbl_name_app.setText(titulo)
         self.cd.image_app.setToolTip(descripcion)
+        self.change_color_buton(estado)
         # Consultamos si existe el grafico de la app
         if not os.path.exists('./resources/apps/' + titulo  + '.svg'):
             url = './resources/apps/no-img.svg'
@@ -212,17 +235,28 @@ class Card(QFrame):
         # Establecemos la imagen
         pixmap = QPixmap(url)
         self.cd.image_app.setPixmap(pixmap)
+
         # Conectamos a la funcion para instalar
         self.cd.btn_select_app.clicked.connect(lambda: self.select_app(titulo))
-    
+
     def select_app(self, titulo):
-        global selected_apps
+        global selected_apps, lista_app
+        
+        for elemento in lista_app:
+            if titulo in elemento: 
+                indice = lista_app.index(elemento)
+        
         if titulo not in selected_apps:
             selected_apps.append(titulo)
             self.change_color_buton(0)
+            lista_app[indice][4] = 0
+
         else:
             selected_apps.remove(titulo)
             self.change_color_buton(1)
+            lista_app[indice][4] = 1
+
+        self.parentWindow.contar_apps()
 
     def change_color_buton(self, estado: int):
         if estado == 0: # App seleccionada
