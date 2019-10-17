@@ -11,6 +11,8 @@ import urllib.request
 import requests
 # Para obtener applicacion random
 import random
+# Para realizar un update
+import subprocess
 # Guis o modulos locales
 from maing import Ui_MainWindow
 from cardg import Ui_Frame
@@ -45,6 +47,7 @@ class Ventana(QMainWindow):
         self.ui.lbl_list_apps.setText("Seleccione las aplicaciones a instalar")
         self.ui.btn_install.clicked.connect(self.ventana_install)
         self.ui.listWidget.itemClicked.connect(self.listwidgetclicked)
+        subprocess.call('sudo apt update', shell=True)
 
     ################################################
     #                Filtro de apps                #
@@ -130,7 +133,6 @@ class Ventana(QMainWindow):
                 lista.append(lista_origen)
                 
                 total_apps += 1
-            print(lista)
             return lista
         else:
             print("Status Code %d" % status_code)
@@ -181,7 +183,9 @@ class Ventana(QMainWindow):
         cuenta = len(selected_apps)
         if cuenta == 0:
             texto = "Seleccione las aplicaciones a instalar"
+            self.ui.btn_install.setEnabled(False)
         else:
+            self.ui.btn_install.setEnabled(True)
             if cuenta != 1:
                 articulo = "aplicaciones"
             else:

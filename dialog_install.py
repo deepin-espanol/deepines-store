@@ -8,16 +8,16 @@
 
 
 from PyQt5 import QtWidgets as W
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QThread
 from PyQt5.QtGui import QPixmap, QIcon
-import subprocess
-
+from install_thread import External
 
 class Ui_Form(W.QWidget):
     def __init__(self, main, lista):
         super(Ui_Form, self).__init__()
         self.main = main
         self.lista = lista
+        self.main.setEnabled(False)
         self.resize(600, 300)
         icon = QIcon()
         icon.addPixmap(QPixmap("./resources/deepines_logo_beta.svg"), QIcon.Normal, QIcon.Off)
@@ -31,7 +31,7 @@ class Ui_Form(W.QWidget):
 
         self.setLayout(self.layoutPrincipal)
 
-        # Line edit para capturar texto
+        # Line edit para mostrat texto
         self.plainTextEdit.setObjectName("plainTextEdit")
         count_apps = len(lista)
         if count_apps != 1:
@@ -44,9 +44,9 @@ class Ui_Form(W.QWidget):
         self.plainTextEdit.setReadOnly(True)
         
 
-        # Botón para devolver el contenido
         self.boton = W.QPushButton("Cerrar")
         self.boton.setEnabled(False)
+        self.boton.clicked.connect(self.close)
 
         # Añadiendo widgets
         self.layoutPrincipal.addWidget(self.plainTextEdit, 0, 0, 2, 5)
@@ -55,11 +55,26 @@ class Ui_Form(W.QWidget):
         self.instalar()
 
     def instalar(self):
-        for elemento in self.lista:
-            self.plainTextEdit.insertPlainText("Instalando {} \n".format(elemento))
-            subprocess.call('gksudo apt install update', shell=True)
-            self.plainTextEdit.insertPlainText("...\n")
-            self.plainTextEdit.insertPlainText("Se ha instalado correctamente\n")
+        self.obj = External(self.lista)
+        self.thread = QThread()
+        self.obj.start.connect(self.comenzar)
+        self.obj.moveToThread(self.thread)
+        self.obj.finish.connect(self.finalizar)
+        self.obj.complete.connect(self.complete)
+        self.thread.started.connect(self.obj.run)
+        #thread.finished.connect(thread.quit())
+        self.thread.start()
+
+    def complete(self):
+        self.main.setEnabled(True)
+        self.boton.setEnabled(True)
+        self.thread.quit()
+
+    def comenzar(self, elemento):
+        self.plainTextEdit.insertPlainText("Instalando {} \n".format(elemento))
+
+    def finalizar(self):
+        self.plainTextEdit.insertPlainText("Se ha instalado correctamente\n")
 
     def center(self):
         frameGm = self.frameGeometry()

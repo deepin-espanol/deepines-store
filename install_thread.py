@@ -1,4 +1,4 @@
-import sys
+import subprocess
 # Importamos las librerias necesarias
 from PyQt5.QtCore import QThread, QObject, pyqtSignal, pyqtSlot
 import time
@@ -7,28 +7,30 @@ import time
 # Creamos la clase y heredamos de QThread
 class External(QObject):
     start = pyqtSignal(object)
-    finish = pyqtSignal(object)
-    error = pyqtSignal(object)
+    finish = pyqtSignal()
+    complete = pyqtSignal()
+    error = pyqtSignal()
     
-    def __init__(self, app: str):
+    def __init__(self, app):
         super(External, self).__init__()
         self.app = app
 
     @pyqtSlot()
     def run(self):
-        try:
-        	# Iniciamos la instalacion
-        	# Enviamos la señal
-            self.start.emit(self.app)
-            # comandos para instalar la app
-            print("Comenzando Instalacion de la aplicacion")
-            comando = 'apt install {}'.format(self.app)
-            print(comando)
-            #os.system(comando)
-            time.sleep(6)
-        except:
-            self.error.emit(self.app)
-            print("Algo a fallado")
-        finally:
-            self.finish.emit(self.app)
-            print("Proceso finalizado")
+        for elemento in self.app:
+            try:
+            	# Iniciamos la instalacion
+            	# Enviamos la señal
+                self.start.emit(elemento)
+                # comandos para instalar la app
+                comando = 'sudo apt install {}'.format(elemento)
+                print(comando)
+                subprocess.call(comando, shell=True)
+            except:
+                self.error.emit()
+                print("Algo a fallado")
+            finally:
+                self.finish.emit()
+                print("Proceso finalizado")
+        else:
+            self.complete.emit()

@@ -81,6 +81,7 @@ class Ui_MainWindow(object):
         self.btn_install = QtWidgets.QPushButton(self.widget)
         self.btn_install.setMinimumSize(QtCore.QSize(80, 0))
         self.btn_install.setMaximumSize(QtCore.QSize(80, 16777215))
+        self.btn_install.setEnabled(False)
         self.btn_install.setStyleSheet("#btn_install{\n"
 "padding: 2px;\n"
 "color: #000;\n"
@@ -282,4 +283,4 @@ class Ui_MainWindow(object):
         item.setText(_translate("MainWindow", "Otros"))
         self.listWidget.setSortingEnabled(__sortingEnabled)
         self.lineEdit.setPlaceholderText(_translate("MainWindow", "BUSQUEDA"))
-        self.label.setText(_translate("MainWindow", "Version: "))
+        self.label.setText(_translate("MainWindow", "Version: A.0.1"))
