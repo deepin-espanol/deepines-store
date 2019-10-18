@@ -47,15 +47,37 @@ class Ventana(QMainWindow):
         self.ui.lbl_list_apps.setText("Seleccione las aplicaciones a instalar")
         self.ui.btn_install.clicked.connect(self.ventana_install)
         self.ui.listWidget.itemClicked.connect(self.listwidgetclicked)
-        subprocess.call('sudo apt update', shell=True)
+        self.ui.lineEdit.textChanged.connect(self.search_app)
+        #subprocess.call('sudo apt update', shell=True)
+
+    ################################################
+    #              Busqueda de apps                #
+    def search_app(self):
+        text = self.ui.lineEdit.text()
+        lista_search = {}
+        contador = 0
+        if len(text) != 0 and len(text) > 2:
+            for elemento in lista_app:
+                if elemento[0].startswith(text):
+                    indice = lista_app.index(elemento)
+                    item = lista_app[indice]
+                    lista_search[contador] = item
+                    contador += 1
+            else:
+                self.Listar_Apps(lista_search)
+        else:
+            self.Listar_Apps(lista_inicio)
+            
+        
+
+    #              /Busqueda de apps               #
+    ################################################
 
     ################################################
     #                Filtro de apps                #
 
     def listwidgetclicked(self, item):
-        filtro = list()
-        for i in range(self.ui.gridLayout.count()):
-            self.ui.gridLayout.itemAt(i).widget().deleteLater()
+        filtro = list() # Limpiamos la lista
 
         if item.text() == "Inicio":
             self.Listar_Apps(lista_inicio)
@@ -164,15 +186,22 @@ class Ventana(QMainWindow):
 
     #           Listar aplicaciones              #
     def Listar_Apps(self, lista):
+        for i in range(self.ui.gridLayout.count()):
+            # Eliminamos los items de la grilla
+            self.ui.gridLayout.itemAt(i).widget().deleteLater()
 
-        y = 0
-        x = 0
-        for key in lista:
+        y = 0 # Creamos la coordenada y
+        x = 0 # Creamos la coordenada x 
+        # Estas para establecer la ubicacion de la tarjetas en la grilla
+        for key in lista: # Recorremos la lista con los elementos
+            # Consultamos si ya tenemos tres tarjetas en y
             if y % 3 == 0 and y != 0:
-                y = 0
-                x += 1
-            y += 1
+                y = 0 # Reiniciamos y
+                x += 1 # Agregamos otra columna
+            y += 1 # agregamos 1 a la coordenada y
+            # Creamos una instancia de la clase card
             carta = Card(lista[key][0], lista[key][1], lista[key][2], lista[key][4], self)
+            # Agregamos dicha instancia a la grilla
             self.ui.gridLayout.addWidget(carta, x, y, 1, 1)
 
     #                /Lista de apps                #
