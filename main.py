@@ -41,17 +41,17 @@ class Ventana(QMainWindow):
         inicio = self.Apps_inicio(lista_app)
         # Listamos las apps
         self.Listar_Apps(inicio)
-        # Probamos el mensaje
-        #self.messages("Bienvenido", "Cargando las aplicaciones", 1)
-        #self.trayIcon.showMessage("Bienvenido", "Cargando las aplicaciones", 1, 10000)
+
         self.ui.lbl_list_apps.setText("Seleccione las aplicaciones a instalar")
         self.ui.btn_install.clicked.connect(self.ventana_install)
         self.ui.listWidget.itemClicked.connect(self.listwidgetclicked)
         self.ui.lineEdit.textChanged.connect(self.search_app)
         #subprocess.call('sudo apt update', shell=True)
 
+
     ################################################
     #              Busqueda de apps                #
+
     def search_app(self):
         text = self.ui.lineEdit.text()
         lista_search = {}
@@ -67,9 +67,7 @@ class Ventana(QMainWindow):
                 self.Listar_Apps(lista_search)
         else:
             self.Listar_Apps(lista_inicio)
-            
-        
-
+    
     #              /Busqueda de apps               #
     ################################################
 

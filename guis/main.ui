@@ -130,42 +130,6 @@ color: white;</string>
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="btn_ver_app">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>80</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>80</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">#btn_ver_app{
-padding: 2px;
-color: #000;
-border-radius: 5px;
-border: 2px solid rgb(142, 231, 255);
-}
-#btn_ver_app:hover{
-padding: 2px;
-color:white;
-background-color: rgb(65, 159, 217);
-border-radius: 5px;
-}</string>
-           </property>
-           <property name="text">
-            <string>Detalle</string>
-           </property>
-          </widget>
-         </item>
-         <item>
           <widget class="QPushButton" name="btn_install">
            <property name="enabled">
             <bool>false</bool>

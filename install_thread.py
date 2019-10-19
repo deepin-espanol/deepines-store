@@ -24,8 +24,7 @@ class External(QObject):
                 self.start.emit(elemento)
                 # comandos para instalar la app
                 comando = 'sudo apt install {}'.format(elemento)
-                print(comando)
-                subprocess.call(comando, shell=True)
+#                subprocess.call(comando, shell=True)
             except:
                 self.error.emit()
                 print("Algo a fallado")

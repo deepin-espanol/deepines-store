@@ -7,12 +7,12 @@
 # WARNING! All changes made in this file will be lost!
 
 
-from PyQt5 import QtWidgets as W
+from PyQt5 import QtWidgets
 from PyQt5.QtCore import Qt, QThread
 from PyQt5.QtGui import QPixmap, QIcon
 from install_thread import External
 
-class Ui_Form(W.QWidget):
+class Ui_Form(QtWidgets.QWidget):
     def __init__(self, main, lista):
         super(Ui_Form, self).__init__()
         self.main = main
@@ -23,38 +23,47 @@ class Ui_Form(W.QWidget):
         icon.addPixmap(QPixmap("./resources/deepines_logo_beta.svg"), QIcon.Normal, QIcon.Off)
         self.setWindowIcon(icon)
         self.setWindowFlags(self.windowFlags() | Qt.FramelessWindowHint)
-        self.plainTextEdit = W.QPlainTextEdit(self)
+
+        self.gridLayout = QtWidgets.QGridLayout(self)
+        self.gridLayout.setObjectName("gridLayout")
+        self.boton_install = QtWidgets.QPushButton(self)
+        self.boton_install.setText("Instalar")
+        self.boton_install.setObjectName("boton_install")
+        self.gridLayout.addWidget(self.boton_install, 1, 0, 1, 1)
+        self.boton = QtWidgets.QPushButton(self)
+        self.boton.setObjectName("boton")
+        self.boton.setText("Cerrar")
+        self.gridLayout.addWidget(self.boton, 1, 1, 1, 1)
+        self.plainTextEdit = QtWidgets.QPlainTextEdit(self)
+        self.plainTextEdit.setObjectName("plainTextEdit")
+        self.gridLayout.addWidget(self.plainTextEdit, 0, 0, 1, 2)
         self.center()
 
-        # Layout principal
-        self.layoutPrincipal = W.QGridLayout()
-
-        self.setLayout(self.layoutPrincipal)
+        self.boton.clicked.connect(self.close)
+        self.boton_install.clicked.connect(self.instalar)
 
         # Line edit para mostrat texto
         self.plainTextEdit.setObjectName("plainTextEdit")
+        self.plainTextEdit.setReadOnly(True)
         count_apps = len(lista)
         if count_apps != 1:
             articulo = "aplicaciones"
         else:
             articulo = "aplicacion"
 
+        self.plainTextEdit.insertPlainText("Al comenzar la instalación, esta no"
+            " podra detenerse, si por algun motivo se cancela, puede producir un error"
+            " catastrofico y es muy probable que el computador explote."
+            " Esta seguro que desea instalar??\n\n")
         self.plainTextEdit.insertPlainText(
-            "Se comenzara la instalacion de {} {} \n".format(count_apps, articulo))
-        self.plainTextEdit.setReadOnly(True)
-        
+            "Se han seleccionado {} {} para instalar \n".format(count_apps, articulo))
+        for item in self.lista:
+            self.plainTextEdit.insertPlainText("{}\n".format(item))
 
-        self.boton = W.QPushButton("Cerrar")
-        self.boton.setEnabled(False)
-        self.boton.clicked.connect(self.close)
-
-        # Añadiendo widgets
-        self.layoutPrincipal.addWidget(self.plainTextEdit, 0, 0, 2, 5)
-        self.layoutPrincipal.addWidget(self.boton, 3, 2, 1, 3)
-
-        self.instalar()
 
     def instalar(self):
+        self.boton.setEnabled(False)
+        self.boton_install.setEnabled(False)
         self.obj = External(self.lista)
         self.thread = QThread()
         self.obj.start.connect(self.comenzar)
@@ -64,6 +73,7 @@ class Ui_Form(W.QWidget):
         self.thread.started.connect(self.obj.run)
         #thread.finished.connect(thread.quit())
         self.thread.start()
+
 
     def complete(self):
         self.main.setEnabled(True)
@@ -78,7 +88,7 @@ class Ui_Form(W.QWidget):
 
     def center(self):
         frameGm = self.frameGeometry()
-        screen = W.QApplication.desktop().screenNumber(W.QApplication.desktop().cursor().pos())
-        centerPoint = W.QApplication.desktop().screenGeometry(screen).center()
+        screen = QtWidgets.QApplication.desktop().screenNumber(QtWidgets.QApplication.desktop().cursor().pos())
+        centerPoint = QtWidgets.QApplication.desktop().screenGeometry(screen).center()
         frameGm.moveCenter(centerPoint)
         self.move(frameGm.topLeft())
