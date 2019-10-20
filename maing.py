@@ -28,14 +28,20 @@ class Ui_MainWindow(object):
         self.gridLayout_2.setSpacing(0)
         self.gridLayout_2.setObjectName("gridLayout_2")
         self.frame = QtWidgets.QScrollArea(self.centralwidget)
-        self.frame.setStyleSheet("background-color: rgba(30, 30, 30, 220);\n"
-"")
+        self.frame.setStyleSheet("background-color: rgba(30, 30, 30, 220);")
         self.frame.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
         self.frame.setWidgetResizable(True)
         self.frame.setAlignment(QtCore.Qt.AlignCenter)
         self.frame.setObjectName("frame")
         self.scrollAreaWidgetContents_2 = QtWidgets.QWidget()
         self.scrollAreaWidgetContents_2.setGeometry(QtCore.QRect(0, 0, 760, 458))
+        """        self.scrollAreaWidgetContents_2.setStyleSheet("#scrollAreaWidgetContents_2{"
+        "background-color: rgba(30, 30, 30, 220);\n"
+        "background-image: url(./resources/Logo-oficial2.png);\n"
+        "background-repeat: no-repeat;\n"
+        "background-position: 50px 150px;\n"
+        "position: absolute;\n"
+        "}")"""
         self.scrollAreaWidgetContents_2.setObjectName("scrollAreaWidgetContents_2")
         self.gridLayout = QtWidgets.QGridLayout(self.scrollAreaWidgetContents_2)
         self.gridLayout.setObjectName("gridLayout")
@@ -44,7 +50,7 @@ class Ui_MainWindow(object):
         self.widget = QtWidgets.QWidget(self.centralwidget)
         self.widget.setMinimumSize(QtCore.QSize(0, 40))
         self.widget.setMaximumSize(QtCore.QSize(16777215, 40))
-        self.widget.setStyleSheet("background-color: rgba(16, 16, 16, 180);")
+        self.widget.setStyleSheet("background-color: rgba(16, 16, 16, 220);")
         self.widget.setObjectName("widget")
         self.gridLayout_4 = QtWidgets.QGridLayout(self.widget)
         self.gridLayout_4.setContentsMargins(0, 0, 0, 0)
@@ -85,7 +91,7 @@ class Ui_MainWindow(object):
         self.frame_2 = QtWidgets.QFrame(self.centralwidget)
         self.frame_2.setMinimumSize(QtCore.QSize(183, 0))
         self.frame_2.setMaximumSize(QtCore.QSize(183, 16777215))
-        self.frame_2.setStyleSheet("background-color: rgba(16, 16, 16, 180);")
+        self.frame_2.setStyleSheet("background-color: rgba(16, 16, 16, 220);")
         self.frame_2.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame_2.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame_2.setObjectName("frame_2")

@@ -287,7 +287,6 @@ class Card(QFrame):
         self.cd.setupUi(self)
         # Establecemos los atributos de la app
         self.cd.btn_select_app.setText("Seleccionar")
-        print(version)
         self.cd.btn_select_app.setToolTip(version)
         self.cd.lbl_name_app.setText(titulo)
         self.cd.image_app.setToolTip(descripcion)
