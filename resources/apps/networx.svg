@@ -41,46 +41,14 @@
      id="namedview40"
      showgrid="false"
      inkscape:zoom="2.4583333"
-     inkscape:cx="114.42346"
-     inkscape:cy="66.554336"
+     inkscape:cx="130.5739"
+     inkscape:cy="88.482108"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
      inkscape:current-layer="svg38" />
   <defs
      id="defs22">
-    <linearGradient
-       id="linearGradient5261"
-       x1="1"
-       x2="47"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="rotate(-90,-23.16052,52.185941)">
-      <stop
-         stop-color="#f7402d"
-         stop-opacity="1"
-         id="stop5257" />
-      <stop
-         offset="1"
-         stop-color="#f8523f"
-         stop-opacity="1"
-         id="stop5259" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient5255"
-       x1="1"
-       x2="47"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="rotate(-90,-23.16052,52.185941)">
-      <stop
-         stop-color="#f7402d"
-         stop-opacity="1"
-         id="stop5251" />
-      <stop
-         offset="1"
-         stop-color="#f8523f"
-         stop-opacity="1"
-         id="stop5253" />
-    </linearGradient>
     <linearGradient
        id="linearGradient4488">
       <stop
@@ -3236,55 +3204,13 @@
          id="stop9-127" />
     </linearGradient>
     <linearGradient
-       gradientTransform="rotate(-90,-23.16052,52.185941)"
-       gradientUnits="userSpaceOnUse"
-       x2="47"
-       x1="1"
-       id="linearGradient3764-36753">
-      <stop
-         id="stop5140"
-         stop-opacity="1"
-         stop-color="#f7402d" />
-      <stop
-         id="stop5142"
-         stop-opacity="1"
-         stop-color="#f8523f"
-         offset="1" />
-    </linearGradient>
-    <clipPath
-       id="clipPath-711258998">
-      <g
-         id="g5147"
-         transform="translate(0,-1004.3622)">
-        <path
-           id="path5145"
-           fill="#1890d0"
-           transform="matrix(15.333333,0,0,11.5,414.99999,878.8622)"
-           d="m -24 13 c 0 1.105 -0.672 2 -1.5 2 -0.828 0 -1.5 -0.895 -1.5 -2 0 -1.105 0.672 -2 1.5 -2 0.828 0 1.5 0.895 1.5 2 z" />
-      </g>
-    </clipPath>
-    <clipPath
-       id="clipPath-721932823">
-      <g
-         id="g5152"
-         transform="translate(0,-1004.3622)">
-        <path
-           id="path5150"
-           fill="#1890d0"
-           transform="matrix(15.333333,0,0,11.5,414.99999,878.8622)"
-           d="m -24 13 c 0 1.105 -0.672 2 -1.5 2 -0.828 0 -1.5 -0.895 -1.5 -2 0 -1.105 0.672 -2 1.5 -2 0.828 0 1.5 0.895 1.5 2 z" />
-      </g>
-    </clipPath>
-    <radialGradient
        inkscape:collect="always"
-       xlink:href="#linearGradient5261"
-       id="radialGradient5271"
-       cx="90.136406"
-       cy="64.761543"
-       fx="90.136406"
-       fy="64.761543"
-       r="91.591759"
-       gradientTransform="matrix(1,0,0,0.72446987,0,17.843756)"
+       xlink:href="#linearGradient3764-6-2"
+       id="linearGradient5196"
+       x1="-1.4553522"
+       y1="64.761543"
+       x2="181.72816"
+       y2="64.761543"
        gradientUnits="userSpaceOnUse" />
   </defs>
   <style
@@ -3308,7 +3234,7 @@
      id="g642"
      transform="translate(-61.460312,76.592515)" />
   <rect
-     style="fill:url(#radialGradient5271);fill-opacity:1;stroke:#ffffff;stroke-width:1.02170324;stroke-opacity:1"
+     style="fill:url(#linearGradient5196);fill-opacity:1.0;stroke:#ffffff;stroke-width:1.02170324;stroke-opacity:1"
      id="rect470"
      width="182.16182"
      height="131.68924"
@@ -3335,39 +3261,28 @@
      id="g642-1"
      transform="translate(4.791146,35.138822)" />
   <g
-     id="g5169"
-     transform="translate(-75.346459,-18.974578)" />
-  <g
-     id="g5283"
-     transform="matrix(0.95923262,0,0,0.99012863,7.3461784,4.6527877)">
-    <g
-       transform="matrix(2.9514542,0,0,2.3596355,16.11521,-4.0963552)"
-       id="g5189">
-      <g
-         id="g5187"
-         clip-path="url(#clipPath-721932823)">
-        <!-- color: #f8523f -->
-        <g
-           id="g5185">
-          <path
-             id="path5183"
-             d="m 23,10 -3,7 -10,-1 5.996,6 -7,4 8,1 -5.996,8 9,-3 0.996,6 5,-5 8,5 -3,-9 8,-1 -7,-4 5,-2 -4,-1.996 5,-9 -11,4.996 m -4.465,1 h 2.938 C 25.762,17 26,17.238 26,17.531 v 7.938 C 26,25.762 25.762,26 25.469,26 H 22.531 C 22.238,26 22,25.762 22,25.469 V 17.531 C 22,17.238 22.238,17 22.531,17 m 0,10 h 2.938 C 25.762,27 26,27.238 26,27.531 v 2.938 C 26,30.762 25.762,31 25.469,31 H 22.531 C 22.238,31 22,30.762 22,30.469 V 27.531 C 22,27.238 22.238,27 22.531,27 m 0,0"
-             inkscape:connector-curvature="0"
-             style="fill:#f9f9f9;fill-opacity:1;fill-rule:nonzero;stroke:none" />
-        </g>
-      </g>
-    </g>
-    <text
-       transform="scale(0.91617291,1.091497)"
-       id="text5275"
-       y="93.213211"
-       x="44.446461"
-       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:16.33421707px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.40835541"
-       xml:space="preserve"><tspan
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';fill:#ffffff;stroke-width:0.40835541"
-         y="93.213211"
-         x="44.446461"
-         id="tspan5273"
-         sodipodi:role="line">SIN IMAGEN</tspan></text>
+     id="g5188"
+     transform="matrix(0.77173252,0,0,0.54015641,145.0689,29.916875)">
+    <rect
+       y="20.576269"
+       x="-50.440678"
+       height="104.54237"
+       width="41.491528"
+       id="rect5151"
+       style="opacity:0.95999995;fill:#ffff00;fill-opacity:0.95686275;stroke:#000000;stroke-width:0.26100001;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <rect
+       y="3.8983049"
+       x="-91.932205"
+       height="121.22034"
+       width="41.491528"
+       id="rect5151-3"
+       style="opacity:0.95999995;fill:#ff0000;fill-opacity:0.95686275;stroke:#120082;stroke-width:0.28099999;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <rect
+       y="42.091923"
+       x="-133.42651"
+       height="83.029488"
+       width="41.497078"
+       id="rect5151-6"
+       style="opacity:0.95999995;fill:#00ff00;fill-opacity:0.95686275;stroke:#120082;stroke-width:0.23261599;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
   </g>
 </svg>

@@ -16,7 +16,7 @@ class Ui_MainWindow(object):
         MainWindow.resize(959, 500)
         MainWindow.setMinimumSize(QtCore.QSize(700, 500))
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("../resources/deepines_logo_beta.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap("./resources/deepines_logo_beta.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         MainWindow.setWindowIcon(icon)
         MainWindow.setStyleSheet("#MainWindow{\n"
 "background-color: #fff;\n"
@@ -28,7 +28,8 @@ class Ui_MainWindow(object):
         self.gridLayout_2.setSpacing(0)
         self.gridLayout_2.setObjectName("gridLayout_2")
         self.frame = QtWidgets.QScrollArea(self.centralwidget)
-        self.frame.setStyleSheet("background-color: rgba(49, 99, 149, 120);")
+        self.frame.setStyleSheet("background-color: rgba(30, 30, 30, 220);\n"
+"")
         self.frame.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
         self.frame.setWidgetResizable(True)
         self.frame.setAlignment(QtCore.Qt.AlignCenter)
@@ -43,7 +44,7 @@ class Ui_MainWindow(object):
         self.widget = QtWidgets.QWidget(self.centralwidget)
         self.widget.setMinimumSize(QtCore.QSize(0, 40))
         self.widget.setMaximumSize(QtCore.QSize(16777215, 40))
-        self.widget.setStyleSheet("background-color: rgba(49, 99, 149, 200);")
+        self.widget.setStyleSheet("background-color: rgba(16, 16, 16, 180);")
         self.widget.setObjectName("widget")
         self.gridLayout_4 = QtWidgets.QGridLayout(self.widget)
         self.gridLayout_4.setContentsMargins(0, 0, 0, 0)
@@ -61,19 +62,20 @@ class Ui_MainWindow(object):
         self.lbl_list_apps.setObjectName("lbl_list_apps")
         self.horizontalLayout_3.addWidget(self.lbl_list_apps)
         self.btn_install = QtWidgets.QPushButton(self.widget)
-        self.btn_install.setEnabled(False)
         self.btn_install.setMinimumSize(QtCore.QSize(80, 0))
         self.btn_install.setMaximumSize(QtCore.QSize(80, 16777215))
         self.btn_install.setStyleSheet("#btn_install{\n"
+"color: #fff;\n"
 "padding: 2px;\n"
-"color: #000;\n"
 "border-radius: 5px;\n"
-"border: 2px solid rgb(142, 231, 255);\n"
+"background-color: rgb(45, 45, 45);\n"
+"border: 2px solid rgb(45, 45, 45);\n"
 "}\n"
 "#btn_install:hover{\n"
 "padding: 2px;\n"
 "color:white;\n"
 "background-color: rgb(65, 159, 217);\n"
+"border: 1px solid rgb(142, 231, 255);\n"
 "border-radius: 5px;\n"
 "}")
         self.btn_install.setObjectName("btn_install")
@@ -83,7 +85,7 @@ class Ui_MainWindow(object):
         self.frame_2 = QtWidgets.QFrame(self.centralwidget)
         self.frame_2.setMinimumSize(QtCore.QSize(183, 0))
         self.frame_2.setMaximumSize(QtCore.QSize(183, 16777215))
-        self.frame_2.setStyleSheet("background-color: rgba(49, 99, 149, 160);")
+        self.frame_2.setStyleSheet("background-color: rgba(16, 16, 16, 180);")
         self.frame_2.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame_2.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame_2.setObjectName("frame_2")
@@ -97,7 +99,7 @@ class Ui_MainWindow(object):
 "  padding-top:10px;\n"
 "  padding-bottom:10px;\n"
 "  border-radius: 10px;\n"
-"  background-color: rgba(49, 99, 149, 120);\n"
+"  background-color: rgba(16, 16, 16, 163);\n"
 "}\n"
 "#listWidget:item{\n"
 "  padding: 5px 5px 5px 5px;\n"
@@ -114,67 +116,67 @@ class Ui_MainWindow(object):
         self.listWidget.setObjectName("listWidget")
         item = QtWidgets.QListWidgetItem()
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap("../resources/star.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon1.addPixmap(QtGui.QPixmap("./resources/star.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         item.setIcon(icon1)
         item.setFlags(QtCore.Qt.ItemIsSelectable|QtCore.Qt.ItemIsUserCheckable|QtCore.Qt.ItemIsEnabled)
         self.listWidget.addItem(item)
         item = QtWidgets.QListWidgetItem()
         icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap("../resources/internet.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon2.addPixmap(QtGui.QPixmap("./resources/internet.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         item.setIcon(icon2)
         item.setFlags(QtCore.Qt.ItemIsSelectable|QtCore.Qt.ItemIsUserCheckable|QtCore.Qt.ItemIsEnabled)
         self.listWidget.addItem(item)
         item = QtWidgets.QListWidgetItem()
         icon3 = QtGui.QIcon()
-        icon3.addPixmap(QtGui.QPixmap("../resources/chat.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon3.addPixmap(QtGui.QPixmap("./resources/chat.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         item.setIcon(icon3)
         item.setFlags(QtCore.Qt.ItemIsSelectable|QtCore.Qt.ItemIsUserCheckable|QtCore.Qt.ItemIsEnabled)
         self.listWidget.addItem(item)
         item = QtWidgets.QListWidgetItem()
         icon4 = QtGui.QIcon()
-        icon4.addPixmap(QtGui.QPixmap("../resources/music.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon4.addPixmap(QtGui.QPixmap("./resources/music.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         item.setIcon(icon4)
         item.setFlags(QtCore.Qt.ItemIsSelectable|QtCore.Qt.ItemIsUserCheckable|QtCore.Qt.ItemIsEnabled)
         self.listWidget.addItem(item)
         item = QtWidgets.QListWidgetItem()
         icon5 = QtGui.QIcon()
-        icon5.addPixmap(QtGui.QPixmap("../resources/video-player.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon5.addPixmap(QtGui.QPixmap("./resources/video-player.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         item.setIcon(icon5)
         item.setFlags(QtCore.Qt.ItemIsSelectable|QtCore.Qt.ItemIsUserCheckable|QtCore.Qt.ItemIsEnabled)
         self.listWidget.addItem(item)
         item = QtWidgets.QListWidgetItem()
         icon6 = QtGui.QIcon()
-        icon6.addPixmap(QtGui.QPixmap("../resources/picture.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon6.addPixmap(QtGui.QPixmap("./resources/picture.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         item.setIcon(icon6)
         item.setFlags(QtCore.Qt.ItemIsSelectable|QtCore.Qt.ItemIsUserCheckable|QtCore.Qt.ItemIsEnabled)
         self.listWidget.addItem(item)
         item = QtWidgets.QListWidgetItem()
         icon7 = QtGui.QIcon()
-        icon7.addPixmap(QtGui.QPixmap("../resources/console.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon7.addPixmap(QtGui.QPixmap("./resources/console.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         item.setIcon(icon7)
         item.setFlags(QtCore.Qt.ItemIsSelectable|QtCore.Qt.ItemIsUserCheckable|QtCore.Qt.ItemIsEnabled)
         self.listWidget.addItem(item)
         item = QtWidgets.QListWidgetItem()
         icon8 = QtGui.QIcon()
-        icon8.addPixmap(QtGui.QPixmap("../resources/board.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon8.addPixmap(QtGui.QPixmap("./resources/board.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         item.setIcon(icon8)
         item.setFlags(QtCore.Qt.ItemIsSelectable|QtCore.Qt.ItemIsUserCheckable|QtCore.Qt.ItemIsEnabled)
         self.listWidget.addItem(item)
         item = QtWidgets.QListWidgetItem()
         icon9 = QtGui.QIcon()
-        icon9.addPixmap(QtGui.QPixmap("../resources/terminal.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon9.addPixmap(QtGui.QPixmap("./resources/terminal.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         item.setIcon(icon9)
         item.setFlags(QtCore.Qt.ItemIsSelectable|QtCore.Qt.ItemIsUserCheckable|QtCore.Qt.ItemIsEnabled)
         self.listWidget.addItem(item)
         item = QtWidgets.QListWidgetItem()
         icon10 = QtGui.QIcon()
-        icon10.addPixmap(QtGui.QPixmap("../resources/computer.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon10.addPixmap(QtGui.QPixmap("./resources/computer.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         item.setIcon(icon10)
         item.setFlags(QtCore.Qt.ItemIsSelectable|QtCore.Qt.ItemIsUserCheckable|QtCore.Qt.ItemIsEnabled)
         self.listWidget.addItem(item)
         item = QtWidgets.QListWidgetItem()
         icon11 = QtGui.QIcon()
-        icon11.addPixmap(QtGui.QPixmap("../resources/pamela.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon11.addPixmap(QtGui.QPixmap("./resources/pamela.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         item.setIcon(icon11)
         item.setFlags(QtCore.Qt.ItemIsSelectable|QtCore.Qt.ItemIsUserCheckable|QtCore.Qt.ItemIsEnabled)
         self.listWidget.addItem(item)
@@ -183,7 +185,7 @@ class Ui_MainWindow(object):
         self.frame_4.setMinimumSize(QtCore.QSize(0, 30))
         self.frame_4.setMaximumSize(QtCore.QSize(16777215, 30))
         self.frame_4.setStyleSheet("border-radius: 10px;\n"
-"background-color: rgba(49, 99, 149, 120);\n"
+"background-color: rgba(16, 16, 16, 122);\n"
 "color: white;")
         self.frame_4.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame_4.setFrameShadow(QtWidgets.QFrame.Raised)
@@ -205,7 +207,7 @@ class Ui_MainWindow(object):
 "border: 0px solid;")
         self.pushButton.setText("")
         icon12 = QtGui.QIcon()
-        icon12.addPixmap(QtGui.QPixmap("../resources/magnifying-glass.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon12.addPixmap(QtGui.QPixmap("./resources/magnifying-glass.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.pushButton.setIcon(icon12)
         self.pushButton.setIconSize(QtCore.QSize(13, 13))
         self.pushButton.setObjectName("pushButton")
@@ -235,7 +237,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "Deepines"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Deepines Store"))
         self.lbl_list_apps.setText(_translate("MainWindow", "TextLabel"))
         self.btn_install.setText(_translate("MainWindow", "Instalar"))
         __sortingEnabled = self.listWidget.isSortingEnabled()
@@ -264,4 +266,4 @@ class Ui_MainWindow(object):
         item.setText(_translate("MainWindow", "Otros"))
         self.listWidget.setSortingEnabled(__sortingEnabled)
         self.lineEdit.setPlaceholderText(_translate("MainWindow", "BUSQUEDA"))
-        self.label.setText(_translate("MainWindow", "Version: "))
+        self.label.setText(_translate("MainWindow", "Version: A.0.191020"))

@@ -33,8 +33,8 @@ class Ui_Frame(object):
         self.image_app.setMinimumSize(QtCore.QSize(208, 158))
         self.image_app.setMaximumSize(QtCore.QSize(208, 158))
         self.image_app.setStyleSheet("#image_app{\n"
-"  background-color: rgba(49, 99, 149);\n"
-"  border: 10px outset rgba(49, 99, 149);\n"
+"  background-color: rgb(45, 45, 45);\n"
+"  border: 10px outset rgb(45, 45, 45);\n"
 "}")
         self.image_app.setText("")
         self.image_app.setScaledContents(False)
@@ -61,11 +61,12 @@ class Ui_Frame(object):
         self.btn_select_app.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.btn_select_app.setStyleSheet("#btn_select_app{\n"
 "padding: 7px;\n"
-"color: #000;\n"
+"color: white;\n"
 "border-radius: 5px;\n"
-"border: 2px solid rgb(142, 231, 255);\n"
+"    background-color: rgb(45, 45, 45);\n"
 "}\n"
 "#btn_select_app:hover{\n"
+"border: 1px solid rgb(142, 231, 255);\n"
 "padding: 7px;\n"
 "color:white;\n"
 "background-color: rgb(65, 159, 217);\n"

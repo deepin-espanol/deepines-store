@@ -9,6 +9,7 @@ class External(QObject):
     start = pyqtSignal(object)
     finish = pyqtSignal()
     complete = pyqtSignal()
+    update = pyqtSignal()
     error = pyqtSignal()
     
     def __init__(self, app):
@@ -17,19 +18,19 @@ class External(QObject):
 
     @pyqtSlot()
     def run(self):
+        self.update.emit()
+        subprocess.call('sudo apt update', shell=True)
         for elemento in self.app:
             try:
             	# Iniciamos la instalacion
             	# Enviamos la señal
                 self.start.emit(elemento)
                 # comandos para instalar la app
-                comando = 'sudo apt install {}'.format(elemento)
-#                subprocess.call(comando, shell=True)
+                comando = 'sudo apt install {} -y'.format(elemento)
+                subprocess.run(comando, shell=True)
             except:
                 self.error.emit()
-                print("Algo a fallado")
             finally:
                 self.finish.emit()
-                print("Proceso finalizado")
         else:
             self.complete.emit()

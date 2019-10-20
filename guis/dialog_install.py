@@ -23,6 +23,9 @@ class Ui_Form(object):
         self.boton.setObjectName("boton")
         self.gridLayout.addWidget(self.boton, 1, 1, 1, 1)
         self.plainTextEdit = QtWidgets.QPlainTextEdit(Form)
+        self.plainTextEdit.setReadOnly(True)
+        self.plainTextEdit.setTextInteractionFlags(QtCore.Qt.NoTextInteraction)
+        self.plainTextEdit.setCenterOnScroll(True)
         self.plainTextEdit.setObjectName("plainTextEdit")
         self.gridLayout.addWidget(self.plainTextEdit, 0, 0, 1, 2)
 

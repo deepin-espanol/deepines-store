@@ -1,6 +1,7 @@
 import sys
 import os
 # Modulos de pyqt5
+from PyQt5 import Qt
 from PyQt5.QtCore import QThread
 from PyQt5.QtWidgets import (QMainWindow, QApplication, QFrame, QSystemTrayIcon,
                             QAction, QMenu, QGraphicsBlurEffect, QApplication)
@@ -11,8 +12,6 @@ import urllib.request
 import requests
 # Para obtener applicacion random
 import random
-# Para realizar un update
-import subprocess
 # Guis o modulos locales
 from maing import Ui_MainWindow
 from cardg import Ui_Frame
@@ -30,7 +29,7 @@ class Ventana(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.center()
-
+        self.setAttribute(Qt.Qt.WA_TranslucentBackground, True )
         # Variables globales
         global lista_app
         global selected_apps
@@ -46,7 +45,6 @@ class Ventana(QMainWindow):
         self.ui.btn_install.clicked.connect(self.ventana_install)
         self.ui.listWidget.itemClicked.connect(self.listwidgetclicked)
         self.ui.lineEdit.textChanged.connect(self.search_app)
-        #subprocess.call('sudo apt update', shell=True)
 
 
     ################################################
@@ -84,8 +82,10 @@ class Ventana(QMainWindow):
             filtro.append("web")
         elif item.text() == "Mensajeria":
             filtro.append("net")
+            filtro.append("mail")
         elif item.text() == "Música":
             filtro.append("sound")
+            filtro.append("audio")
         elif item.text() == "Gráficos":
             filtro.append("graphics")
             filtro.append("Media")
@@ -102,13 +102,22 @@ class Ventana(QMainWindow):
             filtro.append("shells")
         elif item.text() == "Sistema":
             filtro.append("admin")
+            filtro.append("python")
         elif item.text() == "Otros":
+            filtro.append("base")
+            filtro.append("default")
+            filtro.append("fonts")
+            filtro.append("gnome")
+            filtro.append("interpreters")
+            filtro.append("libs")
+            filtro.append("misc")
+            filtro.append("non-free")
             filtro.append("other")
             filtro.append("science")
+            filtro.append("Tools")
+            filtro.append("utils")
+            filtro.append("universe")
             filtro.append("x11")
-            filtro.append("base")
-            filtro.append("gnome")
-            filtro.append("default")
 
         if "inicio" not in filtro:
             lista = self.Get_App_Filter(lista_app, filtro)
@@ -122,8 +131,23 @@ class Ventana(QMainWindow):
 
     #           Obtener lista de apps              #
     def Get_App(self):
+        lista_excluir = ['libobasis6.2-base','libobasis6.2-calc','libobasis6.2-core',
+        'libobasis6.2-draw','libobasis6.2-en-us','libobasis6.2-extension-beanshell-script-provider',
+        'libobasis6.2-extension-javascript-script-provider','libobasis6.2-extension-mediawiki-publisher',
+        'libobasis6.2-extension-nlpsolver','libobasis6.2-extension-pdf-import','libobasis6.2-extension-report-builder',
+        'libobasis6.2-firebird','libobasis6.2-gnome-integration','libobasis6.2-graphicfilter',
+        'libobasis6.2-images','libobasis6.2-impress','libobasis6.2-kde-integration',
+        'libobasis6.2-librelogo','libobasis6.2-libreofficekit-data','libobasis6.2-math','libobasis6.2-ogltrans',
+        'libobasis6.2-onlineupdate','libobasis6.2-ooofonts','libobasis6.2-ooolinguistic','libobasis6.2-postgresql-sdbc',
+        'libobasis6.2-python-script-provider','libobasis6.2-pyuno','libobasis6.2-writer','libobasis6.2-xsltfilter',
+        'libreoffice6.2','libreoffice6.2-base','libreoffice6.2-debian-menus','libreoffice6.2-dict-en',
+        'libreoffice6.2-dict-es','libreoffice6.2-dict-fr','libreoffice6.2-draw','libreoffice6.2-en-us',
+        'libreoffice6.2-impress','libreoffice6.2-math','libreoffice6.2-ure','libreoffice6.2-writer',
+        'libreoffice6.2-calc','radeon-profile-daemon','gtkdialog','libssl1.0.0','libsystemback',
+        'systemback-cli','systemback-efiboot-amd64','systemback-locales','systemback-scheduler']
         # Asignamos la url
-        URL = "http://deepin.mooo.com:8082/deepines/paquetes.html"
+        #URL = "http://deepin.mooo.com:8082/deepines/paquetes.html"
+        URL = "http://vps.deepines.com:8080/deepines/paquetes.html"
 
         # Realizamos la petición a la web
         req = requests.get(URL)
@@ -149,10 +173,11 @@ class Ventana(QMainWindow):
                 version = entrada.find('td', {'class': 'version'}).getText()
                 categoria = entrada.find('td', {'class': 'section'}).getText()
                 estado = 1
-                lista_origen = [titulo, descripcion, version, categoria, estado]
-                lista.append(lista_origen)
+                if titulo not in lista_excluir:
+                    lista_origen = [titulo, descripcion, version, categoria, estado]
+                    lista.append(lista_origen)
                 
-                total_apps += 1
+                    total_apps += 1
             return lista
         else:
             print("Status Code %d" % status_code)
@@ -173,14 +198,22 @@ class Ventana(QMainWindow):
     def Apps_inicio(self, lista_app):
         global total_apps, lista_inicio
         lista_inicio = {}
-        for z in range(12):
-            key = random.randint(0, (total_apps-1))
-            if key not in lista_inicio:
-                lista_inicio[z] = lista_app[key]
+        lista_key = []
+        contador = True
+        while contador:
+            if len(lista_key) == 12:
+                contador = False
             else:
-                z -= 1
-        return lista_inicio   
+                key = random.randint(0, (total_apps-1))
+                if key not in lista_key:
+                    lista_key.append(key)
 
+        contador = 0
+        for key in lista_key:
+            lista_inicio[contador] = lista_app[key]
+            contador += 1
+
+        return lista_inicio   
 
     #           Listar aplicaciones              #
     def Listar_Apps(self, lista):
@@ -254,6 +287,7 @@ class Card(QFrame):
         self.cd.setupUi(self)
         # Establecemos los atributos de la app
         self.cd.btn_select_app.setText("Seleccionar")
+        print(version)
         self.cd.btn_select_app.setToolTip(version)
         self.cd.lbl_name_app.setText(titulo)
         self.cd.image_app.setToolTip(descripcion)
@@ -309,19 +343,19 @@ class Card(QFrame):
             
         else: # App no seleccionada
             self.cd.btn_select_app.setText("Selecionar")
-            self.cd.btn_select_app.setStyleSheet(""
-                "padding: 7px;"
-                "color: #000;"
-                "border-radius: 5px;"
-                "border: 2px solid rgb(142, 231, 255);"
-                "}"
-                "#btn_select_app:hover{"
-                "padding: 7px;"
-                "color:white;"
-                "background-color: rgb(65, 159, 217);"
-                "border-radius: 5px;"
-                "}"
-                "")
+            self.cd.btn_select_app.setStyleSheet("#btn_select_app{\n"
+                "padding: 7px;\n"
+                "color: white;\n"
+                "border-radius: 5px;\n"
+                "    background-color: rgb(45, 45, 45);\n"
+                "}\n"
+                "#btn_select_app:hover{\n"
+                "border: 1px solid rgb(142, 231, 255);\n"
+                "padding: 7px;\n"
+                "color:white;\n"
+                "background-color: rgb(65, 159, 217);\n"
+                "border-radius: 5px;\n"
+                "}")
             
 #           /Card para la aplicacion           #
 ################################################
