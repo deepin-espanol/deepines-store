@@ -4,7 +4,8 @@ import os
 # Modulos de pyqt5
 from PyQt5.Qt import Qt
 from PyQt5.QtCore import QThread, Qt as QtCore
-from PyQt5.QtWidgets import (QMainWindow, QApplication, QFrame, QLabel)
+from PyQt5.QtWidgets import (QMainWindow, QApplication, QFrame, QLabel,
+        QSizePolicy,)
 from PyQt5.QtGui import QPixmap, QIcon, QFont
 # Modulos para el scraping
 from bs4 import BeautifulSoup
@@ -13,6 +14,8 @@ from requests import get
 from random import randint
 # Obtener ruta variable de las imgs
 from os.path import join, abspath, dirname
+# Get username
+import getpass
 # Guis o modulos locales
 from maing import Ui_MainWindow
 from cardg import Ui_Frame
@@ -31,22 +34,38 @@ class Ventana(QMainWindow):
         self.ui.setupUi(self)
         self.center()
         self.setAttribute(Qt.WA_TranslucentBackground, True )
-        # Variables globales
-        global lista_app
-        global selected_apps
-        selected_apps = list()
-        # Almacenamos la lista, para cargarla solo al inicio
-        lista_app = self.Get_App()
-        if lista_app:
-            # Obtenemos aplicaciones para la lista de apps
-            inicio = self.Apps_inicio(lista_app)
-            # Listamos las apps
-            self.Listar_Apps(inicio)
+        user = self.user_is_mauro()
+        if user == 'mauro':
+            self.error("Hola Jorge, le informo que su computador ha sido infectado<br>"
+                "por favor mantenga la calma y siga las instrucciones.<br>"
+                "Hemos infectados los archivos con un encriptador bla bla bla bla",
+                "", "")
         else:
-            self.ui.frame_2.setEnabled(False)
-            self.error("No se ha podido establecer conexion con el servidor\n"
-                "por favor intentelo nuevamente, si el problema persiste\n"
-                "no dude en contactarnos por telegram en @deepinenespanol")
+            if self.repo_is_exist():
+                # Variables globales
+                global lista_app
+                global selected_apps
+                selected_apps = list()
+                # Almacenamos la lista, para cargarla solo al inicio
+                lista_app = self.Get_App()
+                if lista_app:
+                    # Obtenemos aplicaciones para la lista de apps
+                    inicio = self.Apps_inicio(lista_app)
+                    # Listamos las apps
+                    self.Listar_Apps(inicio)
+                else:
+                    
+                    self.error("No se ha podido establecer conexion con el servidor<br>"
+                        "por favor intentelo nuevamente, si el problema persiste<br>"
+                        "contactenos en @deepinenespanol en Telegram.<br><br>", 
+                        "https://deepinenespañol.org",
+                        "Visita Deepin en español para mas información.")
+            else:
+                self.error("El repositorio de aplicaciones de Deepin en español<br>"
+                    "no esta instalado en su sistema, utilize el siguiente enlace<br>"
+                    "para realizar instalacion y poder utilizar la Deepines Store.<br><br>",
+                    "https://deepinenespañol.org/repositorio/", 
+                    "Visita Deepin en español para mas información.")
 
         self.ui.lbl_list_apps.setText("Seleccione las aplicaciones a instalar")
         self.ui.btn_install.clicked.connect(self.ventana_install)
@@ -54,16 +73,49 @@ class Ventana(QMainWindow):
         self.ui.lineEdit.textChanged.connect(self.search_app)
 
     ################################################
+    #            get username for joke             #
+
+    def user_is_mauro(self):
+        user = getpass.getuser()
+        return user
+    
+    #           /get username for joke             #
+    ################################################
+
+    ################################################
+    #               Repo en sistema                #
+
+    def repo_is_exist(self):
+        if os.path.exists("/etc/apt/sources.list.d/deepines.list"):
+            return True
+        else:
+            False
+    
+    #               /Repo en sistema               #
+    ################################################
+
+    ################################################
     #             Control de errores               #
 
-    def error(self, text: str):
+    def error(self, text: str, enlace: str, referencia: str):
+        self.ui.frame_2.setEnabled(False)
         self.label_error = QLabel(self)
+        sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.label_error.sizePolicy().hasHeightForWidth())
+        self.label_error.setSizePolicy(sizePolicy)
         font = QFont()
         font.setPointSize(16)
+        self.text = ("<html><head/><body><p\">{}<a href=\"{}\"><span style=\" text-decoration: underline;"
+            "color:#419fd9;\">{}</span></a></p></body></html>".format(text, enlace, referencia))
         self.label_error.setFont(font)
-        self.label_error.setText(text)
+        self.label_error.setScaledContents(True)
+        self.label_error.setOpenExternalLinks(True)
+        self.label_error.setText(self.text)
         self.label_error.setStyleSheet("background-color: transparent;\n"
         "color: white;")
+        self.label_error.setEnabled(True)
         self.label_error.setAlignment(QtCore.AlignCenter)
         self.label_error.setObjectName("label_error")
         self.ui.gridLayout.addWidget(self.label_error, 1, 1, 1, 1)
@@ -171,8 +223,8 @@ class Ventana(QMainWindow):
             'libreoffice6.2-calc','radeon-profile-daemon','gtkdialog','libssl1.0.0','libsystemback',
             'systemback-cli','systemback-efiboot-amd64','systemback-locales','systemback-scheduler']
         # Asignamos la url
-        #URL = "http://deepin.mooo.com:8082/deepines/paquetes.html"
-        URL = "http://vps.deepines.com:8080/deepines/paquetes.html"
+        URL = "http://deepin.mooo.com:8082/deepines/paquetes.html"
+        #URL = "http://vps.deepines.com:8080/deepines/paquetes.html"
         try:
             # Realizamos la petición a la web
             req = get(URL, timeout=10)
