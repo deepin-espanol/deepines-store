@@ -1,17 +1,18 @@
+# -*- coding: utf-8 -*-
 import sys
 import os
 # Modulos de pyqt5
-from PyQt5 import Qt
-from PyQt5.QtCore import QThread
-from PyQt5.QtWidgets import (QMainWindow, QApplication, QFrame, QSystemTrayIcon,
-                            QAction, QMenu, QGraphicsBlurEffect, QApplication)
-from PyQt5.QtGui import QPixmap, QIcon
+from PyQt5.Qt import Qt
+from PyQt5.QtCore import QThread, Qt as QtCore
+from PyQt5.QtWidgets import (QMainWindow, QApplication, QFrame, QLabel)
+from PyQt5.QtGui import QPixmap, QIcon, QFont
 # Modulos para el scraping
 from bs4 import BeautifulSoup
-import urllib.request
-import requests
+from requests import get
 # Para obtener applicacion random
-import random
+from random import randint
+# Obtener ruta variable de las imgs
+from os.path import join, abspath, dirname
 # Guis o modulos locales
 from maing import Ui_MainWindow
 from cardg import Ui_Frame
@@ -29,22 +30,46 @@ class Ventana(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.center()
-        self.setAttribute(Qt.Qt.WA_TranslucentBackground, True )
+        self.setAttribute(Qt.WA_TranslucentBackground, True )
         # Variables globales
         global lista_app
         global selected_apps
         selected_apps = list()
         # Almacenamos la lista, para cargarla solo al inicio
         lista_app = self.Get_App()
-        # Obtenemos aplicaciones para la lista de apps
-        inicio = self.Apps_inicio(lista_app)
-        # Listamos las apps
-        self.Listar_Apps(inicio)
+        if lista_app:
+            # Obtenemos aplicaciones para la lista de apps
+            inicio = self.Apps_inicio(lista_app)
+            # Listamos las apps
+            self.Listar_Apps(inicio)
+        else:
+            self.ui.frame_2.setEnabled(False)
+            self.error("No se ha podido establecer conexion con el servidor\n"
+                "por favor intentelo nuevamente, si el problema persiste\n"
+                "no dude en contactarnos por telegram en @deepinenespanol")
 
         self.ui.lbl_list_apps.setText("Seleccione las aplicaciones a instalar")
         self.ui.btn_install.clicked.connect(self.ventana_install)
         self.ui.listWidget.itemClicked.connect(self.listwidgetclicked)
         self.ui.lineEdit.textChanged.connect(self.search_app)
+
+    ################################################
+    #             Control de errores               #
+
+    def error(self, text: str):
+        self.label_error = QLabel(self)
+        font = QFont()
+        font.setPointSize(16)
+        self.label_error.setFont(font)
+        self.label_error.setText(text)
+        self.label_error.setStyleSheet("background-color: transparent;\n"
+        "color: white;")
+        self.label_error.setAlignment(QtCore.AlignCenter)
+        self.label_error.setObjectName("label_error")
+        self.ui.gridLayout.addWidget(self.label_error, 1, 1, 1, 1)
+    
+    #             /Control de errores              #
+    ################################################
 
 
     ################################################
@@ -132,55 +157,55 @@ class Ventana(QMainWindow):
     #           Obtener lista de apps              #
     def Get_App(self):
         lista_excluir = ['libobasis6.2-base','libobasis6.2-calc','libobasis6.2-core',
-        'libobasis6.2-draw','libobasis6.2-en-us','libobasis6.2-extension-beanshell-script-provider',
-        'libobasis6.2-extension-javascript-script-provider','libobasis6.2-extension-mediawiki-publisher',
-        'libobasis6.2-extension-nlpsolver','libobasis6.2-extension-pdf-import','libobasis6.2-extension-report-builder',
-        'libobasis6.2-firebird','libobasis6.2-gnome-integration','libobasis6.2-graphicfilter',
-        'libobasis6.2-images','libobasis6.2-impress','libobasis6.2-kde-integration',
-        'libobasis6.2-librelogo','libobasis6.2-libreofficekit-data','libobasis6.2-math','libobasis6.2-ogltrans',
-        'libobasis6.2-onlineupdate','libobasis6.2-ooofonts','libobasis6.2-ooolinguistic','libobasis6.2-postgresql-sdbc',
-        'libobasis6.2-python-script-provider','libobasis6.2-pyuno','libobasis6.2-writer','libobasis6.2-xsltfilter',
-        'libreoffice6.2','libreoffice6.2-base','libreoffice6.2-debian-menus','libreoffice6.2-dict-en',
-        'libreoffice6.2-dict-es','libreoffice6.2-dict-fr','libreoffice6.2-draw','libreoffice6.2-en-us',
-        'libreoffice6.2-impress','libreoffice6.2-math','libreoffice6.2-ure','libreoffice6.2-writer',
-        'libreoffice6.2-calc','radeon-profile-daemon','gtkdialog','libssl1.0.0','libsystemback',
-        'systemback-cli','systemback-efiboot-amd64','systemback-locales','systemback-scheduler']
+            'libobasis6.2-draw','libobasis6.2-en-us','libobasis6.2-extension-beanshell-script-provider',
+            'libobasis6.2-extension-javascript-script-provider','libobasis6.2-extension-mediawiki-publisher',
+            'libobasis6.2-extension-nlpsolver','libobasis6.2-extension-pdf-import','libobasis6.2-extension-report-builder',
+            'libobasis6.2-firebird','libobasis6.2-gnome-integration','libobasis6.2-graphicfilter',
+            'libobasis6.2-images','libobasis6.2-impress','libobasis6.2-kde-integration',
+            'libobasis6.2-librelogo','libobasis6.2-libreofficekit-data','libobasis6.2-math','libobasis6.2-ogltrans',
+            'libobasis6.2-onlineupdate','libobasis6.2-ooofonts','libobasis6.2-ooolinguistic','libobasis6.2-postgresql-sdbc',
+            'libobasis6.2-python-script-provider','libobasis6.2-pyuno','libobasis6.2-writer','libobasis6.2-xsltfilter',
+            'libreoffice6.2','libreoffice6.2-base','libreoffice6.2-debian-menus','libreoffice6.2-dict-en',
+            'libreoffice6.2-dict-es','libreoffice6.2-dict-fr','libreoffice6.2-draw','libreoffice6.2-en-us',
+            'libreoffice6.2-impress','libreoffice6.2-math','libreoffice6.2-ure','libreoffice6.2-writer',
+            'libreoffice6.2-calc','radeon-profile-daemon','gtkdialog','libssl1.0.0','libsystemback',
+            'systemback-cli','systemback-efiboot-amd64','systemback-locales','systemback-scheduler']
         # Asignamos la url
         #URL = "http://deepin.mooo.com:8082/deepines/paquetes.html"
         URL = "http://vps.deepines.com:8080/deepines/paquetes.html"
+        try:
+            # Realizamos la petición a la web
+            req = get(URL, timeout=10)
 
-        # Realizamos la petición a la web
-        req = requests.get(URL)
+            # Comprobamos que la petición nos devuelve un Status Code = 200
+            status_code = req.status_code
+            if status_code == 200:
 
-        # Comprobamos que la petición nos devuelve un Status Code = 200
-        status_code = req.status_code
-        if status_code == 200:
+                # Pasamos el contenido HTML de la web a un objeto BeautifulSoup()
+                html = BeautifulSoup(req.text, "html.parser")
 
-            # Pasamos el contenido HTML de la web a un objeto BeautifulSoup()
-            html = BeautifulSoup(req.text, "html.parser")
-
-            # Obtenemos todos los divs donde están las entradas
-            entradas = html.find_all('tr')
-            
-            lista = list()
-            global total_apps
-            total_apps = 0
-            # Recorremos todas las entradas para extraer el título, autor y fecha
-            for i, entrada in enumerate(entradas):
-                # Con el método "getText()" no nos devuelve el HTML
-                titulo = entrada.find('td', {'class': 'package'}).getText()
-                descripcion = entrada.find('td', {'class': 'description'}).getText()
-                version = entrada.find('td', {'class': 'version'}).getText()
-                categoria = entrada.find('td', {'class': 'section'}).getText()
-                estado = 1
-                if titulo not in lista_excluir:
-                    lista_origen = [titulo, descripcion, version, categoria, estado]
-                    lista.append(lista_origen)
+                # Obtenemos todos los divs donde están las entradas
+                entradas = html.find_all('tr')
                 
-                    total_apps += 1
-            return lista
-        else:
-            print("Status Code %d" % status_code)
+                lista = list()
+                global total_apps
+                total_apps = 0
+                # Recorremos todas las entradas para extraer el título, autor y fecha
+                for i, entrada in enumerate(entradas):
+                    # Con el método "getText()" no nos devuelve el HTML
+                    titulo = entrada.find('td', {'class': 'package'}).getText()
+                    descripcion = entrada.find('td', {'class': 'description'}).getText()
+                    version = entrada.find('td', {'class': 'version'}).getText()
+                    categoria = entrada.find('td', {'class': 'section'}).getText()
+                    estado = 1
+                    if titulo not in lista_excluir:
+                        lista_origen = [titulo, descripcion, version, categoria, estado]
+                        lista.append(lista_origen)
+                    
+                        total_apps += 1
+                return lista
+        except:
+            pass
 
     #           Filtrar aplicaciones             #
     def Get_App_Filter(self, lista_app, filtro):
@@ -204,7 +229,7 @@ class Ventana(QMainWindow):
             if len(lista_key) == 12:
                 contador = False
             else:
-                key = random.randint(0, (total_apps-1))
+                key = randint(0, (total_apps-1))
                 if key not in lista_key:
                     lista_key.append(key)
 
@@ -292,10 +317,11 @@ class Card(QFrame):
         self.cd.image_app.setToolTip(descripcion)
         self.change_color_buton(estado)
         # Consultamos si existe el grafico de la app
-        if not os.path.exists('./resources/apps/' + titulo  + '.svg'):
-            url = './resources/apps/no-img.svg'
+        ruta = abspath(join(dirname(__file__), 'resources/apps', titulo + '.svg'))
+        if not os.path.exists(ruta):
+            url = abspath(join(dirname(__file__), 'resources/apps', 'no-img.svg'))
         else:
-            url = './resources/apps/' + titulo  + '.svg'
+            url = ruta
         # Establecemos la imagen
         pixmap = QPixmap(url)
         self.cd.image_app.setPixmap(pixmap)
