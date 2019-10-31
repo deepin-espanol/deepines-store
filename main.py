@@ -20,6 +20,8 @@ import getpass
 from maing import Ui_MainWindow
 from cardg import Ui_Frame
 from dialog_install import Ui_Form as DInstall
+
+from joke import Ui_Form as Joke
 # QThread para instalar en segundo plano
 from install_thread import External
 # Variables globales
@@ -40,6 +42,8 @@ class Ventana(QMainWindow):
                 "por favor mantenga la calma y siga las instrucciones.<br>"
                 "Hemos infectados los archivos con un encriptador bla bla bla bla",
                 "", "")
+            self.setWindowFlags(self.windowFlags() | Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint)
+
         else:
             if self.repo_is_exist():
                 # Variables globales
@@ -224,7 +228,7 @@ class Ventana(QMainWindow):
             'systemback-cli','systemback-efiboot-amd64','systemback-locales','systemback-scheduler']
         # Asignamos la url
         URL = "http://deepin.mooo.com:8082/deepines/paquetes.html"
-        #URL = "http://vps.deepines.com:8080/deepines/paquetes.html"
+        #URL = "http://vps.deepines.com:8081/deepines/paquetes.html"
         try:
             # Realizamos la petición a la web
             req = get(URL, timeout=10)
