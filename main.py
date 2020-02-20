@@ -153,7 +153,10 @@ class Ventana(QMainWindow):
                 self.Listar_Apps(lista_search)
         else:
             self.Listar_Apps(lista_inicio)
-    
+   
+    def clear_search_txt(self):
+        self.ui.lineEdit.setText("")
+
     #              /Busqueda de apps               #
     ################################################
 
@@ -210,6 +213,8 @@ class Ventana(QMainWindow):
         if "inicio" not in filtro:
             lista = self.Get_App_Filter(lista_app, filtro)
             self.Listar_Apps(lista)
+
+        self.clear_search_txt()
 
     #               /Filtro de apps                #
     ################################################
@@ -282,7 +287,7 @@ class Ventana(QMainWindow):
                 lista_filtrada[contador] = elemento
             contador += 1
         # Desplazamiento al inicio de la lista
-        self.ui.frame.verticalScrollBar().setSliderPosition(0)
+        
 
         return lista_filtrada
         
@@ -326,6 +331,7 @@ class Ventana(QMainWindow):
             carta = Card(lista[key][0], lista[key][1], lista[key][2], lista[key][4], self)
             # Agregamos dicha instancia a la grilla
             self.ui.gridLayout.addWidget(carta, x, y, 1, 1)
+        self.ui.frame.verticalScrollBar().setSliderPosition(0)
 
     #                /Lista de apps                #
     ################################################
@@ -384,6 +390,30 @@ class Ventana(QMainWindow):
         
 
     #               /Apps Instaladas                #
+    ################################################
+
+    ################################################
+    #            Apps nuevas Instaladas            #
+
+    def instalacion_completada(self):
+        global selected_apps, instaladas
+        lista_complete = {}
+        contador = 0
+        for app in selected_apps:
+            for elemento in lista_app:
+                if elemento[0] == app:    
+                    indice = lista_app.index(elemento)
+                    item = lista_app[indice]
+                    lista_complete[contador] = item
+                    contador += 1
+            
+            instaladas.append(app)
+        selected_apps = list()
+        self.Listar_Apps(lista_complete)
+        self.contar_apps()
+
+
+    #           /Apps nuevas Instaladas            #
     ################################################
 
 

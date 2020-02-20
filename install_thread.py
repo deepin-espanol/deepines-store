@@ -47,8 +47,11 @@ class External(QObject):
                     if not line:
                         break
             except:
+                # Ocurre algun error
                 self.error.emit()
             finally:
+                # Finaliza correctamente
                 self.finish.emit()
         else:
+            # Termino del ciclo for
             self.complete.emit()

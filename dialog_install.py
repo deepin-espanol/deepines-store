@@ -88,6 +88,7 @@ class Ui_Form(QtWidgets.QWidget):
         self.activateWindow()
 
     def complete(self):
+        self.main.instalacion_completada()
         self.ventana()
         self.thread.quit()
 
