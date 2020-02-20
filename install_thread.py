@@ -26,6 +26,8 @@ class External(QObject):
             line = update.stdout.readline()
             if line != '\n':
                 self.progress.emit(line)
+            if not line:
+                break
 
         for elemento in self.app:
             try:
@@ -34,15 +36,16 @@ class External(QObject):
                 self.start.emit(elemento)
                 # comandos para instalar la app
                 comando = ["sudo", "apt", "install", elemento, "-y"]
-                print(comando)
+                        
                 ejecucion = subprocess.Popen(comando, 
                             stdout=subprocess.PIPE, universal_newlines=True)
-                print("Post ejecucion")
                 while not ejecucion.poll():
-                    print("Dentro de la linea")
                     line = ejecucion.stdout.readline()
                     if line != '\n':
                         self.progress.emit(line)
+                    
+                    if not line:
+                        break
             except:
                 self.error.emit()
             finally:

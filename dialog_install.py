@@ -9,7 +9,7 @@
 
 from PyQt5 import QtWidgets
 from PyQt5.QtCore import Qt, QThread
-from PyQt5.QtGui import QPixmap, QIcon
+from PyQt5.QtGui import QPixmap, QIcon, QTextCursor
 from install_thread import External
 
 class Ui_Form(QtWidgets.QWidget):
@@ -59,10 +59,8 @@ class Ui_Form(QtWidgets.QWidget):
         for item in self.lista:
             self.plainTextEdit.insertPlainText("\n{}".format(item))
    
-        self.plainTextEdit.insertPlainText("\n\nAviso: Para evitar inconsistencias y problemas"
-            " en el sistema, no interrumpa o detenga el proceso de instalación"
-            " una vez que haya iniciado, tampoco cierre la"
-            " ventana del proceso de instalación.\n")
+        self.plainTextEdit.insertPlainText("\n\nAdvertencia: no cierre la ventana, "
+            "interrumpir la instalación puede dañar su sistema.\n")
 
     def instalar(self):
         self.main.setEnabled(False)
@@ -91,10 +89,12 @@ class Ui_Form(QtWidgets.QWidget):
         self.plainTextEdit.insertPlainText("\nInstalando {}".format(elemento))
 
     def progreso(self, elemento):
-        self.plainTextEdit.insertPlainText(elemento)
+        self.plainTextEdit.insertPlainText("{}".format(elemento))
+        self.plainTextEdit.moveCursor(QTextCursor.End)
 
     def finalizar(self):
         self.plainTextEdit.insertPlainText("\nSe han terminado los procesos.\n")
+        self.plainTextEdit.moveCursor(QTextCursor.End)
 
     def error(self):
         self.plainTextEdit.insertPlainText("\n\nHa ocurrido un error, intentelo"

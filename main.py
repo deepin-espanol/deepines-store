@@ -14,19 +14,18 @@ from requests import get
 from random import randint
 # Obtener ruta variable de las imgs
 from os.path import join, abspath, dirname
-# Get username
+# Get username  
 import getpass
 # Guis o modulos locales
 from maing import Ui_MainWindow
 from cardg import Ui_Frame
 from dialog_install import Ui_Form as DInstall
 
-from joke import Ui_Form as Joke
 # QThread para instalar en segundo plano
 from install_thread import External
 # Variables globales
 global lista_app, total_apps, lista_inicio
-global selected_apps
+global selected_apps, instaladas
 
 class Ventana(QMainWindow):
     def __init__(self):
@@ -36,6 +35,7 @@ class Ventana(QMainWindow):
         self.ui.setupUi(self)
         self.center()
         self.setAttribute(Qt.WA_TranslucentBackground, True )
+
         user = self.user_is_mauro()
         if user == 'mauro':
             self.error("Hola Jorge, le informo que su computador ha sido infectado<br>"
@@ -48,8 +48,9 @@ class Ventana(QMainWindow):
             if self.repo_is_exist():
                 # Variables globales
                 global lista_app
-                global selected_apps
+                global selected_apps, instaladas
                 selected_apps = list()
+                instaladas = self.apps_instaladas()
                 # Almacenamos la lista, para cargarla solo al inicio
                 lista_app = self.Get_App()
                 if lista_app:
@@ -227,7 +228,8 @@ class Ventana(QMainWindow):
             'libreoffice6.2-calc','radeon-profile-daemon','gtkdialog','libssl1.0.0','libsystemback',
             'systemback-cli','systemback-efiboot-amd64','systemback-locales','systemback-scheduler']
         # Asignamos la url
-        URL = "http://deepin.mooo.com:8082/deepines/paquetes.html"
+        URL = "http://ftp.unicamp.br/pub/deepines/paquetes.html"
+        #URL = "http://deepin.mooo.com:8082/deepines/paquetes.html"
         #URL = "http://vps.deepines.com:8081/deepines/paquetes.html"
         try:
             # Realizamos la petición a la web
@@ -254,11 +256,13 @@ class Ventana(QMainWindow):
                     version = entrada.find('td', {'class': 'version'}).getText()
                     categoria = entrada.find('td', {'class': 'section'}).getText()
                     estado = 1
+
                     if titulo not in lista_excluir:
                         lista_origen = [titulo, descripcion, version, categoria, estado]
                         lista.append(lista_origen)
                     
                         total_apps += 1
+
                 return lista
         except:
             pass
@@ -357,6 +361,25 @@ class Ventana(QMainWindow):
     #                  /Centrar                    #
     ################################################
 
+    ################################################
+    #               Apps Instaladas                #
+
+    def apps_instaladas(self):
+        comando = "dpkg --get-selections | grep -w install"
+        lista = os.popen(comando)
+        instaladas = list()
+        for linea in lista.readlines():
+            linea = ''.join(linea.split())
+            linea = linea.replace("install", "")
+            instaladas.append(linea)
+
+        return(instaladas)
+        
+
+    #               /Apps Instaladas                #
+    ################################################
+
+
 ################################################
 #           Card para la aplicacion            #
 
@@ -371,6 +394,11 @@ class Card(QFrame):
         self.cd.btn_select_app.setToolTip(version)
         self.cd.lbl_name_app.setText(titulo)
         self.cd.image_app.setToolTip(descripcion)
+        global instaladas
+        if titulo not in instaladas:
+            estado = 1
+        else:
+            estado = 2
         self.change_color_buton(estado)
         # Consultamos si existe el grafico de la app
         ruta = abspath(join(dirname(__file__), 'resources/apps', titulo + '.svg'))
@@ -382,25 +410,27 @@ class Card(QFrame):
         pixmap = QPixmap(url)
         self.cd.image_app.setPixmap(pixmap)
 
-        # Conectamos a la funcion para instalar
         self.cd.btn_select_app.clicked.connect(lambda: self.select_app(titulo))
 
+
     def select_app(self, titulo):
-        global selected_apps, lista_app
+        global selected_apps, lista_app, instaladas
         
         for elemento in lista_app:
             if titulo in elemento: 
                 indice = lista_app.index(elemento)
-        
-        if titulo not in selected_apps:
-            selected_apps.append(titulo)
-            self.change_color_buton(0)
-            lista_app[indice][4] = 0
 
+        if titulo not in instaladas:
+            if titulo not in selected_apps:
+                selected_apps.append(titulo)
+                self.change_color_buton(0)
+                lista_app[indice][4] = 0
+            else:
+                selected_apps.remove(titulo)
+                self.change_color_buton(1)
+                lista_app[indice][4] = 1
         else:
-            selected_apps.remove(titulo)
-            self.change_color_buton(1)
-            lista_app[indice][4] = 1
+            self.change_color_buton(2)
 
         self.parentWindow.contar_apps()
 
@@ -422,7 +452,7 @@ class Card(QFrame):
                 "}"
                 "")
             
-        else: # App no seleccionada
+        elif estado == 1: # App no seleccionada
             self.cd.btn_select_app.setText("Selecionar")
             self.cd.btn_select_app.setStyleSheet("#btn_select_app{\n"
                 "padding: 7px;\n"
@@ -437,6 +467,17 @@ class Card(QFrame):
                 "background-color: rgb(65, 159, 217);\n"
                 "border-radius: 5px;\n"
                 "}")
+        else:
+            self.cd.btn_select_app.setText("Instalada")
+            self.cd.btn_select_app.setEnabled(False)
+            self.cd.btn_select_app.setStyleSheet(""
+                "background-color: rgb(48, 105, 0);"
+                "padding: 7px;"
+                "color: #000;"
+                "border-radius: 5px;"
+                "border: 2px solid rgb(142, 231, 255);"
+                "}"
+                "")
             
 #           /Card para la aplicacion           #
 ################################################
