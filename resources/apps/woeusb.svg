@@ -13,7 +13,7 @@
    height="130"
    version="1.1"
    id="svg38"
-   sodipodi:docname="mintstick.svg"
+   sodipodi:docname="woeusb.svg"
    inkscape:version="0.92.1 r15371">
   <metadata
      id="metadata42">
@@ -41,7 +41,7 @@
      id="namedview40"
      showgrid="false"
      inkscape:zoom="1.2291666"
-     inkscape:cx="-80.836236"
+     inkscape:cx="-99.718746"
      inkscape:cy="40.025762"
      inkscape:window-x="0"
      inkscape:window-y="0"
@@ -13672,21 +13672,23 @@
     </clipPath>
     <linearGradient
        inkscape:collect="always"
-       xlink:href="#linearGradient4217"
-       id="linearGradient8919"
-       x1="-1.4553522"
-       y1="64.761543"
-       x2="181.72816"
-       y2="64.761543"
-       gradientUnits="userSpaceOnUse" />
-    <linearGradient
-       inkscape:collect="always"
        xlink:href="#linear0-2"
        id="linearGradient8934"
        x1="-113.57551"
        y1="-75.188805"
        x2="-66.966972"
        y2="-75.188805"
+       gradientUnits="userSpaceOnUse" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4217-5"
+       id="radialGradient8052"
+       cx="90.136406"
+       cy="64.761543"
+       fx="90.136406"
+       fy="64.761543"
+       r="91.591759"
+       gradientTransform="matrix(1,0,0,0.72446987,0,17.843756)"
        gradientUnits="userSpaceOnUse" />
   </defs>
   <style
@@ -13710,7 +13712,7 @@
      id="g642"
      transform="translate(-61.460312,76.592515)" />
   <rect
-     style="fill:url(#linearGradient8919);fill-opacity:1.0;stroke:#ffffff;stroke-width:1.02170324;stroke-opacity:1"
+     style="fill:url(#radialGradient8052);fill-opacity:1.0;stroke:#ffffff;stroke-width:1.02170324;stroke-opacity:1"
      id="rect470"
      width="182.16182"
      height="131.68924"

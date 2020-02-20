@@ -11,17 +11,20 @@ from PyQt5 import QtWidgets
 from PyQt5.QtCore import Qt, QThread
 from PyQt5.QtGui import QPixmap, QIcon, QTextCursor
 from install_thread import External
+from os.path import join, abspath, dirname
 
 class Ui_Form(QtWidgets.QWidget):
     def __init__(self, main, lista):
         super(Ui_Form, self).__init__()
+        ruta_logo = abspath(join(dirname(__file__), 'resources', 'deepines_logo_beta.svg'))
         self.main = main
         self.lista = lista
         self.resize(600, 300)
         icon = QIcon()
-        icon.addPixmap(QPixmap("./resources/deepines_logo_beta.svg"), QIcon.Normal, QIcon.Off)
+        icon.addPixmap(QPixmap(ruta_logo),QIcon.Normal, QIcon.Off)
         self.setWindowIcon(icon)
-        self.setWindowFlags(self.windowFlags() | Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint)
+        self.setWindowTitle("Deepines Store - Instalacion de apps")
+        #self.setWindowFlags(self.windowFlags() | Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint)
 
         self.gridLayout = QtWidgets.QGridLayout(self)
         self.gridLayout.setObjectName("gridLayout")
@@ -63,7 +66,7 @@ class Ui_Form(QtWidgets.QWidget):
             "interrumpir la instalación puede dañar su sistema.\n")
 
     def instalar(self):
-        self.main.setEnabled(False)
+        self.main.setVisible(False) 
         self.boton.setEnabled(False)
         self.boton_install.setEnabled(False)
         self.obj = External(self.lista)
@@ -79,10 +82,13 @@ class Ui_Form(QtWidgets.QWidget):
         #thread.finished.connect(thread.quit())
         self.thread.start()
 
+    def ventana(self):
+        self.main.setVisible(True)
+        self.boton.setEnabled(True)
+        self.activateWindow()
 
     def complete(self):
-        self.main.setEnabled(True)
-        self.boton.setEnabled(True)
+        self.ventana()
         self.thread.quit()
 
     def comenzar(self, elemento):
@@ -95,11 +101,13 @@ class Ui_Form(QtWidgets.QWidget):
     def finalizar(self):
         self.plainTextEdit.insertPlainText("\nSe han terminado los procesos.\n")
         self.plainTextEdit.moveCursor(QTextCursor.End)
+        self.ventana()
 
     def error(self):
         self.plainTextEdit.insertPlainText("\n\nHa ocurrido un error, intentelo"
             " nuevamente.\n"
             "Si el problema persiste, comuniquese con el administrador.\n")
+        self.ventana()
 
     def update(self):
         self.plainTextEdit.insertPlainText("\nSe esta actualizando la base de datos.\n\n")

@@ -287,4 +287,4 @@ class Ui_MainWindow(object):
         item.setText(_translate("MainWindow", "Otros"))
         self.listWidget.setSortingEnabled(__sortingEnabled)
         self.lineEdit.setPlaceholderText(_translate("MainWindow", "BUSQUEDA"))
-        self.label.setText(_translate("MainWindow", "Version: A.0.200219"))
+        self.label.setText(_translate("MainWindow", "Version: A.0.200220"))

@@ -143,6 +143,12 @@ class Ventana(QMainWindow):
                     item = lista_app[indice]
                     lista_search[contador] = item
                     contador += 1
+            for elemento in lista_app:
+                if text in elemento[1]:
+                    indice = lista_app.index(elemento)
+                    item = lista_app[indice]
+                    lista_search[contador] = item
+                    contador += 1
             else:
                 self.Listar_Apps(lista_search)
         else:
@@ -274,8 +280,9 @@ class Ventana(QMainWindow):
         for elemento in lista_app:
             if elemento[3] in filtro:
                 lista_filtrada[contador] = elemento
-
             contador += 1
+        # Desplazamiento al inicio de la lista
+        self.ui.frame.verticalScrollBar().setSliderPosition(0)
 
         return lista_filtrada
         
