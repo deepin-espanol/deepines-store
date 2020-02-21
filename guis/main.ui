@@ -208,15 +208,15 @@ border-radius: 5px;
          </property>
          <property name="iconSize">
           <size>
-           <width>16</width>
-           <height>16</height>
+           <width>24</width>
+           <height>24</height>
           </size>
          </property>
          <property name="spacing">
-          <number>0</number>
+          <number>1</number>
          </property>
          <property name="currentRow">
-          <number>0</number>
+          <number>-1</number>
          </property>
          <item>
           <property name="text">
@@ -244,35 +244,11 @@ border-radius: 5px;
          </item>
          <item>
           <property name="text">
-           <string>Mensajeria</string>
-          </property>
-          <property name="icon">
-           <iconset>
-            <normaloff>../resources/chat.svg</normaloff>../resources/chat.svg</iconset>
-          </property>
-          <property name="flags">
-           <set>ItemIsSelectable|ItemIsUserCheckable|ItemIsEnabled</set>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Música</string>
+           <string>Multimedia</string>
           </property>
           <property name="icon">
            <iconset>
             <normaloff>../resources/music.svg</normaloff>../resources/music.svg</iconset>
-          </property>
-          <property name="flags">
-           <set>ItemIsSelectable|ItemIsUserCheckable|ItemIsEnabled</set>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Video</string>
-          </property>
-          <property name="icon">
-           <iconset>
-            <normaloff>../resources/video-player.svg</normaloff>../resources/video-player.svg</iconset>
           </property>
           <property name="flags">
            <set>ItemIsSelectable|ItemIsUserCheckable|ItemIsEnabled</set>
@@ -471,7 +447,7 @@ border: 0px solid;</string>
 color: white;</string>
          </property>
          <property name="text">
-          <string>Version: A.0.191022</string>
+          <string>Version: A.0.200221</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>

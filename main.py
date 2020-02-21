@@ -35,6 +35,36 @@ class Ventana(QMainWindow):
         self.ui.setupUi(self)
         self.center()
         self.setAttribute(Qt.WA_TranslucentBackground, True )
+        self.lista_excluir = ['gtkdialog',
+            'libc++1-7','libc++abi1-7','libmozjs-38-0',
+            'libobasis6.1-base','libobasis6.1-calc','libobasis6.1-core',
+            'libobasis6.1-draw','libobasis6.1-en-us','libobasis6.1-es',
+            'libobasis6.1-es-help','libobasis6.1-extension-beanshell-script-provider',
+            'libobasis6.1-extension-javascript-script-provider',
+            'libobasis6.1-extension-mediawiki-publisher','libobasis6.1-extension-nlpsolver',
+            'libobasis6.1-extension-pdf-import','libobasis6.1-extension-report-builder',
+            'libobasis6.1-firebird','libobasis6.1-gnome-integration','libobasis6.1-graphicfilter',
+            'libobasis6.1-images','libobasis6.1-impress','libobasis6.1-kde-integration',
+            'libobasis6.1-librelogo','libobasis6.1-libreofficekit-data','libobasis6.1-math',
+            'libobasis6.1-ogltrans','libobasis6.1-onlineupdate','libobasis6.1-ooofonts',
+            'libobasis6.1-ooolinguistic','libobasis6.1-postgresql-sdbc','libobasis6.1-pt',
+            'libobasis6.1-pt-br','libobasis6.1-pt-br-help','libobasis6.1-pt-help',
+            'libobasis6.1-python-script-provider','libobasis6.1-pyuno','libobasis6.1-writer',
+            'libobasis6.1-xsltfilter','libodbc1','libqalculate6','libqalculate6-data',
+            'libreoffice6.1','libreoffice6.1-base','libreoffice6.1-calc','libreoffice6.1-debian-menus',
+            'libreoffice6.1-dict-en','libreoffice6.1-dict-es','libreoffice6.1-dict-fr',
+            'libreoffice6.1-draw','libreoffice6.1-en-us','libreoffice6.1-es',
+            'libreoffice6.1-impress','libreoffice6.1-math','libreoffice6.1-ure',
+            'libreoffice6.1-writer','libretro-2048','libretro-core-info','libretro-desmume',
+            'libretro-gambatte','libretro-glupen64','libretro-gpsp','libretro-handy','libretro-mame',
+            'libretro-mgba','libretro-mupen64plus','libretro-nestopia','libretro-picodrive',
+            'libretro-ppsspp','libretro-snes9x','libretro-stella','libretro-yabause',
+            'libssl1.0.0','libsystemback','libtorrent-rasterbar-dev','libtorrent-rasterbar9',
+            'libunarr','libwidevine','mint-translations','mkvtoolnix','openastro.org-data',
+            'pix-data','python-twodict','python3-swisseph','radeon-profile-daemon',
+            'retroarch-assets','smplayer-skins','smplayer-themes','speedtest-cli',
+            'systemback-cli','systemback-efiboot-amd64','systemback-locales',
+            'systemback-scheduler','tsc-data','tsc-music','unixodbc-dev']
 
         user = self.user_is_mauro()
         if user == 'mauro':
@@ -138,13 +168,7 @@ class Ventana(QMainWindow):
         contador = 0
         if len(text) != 0 and len(text) > 2:
             for elemento in lista_app:
-                if elemento[0].startswith(text):
-                    indice = lista_app.index(elemento)
-                    item = lista_app[indice]
-                    lista_search[contador] = item
-                    contador += 1
-            for elemento in lista_app:
-                if text in elemento[1]:
+                if elemento[0] not in self.lista_excluir and elemento[0].startswith(text) or text in elemento[1]:
                     indice = lista_app.index(elemento)
                     item = lista_app[indice]
                     lista_search[contador] = item
@@ -171,23 +195,19 @@ class Ventana(QMainWindow):
             filtro.append("inicio")
         elif item.text() == "Internet":
             filtro.append("web")
-        elif item.text() == "Mensajeria":
             filtro.append("net")
             filtro.append("mail")
-        elif item.text() == "Música":
+        elif item.text() == "Multimedia":
             filtro.append("sound")
             filtro.append("audio")
+            filtro.append("video")
         elif item.text() == "Gráficos":
             filtro.append("graphics")
             filtro.append("Media")
-        elif item.text() == "Video":
-            filtro.append("video")
         elif item.text() == "Juegos":
             filtro.append("games")
         elif item.text() == "Ofimática":
             filtro.append("editors")
-        #elif item.text() == "Lectura":
-        #   filtro = "editors"
         elif item.text() == "Desarrollo":
             filtro.append("devel")
             filtro.append("shells")
@@ -200,7 +220,6 @@ class Ventana(QMainWindow):
             filtro.append("fonts")
             filtro.append("gnome")
             filtro.append("interpreters")
-            filtro.append("libs")
             filtro.append("misc")
             filtro.append("non-free")
             filtro.append("other")
@@ -224,24 +243,10 @@ class Ventana(QMainWindow):
 
     #           Obtener lista de apps              #
     def Get_App(self):
-        lista_excluir = ['libobasis6.2-base','libobasis6.2-calc','libobasis6.2-core',
-            'libobasis6.2-draw','libobasis6.2-en-us','libobasis6.2-extension-beanshell-script-provider',
-            'libobasis6.2-extension-javascript-script-provider','libobasis6.2-extension-mediawiki-publisher',
-            'libobasis6.2-extension-nlpsolver','libobasis6.2-extension-pdf-import','libobasis6.2-extension-report-builder',
-            'libobasis6.2-firebird','libobasis6.2-gnome-integration','libobasis6.2-graphicfilter',
-            'libobasis6.2-images','libobasis6.2-impress','libobasis6.2-kde-integration',
-            'libobasis6.2-librelogo','libobasis6.2-libreofficekit-data','libobasis6.2-math','libobasis6.2-ogltrans',
-            'libobasis6.2-onlineupdate','libobasis6.2-ooofonts','libobasis6.2-ooolinguistic','libobasis6.2-postgresql-sdbc',
-            'libobasis6.2-python-script-provider','libobasis6.2-pyuno','libobasis6.2-writer','libobasis6.2-xsltfilter',
-            'libreoffice6.2','libreoffice6.2-base','libreoffice6.2-debian-menus','libreoffice6.2-dict-en',
-            'libreoffice6.2-dict-es','libreoffice6.2-dict-fr','libreoffice6.2-draw','libreoffice6.2-en-us',
-            'libreoffice6.2-impress','libreoffice6.2-math','libreoffice6.2-ure','libreoffice6.2-writer',
-            'libreoffice6.2-calc','radeon-profile-daemon','gtkdialog','libssl1.0.0','libsystemback',
-            'systemback-cli','systemback-efiboot-amd64','systemback-locales','systemback-scheduler']
+        
         # Asignamos la url
-        URL = "http://ftp.unicamp.br/pub/deepines/paquetes.html"
-        #URL = "http://deepin.mooo.com:8082/deepines/paquetes.html"
-        #URL = "http://vps.deepines.com:8081/deepines/paquetes.html"
+        URL = "https://repositorio.deepines.com/pub/deepines/paquetes.html"
+        
         try:
             # Realizamos la petición a la web
             req = get(URL, timeout=10)
@@ -268,7 +273,7 @@ class Ventana(QMainWindow):
                     categoria = entrada.find('td', {'class': 'section'}).getText()
                     estado = 1
 
-                    if titulo not in lista_excluir:
+                    if titulo not in self.lista_excluir:
                         lista_origen = [titulo, descripcion, version, categoria, estado]
                         lista.append(lista_origen)
                     
@@ -286,9 +291,7 @@ class Ventana(QMainWindow):
             if elemento[3] in filtro:
                 lista_filtrada[contador] = elemento
             contador += 1
-        # Desplazamiento al inicio de la lista
         
-
         return lista_filtrada
         
     #           Aplicaciones Inicio              #
