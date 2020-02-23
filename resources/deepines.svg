@@ -13,8 +13,8 @@
    viewBox="0 0 64 64"
    version="1.1"
    id="svg38"
-   sodipodi:docname="deepines_logo_beta.svg"
-   inkscape:version="0.92.1 r15371">
+   sodipodi:docname="deepines.svg"
+   inkscape:version="0.92.4 (5da689c313, 2019-01-14)">
   <metadata
      id="metadata42">
     <rdf:RDF>
@@ -36,14 +36,14 @@
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="1920"
-     inkscape:window-height="995"
+     inkscape:window-width="1360"
+     inkscape:window-height="659"
      id="namedview40"
      showgrid="false"
      showguides="false"
-     inkscape:zoom="1.3037281"
-     inkscape:cx="47.137435"
-     inkscape:cy="-0.8936109"
+     inkscape:zoom="3.6874999"
+     inkscape:cx="40.51454"
+     inkscape:cy="21.316482"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
@@ -543,7 +543,7 @@
   </defs>
   <g
      id="g5420"
-     transform="translate(-1.6707121)">
+     transform="matrix(1.1802707,0,0,1.1293849,-8.1480558,-5.5050772)">
     <g
        style="display:inline"
        id="g2036-5"

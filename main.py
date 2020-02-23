@@ -35,7 +35,12 @@ class Ventana(QMainWindow):
         self.ui.setupUi(self)
         self.center()
         self.setAttribute(Qt.WA_TranslucentBackground, True )
-        self.lista_excluir = ['gtkdialog',
+        self.lista_deepines = ['conkys-widgets','deepin-blu-red','deepin-osx',
+            'dexter-icon-theme','firefox-latest','halo-icon-theme',
+            'marea-icon-theme','marwaita-osx','mcos--hs-collection',
+            'mcos--mjv-collection','milky','osx-arc-collection','plastik-colletion',
+            'sierra','zukitwo']
+        self.lista_excluir = ['deepines-repository','gtkdialog','fish-common',
             'libc++1-7','libc++abi1-7','libmozjs-38-0',
             'libobasis6.1-base','libobasis6.1-calc','libobasis6.1-core',
             'libobasis6.1-draw','libobasis6.1-en-us','libobasis6.1-es',
@@ -62,7 +67,7 @@ class Ventana(QMainWindow):
             'libssl1.0.0','libsystemback','libtorrent-rasterbar-dev','libtorrent-rasterbar9',
             'libunarr','libwidevine','mint-translations','mkvtoolnix','openastro.org-data',
             'pix-data','python-twodict','python3-swisseph','radeon-profile-daemon',
-            'retroarch-assets','smplayer-skins','smplayer-themes','speedtest-cli',
+            'retroarch-assets','smplayer-skins','smplayer-themes','speedtest-cli','sudo',
             'systemback-cli','systemback-efiboot-amd64','systemback-locales',
             'systemback-scheduler','tsc-data','tsc-music','unixodbc-dev']
 
@@ -193,6 +198,8 @@ class Ventana(QMainWindow):
         if item.text() == "Inicio":
             self.Listar_Apps(lista_inicio)
             filtro.append("inicio")
+        elif item.text() == "Deepines":
+            filtro.append("deepines")
         elif item.text() == "Internet":
             filtro.append("web")
             filtro.append("net")
@@ -287,10 +294,17 @@ class Ventana(QMainWindow):
     def Get_App_Filter(self, lista_app, filtro):
         lista_filtrada = {}
         contador = 0
-        for elemento in lista_app:
-            if elemento[3] in filtro:
-                lista_filtrada[contador] = elemento
-            contador += 1
+        if 'deepines' in filtro:
+            for app in self.lista_deepines:
+                for elemento in lista_app:
+                    if elemento[0] == app  :
+                        lista_filtrada[contador] = elemento
+                        contador += 1
+        else:
+            for elemento in lista_app:
+                if elemento[3] in filtro:
+                    lista_filtrada[contador] = elemento
+                    contador += 1
         
         return lista_filtrada
         
@@ -433,7 +447,9 @@ class Card(QFrame):
         self.cd.btn_select_app.setText("Seleccionar")
         self.cd.btn_select_app.setToolTip(version)
         self.cd.lbl_name_app.setText(titulo)
-        self.cd.image_app.setToolTip(descripcion)
+        self.cd.image_app.setToolTip("<p wrap='hard'>{}</p>".format(descripcion))
+        self.cd.image_app.setWordWrap(True)
+
         global instaladas
         if titulo not in instaladas:
             estado = 1

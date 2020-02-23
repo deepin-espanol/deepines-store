@@ -13,8 +13,8 @@ from os.path import join, abspath, dirname
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
-        ruta_logo = abspath(join(dirname(__file__), 'resources', 'deepines_logo_beta.svg'))
-        ruta_star = abspath(join(dirname(__file__), 'resources', 'star'))
+        ruta_logo = abspath(join(dirname(__file__), 'resources', 'deepines.svg'))
+        ruta_star = abspath(join(dirname(__file__), 'resources', 'star.svg'))
         ruta_internet = abspath(join(dirname(__file__), 'resources', 'internet.svg'))
         ruta_chat = abspath(join(dirname(__file__), 'resources', 'chat.svg'))
         ruta_music = abspath(join(dirname(__file__), 'resources', 'music.svg'))
@@ -34,8 +34,33 @@ class Ui_MainWindow(object):
         icon.addPixmap(QtGui.QPixmap(ruta_logo), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         MainWindow.setWindowIcon(icon)
         MainWindow.setStyleSheet("#MainWindow{\n"
-"background-color: #fff;\n"
-"}")
+    "    background-color: #fff;\n"
+    "}"
+    "QScrollBar:vertical {"
+    "    background: transparent;"
+    "    width: 10px;"
+    "    margin: 0px 0px 0px 0px;"
+    "}"
+    "QScrollBar::handle:vertical {"
+    "    background-color: #545454;"
+    "    border-radius: 4px;"
+    "    min-height: 5px;"
+    "}"
+    "QScrollBar::add-line:vertical {"
+    "    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,"
+    "    stop: 0 rgb(32, 47, 130), stop: 0.5 rgb(32, 47, 130),  stop:1 rgb(32, 47, 130));"
+    "    height: 0px;"
+    "    subcontrol-position: bottom;"
+    "    subcontrol-origin: margin;"
+    "}"
+    "QScrollBar::sub-line:vertical {"
+    "    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,"
+    "    stop: 0  rgb(32, 47, 130), stop: 0.5 rgb(32, 47, 130),  stop:1 rgb(32, 47, 130));"
+    "    height: 0 px;"
+    "    subcontrol-position: top;"
+    "    subcontrol-origin: margin;"
+    "}"
+)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.gridLayout_2 = QtWidgets.QGridLayout(self.centralwidget)
@@ -50,13 +75,6 @@ class Ui_MainWindow(object):
         self.frame.setObjectName("frame")
         self.scrollAreaWidgetContents_2 = QtWidgets.QWidget()
         self.scrollAreaWidgetContents_2.setGeometry(QtCore.QRect(0, 0, 760, 458))
-        """        self.scrollAreaWidgetContents_2.setStyleSheet("#scrollAreaWidgetContents_2{"
-        "background-color: rgba(30, 30, 30, 220);\n"
-        "background-image: url(./resources/Logo-oficial2.png);\n"
-        "background-repeat: no-repeat;\n"
-        "background-position: 50px 150px;\n"
-        "position: absolute;\n"
-        "}")"""
         self.scrollAreaWidgetContents_2.setObjectName("scrollAreaWidgetContents_2")
         self.gridLayout = QtWidgets.QGridLayout(self.scrollAreaWidgetContents_2)
         self.gridLayout.setObjectName("gridLayout")
@@ -133,11 +151,17 @@ class Ui_MainWindow(object):
         self.listWidget.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         self.listWidget.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         self.listWidget.setAutoScroll(False)
-        self.listWidget.setIconSize(QtCore.QSize(24, 24))
+        self.listWidget.setIconSize(QtCore.QSize(22, 22))
         self.listWidget.setObjectName("listWidget")
         item = QtWidgets.QListWidgetItem()
+        icon0 = QtGui.QIcon()
+        icon0.addPixmap(QtGui.QPixmap(ruta_star), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        item.setIcon(icon0)
+        item.setFlags(QtCore.Qt.ItemIsSelectable|QtCore.Qt.ItemIsUserCheckable|QtCore.Qt.ItemIsEnabled)
+        self.listWidget.addItem(item)
+        item = QtWidgets.QListWidgetItem()
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap(ruta_star), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon1.addPixmap(QtGui.QPixmap(ruta_internet), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         item.setIcon(icon1)
         item.setFlags(QtCore.Qt.ItemIsSelectable|QtCore.Qt.ItemIsUserCheckable|QtCore.Qt.ItemIsEnabled)
         self.listWidget.addItem(item)
@@ -254,21 +278,23 @@ class Ui_MainWindow(object):
         item = self.listWidget.item(0)
         item.setText(_translate("MainWindow", "Inicio"))
         item = self.listWidget.item(1)
-        item.setText(_translate("MainWindow", "Internet"))
+        item.setText(_translate("MainWindow", "Deepines"))
         item = self.listWidget.item(2)
-        item.setText(_translate("MainWindow", "Multimedia"))
+        item.setText(_translate("MainWindow", "Internet"))
         item = self.listWidget.item(3)
-        item.setText(_translate("MainWindow", "Gráficos"))
+        item.setText(_translate("MainWindow", "Multimedia"))
         item = self.listWidget.item(4)
-        item.setText(_translate("MainWindow", "Juegos"))
+        item.setText(_translate("MainWindow", "Gráficos"))
         item = self.listWidget.item(5)
-        item.setText(_translate("MainWindow", "Ofimática"))
+        item.setText(_translate("MainWindow", "Juegos"))
         item = self.listWidget.item(6)
-        item.setText(_translate("MainWindow", "Desarrollo"))
+        item.setText(_translate("MainWindow", "Ofimática"))
         item = self.listWidget.item(7)
-        item.setText(_translate("MainWindow", "Sistema"))
+        item.setText(_translate("MainWindow", "Desarrollo"))
         item = self.listWidget.item(8)
+        item.setText(_translate("MainWindow", "Sistema"))
+        item = self.listWidget.item(9)
         item.setText(_translate("MainWindow", "Otros"))
         self.listWidget.setSortingEnabled(__sortingEnabled)
         self.lineEdit.setPlaceholderText(_translate("MainWindow", "BUSQUEDA"))
-        self.label.setText(_translate("MainWindow", "Version: A.0.200221"))
+        self.label.setText(_translate("MainWindow", "Version: A.0.200223"))
