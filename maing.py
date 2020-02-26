@@ -15,6 +15,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         ruta_logo = abspath(join(dirname(__file__), 'resources', 'deepines.svg'))
         ruta_star = abspath(join(dirname(__file__), 'resources', 'star.svg'))
+        ruta_deepines = abspath(join(dirname(__file__), 'resources', 'deepines_filter.svg'))
         ruta_internet = abspath(join(dirname(__file__), 'resources', 'internet.svg'))
         ruta_chat = abspath(join(dirname(__file__), 'resources', 'chat.svg'))
         ruta_music = abspath(join(dirname(__file__), 'resources', 'music.svg'))
@@ -161,7 +162,7 @@ class Ui_MainWindow(object):
         self.listWidget.addItem(item)
         item = QtWidgets.QListWidgetItem()
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap(ruta_internet), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon1.addPixmap(QtGui.QPixmap(ruta_deepines), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         item.setIcon(icon1)
         item.setFlags(QtCore.Qt.ItemIsSelectable|QtCore.Qt.ItemIsUserCheckable|QtCore.Qt.ItemIsEnabled)
         self.listWidget.addItem(item)
