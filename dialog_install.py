@@ -16,7 +16,7 @@ from os.path import join, abspath, dirname
 class Ui_Form(QtWidgets.QWidget):
     def __init__(self, main, lista):
         super(Ui_Form, self).__init__()
-        ruta_logo = abspath(join(dirname(__file__), 'resources', 'deepines_logo_beta.svg'))
+        ruta_logo = abspath(join(dirname(__file__), 'resources', 'deepines.svg'))
         self.main = main
         self.lista = lista
         self.resize(600, 300)
