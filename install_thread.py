@@ -8,7 +8,7 @@ import time
 class External(QObject):
     start = pyqtSignal(object)
     progress = pyqtSignal(object)
-    finish = pyqtSignal()
+    finish = pyqtSignal(object)
     complete = pyqtSignal()
     update = pyqtSignal()
     error = pyqtSignal()
@@ -51,7 +51,7 @@ class External(QObject):
                 self.error.emit()
             finally:
                 # Finaliza correctamente
-                self.finish.emit()
+                self.finish.emit(elemento)
         else:
             # Termino del ciclo for
             self.complete.emit()

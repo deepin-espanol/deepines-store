@@ -41,28 +41,51 @@ class Ventana(QMainWindow):
             'mcos--mjv-collection','milky','osx-arc-collection','plastik-colletion',
             'sierra','zukitwo']
         self.lista_excluir = ['deepines-repository','gtkdialog','fish-common',
-            'libc++1-7','libc++abi1-7','libmozjs-38-0',
-            'libobasis6.1-base','libobasis6.1-calc','libobasis6.1-core',
-            'libobasis6.1-draw','libobasis6.1-en-us','libobasis6.1-es',
-            'libobasis6.1-es-help','libobasis6.1-extension-beanshell-script-provider',
-            'libobasis6.1-extension-javascript-script-provider',
-            'libobasis6.1-extension-mediawiki-publisher','libobasis6.1-extension-nlpsolver',
-            'libobasis6.1-extension-pdf-import','libobasis6.1-extension-report-builder',
-            'libobasis6.1-firebird','libobasis6.1-gnome-integration','libobasis6.1-graphicfilter',
-            'libobasis6.1-images','libobasis6.1-impress','libobasis6.1-kde-integration',
-            'libobasis6.1-librelogo','libobasis6.1-libreofficekit-data','libobasis6.1-math',
-            'libobasis6.1-ogltrans','libobasis6.1-onlineupdate','libobasis6.1-ooofonts',
-            'libobasis6.1-ooolinguistic','libobasis6.1-postgresql-sdbc','libobasis6.1-pt',
-            'libobasis6.1-pt-br','libobasis6.1-pt-br-help','libobasis6.1-pt-help',
-            'libobasis6.1-python-script-provider','libobasis6.1-pyuno','libobasis6.1-writer',
-            'libobasis6.1-xsltfilter','libodbc1','libqalculate6','libqalculate6-data',
-            'libreoffice6.1','libreoffice6.1-base','libreoffice6.1-calc','libreoffice6.1-debian-menus',
-            'libreoffice6.1-dict-en','libreoffice6.1-dict-es','libreoffice6.1-dict-fr',
-            'libreoffice6.1-draw','libreoffice6.1-en-us','libreoffice6.1-es',
-            'libreoffice6.1-impress','libreoffice6.1-math','libreoffice6.1-ure',
-            'libreoffice6.1-writer','libretro-2048','libretro-core-info','libretro-desmume',
-            'libretro-gambatte','libretro-glupen64','libretro-gpsp','libretro-handy','libretro-mame',
-            'libretro-mgba','libretro-mupen64plus','libretro-nestopia','libretro-picodrive',
+            'libobasis6.2-base','libobasis6.2-calc','libobasis6.2-core',
+            'libobasis6.2-draw','libobasis6.2-en-us',
+            'libobasis6.2-extension-beanshell-script-provider'
+            'libobasis6.2-extension-javascript-script-provider',
+            'libobasis6.2-extension-mediawiki-publisher',
+            'libobasis6.2-extension-nlpsolver',
+            'libobasis6.2-extension-pdf-import',
+            'libobasis6.2-extension-report-builder',
+            'libobasis6.2-firebird','libobasis6.2-gnome-integration',
+            'libobasis6.2-graphicfilter','libobasis6.2-images',
+            'libobasis6.2-impress','libobasis6.2-kde-integration',
+            'libobasis6.2-librelogo','libobasis6.2-libreofficekit-data',
+            'libobasis6.2-math','libobasis6.2-ogltrans',
+            'libobasis6.2-onlineupdate','libobasis6.2-ooofonts',
+            'libobasis6.2-ooolinguistic','libobasis6.2-postgresql-sdbc',
+            'libobasis6.2-python-script-provider','libobasis6.2-pyuno',
+            'libobasis6.2-writer','libobasis6.2-xsltfilter',
+            'libobasis6.3-base','libobasis6.3-calc','libobasis6.3-core',
+            'libobasis6.3-draw','libobasis6.3-en-us','libobasis6.3-es',
+            'libobasis6.3-es-help','libobasis6.3-extension-beanshell-script-provider',
+            'libobasis6.3-extension-javascript-script-provider',
+            'libobasis6.3-extension-mediawiki-publisher',
+            'libobasis6.3-extension-nlpsolver','libobasis6.3-extension-pdf-import',
+            'libobasis6.3-extension-report-builder','libobasis6.3-firebird',
+            'libobasis6.3-gnome-integration','libobasis6.3-graphicfilter',
+            'libobasis6.3-images','libobasis6.3-kde-integration',
+            'libobasis6.3-librelogo','libobasis6.3-libreofficekit-data',
+            'libobasis6.3-math','libobasis6.3-ogltrans','libobasis6.3-onlineupdate',
+            'libobasis6.3-ooofonts','libobasis6.3-ooolinguistic',
+            'libobasis6.3-postgresql-sdbc','libobasis6.3-python-script-provider',
+            'libobasis6.3-pyuno','libobasis6.3-writer','libobasis6.3-xsltfilter',
+            'libreoffice6.2-base','libreoffice6.2-calc','libreoffice6.2-debian-menus',
+            'libreoffice6.2-dict-en','libreoffice6.2-dict-es','libreoffice6.2-dict-fr',
+            'libreoffice6.2-draw','libreoffice6.2-en-us','libreoffice6.2-impress',
+            'libreoffice6.2-math','libreoffice6.2-ure','libreoffice6.2-writer',
+            'libreoffice6.3','libreoffice6.3-base',
+            'libreoffice6.3-calc','libreoffice6.3-debian-menus',
+            'libreoffice6.3-dict-en','libreoffice6.3-dict-es','libreoffice6.3-dict-fr',
+            'libreoffice6.3-draw','libreoffice6.3-en-us','libreoffice6.3-es',
+            'libreoffice6.3-impress','libreoffice6.3-math','libreoffice6.3-ure',
+            'libreoffice6.3-writer',
+            'libretro-2048','libretro-core-info','libretro-desmume',
+            'libretro-gambatte','libretro-glupen64','libretro-gpsp','libretro-handy',
+            'libretro-mame','libretro-mgba',
+            'libretro-mupen64plus','libretro-nestopia','libretro-picodrive',
             'libretro-ppsspp','libretro-snes9x','libretro-stella','libretro-yabause',
             'libssl1.0.0','libsystemback','libtorrent-rasterbar-dev','libtorrent-rasterbar9',
             'libunarr','libwidevine','mint-translations','mkvtoolnix','openastro.org-data',
@@ -129,7 +152,7 @@ class Ventana(QMainWindow):
         if os.path.exists("/etc/apt/sources.list.d/deepines.list"):
             return True
         else:
-            False
+            return False
     
     #               /Repo en sistema               #
     ################################################
@@ -204,13 +227,15 @@ class Ventana(QMainWindow):
             filtro.append("web")
             filtro.append("net")
             filtro.append("mail")
+            filtro.append("networking")
+            filtro.append("network")
         elif item.text() == "Multimedia":
             filtro.append("sound")
             filtro.append("audio")
             filtro.append("video")
         elif item.text() == "Gráficos":
             filtro.append("graphics")
-            filtro.append("Media")
+            filtro.append("media")
         elif item.text() == "Juegos":
             filtro.append("games")
         elif item.text() == "Ofimática":
@@ -222,19 +247,8 @@ class Ventana(QMainWindow):
             filtro.append("admin")
             filtro.append("python")
         elif item.text() == "Otros":
-            filtro.append("base")
-            filtro.append("default")
-            filtro.append("fonts")
-            filtro.append("gnome")
-            filtro.append("interpreters")
-            filtro.append("misc")
-            filtro.append("non-free")
-            filtro.append("other")
-            filtro.append("science")
-            filtro.append("Tools")
-            filtro.append("utils")
-            filtro.append("universe")
-            filtro.append("x11")
+            filtro.append("otros")
+            
 
         if "inicio" not in filtro:
             lista = self.Get_App_Filter(lista_app, filtro)
@@ -294,6 +308,9 @@ class Ventana(QMainWindow):
     def Get_App_Filter(self, lista_app, filtro):
         lista_filtrada = {}
         contador = 0
+        filtros = ['web','net','mail','sound','audio','video',
+        'graphics','media','games','editors','devel','shell',
+        'admin','python','network','networking']
         if 'deepines' in filtro:
             for app in self.lista_deepines:
                 for elemento in lista_app:
@@ -301,11 +318,18 @@ class Ventana(QMainWindow):
                         lista_filtrada[contador] = elemento
                         contador += 1
         else:
-            for elemento in lista_app:
-                if elemento[3] in filtro:
-                    lista_filtrada[contador] = elemento
-                    contador += 1
-        
+            if "otros" not in filtro:
+                for elemento in lista_app:
+                    if elemento[3].lower() in filtro:
+                        lista_filtrada[contador] = elemento
+                        contador += 1
+            else:
+                for elemento in lista_app:
+                    if elemento[3].lower() not in filtros:
+                        print("app {} in {}".format(elemento[0], elemento[3]))
+                        lista_filtrada[contador] = elemento
+                        contador += 1
+
         return lista_filtrada
         
     #           Aplicaciones Inicio              #
@@ -453,6 +477,8 @@ class Card(QFrame):
         global instaladas
         if titulo not in instaladas:
             estado = 1
+            if titulo in selected_apps:
+                estado = 0
         else:
             estado = 2
         self.change_color_buton(estado)
@@ -476,15 +502,17 @@ class Card(QFrame):
             if titulo in elemento: 
                 indice = lista_app.index(elemento)
 
+        # Si la app no esta instalada
         if titulo not in instaladas:
+            # Si la app no esta seleccionada
             if titulo not in selected_apps:
                 selected_apps.append(titulo)
-                self.change_color_buton(0)
                 lista_app[indice][4] = 0
+                self.change_color_buton(0)
             else:
                 selected_apps.remove(titulo)
-                self.change_color_buton(1)
                 lista_app[indice][4] = 1
+                self.change_color_buton(1)
         else:
             self.change_color_buton(2)
 

@@ -88,6 +88,9 @@ class Ui_Form(QtWidgets.QWidget):
         self.activateWindow()
 
     def complete(self):
+        self.plainTextEdit.insertPlainText(
+            "\nSe han terminado todos los procesos.\n")
+        self.plainTextEdit.moveCursor(QTextCursor.End)
         self.main.instalacion_completada()
         self.ventana()
         self.thread.quit()
@@ -99,10 +102,10 @@ class Ui_Form(QtWidgets.QWidget):
         self.plainTextEdit.insertPlainText("{}".format(elemento))
         self.plainTextEdit.moveCursor(QTextCursor.End)
 
-    def finalizar(self):
-        self.plainTextEdit.insertPlainText("\nSe han terminado los procesos.\n")
+    def finalizar(self, eleento):
+        self.plainTextEdit.insertPlainText(
+            "\nSe han terminado de instalar {}.\n".format(elemento))
         self.plainTextEdit.moveCursor(QTextCursor.End)
-        self.ventana()
 
     def error(self):
         self.plainTextEdit.insertPlainText("\n\nHa ocurrido un error, intentelo"
