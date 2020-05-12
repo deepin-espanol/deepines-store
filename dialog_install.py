@@ -102,7 +102,7 @@ class Ui_Form(QtWidgets.QWidget):
         self.plainTextEdit.insertPlainText("{}".format(elemento))
         self.plainTextEdit.moveCursor(QTextCursor.End)
 
-    def finalizar(self, eleento):
+    def finalizar(self, elemento):
         self.plainTextEdit.insertPlainText(
             "\nSe han terminado de instalar {}.\n".format(elemento))
         self.plainTextEdit.moveCursor(QTextCursor.End)

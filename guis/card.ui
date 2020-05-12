@@ -28,13 +28,13 @@
   <property name="styleSheet">
    <string notr="true">#Frame{
     background-color: transparent;
+    color: #b5c5d1;
 }
 QToolTip {
     border: 2px solid #419fd9;
     border-radius: 4px;
     padding: 2px;
     font-size: 12px;
-    color: white;
     background-color: transparent;
 }</string>
   </property>
@@ -85,8 +85,7 @@ QToolTip {
       </size>
      </property>
      <property name="styleSheet">
-      <string notr="true">color: white;
-background-color: transparent;</string>
+      <string notr="true">background-color: transparent;</string>
      </property>
      <property name="text">
       <string/>
@@ -117,9 +116,8 @@ background-color: transparent;</string>
      <property name="styleSheet">
       <string notr="true">#btn_select_app{
 padding: 7px;
-color: white;
 border-radius: 5px;
-	background-color: rgb(45, 45, 45);
+background-color: rgb(45, 45, 45);
 }
 #btn_select_app:hover{
 border: 1px solid rgb(142, 231, 255);

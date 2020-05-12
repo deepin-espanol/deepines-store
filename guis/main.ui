@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>959</width>
-    <height>500</height>
+    <height>536</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -17,18 +17,43 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Deepines Store</string>
+   <string>Tienda Deepines</string>
   </property>
   <property name="windowIcon">
    <iconset>
     <normaloff>../resources/deepines_logo_beta.svg</normaloff>../resources/deepines_logo_beta.svg</iconset>
   </property>
   <property name="styleSheet">
-   <string notr="true">#MainWindow{
-background-color: #fff;
+   <string notr="true">QScrollBar:vertical {
+    background: transparent;
+    width: 10px;
+    margin: 0px 0px 0px 0px;
+}
+QScrollBar::handle:vertical {
+    background-color: #545454;
+    border-radius: 4px;
+    min-height: 5px;
+}
+QScrollBar::add-line:vertical {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+    stop: 0 rgb(32, 47, 130), stop: 0.5 rgb(32, 47, 130),  stop:1 rgb(32, 47, 130));
+    height: 0px;
+    subcontrol-position: bottom;
+    subcontrol-origin: margin;
+}
+QScrollBar::sub-line:vertical {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+    stop: 0  rgb(32, 47, 130), stop: 0.5 rgb(32, 47, 130),  stop:1 rgb(32, 47, 130));
+    height: 0 px;
+    subcontrol-position: top;
+    subcontrol-origin: margin;
 }</string>
   </property>
   <widget class="QWidget" name="centralwidget">
+   <property name="styleSheet">
+    <string notr="true">background-color: rgba(30, 30, 30, 220);
+color: #b5c5d1;</string>
+   </property>
    <layout class="QGridLayout" name="gridLayout_2">
     <property name="leftMargin">
      <number>0</number>
@@ -95,7 +120,7 @@ background-color: #fff;
            </property>
            <property name="styleSheet">
             <string notr="true">background-color: transparent;
-color: white;</string>
+</string>
            </property>
            <property name="text">
             <string>TextLabel</string>
@@ -118,7 +143,6 @@ color: white;</string>
            </property>
            <property name="styleSheet">
             <string notr="true">#btn_install{
-color: #fff;
 padding: 2px;
 border-radius: 5px;
 background-color: rgb(45, 45, 45);
@@ -171,7 +195,7 @@ border-radius: 5px;
          <property name="minimumSize">
           <size>
            <width>0</width>
-           <height>350</height>
+           <height>370</height>
           </size>
          </property>
          <property name="maximumSize">
@@ -190,11 +214,11 @@ border-radius: 5px;
 }
 #listWidget:item{
   padding: 5px 5px 5px 5px;
-  color: white;
 }
 #listWidget:item:selected{
-	background-color: rgba(30, 30, 30, 200);	
-	color: #419fd9;
+  background-color: transparent;
+  border: 0px solid transparent;
+  color: #419fd9;
 }</string>
          </property>
          <property name="verticalScrollBarPolicy">
@@ -211,9 +235,6 @@ border-radius: 5px;
            <width>24</width>
            <height>24</height>
           </size>
-         </property>
-         <property name="spacing">
-          <number>1</number>
          </property>
          <property name="currentRow">
           <number>-1</number>
@@ -233,6 +254,10 @@ border-radius: 5px;
          <item>
           <property name="text">
            <string>Deepines</string>
+          </property>
+          <property name="icon">
+           <iconset>
+            <normaloff>../resources/deepines_filter.svg</normaloff>../resources/deepines_filter.svg</iconset>
           </property>
          </item>
          <item>
@@ -371,7 +396,7 @@ border: 0px solid;</string>
              <set>Qt::AlignCenter</set>
             </property>
             <property name="placeholderText">
-             <string>BUSQUEDA</string>
+             <string>Búsqueda</string>
             </property>
            </widget>
           </item>
@@ -406,10 +431,13 @@ border: 0px solid;</string>
          <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
          <property name="sizeHint" stdset="0">
           <size>
            <width>20</width>
-           <height>40</height>
+           <height>20</height>
           </size>
          </property>
         </spacer>
@@ -432,10 +460,13 @@ border: 0px solid;</string>
          <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
          <property name="sizeHint" stdset="0">
           <size>
            <width>20</width>
-           <height>40</height>
+           <height>20</height>
           </size>
          </property>
         </spacer>
@@ -449,10 +480,10 @@ border: 0px solid;</string>
          </property>
          <property name="styleSheet">
           <string notr="true">background-color: transparent;
-color: white;</string>
+</string>
          </property>
          <property name="text">
-          <string>Version: A.0.200221</string>
+          <string>Version: A.0.4</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -465,7 +496,7 @@ color: white;</string>
     <item row="0" column="1" rowspan="2" colspan="4">
      <widget class="QScrollArea" name="frame">
       <property name="styleSheet">
-       <string notr="true">background-color: transparent;</string>
+       <string notr="true"/>
       </property>
       <property name="verticalScrollBarPolicy">
        <enum>Qt::ScrollBarAsNeeded</enum>
@@ -482,22 +513,11 @@ color: white;</string>
          <x>0</x>
          <y>0</y>
          <width>774</width>
-         <height>458</height>
+         <height>494</height>
         </rect>
        </property>
        <property name="styleSheet">
-        <string notr="true">#scroll_apps{
-	background-color: rgba(30, 30, 30, 220);
-background-image: url(../resources/Logo-oficial.png);
-background-attachment: fixed;
-background-repeat: no-repeat;
-position: absolute;
-bottom: 8px;
-right: 16px;
-height: 100px;
-width: auto;
-}
-</string>
+        <string notr="true"/>
        </property>
        <layout class="QGridLayout" name="gridLayout"/>
       </widget>

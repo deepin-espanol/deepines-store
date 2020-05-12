@@ -18,13 +18,13 @@ class Ui_Frame(object):
         Frame.setMaximumSize(QtCore.QSize(230, 16777215))
         Frame.setStyleSheet("#Frame{\n"
 "    background-color: transparent;\n"
+"    color: #b5c5d1;\n"
 "}\n"
 "QToolTip {\n"
 "    border: 2px solid #419fd9;\n"
 "    border-radius: 4px;\n"
 "    padding: 2px;\n"
 "    font-size: 12px;\n"
-"    color: white;\n"
 "    background-color: transparent;\n"
 "}")
         self.verticalLayout = QtWidgets.QVBoxLayout(Frame)
@@ -44,8 +44,7 @@ class Ui_Frame(object):
         self.lbl_name_app = QtWidgets.QLabel(Frame)
         self.lbl_name_app.setMinimumSize(QtCore.QSize(0, 25))
         self.lbl_name_app.setMaximumSize(QtCore.QSize(16777215, 23))
-        self.lbl_name_app.setStyleSheet("color: white;\n"
-"background-color: transparent;")
+        self.lbl_name_app.setStyleSheet("background-color: transparent;")
         self.lbl_name_app.setText("")
         self.lbl_name_app.setScaledContents(False)
         self.lbl_name_app.setAlignment(QtCore.Qt.AlignCenter)
@@ -61,9 +60,8 @@ class Ui_Frame(object):
         self.btn_select_app.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.btn_select_app.setStyleSheet("#btn_select_app{\n"
 "padding: 7px;\n"
-"color: white;\n"
 "border-radius: 5px;\n"
-"    background-color: rgb(45, 45, 45);\n"
+"background-color: rgb(45, 45, 45);\n"
 "}\n"
 "#btn_select_app:hover{\n"
 "border: 1px solid rgb(142, 231, 255);\n"

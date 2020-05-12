@@ -122,13 +122,13 @@ class Ventana(QMainWindow):
                         "por favor intentelo nuevamente, si el problema persiste<br>"
                         "contactenos en @deepinenespanol en Telegram.<br><br>", 
                         "https://deepinenespañol.org",
-                        "Visita Deepin en español para mas información.")
+                        "Visita Deepin en Español para mas información.")
             else:
                 self.error("El repositorio de aplicaciones de Deepin en español<br>"
                     "no esta instalado en su sistema, utilize el siguiente enlace<br>"
-                    "para realizar instalacion y poder utilizar la Deepines Store.<br><br>",
+                    "para realizar instalacion y poder utilizar la Tienda Deepines.<br><br>",
                     "https://deepinenespañol.org/repositorio/", 
-                    "Visita Deepin en español para mas información.")
+                    "Visita Deepin en Español para mas información.")
 
         self.ui.lbl_list_apps.setText("Seleccione las aplicaciones a instalar")
         self.ui.btn_install.clicked.connect(self.ventana_install)
@@ -383,13 +383,31 @@ class Ventana(QMainWindow):
         if cuenta == 0:
             texto = "Seleccione las aplicaciones a instalar"
             self.ui.btn_install.setEnabled(False)
+            borde = "border: 2px solid rgb(45, 45, 45)"
         else:
             self.ui.btn_install.setEnabled(True)
+            borde = "border: 2px solid #419fd9"
             if cuenta != 1:
                 articulo = "aplicaciones"
             else:
                 articulo = "aplicacion"
             texto = "Seleccionada {} {} para instalar".format(cuenta, articulo)
+
+        estilo = ("#btn_install{\n"
+                    "color: #fff;\n"
+                    "padding: 2px;\n"
+                    "border-radius: 5px;\n"
+                    "background-color: rgb(45, 45, 45);\n"
+                    + borde +
+                    "}\n"
+                    "#btn_install:hover{\n"
+                    "padding: 2px;\n"
+                    "color:white;\n"
+                    "background-color: rgb(65, 159, 217);\n"
+                    "border: 1px solid rgb(142, 231, 255);\n"
+                    "border-radius: 5px;\n"
+                    "}")
+        self.ui.btn_install.setStyleSheet(estilo)
         self.ui.lbl_list_apps.setText(texto)
 
     ################################################
@@ -524,7 +542,6 @@ class Card(QFrame):
             self.cd.btn_select_app.setStyleSheet(""
                 "background-color: rgb(234, 102, 70);"
                 "padding: 7px;"
-                "color: #000;"
                 "border-radius: 5px;"
                 "border: 2px solid rgb(142, 231, 255);"
                 "}"
@@ -540,7 +557,6 @@ class Card(QFrame):
             self.cd.btn_select_app.setText("Selecionar")
             self.cd.btn_select_app.setStyleSheet("#btn_select_app{\n"
                 "padding: 7px;\n"
-                "color: white;\n"
                 "border-radius: 5px;\n"
                 "    background-color: rgb(45, 45, 45);\n"
                 "}\n"
@@ -557,7 +573,6 @@ class Card(QFrame):
             self.cd.btn_select_app.setStyleSheet(""
                 "background-color: rgb(48, 105, 0);"
                 "padding: 7px;"
-                "color: #000;"
                 "border-radius: 5px;"
                 "border: 2px solid rgb(142, 231, 255);"
                 "}"
