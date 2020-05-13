@@ -57,7 +57,7 @@ class Ui_MainWindow(object):
 "    subcontrol-origin: margin;\n"
 "}")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
-        self.centralwidget.setStyleSheet("background-color: rgba(30, 30, 30, 220);"
+        self.centralwidget.setStyleSheet("background-color: rgba(30, 30, 30, 200);"
             "color: #b5c5d1;")
         self.centralwidget.setObjectName("centralwidget")
         self.gridLayout_2 = QtWidgets.QGridLayout(self.centralwidget)

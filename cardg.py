@@ -32,12 +32,13 @@ class Ui_Frame(object):
         self.image_app = QtWidgets.QLabel(Frame)
         self.image_app.setMinimumSize(QtCore.QSize(208, 158))
         self.image_app.setMaximumSize(QtCore.QSize(208, 158))
-        self.image_app.setStyleSheet("#image_app{\n"
-"  background-color: rgb(45, 45, 45);\n"
-"  border: 10px outset rgb(45, 45, 45);\n"
-"}")
+#        self.image_app.setStyleSheet("#image_app{\n"
+#"  background-color: rgb(45, 45, 45);\n"
+#"  border-radius: 5px;\n"
+#"  border: 5px solid  rgb(45, 45, 45);\n"
+#"}")
         self.image_app.setText("")
-        self.image_app.setScaledContents(False)
+        self.image_app.setScaledContents(True)
         self.image_app.setAlignment(QtCore.Qt.AlignCenter)
         self.image_app.setObjectName("image_app")
         self.verticalLayout.addWidget(self.image_app)

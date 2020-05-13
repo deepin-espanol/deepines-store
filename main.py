@@ -5,7 +5,7 @@ import os
 from PyQt5.Qt import Qt
 from PyQt5.QtCore import QThread, Qt as QtCore
 from PyQt5.QtWidgets import (QMainWindow, QApplication, QFrame, QLabel,
-        QSizePolicy,)
+        QSizePolicy, QGraphicsDropShadowEffect)
 from PyQt5.QtGui import QPixmap, QIcon, QFont
 # Modulos para el scraping
 from bs4 import BeautifulSoup
@@ -492,6 +492,11 @@ class Card(QFrame):
         self.cd.image_app.setToolTip("<p wrap='hard'>{}</p>".format(descripcion))
         self.cd.image_app.setWordWrap(True)
 
+        self.shadow = QGraphicsDropShadowEffect()
+        self.shadow.setBlurRadius(5)
+        self.shadow.setXOffset(5)
+        self.shadow.setYOffset(5)
+
         global instaladas
         if titulo not in instaladas:
             estado = 1
@@ -509,7 +514,7 @@ class Card(QFrame):
         # Establecemos la imagen
         pixmap = QPixmap(url)
         self.cd.image_app.setPixmap(pixmap)
-
+        self.cd.image_app.setGraphicsEffect(self.shadow)
         self.cd.btn_select_app.clicked.connect(lambda: self.select_app(titulo))
 
 
