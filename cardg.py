@@ -30,13 +30,9 @@ class Ui_Frame(object):
         self.verticalLayout = QtWidgets.QVBoxLayout(Frame)
         self.verticalLayout.setObjectName("verticalLayout")
         self.image_app = QtWidgets.QLabel(Frame)
-        self.image_app.setMinimumSize(QtCore.QSize(208, 158))
-        self.image_app.setMaximumSize(QtCore.QSize(208, 158))
-#        self.image_app.setStyleSheet("#image_app{\n"
-#"  background-color: rgb(45, 45, 45);\n"
-#"  border-radius: 5px;\n"
-#"  border: 5px solid  rgb(45, 45, 45);\n"
-#"}")
+        self.image_app.setStyleSheet("#image_app{\n"
+"  border: 2px solid  rgb(45, 45, 45);\n"
+"}")
         self.image_app.setText("")
         self.image_app.setScaledContents(True)
         self.image_app.setAlignment(QtCore.Qt.AlignCenter)
@@ -59,18 +55,9 @@ class Ui_Frame(object):
         font.setItalic(False)
         self.btn_select_app.setFont(font)
         self.btn_select_app.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-        self.btn_select_app.setStyleSheet("#btn_select_app{\n"
-"padding: 7px;\n"
-"border-radius: 5px;\n"
-"background-color: rgb(45, 45, 45);\n"
-"}\n"
-"#btn_select_app:hover{\n"
-"border: 1px solid rgb(142, 231, 255);\n"
-"padding: 7px;\n"
-"color:white;\n"
-"background-color: rgb(65, 159, 217);\n"
-"border-radius: 5px;\n"
-"}")
+        self.btn_select_app.setStyleSheet("")
+        self.btn_select_app.setMinimumSize(QtCore.QSize(0, 40))
+        self.btn_select_app.setMaximumSize(QtCore.QSize(16777215, 40))
         self.btn_select_app.setObjectName("btn_select_app")
         self.verticalLayout.addWidget(self.btn_select_app)
 

@@ -57,7 +57,7 @@ class Ui_MainWindow(object):
 "    subcontrol-origin: margin;\n"
 "}")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
-        self.centralwidget.setStyleSheet("background-color: rgba(30, 30, 30, 200);"
+        self.centralwidget.setStyleSheet("background-color: rgba(30, 30, 30, 100);"
             "color: #b5c5d1;")
         self.centralwidget.setObjectName("centralwidget")
         self.gridLayout_2 = QtWidgets.QGridLayout(self.centralwidget)
@@ -255,6 +255,8 @@ class Ui_MainWindow(object):
         self.scroll_apps.setObjectName("scroll_apps")
         self.gridLayout = QtWidgets.QGridLayout(self.scroll_apps)
         self.gridLayout.setObjectName("gridLayout")
+        self.gridLayout.setContentsMargins(0, 0, 0, 0)
+        self.gridLayout.setSpacing(2)
         self.frame.setWidget(self.scroll_apps)
         self.gridLayout_2.addWidget(self.frame, 0, 1, 2, 4)
         MainWindow.setCentralWidget(self.centralwidget)

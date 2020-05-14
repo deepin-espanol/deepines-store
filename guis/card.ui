@@ -41,22 +41,8 @@ QToolTip {
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QLabel" name="image_app">
-     <property name="minimumSize">
-      <size>
-       <width>208</width>
-       <height>158</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>208</width>
-       <height>158</height>
-      </size>
-     </property>
      <property name="styleSheet">
       <string notr="true">#image_app{
-  background-color: rgb(45, 45, 45);
-  border-radius: 5px;
   border: 2px solid  rgb(45, 45, 45);
 }</string>
      </property>
@@ -115,18 +101,7 @@ QToolTip {
       <cursorShape>PointingHandCursor</cursorShape>
      </property>
      <property name="styleSheet">
-      <string notr="true">#btn_select_app{
-padding: 7px;
-border-radius: 5px;
-background-color: rgb(45, 45, 45);
-}
-#btn_select_app:hover{
-border: 1px solid rgb(142, 231, 255);
-padding: 7px;
-color:white;
-background-color: rgb(65, 159, 217);
-border-radius: 5px;
-}</string>
+      <string notr="true"/>
      </property>
      <property name="text">
       <string>Instalar</string>

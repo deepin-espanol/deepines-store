@@ -3,9 +3,9 @@ import sys
 import os
 # Modulos de pyqt5
 from PyQt5.Qt import Qt
-from PyQt5.QtCore import QThread, Qt as QtCore
+from PyQt5.QtCore import QSize, Qt as QtCore
 from PyQt5.QtWidgets import (QMainWindow, QApplication, QFrame, QLabel,
-        QSizePolicy, QGraphicsDropShadowEffect)
+        QSizePolicy, QGraphicsDropShadowEffect, QSpacerItem)
 from PyQt5.QtGui import QPixmap, QIcon, QFont
 # Modulos para el scraping
 from bs4 import BeautifulSoup
@@ -24,8 +24,8 @@ from dialog_install import Ui_Form as DInstall
 # QThread para instalar en segundo plano
 from install_thread import External
 # Variables globales
-global lista_app, total_apps, lista_inicio
-global selected_apps, instaladas
+global lista_app, total_apps, lista_inicio, lista_global
+global selected_apps, instaladas, columnas, tamanio
 
 class Ventana(QMainWindow):
     def __init__(self):
@@ -105,8 +105,7 @@ class Ventana(QMainWindow):
         else:
             if self.repo_is_exist():
                 # Variables globales
-                global lista_app
-                global selected_apps, instaladas
+                global lista_app, selected_apps, instaladas, lista_global
                 selected_apps = list()
                 instaladas = self.apps_instaladas()
                 # Almacenamos la lista, para cargarla solo al inicio
@@ -115,7 +114,7 @@ class Ventana(QMainWindow):
                     # Obtenemos aplicaciones para la lista de apps
                     inicio = self.Apps_inicio(lista_app)
                     # Listamos las apps
-                    self.Listar_Apps(inicio)
+                    lista_global = inicio
                 else:
                     
                     self.error("No se ha podido establecer conexion con el servidor<br>"
@@ -186,15 +185,20 @@ class Ventana(QMainWindow):
     #             /Control de errores              #
     ################################################
 
+    def resizeEvent(self, event):
+        self.Listar_Apps(lista_global)
 
     ################################################
     #              Busqueda de apps                #
 
     def search_app(self):
         text = self.ui.lineEdit.text()
+
         lista_search = {}
         contador = 0
+        global lista_global
         if len(text) != 0 and len(text) > 2:
+            self.ui.listWidget.clearSelection()
             for elemento in lista_app:
                 if elemento[0] not in self.lista_excluir and elemento[0].startswith(text) or text in elemento[1]:
                     indice = lista_app.index(elemento)
@@ -202,9 +206,10 @@ class Ventana(QMainWindow):
                     lista_search[contador] = item
                     contador += 1
             else:
-                self.Listar_Apps(lista_search)
+                lista_global = lista_search
         else:
-            self.Listar_Apps(lista_inicio)
+            lista_global = lista_inicio
+        self.Listar_Apps(lista_global)
    
     def clear_search_txt(self):
         self.ui.lineEdit.setText("")
@@ -251,8 +256,9 @@ class Ventana(QMainWindow):
             
 
         if "inicio" not in filtro:
-            lista = self.Get_App_Filter(lista_app, filtro)
-            self.Listar_Apps(lista)
+            global lista_global
+            lista_global = self.Get_App_Filter(lista_app, filtro)
+            self.Listar_Apps(lista_global)
 
         self.clear_search_txt()
 
@@ -355,26 +361,58 @@ class Ventana(QMainWindow):
 
     #           Listar aplicaciones              #
     def Listar_Apps(self, lista):
-        for i in range(self.ui.gridLayout.count()):
-            # Eliminamos los items de la grilla
-            self.ui.gridLayout.itemAt(i).widget().deleteLater()
+        equal = lista_inicio == lista_global
+        if equal: 
+            item = self.ui.listWidget.item(0)
+            item.setSelected(True)
+
+        self.calcular_columnas()
+        while self.ui.gridLayout.count():
+            item = self.ui.gridLayout.takeAt(0)
+            widget = item.widget()
+            if widget:
+                widget.deleteLater()
 
         y = 0 # Creamos la coordenada y
         x = 0 # Creamos la coordenada x 
         # Estas para establecer la ubicacion de la tarjetas en la grilla
+        i = 0
         for key in lista: # Recorremos la lista con los elementos
+            i += 1 # Contador para agregar el espaciador horizontal
             # Consultamos si ya tenemos tres tarjetas en y
-            if y % 3 == 0 and y != 0:
+            if y % columnas == 0 and y != 0:
                 y = 0 # Reiniciamos y
                 x += 1 # Agregamos otra columna
             y += 1 # agregamos 1 a la coordenada y
+
             # Creamos una instancia de la clase card
             carta = Card(lista[key][0], lista[key][1], lista[key][2], lista[key][4], self)
             # Agregamos dicha instancia a la grilla
             self.ui.gridLayout.addWidget(carta, x, y, 1, 1)
         self.ui.frame.verticalScrollBar().setSliderPosition(0)
 
+        # Espaciador vertical
+        spacerItem9 = QSpacerItem(0, 0, QSizePolicy.Minimum, QSizePolicy.Expanding)
+        self.ui.gridLayout.addItem(spacerItem9, (x+1), 1, 1, 1)
+
+        # Si tenemos menos apps que las columnas, agregamos el espaciador
+        if i < columnas:
+            # Espaciador horizontal
+            spacerItem8 = QSpacerItem(0, 0, QSizePolicy.Expanding, QSizePolicy.Minimum)
+            self.ui.gridLayout.addItem(spacerItem8, x, columnas, 1, 10)
+
     #                /Lista de apps                #
+
+    #              Calcular columnas               #
+    def calcular_columnas(self):
+        ancho = self.ui.frame.frameGeometry().width()
+        global columnas, tamanio
+        if ancho < 700: ancho = 776
+        columnas = ancho//230
+        restante = ancho % 230
+        tamanio = 220 + (restante // columnas)
+
+    #              /Calcular columnas              #
     ################################################
 
     def contar_apps(self):
@@ -383,10 +421,10 @@ class Ventana(QMainWindow):
         if cuenta == 0:
             texto = "Seleccione las aplicaciones a instalar"
             self.ui.btn_install.setEnabled(False)
-            borde = "border: 2px solid rgb(45, 45, 45)"
+            borde = "border: 2px solid rgb(45, 45, 45);"
         else:
             self.ui.btn_install.setEnabled(True)
-            borde = "border: 2px solid #419fd9"
+            borde = "border: 2px solid #419fd9;"
             if cuenta != 1:
                 articulo = "aplicaciones"
             else:
@@ -491,6 +529,8 @@ class Card(QFrame):
         self.cd.lbl_name_app.setText(titulo)
         self.cd.image_app.setToolTip("<p wrap='hard'>{}</p>".format(descripcion))
         self.cd.image_app.setWordWrap(True)
+        self.setMinimumSize(QSize(tamanio, 250))
+        self.setMaximumSize(QSize(tamanio, 250))
 
         self.shadow = QGraphicsDropShadowEffect()
         self.shadow.setBlurRadius(5)
@@ -546,24 +586,26 @@ class Card(QFrame):
             self.cd.btn_select_app.setText("Deselecionar")
             self.cd.btn_select_app.setStyleSheet(""
                 "background-color: rgb(234, 102, 70);"
-                "padding: 7px;"
-                "border-radius: 5px;"
-                "border: 2px solid rgb(142, 231, 255);"
-                "}"
-                "#btn_select_app:hover{"
-                "padding: 7px;"
-                "color:white;"
-                "background-color: rgb(65, 159, 217);"
-                "border-radius: 5px;"
-                "}"
-                "")
+                "padding: 7px;\n"
+                "border: 2px solid #419fd9;\n"
+                "border-radius: 5px;\n"
+                "background-color: rgb(45, 45, 45);\n"
+                "}\n"
+                "#btn_select_app:hover{\n"
+                "border: 1px solid rgb(142, 231, 255);\n"
+                "padding: 7px;\n"
+                "color:white;\n"
+                "background-color: rgb(65, 159, 217);\n"
+                "border-radius: 5px;\n"
+                "}")
+
             
         elif estado == 1: # App no seleccionada
             self.cd.btn_select_app.setText("Selecionar")
             self.cd.btn_select_app.setStyleSheet("#btn_select_app{\n"
                 "padding: 7px;\n"
                 "border-radius: 5px;\n"
-                "    background-color: rgb(45, 45, 45);\n"
+                "background-color: rgb(45, 45, 45);\n"
                 "}\n"
                 "#btn_select_app:hover{\n"
                 "border: 1px solid rgb(142, 231, 255);\n"
@@ -576,10 +618,11 @@ class Card(QFrame):
             self.cd.btn_select_app.setText("Instalada")
             self.cd.btn_select_app.setEnabled(False)
             self.cd.btn_select_app.setStyleSheet(""
-                "background-color: rgb(48, 105, 0);"
+                "background-color: rgb(45, 45, 45);"
                 "padding: 7px;"
                 "border-radius: 5px;"
-                "border: 2px solid rgb(142, 231, 255);"
+                "color: #50aa00;"
+                "border: 2px solid #537a30;"
                 "}"
                 "")
             
@@ -589,5 +632,6 @@ class Card(QFrame):
 if __name__ == '__main__':
   app = QApplication(sys.argv)
   win = Ventana()
+  os.system('xprop -f _KDE_NET_WM_BLUR_BEHIND_REGION 32c -set _KDE_NET_WM_BLUR_BEHIND_REGION 0 -id {}'.format(int(win.winId())))
   win.show()
   sys.exit(app.exec_())
