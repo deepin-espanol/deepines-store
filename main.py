@@ -3,10 +3,10 @@ import sys
 import os
 # Modulos de pyqt5
 from PyQt5.Qt import Qt
-from PyQt5.QtCore import QSize, Qt as QtCore
+from PyQt5.QtCore import QSize, QPointF, Qt as QtCore
 from PyQt5.QtWidgets import (QMainWindow, QApplication, QFrame, QLabel,
         QSizePolicy, QGraphicsDropShadowEffect, QSpacerItem)
-from PyQt5.QtGui import QPixmap, QIcon, QFont
+from PyQt5.QtGui import QPixmap, QIcon, QFont, QColor
 # Modulos para el scraping
 from bs4 import BeautifulSoup
 from requests import get
@@ -16,6 +16,8 @@ from random import randint
 from os.path import join, abspath, dirname
 # Get username  
 import getpass
+# Procesos en segundo plano
+import subprocess
 # Guis o modulos locales
 from maing import Ui_MainWindow
 from cardg import Ui_Frame
@@ -41,23 +43,6 @@ class Ventana(QMainWindow):
             'mcos--mjv-collection','milky','osx-arc-collection','plastik-colletion',
             'sierra','zukitwo']
         self.lista_excluir = ['deepines-repository','gtkdialog','fish-common',
-            'libobasis6.2-base','libobasis6.2-calc','libobasis6.2-core',
-            'libobasis6.2-draw','libobasis6.2-en-us',
-            'libobasis6.2-extension-beanshell-script-provider'
-            'libobasis6.2-extension-javascript-script-provider',
-            'libobasis6.2-extension-mediawiki-publisher',
-            'libobasis6.2-extension-nlpsolver',
-            'libobasis6.2-extension-pdf-import',
-            'libobasis6.2-extension-report-builder',
-            'libobasis6.2-firebird','libobasis6.2-gnome-integration',
-            'libobasis6.2-graphicfilter','libobasis6.2-images',
-            'libobasis6.2-impress','libobasis6.2-kde-integration',
-            'libobasis6.2-librelogo','libobasis6.2-libreofficekit-data',
-            'libobasis6.2-math','libobasis6.2-ogltrans',
-            'libobasis6.2-onlineupdate','libobasis6.2-ooofonts',
-            'libobasis6.2-ooolinguistic','libobasis6.2-postgresql-sdbc',
-            'libobasis6.2-python-script-provider','libobasis6.2-pyuno',
-            'libobasis6.2-writer','libobasis6.2-xsltfilter',
             'libobasis6.3-base','libobasis6.3-calc','libobasis6.3-core',
             'libobasis6.3-draw','libobasis6.3-en-us','libobasis6.3-es',
             'libobasis6.3-es-help','libobasis6.3-extension-beanshell-script-provider',
@@ -66,16 +51,12 @@ class Ventana(QMainWindow):
             'libobasis6.3-extension-nlpsolver','libobasis6.3-extension-pdf-import',
             'libobasis6.3-extension-report-builder','libobasis6.3-firebird',
             'libobasis6.3-gnome-integration','libobasis6.3-graphicfilter',
-            'libobasis6.3-images','libobasis6.3-kde-integration',
+            'libobasis6.3-images','libobasis6.3-impress','libobasis6.3-kde-integration',
             'libobasis6.3-librelogo','libobasis6.3-libreofficekit-data',
             'libobasis6.3-math','libobasis6.3-ogltrans','libobasis6.3-onlineupdate',
             'libobasis6.3-ooofonts','libobasis6.3-ooolinguistic',
             'libobasis6.3-postgresql-sdbc','libobasis6.3-python-script-provider',
             'libobasis6.3-pyuno','libobasis6.3-writer','libobasis6.3-xsltfilter',
-            'libreoffice6.2-base','libreoffice6.2-calc','libreoffice6.2-debian-menus',
-            'libreoffice6.2-dict-en','libreoffice6.2-dict-es','libreoffice6.2-dict-fr',
-            'libreoffice6.2-draw','libreoffice6.2-en-us','libreoffice6.2-impress',
-            'libreoffice6.2-math','libreoffice6.2-ure','libreoffice6.2-writer',
             'libreoffice6.3','libreoffice6.3-base',
             'libreoffice6.3-calc','libreoffice6.3-debian-menus',
             'libreoffice6.3-dict-en','libreoffice6.3-dict-es','libreoffice6.3-dict-fr',
@@ -133,6 +114,8 @@ class Ventana(QMainWindow):
         self.ui.btn_install.clicked.connect(self.ventana_install)
         self.ui.listWidget.itemClicked.connect(self.listwidgetclicked)
         self.ui.lineEdit.textChanged.connect(self.search_app)
+        self.ui.btn_install.setEnabled(False)
+        self.ui.label_2.clicked.connect(self.open_deepines)
 
     ################################################
     #            get username for joke             #
@@ -187,6 +170,11 @@ class Ventana(QMainWindow):
 
     def resizeEvent(self, event):
         self.Listar_Apps(lista_global)
+
+
+    def open_deepines(self):
+        subprocess.Popen(["x-www-browser", "deepinenespañol.org"],
+            stdout=subprocess.PIPE, universal_newlines=True)
 
     ################################################
     #              Busqueda de apps                #
@@ -326,13 +314,14 @@ class Ventana(QMainWindow):
         else:
             if "otros" not in filtro:
                 for elemento in lista_app:
-                    if elemento[3].lower() in filtro:
-                        lista_filtrada[contador] = elemento
-                        contador += 1
+                    categoria_app = elemento[3].lower().split("/")
+                    for filtro_uno in categoria_app:
+                        if filtro_uno in filtro:
+                            lista_filtrada[contador] = elemento
+                            contador += 1
             else:
                 for elemento in lista_app:
                     if elemento[3].lower() not in filtros:
-                        print("app {} in {}".format(elemento[0], elemento[3]))
                         lista_filtrada[contador] = elemento
                         contador += 1
 
@@ -408,9 +397,9 @@ class Ventana(QMainWindow):
         ancho = self.ui.frame.frameGeometry().width()
         global columnas, tamanio
         if ancho < 700: ancho = 776
-        columnas = ancho//230
-        restante = ancho % 230
-        tamanio = 220 + (restante // columnas)
+        columnas = ancho//190
+        restante = ancho % 190
+        tamanio = 180 + (restante // columnas)
 
     #              /Calcular columnas              #
     ################################################
@@ -524,18 +513,13 @@ class Card(QFrame):
         self.cd = Ui_Frame()
         self.cd.setupUi(self)
         # Establecemos los atributos de la app
-        self.cd.btn_select_app.setText("Seleccionar")
-        self.cd.btn_select_app.setToolTip(version)
+        self.cd.btn_select_app.setText("v: {}".format(version))
+        #self.cd.btn_select_app.setToolTip(version)
         self.cd.lbl_name_app.setText(titulo)
         self.cd.image_app.setToolTip("<p wrap='hard'>{}</p>".format(descripcion))
         self.cd.image_app.setWordWrap(True)
-        self.setMinimumSize(QSize(tamanio, 250))
-        self.setMaximumSize(QSize(tamanio, 250))
-
-        self.shadow = QGraphicsDropShadowEffect()
-        self.shadow.setBlurRadius(5)
-        self.shadow.setXOffset(5)
-        self.shadow.setYOffset(5)
+        self.setMinimumSize(QSize(tamanio, (tamanio+10)))
+        self.setMaximumSize(QSize(tamanio, tamanio+10))
 
         global instaladas
         if titulo not in instaladas:
@@ -554,8 +538,10 @@ class Card(QFrame):
         # Establecemos la imagen
         pixmap = QPixmap(url)
         self.cd.image_app.setPixmap(pixmap)
-        self.cd.image_app.setGraphicsEffect(self.shadow)
         self.cd.btn_select_app.clicked.connect(lambda: self.select_app(titulo))
+        self.cd.image_app.clicked.connect(lambda: self.select_app(titulo))
+        self.cd.lbl_name_app.clicked.connect(lambda: self.select_app(titulo))
+
 
 
     def select_app(self, titulo):
@@ -582,49 +568,44 @@ class Card(QFrame):
         self.parentWindow.contar_apps()
 
     def change_color_buton(self, estado: int):
-        if estado == 0: # App seleccionada
-            self.cd.btn_select_app.setText("Deselecionar")
-            self.cd.btn_select_app.setStyleSheet(""
-                "background-color: rgb(234, 102, 70);"
-                "padding: 7px;\n"
-                "border: 2px solid #419fd9;\n"
-                "border-radius: 5px;\n"
-                "background-color: rgb(45, 45, 45);\n"
-                "}\n"
-                "#btn_select_app:hover{\n"
-                "border: 1px solid rgb(142, 231, 255);\n"
-                "padding: 7px;\n"
-                "color:white;\n"
-                "background-color: rgb(65, 159, 217);\n"
-                "border-radius: 5px;\n"
-                "}")
+        if estado == 0: # App seleccionada RGB(0,255,255)
+            color = "color: #419fd9;"
+            r, g, b=0, 255, 255
+            radio = 20
+        elif estado == 1: # App no seleccionada RGB(45,45,45)
+            color = "color: #2d2d2d;"
+            r, g, b=45, 45, 45
+            radio = 0
+        else: # app instalada RGB(0,212,0)
+            color = "color: #2cae29;"
+            r, g, b=0, 212, 0
+            radio = 20
+            self.cd.btn_select_app.setEnabled(False)
+
+        self.setStyleSheet("#Frame{"
+            "background-color: #2d2d2d;"
+            "border-radius: 10px;"
+            "margin: 10px;"
+            "}"
+            "QToolTip {"
+            "border: 2px solid #419fd9;"
+            "border-radius: 4px;"
+            "padding: 2px;"
+            "font-size: 12px;"
+            "background-color: transparent;"
+        "})")
+
+        shadow = QGraphicsDropShadowEffect(self,
+          blurRadius=radio,
+          color=QColor(r, g, b),
+          offset=QPointF(0, 0)
+        )
+        shadow.setXOffset(0)
+        shadow.setYOffset(0)
+        self.setGraphicsEffect(shadow)
+
 
             
-        elif estado == 1: # App no seleccionada
-            self.cd.btn_select_app.setText("Selecionar")
-            self.cd.btn_select_app.setStyleSheet("#btn_select_app{\n"
-                "padding: 7px;\n"
-                "border-radius: 5px;\n"
-                "background-color: rgb(45, 45, 45);\n"
-                "}\n"
-                "#btn_select_app:hover{\n"
-                "border: 1px solid rgb(142, 231, 255);\n"
-                "padding: 7px;\n"
-                "color:white;\n"
-                "background-color: rgb(65, 159, 217);\n"
-                "border-radius: 5px;\n"
-                "}")
-        else:
-            self.cd.btn_select_app.setText("Instalada")
-            self.cd.btn_select_app.setEnabled(False)
-            self.cd.btn_select_app.setStyleSheet(""
-                "background-color: rgb(45, 45, 45);"
-                "padding: 7px;"
-                "border-radius: 5px;"
-                "color: #50aa00;"
-                "border: 2px solid #537a30;"
-                "}"
-                "")
             
 #           /Card para la aplicacion           #
 ################################################

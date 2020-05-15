@@ -11,9 +11,20 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from os.path import join, abspath, dirname
 
 
+class QLabelClickable(QtWidgets.QLabel):
+
+    clicked = QtCore.pyqtSignal()
+    
+    def __init__(self, *args):
+        QtWidgets.QLabel.__init__(self, *args)
+   
+    def mouseReleaseEvent(self, ev):
+        self.clicked.emit()
+
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         ruta_logo = abspath(join(dirname(__file__), 'resources', 'deepines.svg'))
+        ruta_fondo = abspath(join(dirname(__file__), 'resources', 'icono.svg'))
         ruta_star = abspath(join(dirname(__file__), 'resources', 'star.svg'))
         ruta_deepines = abspath(join(dirname(__file__), 'resources', 'deepines_filter.svg'))
         ruta_internet = abspath(join(dirname(__file__), 'resources', 'internet.svg'))
@@ -28,7 +39,7 @@ class Ui_MainWindow(object):
 
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(959, 501)
-        MainWindow.setMinimumSize(QtCore.QSize(700, 500))
+        MainWindow.setMinimumSize(QtCore.QSize(600, 640))
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(ruta_logo), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         MainWindow.setWindowIcon(icon)
@@ -113,6 +124,8 @@ class Ui_MainWindow(object):
         self.frame_2.setObjectName("frame_2")
         self.gridLayout_3 = QtWidgets.QGridLayout(self.frame_2)
         self.gridLayout_3.setObjectName("gridLayout_3")
+        spacerItem2 = QtWidgets.QSpacerItem(20, 10, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
+        self.gridLayout_3.addItem(spacerItem2, 0, 0, 1, 1)
         self.listWidget = QtWidgets.QListWidget(self.frame_2)
         self.listWidget.setMinimumSize(QtCore.QSize(0, 370))
         self.listWidget.setMaximumSize(QtCore.QSize(16777215, 350))
@@ -195,7 +208,7 @@ class Ui_MainWindow(object):
         item.setIcon(icon10)
         item.setFlags(QtCore.Qt.ItemIsSelectable|QtCore.Qt.ItemIsUserCheckable|QtCore.Qt.ItemIsEnabled)
         self.listWidget.addItem(item)
-        self.gridLayout_3.addWidget(self.listWidget, 3, 0, 1, 1)
+        self.gridLayout_3.addWidget(self.listWidget, 2, 0, 1, 1)
         self.frame_4 = QtWidgets.QFrame(self.frame_2)
         self.frame_4.setMinimumSize(QtCore.QSize(0, 30))
         self.frame_4.setMaximumSize(QtCore.QSize(16777215, 30))
@@ -228,24 +241,30 @@ class Ui_MainWindow(object):
         self.pushButton.setObjectName("pushButton")
         self.horizontalLayout_2.addWidget(self.pushButton)
         self.gridLayout_3.addWidget(self.frame_4, 1, 0, 1, 1)
-        spacerItem = QtWidgets.QSpacerItem(20, 20, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
-        self.gridLayout_3.addItem(spacerItem, 0, 0, 1, 1)
-        spacerItem1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-        self.gridLayout_3.addItem(spacerItem1, 4, 0, 1, 1)
-        spacerItem2 = QtWidgets.QSpacerItem(20, 20, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
-        self.gridLayout_3.addItem(spacerItem2, 2, 0, 1, 1)
+        spacerItem3 = QtWidgets.QSpacerItem(20, 20, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.gridLayout_3.addItem(spacerItem3, 3, 0, 1, 1)
+        self.label_2 = QLabelClickable(self.frame_2)
+        self.label_2.setMinimumSize(QtCore.QSize(170, 170))
+        self.label_2.setMaximumSize(QtCore.QSize(170, 170))
+        self.label_2.setStyleSheet("background-color: transparent;")
+        self.label_2.setText("")
+        self.label_2.setPixmap(QtGui.QPixmap(ruta_fondo))
+        self.label_2.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.label_2.setScaledContents(True)
+        self.label_2.setObjectName("label_2")
+        self.gridLayout_3.addWidget(self.label_2, 4, 0, 1, 1)
         self.label = QtWidgets.QLabel(self.frame_2)
         font = QtGui.QFont()
         font.setPointSize(8)
         self.label.setFont(font)
-        self.label.setStyleSheet("background-color: transparent;\n"
-"")
+        self.label.setStyleSheet("background-color: transparent;\n")
+        spacerItem5 = QtWidgets.QSpacerItem(20, 10, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
+        self.gridLayout_3.addItem(spacerItem5, 5, 0, 1, 1)
         self.label.setAlignment(QtCore.Qt.AlignCenter)
         self.label.setObjectName("label")
-        self.gridLayout_3.addWidget(self.label, 5, 0, 1, 1)
+        self.gridLayout_3.addWidget(self.label, 6, 0, 1, 1)
         self.gridLayout_2.addWidget(self.frame_2, 0, 0, 3, 1)
         self.frame = QtWidgets.QScrollArea(self.centralwidget)
-        self.frame.setStyleSheet("")
         self.frame.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)
         self.frame.setWidgetResizable(True)
         self.frame.setAlignment(QtCore.Qt.AlignCenter)
@@ -253,6 +272,7 @@ class Ui_MainWindow(object):
         self.scroll_apps = QtWidgets.QWidget()
         self.scroll_apps.setGeometry(QtCore.QRect(0, 0, 774, 459))
         self.scroll_apps.setObjectName("scroll_apps")
+        self.scroll_apps.setStyleSheet("#scroll_apps{ padding-left: 30px; padding-right: 30px;}")
         self.gridLayout = QtWidgets.QGridLayout(self.scroll_apps)
         self.gridLayout.setObjectName("gridLayout")
         self.gridLayout.setContentsMargins(0, 0, 0, 0)
@@ -294,4 +314,4 @@ class Ui_MainWindow(object):
         item.setText(_translate("MainWindow", "Otros"))
         self.listWidget.setSortingEnabled(__sortingEnabled)
         self.lineEdit.setPlaceholderText(_translate("MainWindow", "Búsqueda"))
-        self.label.setText(_translate("MainWindow", "Version: A.0.4"))
+        self.label.setText(_translate("MainWindow", "Version: A.0.5"))
