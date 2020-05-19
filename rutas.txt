@@ -1,3 +1,6 @@
+/usr/share/polkit.1/actions/org.freedesktop.tienda-deepines.policy
+/usr/bin/tienda-deepines
+
 ruta_logo = abspath(join(dirname(__file__), 'resources', 'deepines_logo_beta.svg'))
 ruta_star = abspath(join(dirname(__file__), 'resources', 'star'))
 ruta_internet = abspath(join(dirname(__file__), 'resources', 'internet.svg'))

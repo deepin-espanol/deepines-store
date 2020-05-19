@@ -39,7 +39,7 @@ class Ui_MainWindow(object):
 
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(959, 501)
-        MainWindow.setMinimumSize(QtCore.QSize(600, 640))
+        MainWindow.setMinimumSize(QtCore.QSize(1000, 650))
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(ruta_logo), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         MainWindow.setWindowIcon(icon)
@@ -127,8 +127,8 @@ class Ui_MainWindow(object):
         spacerItem2 = QtWidgets.QSpacerItem(20, 10, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
         self.gridLayout_3.addItem(spacerItem2, 0, 0, 1, 1)
         self.listWidget = QtWidgets.QListWidget(self.frame_2)
-        self.listWidget.setMinimumSize(QtCore.QSize(0, 370))
-        self.listWidget.setMaximumSize(QtCore.QSize(16777215, 350))
+        self.listWidget.setMinimumSize(QtCore.QSize(0, 380))
+        self.listWidget.setMaximumSize(QtCore.QSize(16777215, 380))
         self.listWidget.setStyleSheet("#listWidget{\n"
 "  padding-left:10px;\n"
 "  padding-top:10px;\n"
@@ -314,4 +314,4 @@ class Ui_MainWindow(object):
         item.setText(_translate("MainWindow", "Otros"))
         self.listWidget.setSortingEnabled(__sortingEnabled)
         self.lineEdit.setPlaceholderText(_translate("MainWindow", "Búsqueda"))
-        self.label.setText(_translate("MainWindow", "Version: A.0.5"))
+        self.label.setText(_translate("MainWindow", "Version: 0.9"))

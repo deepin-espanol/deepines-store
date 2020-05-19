@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE policyconfig PUBLIC
+ "-//freedesktop//DTD PolicyKit Policy Configuration 1.0//EN"
+ "http://www.freedesktop.org/standards/PolicyKit/1/policyconfig.dtd">
+
+<policyconfig>
+    <vendor>DeepinenEspañol</vendor>
+	<vendor_url>https://deepinenespañol.org/</vendor_url>
+    <icon_name>deepines</icon_name>
+    <action id="tienda-deepines">
+        <description xml:lang="es">Permite la instalacion de aplicaciones almacenadas en el repositorio de deepines</description>
+        <message xml:lang="es">Tienda Deepines requiere autenticación</message>
+        <description>Permite la instalacion de aplicaciones almacenadas en el repositorio de deepines</description>
+        <message>Tienda Deepines requiere autenticación</message>
+        <defaults>
+          <allow_any>auth_admin</allow_any>
+          <allow_inactive>auth_admin</allow_inactive>
+          <allow_active>auth_admin</allow_active>
+        </defaults>
+        <annotate key="org.freedesktop.policykit.exec.path">/usr/share/deepines/main.py</annotate>
+        <annotate key="org.freedesktop.policykit.exec.allow_gui">true</annotate>
+  </action>
+
+</policyconfig>

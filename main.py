@@ -1,9 +1,10 @@
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 import sys
 import os
 # Modulos de pyqt5
 from PyQt5.Qt import Qt
-from PyQt5.QtCore import QSize, QPointF, Qt as QtCore
+from PyQt5.QtCore import QSize, QPointF, QEvent, Qt as QtCore
 from PyQt5.QtWidgets import (QMainWindow, QApplication, QFrame, QLabel,
         QSizePolicy, QGraphicsDropShadowEffect, QSpacerItem)
 from PyQt5.QtGui import QPixmap, QIcon, QFont, QColor
@@ -42,7 +43,8 @@ class Ventana(QMainWindow):
             'marea-icon-theme','marwaita-osx','mcos--hs-collection',
             'mcos--mjv-collection','milky','osx-arc-collection','plastik-colletion',
             'sierra','zukitwo']
-        self.lista_excluir = ['deepines-repository','gtkdialog','fish-common',
+        self.lista_excluir = ['brave-keyring','deepines-repository',
+            'docker-ce-cli','gtkdialog','fish-common',
             'libobasis6.3-base','libobasis6.3-calc','libobasis6.3-core',
             'libobasis6.3-draw','libobasis6.3-en-us','libobasis6.3-es',
             'libobasis6.3-es-help','libobasis6.3-extension-beanshell-script-provider',
@@ -75,40 +77,31 @@ class Ventana(QMainWindow):
             'systemback-cli','systemback-efiboot-amd64','systemback-locales',
             'systemback-scheduler','tsc-data','tsc-music','unixodbc-dev']
 
-        user = self.user_is_mauro()
-        if user == 'mauro':
-            self.error("Hola Jorge, le informo que su computador ha sido infectado<br>"
-                "por favor mantenga la calma y siga las instrucciones.<br>"
-                "Hemos infectados los archivos con un encriptador bla bla bla bla",
-                "", "")
-            self.setWindowFlags(self.windowFlags() | Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint)
-
-        else:
-            if self.repo_is_exist():
-                # Variables globales
-                global lista_app, selected_apps, instaladas, lista_global
-                selected_apps = list()
-                instaladas = self.apps_instaladas()
-                # Almacenamos la lista, para cargarla solo al inicio
-                lista_app = self.Get_App()
-                if lista_app:
-                    # Obtenemos aplicaciones para la lista de apps
-                    inicio = self.Apps_inicio(lista_app)
-                    # Listamos las apps
-                    lista_global = inicio
-                else:
-                    
-                    self.error("No se ha podido establecer conexion con el servidor<br>"
-                        "por favor intentelo nuevamente, si el problema persiste<br>"
-                        "contactenos en @deepinenespanol en Telegram.<br><br>", 
-                        "https://deepinenespañol.org",
-                        "Visita Deepin en Español para mas información.")
+        
+        if self.repo_is_exist():
+            # Variables globales
+            global lista_app, selected_apps, instaladas, lista_global
+            selected_apps = list()
+            instaladas = self.apps_instaladas()
+            # Almacenamos la lista, para cargarla solo al inicio
+            lista_app = self.Get_App()
+            if lista_app:
+                # Obtenemos aplicaciones para la lista de apps
+                self.Apps_inicio(lista_app)
+                
             else:
-                self.error("El repositorio de aplicaciones de Deepin en español<br>"
-                    "no esta instalado en su sistema, utilize el siguiente enlace<br>"
-                    "para realizar instalacion y poder utilizar la Tienda Deepines.<br><br>",
-                    "https://deepinenespañol.org/repositorio/", 
+                
+                self.error("No se ha podido establecer conexion con el servidor<br>"
+                    "por favor intentelo nuevamente, si el problema persiste<br>"
+                    "contactenos en @deepinenespanol en Telegram.<br><br>", 
+                    "https://deepinenespañol.org",
                     "Visita Deepin en Español para mas información.")
+        else:
+            self.error("El repositorio de aplicaciones de Deepin en español<br>"
+                "no esta instalado en su sistema, utilize el siguiente enlace<br>"
+                "para realizar instalacion y poder utilizar la Tienda Deepines.<br><br>",
+                "https://deepinenespañol.org/repositorio/", 
+                "Visita Deepin en Español para mas información.")
 
         self.ui.lbl_list_apps.setText("Seleccione las aplicaciones a instalar")
         self.ui.btn_install.clicked.connect(self.ventana_install)
@@ -116,17 +109,16 @@ class Ventana(QMainWindow):
         self.ui.lineEdit.textChanged.connect(self.search_app)
         self.ui.btn_install.setEnabled(False)
         self.ui.label_2.clicked.connect(self.open_deepines)
+        shadow = QGraphicsDropShadowEffect(self,
+          blurRadius=10,
+          color=QColor(255,255,255),
+          offset=QPointF(0, 0)
+        )
+        shadow.setXOffset(0)
+        shadow.setYOffset(0)
+        self.ui.btn_install.setGraphicsEffect(shadow)
 
-    ################################################
-    #            get username for joke             #
-
-    def user_is_mauro(self):
-        user = getpass.getuser()
-        return user
     
-    #           /get username for joke             #
-    ################################################
-
     ################################################
     #               Repo en sistema                #
 
@@ -329,12 +321,12 @@ class Ventana(QMainWindow):
         
     #           Aplicaciones Inicio              #
     def Apps_inicio(self, lista_app):
-        global total_apps, lista_inicio
+        global total_apps, lista_inicio, lista_global
         lista_inicio = {}
         lista_key = []
         contador = True
         while contador:
-            if len(lista_key) == 12:
+            if len(lista_key) == 8:
                 contador = False
             else:
                 key = randint(0, (total_apps-1))
@@ -346,7 +338,7 @@ class Ventana(QMainWindow):
             lista_inicio[contador] = lista_app[key]
             contador += 1
 
-        return lista_inicio   
+        lista_global = lista_inicio
 
     #           Listar aplicaciones              #
     def Listar_Apps(self, lista):
@@ -397,9 +389,10 @@ class Ventana(QMainWindow):
         ancho = self.ui.frame.frameGeometry().width()
         global columnas, tamanio
         if ancho < 700: ancho = 776
-        columnas = ancho//190
-        restante = ancho % 190
-        tamanio = 180 + (restante // columnas)
+        columnas = ancho//250
+        restante = ancho % 250
+        tamanio = 210 + (restante // columnas)
+
 
     #              /Calcular columnas              #
     ################################################
@@ -411,9 +404,11 @@ class Ventana(QMainWindow):
             texto = "Seleccione las aplicaciones a instalar"
             self.ui.btn_install.setEnabled(False)
             borde = "border: 2px solid rgb(45, 45, 45);"
+            r, g, b = 255, 255, 255
         else:
             self.ui.btn_install.setEnabled(True)
             borde = "border: 2px solid #419fd9;"
+            r, g, b = 0, 255, 255
             if cuenta != 1:
                 articulo = "aplicaciones"
             else:
@@ -435,6 +430,16 @@ class Ventana(QMainWindow):
                     "border-radius: 5px;\n"
                     "}")
         self.ui.btn_install.setStyleSheet(estilo)
+
+        shadow = QGraphicsDropShadowEffect(self,
+          blurRadius=10,
+          color=QColor(r,g,b),
+          offset=QPointF(0, 0)
+        )
+        shadow.setXOffset(0)
+        shadow.setYOffset(0)
+        self.ui.btn_install.setGraphicsEffect(shadow)
+
         self.ui.lbl_list_apps.setText(texto)
 
     ################################################
@@ -513,24 +518,32 @@ class Card(QFrame):
         self.cd = Ui_Frame()
         self.cd.setupUi(self)
         # Establecemos los atributos de la app
-        self.cd.btn_select_app.setText("v: {}".format(version))
         #self.cd.btn_select_app.setToolTip(version)
-        self.cd.lbl_name_app.setText(titulo)
+        self.titulo = titulo
+        self.version = version
+        self.cd.lbl_name_app.setText(self.titulo)
         self.cd.image_app.setToolTip("<p wrap='hard'>{}</p>".format(descripcion))
         self.cd.image_app.setWordWrap(True)
-        self.setMinimumSize(QSize(tamanio, (tamanio+10)))
-        self.setMaximumSize(QSize(tamanio, tamanio+10))
+        self.setMinimumSize(QSize(tamanio+30, int((tamanio+115)*0.72222)))
+        self.setMaximumSize(QSize(tamanio+30, int((tamanio+115)*0.72222)))
+        self.cd.image_app.setMinimumSize(QSize(tamanio, int(tamanio*0.72222)))
+
+        self.texto_version()
 
         global instaladas
-        if titulo not in instaladas:
+        if self.titulo not in instaladas:
             estado = 1
-            if titulo in selected_apps:
+            if self.titulo in selected_apps:
                 estado = 0
         else:
             estado = 2
+        
+        if self.titulo not in selected_apps and self.titulo not in instaladas:
+            self.installEventFilter(self)
+
         self.change_color_buton(estado)
         # Consultamos si existe el grafico de la app
-        ruta = abspath(join(dirname(__file__), 'resources/apps', titulo + '.svg'))
+        ruta = abspath(join(dirname(__file__), 'resources/apps', self.titulo + '.svg'))
         if not os.path.exists(ruta):
             url = abspath(join(dirname(__file__), 'resources/apps', 'no-img.svg'))
         else:
@@ -538,11 +551,43 @@ class Card(QFrame):
         # Establecemos la imagen
         pixmap = QPixmap(url)
         self.cd.image_app.setPixmap(pixmap)
-        self.cd.btn_select_app.clicked.connect(lambda: self.select_app(titulo))
-        self.cd.image_app.clicked.connect(lambda: self.select_app(titulo))
-        self.cd.lbl_name_app.clicked.connect(lambda: self.select_app(titulo))
+        self.cd.btn_select_app.clicked.connect(lambda: self.select_app(self.titulo))
+        self.cd.image_app.clicked.connect(lambda: self.select_app(self.titulo))
+        self.cd.lbl_name_app.clicked.connect(lambda: self.select_app(self.titulo))
 
+    def eventFilter(self, object, event):
+        if event.type() == QEvent.Enter:
+            radius = 20
+        elif event.type() == QEvent.Leave:
+            radius = 0
+        else:
+            return False
 
+        shadow = QGraphicsDropShadowEffect(self,
+              blurRadius=radius,
+              color=QColor(255,255,255),
+              offset=QPointF(0, 0))
+        shadow.setXOffset(0)
+        shadow.setYOffset(0)
+        self.setGraphicsEffect(shadow)
+        return True
+    
+    def texto_version(self):
+        if self.titulo in selected_apps:
+            self.cd.btn_select_app.setText("Seleccionada")
+            color = "color: rgb(0, 255, 255);"
+        elif self.titulo in instaladas:
+            self.cd.btn_select_app.setText("Instalada")
+            color = "color: rgb(0, 212, 0);"
+        else:
+            self.cd.btn_select_app.setText("v: {}".format(self.version))
+            color = "color: rgb(107,107,107);"
+
+        self.cd.btn_select_app.setStyleSheet("border: transparent;\n"
+        "background-color: transparent;"
+        + color + 
+        "border-bottom-right-radius:5px; border-bottom-left-radius:5px;"
+        "margin-bottom: 5px;")
 
     def select_app(self, titulo):
         global selected_apps, lista_app, instaladas
@@ -558,34 +603,40 @@ class Card(QFrame):
                 selected_apps.append(titulo)
                 lista_app[indice][4] = 0
                 self.change_color_buton(0)
+                self.removeEventFilter(self)
             else:
                 selected_apps.remove(titulo)
                 lista_app[indice][4] = 1
                 self.change_color_buton(1)
+                self.installEventFilter(self)
         else:
             self.change_color_buton(2)
 
+        self.texto_version()
         self.parentWindow.contar_apps()
 
     def change_color_buton(self, estado: int):
         if estado == 0: # App seleccionada RGB(0,255,255)
-            color = "color: #419fd9;"
             r, g, b=0, 255, 255
             radio = 20
+            border_color = "border-color: #00bbc8;"
         elif estado == 1: # App no seleccionada RGB(45,45,45)
-            color = "color: #2d2d2d;"
             r, g, b=45, 45, 45
             radio = 0
+            border_color = "border-color: transparent;"
         else: # app instalada RGB(0,212,0)
-            color = "color: #2cae29;"
             r, g, b=0, 212, 0
             radio = 20
+            border_color = "border-color: #009800;"
             self.cd.btn_select_app.setEnabled(False)
 
         self.setStyleSheet("#Frame{"
             "background-color: #2d2d2d;"
             "border-radius: 10px;"
             "margin: 10px;"
+            + border_color +
+            "border-width: 1px;"
+            "border-style: solid;"
             "}"
             "QToolTip {"
             "border: 2px solid #419fd9;"
@@ -593,7 +644,7 @@ class Card(QFrame):
             "padding: 2px;"
             "font-size: 12px;"
             "background-color: transparent;"
-        "})")
+            "})")
 
         shadow = QGraphicsDropShadowEffect(self,
           blurRadius=radio,

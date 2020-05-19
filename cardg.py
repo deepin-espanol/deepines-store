@@ -45,15 +45,14 @@ class Ui_Frame(object):
         self.lbl_name_app.setStyleSheet("background-color: transparent;"
             "margin-top:5px;")
         self.lbl_name_app.setText("")
-        self.lbl_name_app.setScaledContents(False)
         self.lbl_name_app.setAlignment(QtCore.Qt.AlignCenter)
         self.lbl_name_app.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-        self.lbl_name_app.setWordWrap(True)
         font = QtGui.QFont()
         font.setFamily("Segoe UI Semibold")
         font.setPointSize(11)
         font.setItalic(False)
         self.lbl_name_app.setFont(font)
+        self.lbl_name_app.setWordWrap(True)
         self.lbl_name_app.setObjectName("lbl_name_app")
         self.verticalLayout.addWidget(self.lbl_name_app)
         self.btn_select_app = QLabelClickable(Frame)
@@ -65,10 +64,6 @@ class Ui_Frame(object):
         self.btn_select_app.setWordWrap(True)
         self.btn_select_app.setAlignment(QtCore.Qt.AlignCenter)
         self.btn_select_app.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-        self.btn_select_app.setStyleSheet("border: transparent;\n"
-        "background-color: transparent; color: rgb(107,107,107);"
-        "border-bottom-right-radius:5px; border-bottom-left-radius:5px;"
-        "margin-bottom: 5px;")
         self.btn_select_app.setObjectName("btn_select_app")
         self.verticalLayout.addWidget(self.btn_select_app)
 
