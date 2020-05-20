@@ -137,6 +137,7 @@ class Ui_MainWindow(object):
 "  background-color: rgba(16, 16, 16, 163);\n"
 "}\n"
 "#listWidget:item{\n"
+# Top Right Bottom Left
 "  padding: 5px 5px 5px 5px;\n"
 "}\n"
 "#listWidget:item:selected{\n"

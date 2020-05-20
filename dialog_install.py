@@ -23,7 +23,7 @@ class Ui_Form(QtWidgets.QWidget):
         icon = QIcon()
         icon.addPixmap(QPixmap(ruta_logo),QIcon.Normal, QIcon.Off)
         self.setWindowIcon(icon)
-        self.setWindowTitle("Deepines Store - Instalacion de apps")
+        self.setWindowTitle("Proceso de instalación - Tienda Deepines")
         #self.setWindowFlags(self.windowFlags() | Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint)
 
         self.gridLayout = QtWidgets.QGridLayout(self)

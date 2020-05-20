@@ -176,7 +176,7 @@ border-radius: 5px;
       </property>
       <property name="maximumSize">
        <size>
-        <width>183</width>
+        <width>300</width>
         <height>16777215</height>
        </size>
       </property>
@@ -279,18 +279,6 @@ border: 0px solid;</string>
        </item>
        <item row="2" column="0">
         <widget class="QListWidget" name="listWidget">
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>380</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>380</height>
-          </size>
-         </property>
          <property name="styleSheet">
           <string notr="true">#listWidget{
   padding-left:10px;
@@ -530,6 +518,12 @@ margin-left: -8px;</string>
     </item>
     <item row="0" column="1" rowspan="2" colspan="4">
      <widget class="QScrollArea" name="frame">
+      <property name="minimumSize">
+       <size>
+        <width>776</width>
+        <height>0</height>
+       </size>
+      </property>
       <property name="styleSheet">
        <string notr="true"/>
       </property>
@@ -547,7 +541,7 @@ margin-left: -8px;</string>
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>815</width>
+         <width>774</width>
          <height>691</height>
         </rect>
        </property>
