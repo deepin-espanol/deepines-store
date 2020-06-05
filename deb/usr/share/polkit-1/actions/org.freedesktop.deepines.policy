@@ -7,7 +7,7 @@
     <vendor>DeepinenEspañol</vendor>
 	<vendor_url>https://deepinenespañol.org/</vendor_url>
     <icon_name>deepines</icon_name>
-    <action id="tienda-deepines">
+    <action id="deepines">
         <description xml:lang="es">Permite la instalacion de aplicaciones almacenadas en el repositorio de deepines</description>
         <message xml:lang="es">Tienda Deepines requiere autenticación</message>
         <description>Permite la instalacion de aplicaciones almacenadas en el repositorio de deepines</description>
@@ -17,7 +17,7 @@
           <allow_inactive>auth_admin</allow_inactive>
           <allow_active>auth_admin</allow_active>
         </defaults>
-        <annotate key="org.freedesktop.policykit.exec.path">/usr/share/deepines/main.py</annotate>
+        <annotate key="org.freedesktop.policykit.exec.path">/usr/share/deepines/deepines</annotate>
         <annotate key="org.freedesktop.policykit.exec.allow_gui">true</annotate>
   </action>
 

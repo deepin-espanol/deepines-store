@@ -20,21 +20,20 @@ import getpass
 # Procesos en segundo plano
 import subprocess
 # Guis o modulos locales
-from maing import Ui_MainWindow
-from cardg import Ui_Frame
-from dialog_install import Ui_Form as DInstall
+from deepinesStore.maing import Ui_MainWindow
+from deepinesStore.cardg import Ui_Frame
+from deepinesStore.dialog_install import Ui_Form as DInstall
+from deepinesStore.about import Dialog as DAbout
 
-# QThread para instalar en segundo plano
-from install_thread import External
 # Variables globales
 global lista_app, total_apps, lista_inicio, lista_global
-global selected_apps, instaladas, columnas, tamanio
+global selected_apps, instaladas, columnas, tamanio, repo
 
 class Ventana(QMainWindow):
     def __init__(self):
         super(Ventana, self).__init__()
         # Inicializamos la gui
-        self.ui = Ui_MainWindow()
+        self.ui = Ui_MainWindow(width, height)
         self.ui.setupUi(self)
         self.center()
         self.setAttribute(Qt.WA_TranslucentBackground, True )
@@ -78,9 +77,10 @@ class Ventana(QMainWindow):
             'systemback-scheduler','tsc-data','tsc-music','unixodbc-dev']
 
         
-        if self.repo_is_exist():
+        global lista_app, selected_apps, instaladas, lista_global, repo
+        repo = self.repo_is_exist()
+        if repo:
             # Variables globales
-            global lista_app, selected_apps, instaladas, lista_global
             selected_apps = list()
             instaladas = self.apps_instaladas()
             # Almacenamos la lista, para cargarla solo al inicio
@@ -90,7 +90,6 @@ class Ventana(QMainWindow):
                 self.Apps_inicio(lista_app)
                 
             else:
-                
                 self.error("No se ha podido establecer conexion con el servidor<br>"
                     "por favor intentelo nuevamente, si el problema persiste<br>"
                     "contactenos en @deepinenespanol en Telegram.<br><br>", 
@@ -109,6 +108,7 @@ class Ventana(QMainWindow):
         self.ui.lineEdit.textChanged.connect(self.search_app)
         self.ui.btn_install.setEnabled(False)
         self.ui.label_2.clicked.connect(self.open_deepines)
+        self.ui.label.clicked.connect(self.acerca_de)
         shadow = QGraphicsDropShadowEffect(self,
           blurRadius=10,
           color=QColor(255,255,255),
@@ -161,7 +161,8 @@ class Ventana(QMainWindow):
     ################################################
 
     def resizeEvent(self, event):
-        self.Listar_Apps(lista_global)
+        if repo:
+            self.Listar_Apps(lista_global)
 
 
     def open_deepines(self):
@@ -386,12 +387,17 @@ class Ventana(QMainWindow):
 
     #              Calcular columnas               #
     def calcular_columnas(self):
+        if width > 1000 and width < 2500:
+            base = 210
+        elif width > 2500 :
+            base = 420
+
         ancho = self.ui.frame.frameGeometry().width()
         global columnas, tamanio
         if ancho < 700: ancho = 776
         columnas = ancho//250
         restante = ancho % 250
-        tamanio = 210 + (restante // columnas)
+        tamanio = base + (restante // columnas)
 
 
     #              /Calcular columnas              #
@@ -451,6 +457,16 @@ class Ventana(QMainWindow):
         self.modal.show()
 
     #                 /Instalacion                 #
+    ################################################
+
+    ################################################
+    #                   Acerca de                  #
+
+    def acerca_de(self):
+        self.modal = DAbout(width, height)
+        self.modal.show()
+
+    #                   /cerca de                  #
     ################################################
 
     ################################################
@@ -661,8 +677,11 @@ class Card(QFrame):
 #           /Card para la aplicacion           #
 ################################################
 
-if __name__ == '__main__':
+def ejecutar():
   app = QApplication(sys.argv)
+  global width, height
+  screen_rect = app.desktop().screenGeometry()
+  width, height = screen_rect.width(), screen_rect.height()
   win = Ventana()
   os.system('xprop -f _KDE_NET_WM_BLUR_BEHIND_REGION 32c -set _KDE_NET_WM_BLUR_BEHIND_REGION 0 -id {}'.format(int(win.winId())))
   win.show()

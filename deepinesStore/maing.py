@@ -22,6 +22,18 @@ class QLabelClickable(QtWidgets.QLabel):
         self.clicked.emit()
 
 class Ui_MainWindow(object):
+    def __init__(self, width, height):
+        #print("El ancho del monitor es: {}".format(width))
+
+        self.width_screen = int(width * 0.7)
+        #print("El width_screen ({}*0.7) es: {}".format(width, self.width_screen))
+
+        self.height_screen = int(height * 0.85)
+        #print("El height_screen ({}*0.8) es: {}".format(height, self.height_screen))
+
+        self.size_frame = int(width * 0.14)
+        #print("El frame ({}*0.14) es: {}".format(width, self.size_frame))
+
     def setupUi(self, MainWindow):
         ruta_logo = abspath(join(dirname(__file__), 'resources', 'deepines.svg'))
         ruta_fondo = abspath(join(dirname(__file__), 'resources', 'icono.svg'))
@@ -38,8 +50,8 @@ class Ui_MainWindow(object):
         ruta_search = abspath(join(dirname(__file__), 'resources', 'magnifying-glass.svg'))
 
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(959, 501)
-        MainWindow.setMinimumSize(QtCore.QSize(1000, 650))
+        MainWindow.setMinimumSize(QtCore.QSize(945, 630))
+        MainWindow.resize(self.width_screen, self.height_screen)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(ruta_logo), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         MainWindow.setWindowIcon(icon)
@@ -116,19 +128,51 @@ class Ui_MainWindow(object):
         self.gridLayout_4.addLayout(self.horizontalLayout_3, 0, 0, 1, 1)
         self.gridLayout_2.addWidget(self.widget, 2, 1, 1, 4)
         self.frame_2 = QtWidgets.QFrame(self.centralwidget)
-        self.frame_2.setMinimumSize(QtCore.QSize(183, 0))
-        self.frame_2.setMaximumSize(QtCore.QSize(183, 16777215))
+        self.frame_2.setMinimumSize(QtCore.QSize(self.size_frame, 0))
+        self.frame_2.setMaximumSize(QtCore.QSize(self.size_frame, 16777215))
         self.frame_2.setStyleSheet("background-color: rgba(16, 16, 16, 180);")
         self.frame_2.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame_2.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame_2.setObjectName("frame_2")
-        self.gridLayout_3 = QtWidgets.QGridLayout(self.frame_2)
+        self.gridLayout_3 = QtWidgets.QVBoxLayout(self.frame_2)
         self.gridLayout_3.setObjectName("gridLayout_3")
         spacerItem2 = QtWidgets.QSpacerItem(20, 10, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
-        self.gridLayout_3.addItem(spacerItem2, 0, 0, 1, 1)
+        # Primer item, spaciador vertical
+        self.gridLayout_3.addItem(spacerItem2)
+        self.frame_4 = QtWidgets.QFrame(self.frame_2)
+        self.frame_4.setMinimumSize(QtCore.QSize(0, 30))
+        self.frame_4.setMaximumSize(QtCore.QSize(16777215, 30))
+        self.frame_4.setStyleSheet("border-radius: 10px;\n"
+"background-color: rgba(16, 16, 16, 122);\n"
+"color: white;")
+        self.frame_4.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_4.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_4.setObjectName("frame_4")
+        self.horizontalLayout_2 = QtWidgets.QHBoxLayout(self.frame_4)
+        self.horizontalLayout_2.setObjectName("horizontalLayout_2")
+        self.lineEdit = QtWidgets.QLineEdit(self.frame_4)
+        self.lineEdit.setStyleSheet("background-color: transparent;\n"
+"color: white;\n"
+"border-color: transparent;\n"
+"border: 0px solid;")
+        self.lineEdit.setAlignment(QtCore.Qt.AlignCenter)
+        self.lineEdit.setObjectName("lineEdit")
+        self.horizontalLayout_2.addWidget(self.lineEdit)
+        self.pushButton = QtWidgets.QPushButton(self.frame_4)
+        self.pushButton.setStyleSheet("margin-left: 0px;\n"
+"background-color: transparent;\n"
+"border-color: transparent;\n"
+"border: 0px solid;")
+        self.pushButton.setText("")
+        icon11 = QtGui.QIcon()
+        icon11.addPixmap(QtGui.QPixmap(ruta_search), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.pushButton.setIcon(icon11)
+        self.pushButton.setIconSize(QtCore.QSize(13, 13))
+        self.pushButton.setObjectName("pushButton")
+        self.horizontalLayout_2.addWidget(self.pushButton)
+        # Segundo item, cuadro busqueda
+        self.gridLayout_3.addWidget(self.frame_4)
         self.listWidget = QtWidgets.QListWidget(self.frame_2)
-        self.listWidget.setMinimumSize(QtCore.QSize(0, 380))
-        self.listWidget.setMaximumSize(QtCore.QSize(16777215, 380))
         self.listWidget.setStyleSheet("#listWidget{\n"
 "  padding-left:10px;\n"
 "  padding-top:10px;\n"
@@ -209,61 +253,39 @@ class Ui_MainWindow(object):
         item.setIcon(icon10)
         item.setFlags(QtCore.Qt.ItemIsSelectable|QtCore.Qt.ItemIsUserCheckable|QtCore.Qt.ItemIsEnabled)
         self.listWidget.addItem(item)
-        self.gridLayout_3.addWidget(self.listWidget, 2, 0, 1, 1)
-        self.frame_4 = QtWidgets.QFrame(self.frame_2)
-        self.frame_4.setMinimumSize(QtCore.QSize(0, 30))
-        self.frame_4.setMaximumSize(QtCore.QSize(16777215, 30))
-        self.frame_4.setStyleSheet("border-radius: 10px;\n"
-"background-color: rgba(16, 16, 16, 122);\n"
-"color: white;")
-        self.frame_4.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.frame_4.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.frame_4.setObjectName("frame_4")
-        self.horizontalLayout_2 = QtWidgets.QHBoxLayout(self.frame_4)
-        self.horizontalLayout_2.setObjectName("horizontalLayout_2")
-        self.lineEdit = QtWidgets.QLineEdit(self.frame_4)
-        self.lineEdit.setStyleSheet("background-color: transparent;\n"
-"color: white;\n"
-"border-color: transparent;\n"
-"border: 0px solid;")
-        self.lineEdit.setAlignment(QtCore.Qt.AlignCenter)
-        self.lineEdit.setObjectName("lineEdit")
-        self.horizontalLayout_2.addWidget(self.lineEdit)
-        self.pushButton = QtWidgets.QPushButton(self.frame_4)
-        self.pushButton.setStyleSheet("margin-left: 0px;\n"
-"background-color: transparent;\n"
-"border-color: transparent;\n"
-"border: 0px solid;")
-        self.pushButton.setText("")
-        icon11 = QtGui.QIcon()
-        icon11.addPixmap(QtGui.QPixmap(ruta_search), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.pushButton.setIcon(icon11)
-        self.pushButton.setIconSize(QtCore.QSize(13, 13))
-        self.pushButton.setObjectName("pushButton")
-        self.horizontalLayout_2.addWidget(self.pushButton)
-        self.gridLayout_3.addWidget(self.frame_4, 1, 0, 1, 1)
-        spacerItem3 = QtWidgets.QSpacerItem(20, 20, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-        self.gridLayout_3.addItem(spacerItem3, 3, 0, 1, 1)
-        self.label_2 = QLabelClickable(self.frame_2)
+        # Tercer item, lista de filtros
+        self.gridLayout_3.addWidget(self.listWidget)
+        
+        self.widget_2 = QtWidgets.QWidget(self.frame_2)
+        self.widget_2.setStyleSheet("background-color:transparent;")
+        self.widget_2.setObjectName("widget_2")
+        self.horizontalLayout = QtWidgets.QHBoxLayout(self.widget_2)
+        self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout.setSpacing(0)
+        self.horizontalLayout.setObjectName("horizontalLayout")
+        self.label_2 = QLabelClickable(self.widget_2)
         self.label_2.setMinimumSize(QtCore.QSize(170, 170))
-        self.label_2.setMaximumSize(QtCore.QSize(170, 170))
-        self.label_2.setStyleSheet("background-color: transparent;")
+        self.label_2.setMaximumSize(QtCore.QSize(180, 180))
+        self.label_2.setStyleSheet("background-color: transparent;\n"
+"margin-left: -8px;")
         self.label_2.setText("")
-        self.label_2.setPixmap(QtGui.QPixmap(ruta_fondo))
         self.label_2.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.label_2.setPixmap(QtGui.QPixmap(ruta_fondo))
         self.label_2.setScaledContents(True)
+        self.label_2.setOpenExternalLinks(True)
         self.label_2.setObjectName("label_2")
-        self.gridLayout_3.addWidget(self.label_2, 4, 0, 1, 1)
-        self.label = QtWidgets.QLabel(self.frame_2)
+        self.horizontalLayout.addWidget(self.label_2)
+        # Cuarto item, img deepines
+        self.gridLayout_3.addWidget(self.widget_2)
+        self.label = QLabelClickable(self.frame_2)
         font = QtGui.QFont()
         font.setPointSize(8)
         self.label.setFont(font)
         self.label.setStyleSheet("background-color: transparent;\n")
-        spacerItem5 = QtWidgets.QSpacerItem(20, 10, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
-        self.gridLayout_3.addItem(spacerItem5, 5, 0, 1, 1)
         self.label.setAlignment(QtCore.Qt.AlignCenter)
         self.label.setObjectName("label")
-        self.gridLayout_3.addWidget(self.label, 6, 0, 1, 1)
+        # Quinto item, label version
+        self.gridLayout_3.addWidget(self.label)
         self.gridLayout_2.addWidget(self.frame_2, 0, 0, 3, 1)
         self.frame = QtWidgets.QScrollArea(self.centralwidget)
         self.frame.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)
@@ -315,4 +337,4 @@ class Ui_MainWindow(object):
         item.setText(_translate("MainWindow", "Otros"))
         self.listWidget.setSortingEnabled(__sortingEnabled)
         self.lineEdit.setPlaceholderText(_translate("MainWindow", "Búsqueda"))
-        self.label.setText(_translate("MainWindow", "Version: 0.9"))
+        self.label.setText(_translate("MainWindow", "Version: 0.9.6"))

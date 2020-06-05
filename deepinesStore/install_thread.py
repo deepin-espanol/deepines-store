@@ -42,7 +42,10 @@ class External(QObject):
                 while not ejecucion.poll():
                     line = ejecucion.stdout.readline()
                     if line != '\n':
-                        self.progress.emit(line)
+                        if 'deepines' in line:
+                            self.progress.emit("Descargando {}".format(elemento))
+                        else:
+                            self.progress.emit(line)
                     
                     if not line:
                         break

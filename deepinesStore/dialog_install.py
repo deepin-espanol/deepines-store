@@ -10,7 +10,7 @@
 from PyQt5 import QtWidgets
 from PyQt5.QtCore import Qt, QThread
 from PyQt5.QtGui import QPixmap, QIcon, QTextCursor
-from install_thread import External
+from deepinesStore.install_thread import External
 from os.path import join, abspath, dirname
 
 class Ui_Form(QtWidgets.QWidget):
