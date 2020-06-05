@@ -32,6 +32,7 @@ class Ui_MainWindow(object):
         #print("El height_screen ({}*0.8) es: {}".format(height, self.height_screen))
 
         self.size_frame = int(width * 0.14)
+        if self.size_frame < 200: self.size_frame = 200
         #print("El frame ({}*0.14) es: {}".format(width, self.size_frame))
 
     def setupUi(self, MainWindow):
@@ -264,10 +265,9 @@ class Ui_MainWindow(object):
         self.horizontalLayout.setSpacing(0)
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.label_2 = QLabelClickable(self.widget_2)
-        self.label_2.setMinimumSize(QtCore.QSize(170, 170))
+        self.label_2.setMinimumSize(QtCore.QSize(180, 180))
         self.label_2.setMaximumSize(QtCore.QSize(180, 180))
-        self.label_2.setStyleSheet("background-color: transparent;\n"
-"margin-left: -8px;")
+        self.label_2.setStyleSheet("background-color: transparent;")
         self.label_2.setText("")
         self.label_2.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.label_2.setPixmap(QtGui.QPixmap(ruta_fondo))

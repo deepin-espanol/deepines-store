@@ -4,9 +4,10 @@ import sys
 import os
 # Modulos de pyqt5
 from PyQt5.Qt import Qt
-from PyQt5.QtCore import QSize, QPointF, QEvent, Qt as QtCore
+from PyQt5.QtCore import QSize, QPointF, QPoint, QEvent, Qt as QtCore
 from PyQt5.QtWidgets import (QMainWindow, QApplication, QFrame, QLabel,
-        QSizePolicy, QGraphicsDropShadowEffect, QSpacerItem)
+        QSizePolicy, QGraphicsDropShadowEffect, QSpacerItem,
+        QDesktopWidget)
 from PyQt5.QtGui import QPixmap, QIcon, QFont, QColor
 # Modulos para el scraping
 from bs4 import BeautifulSoup
@@ -35,7 +36,6 @@ class Ventana(QMainWindow):
         # Inicializamos la gui
         self.ui = Ui_MainWindow(width, height)
         self.ui.setupUi(self)
-        self.center()
         self.setAttribute(Qt.WA_TranslucentBackground, True )
         self.lista_deepines = ['conkys-widgets','deepin-blu-red','deepin-osx',
             'dexter-icon-theme','firefox-latest','halo-icon-theme',
@@ -117,6 +117,7 @@ class Ventana(QMainWindow):
         shadow.setXOffset(0)
         shadow.setYOffset(0)
         self.ui.btn_install.setGraphicsEffect(shadow)
+        self.center()
 
     
     ################################################
@@ -161,9 +162,9 @@ class Ventana(QMainWindow):
     ################################################
 
     def resizeEvent(self, event):
+
         if repo:
             self.Listar_Apps(lista_global)
-
 
     def open_deepines(self):
         subprocess.Popen(["x-www-browser", "deepinenespañol.org"],
@@ -203,6 +204,7 @@ class Ventana(QMainWindow):
 
     def listwidgetclicked(self, item):
         filtro = list() # Limpiamos la lista
+        global lista_global
 
         if item.text() == "Inicio":
             self.Listar_Apps(lista_inicio)
@@ -240,6 +242,8 @@ class Ventana(QMainWindow):
             global lista_global
             lista_global = self.Get_App_Filter(lista_app, filtro)
             self.Listar_Apps(lista_global)
+        else:
+            lista_global = lista_inicio
 
         self.clear_search_txt()
 
@@ -387,7 +391,9 @@ class Ventana(QMainWindow):
 
     #              Calcular columnas               #
     def calcular_columnas(self):
-        if width > 1000 and width < 2500:
+        if width < 1360:
+            base = 200
+        elif width >= 1360 and width < 2500:
             base = 210
         elif width > 2500 :
             base = 420
@@ -416,10 +422,11 @@ class Ventana(QMainWindow):
             borde = "border: 2px solid #419fd9;"
             r, g, b = 0, 255, 255
             if cuenta != 1:
-                articulo = "aplicaciones"
+                articulo, plural = "es", "s"
             else:
-                articulo = "aplicacion"
-            texto = "Seleccionada {} {} para instalar".format(cuenta, articulo)
+                articulo, plural = "", ""
+            texto = "{} aplicacion{} seleccionada{} para instalar.".format(
+                cuenta, articulo, plural)
 
         estilo = ("#btn_install{\n"
                     "color: #fff;\n"
@@ -472,11 +479,12 @@ class Ventana(QMainWindow):
     ################################################
     #                   Centrar                    #
     def center(self):
-        frameGm = self.frameGeometry()
-        screen = QApplication.desktop().screenNumber(QApplication.desktop().cursor().pos())
-        centerPoint = QApplication.desktop().screenGeometry(screen).center()
-        frameGm.moveCenter(centerPoint)
-        self.move(frameGm.topLeft())
+        qr = self.frameGeometry()
+        cp = QDesktopWidget().availableGeometry().center()
+        qr.moveCenter(cp)
+        mover = QPoint(self.x(), 20)
+        self.move(qr.topLeft())
+        self.move(self.x(), self.y() - mover.y())
 
     #                  /Centrar                    #
     ################################################
