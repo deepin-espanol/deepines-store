@@ -11,6 +11,7 @@ from PyQt5 import QtWidgets
 from PyQt5.QtCore import Qt, QThread
 from PyQt5.QtGui import QPixmap, QIcon, QTextCursor
 from deepinesStore.install_thread import External
+from deepinesStore.notification import notification
 from os.path import join, abspath, dirname
 
 class Ui_Form(QtWidgets.QWidget):
@@ -103,11 +104,15 @@ class Ui_Form(QtWidgets.QWidget):
         self.plainTextEdit.moveCursor(QTextCursor.End)
 
     def finalizar(self, elemento):
+        message = "Se han terminado de instalar {}.\n".format(elemento)
+        notification(message)
         self.plainTextEdit.insertPlainText(
             "\nSe han terminado de instalar {}.\n".format(elemento))
         self.plainTextEdit.moveCursor(QTextCursor.End)
 
     def error(self):
+        message = "Ha ocurrido un error, intentelo nuevamente"
+        notification(message)
         self.plainTextEdit.insertPlainText("\n\nHa ocurrido un error, intentelo"
             " nuevamente.\n"
             "Si el problema persiste, comuniquese con el administrador.\n")
