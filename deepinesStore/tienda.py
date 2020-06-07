@@ -163,7 +163,7 @@ class Ventana(QMainWindow):
 
     def resizeEvent(self, event):
 
-        if repo:
+        if repo and lista_app:
             self.Listar_Apps(lista_global)
 
     def open_deepines(self):
