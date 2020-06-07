@@ -57,29 +57,29 @@ class Ui_MainWindow(object):
         icon.addPixmap(QtGui.QPixmap(ruta_logo), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         MainWindow.setWindowIcon(icon)
         MainWindow.setStyleSheet("QScrollBar:vertical {\n"
-"    background: transparent;\n"
-"    width: 10px;\n"
-"    margin: 0px 0px 0px 0px;\n"
-"}\n"
-"QScrollBar::handle:vertical {\n"
-"    background-color: #545454;\n"
-"    border-radius: 4px;\n"
-"    min-height: 5px;\n"
-"}\n"
-"QScrollBar::add-line:vertical {\n"
-"    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,\n"
-"    stop: 0 rgb(32, 47, 130), stop: 0.5 rgb(32, 47, 130),  stop:1 rgb(32, 47, 130));\n"
-"    height: 0px;\n"
-"    subcontrol-position: bottom;\n"
-"    subcontrol-origin: margin;\n"
-"}\n"
-"QScrollBar::sub-line:vertical {\n"
-"    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,\n"
-"    stop: 0  rgb(32, 47, 130), stop: 0.5 rgb(32, 47, 130),  stop:1 rgb(32, 47, 130));\n"
-"    height: 0 px;\n"
-"    subcontrol-position: top;\n"
-"    subcontrol-origin: margin;\n"
-"}")
+            "    background: transparent;\n"
+            "    width: 10px;\n"
+            "    margin: 0px 0px 0px 0px;\n"
+            "}\n"
+            "QScrollBar::handle:vertical {\n"
+            "    background-color: #545454;\n"
+            "    border-radius: 4px;\n"
+            "    min-height: 5px;\n"
+            "}\n"
+            "QScrollBar::add-line:vertical {\n"
+            "    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,\n"
+            "    stop: 0 rgb(32, 47, 130), stop: 0.5 rgb(32, 47, 130),  stop:1 rgb(32, 47, 130));\n"
+            "    height: 0px;\n"
+            "    subcontrol-position: bottom;\n"
+            "    subcontrol-origin: margin;\n"
+            "}\n"
+            "QScrollBar::sub-line:vertical {\n"
+            "    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,\n"
+            "    stop: 0  rgb(32, 47, 130), stop: 0.5 rgb(32, 47, 130),  stop:1 rgb(32, 47, 130));\n"
+            "    height: 0 px;\n"
+            "    subcontrol-position: top;\n"
+            "    subcontrol-origin: margin;\n"
+        "}")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setStyleSheet("background-color: rgba(30, 30, 30, 100);"
             "color: #b5c5d1;")
@@ -88,6 +88,8 @@ class Ui_MainWindow(object):
         self.gridLayout_2.setContentsMargins(0, 0, 0, 0)
         self.gridLayout_2.setSpacing(0)
         self.gridLayout_2.setObjectName("gridLayout_2")
+
+        # Frame apps seleccionadas
         self.widget = QtWidgets.QWidget(self.centralwidget)
         self.widget.setMinimumSize(QtCore.QSize(0, 40))
         self.widget.setMaximumSize(QtCore.QSize(16777215, 40))
@@ -127,7 +129,9 @@ class Ui_MainWindow(object):
         self.btn_install.setObjectName("btn_install")
         self.horizontalLayout_3.addWidget(self.btn_install)
         self.gridLayout_4.addLayout(self.horizontalLayout_3, 0, 0, 1, 1)
-        self.gridLayout_2.addWidget(self.widget, 2, 1, 1, 4)
+        self.gridLayout_2.addWidget(self.widget, 2, 1, 1, 1)
+
+        # Frame side bar
         self.frame_2 = QtWidgets.QFrame(self.centralwidget)
         self.frame_2.setMinimumSize(QtCore.QSize(self.size_frame, 0))
         self.frame_2.setMaximumSize(QtCore.QSize(self.size_frame, 16777215))
@@ -135,11 +139,11 @@ class Ui_MainWindow(object):
         self.frame_2.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame_2.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame_2.setObjectName("frame_2")
-        self.gridLayout_3 = QtWidgets.QVBoxLayout(self.frame_2)
-        self.gridLayout_3.setObjectName("gridLayout_3")
+        self.verticalLayout = QtWidgets.QVBoxLayout(self.frame_2)
+        self.verticalLayout.setObjectName("verticalLayout")
         spacerItem2 = QtWidgets.QSpacerItem(20, 10, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
         # Primer item, spaciador vertical
-        self.gridLayout_3.addItem(spacerItem2)
+        self.verticalLayout.addItem(spacerItem2)
         self.frame_4 = QtWidgets.QFrame(self.frame_2)
         self.frame_4.setMinimumSize(QtCore.QSize(0, 30))
         self.frame_4.setMaximumSize(QtCore.QSize(16777215, 30))
@@ -172,7 +176,7 @@ class Ui_MainWindow(object):
         self.pushButton.setObjectName("pushButton")
         self.horizontalLayout_2.addWidget(self.pushButton)
         # Segundo item, cuadro busqueda
-        self.gridLayout_3.addWidget(self.frame_4)
+        self.verticalLayout.addWidget(self.frame_4)
         self.listWidget = QtWidgets.QListWidget(self.frame_2)
         self.listWidget.setStyleSheet("#listWidget{\n"
 "  padding-left:10px;\n"
@@ -255,7 +259,7 @@ class Ui_MainWindow(object):
         item.setFlags(QtCore.Qt.ItemIsSelectable|QtCore.Qt.ItemIsUserCheckable|QtCore.Qt.ItemIsEnabled)
         self.listWidget.addItem(item)
         # Tercer item, lista de filtros
-        self.gridLayout_3.addWidget(self.listWidget)
+        self.verticalLayout.addWidget(self.listWidget)
         
         self.widget_2 = QtWidgets.QWidget(self.frame_2)
         self.widget_2.setStyleSheet("background-color:transparent;")
@@ -276,7 +280,7 @@ class Ui_MainWindow(object):
         self.label_2.setObjectName("label_2")
         self.horizontalLayout.addWidget(self.label_2)
         # Cuarto item, img deepines
-        self.gridLayout_3.addWidget(self.widget_2)
+        self.verticalLayout.addWidget(self.widget_2)
         self.label = QLabelClickable(self.frame_2)
         font = QtGui.QFont()
         font.setPointSize(8)
@@ -285,8 +289,8 @@ class Ui_MainWindow(object):
         self.label.setAlignment(QtCore.Qt.AlignCenter)
         self.label.setObjectName("label")
         # Quinto item, label version
-        self.gridLayout_3.addWidget(self.label)
-        self.gridLayout_2.addWidget(self.frame_2, 0, 0, 3, 1)
+        self.verticalLayout.addWidget(self.label)
+        self.gridLayout_2.addWidget(self.frame_2, 1, 0, 2, 1)
         self.frame = QtWidgets.QScrollArea(self.centralwidget)
         self.frame.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)
         self.frame.setWidgetResizable(True)
@@ -301,7 +305,81 @@ class Ui_MainWindow(object):
         self.gridLayout.setContentsMargins(0, 0, 0, 0)
         self.gridLayout.setSpacing(2)
         self.frame.setWidget(self.scroll_apps)
-        self.gridLayout_2.addWidget(self.frame, 0, 1, 2, 4)
+        self.gridLayout_2.addWidget(self.frame, 1, 1, 1, 1)
+
+        # Title bar
+        self.widget_1 = QtWidgets.QWidget(self.centralwidget)
+        self.widget_1.setObjectName("widget_1")
+        self.widget_1.setStyleSheet("""
+            #widget_1{
+                background-color: rgba(16, 16, 16, 180);
+            }
+            #label_3{
+                background-color: transparent;
+            }
+            #btn_cerrar{
+                margin-right: 10px;
+            }
+            #btn_maximizar{
+                margin-right: 3px;
+                margin-left: 3px;
+            }
+            QPushButton {
+                min-width: 36px;
+                min-height: 36px;
+                border-radius: 10px;
+            }
+            QPushButton:hover {
+                color: white;
+                background: red;
+            }
+            """)
+        self.horizontalLayout_4 = QtWidgets.QHBoxLayout(self.widget_1)
+        self.horizontalLayout_4.setObjectName("horizontalLayout_4")
+        self.horizontalLayout_4.setContentsMargins(0,5,0,5)
+        self.horizontalLayout_4.setSpacing(1)
+        
+        spacerItem = QtWidgets.QSpacerItem(130, 20, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_4.addItem(spacerItem)
+
+        spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_4.addItem(spacerItem1)
+
+        self.label_3 = QtWidgets.QLabel(self.widget_1)
+        self.label_3.setObjectName("label_3")
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.label_3.setText("Tienda Deepines")
+        self.horizontalLayout_4.addWidget(self.label_3)
+
+        spacerItem2 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_4.addItem(spacerItem2)
+
+        self.btn_minimizar= QtWidgets.QPushButton(self.widget_1)
+        self.btn_minimizar.setObjectName("btn_minimizar")
+        self.btn_minimizar.setText("_")
+        self.btn_minimizar.setMinimumSize(QtCore.QSize(36, 36))
+        self.btn_minimizar.setMaximumSize(QtCore.QSize(36, 36))
+        self.horizontalLayout_4.addWidget(self.btn_minimizar)
+
+        self.btn_maximizar = QtWidgets.QPushButton(self.widget_1)
+        self.btn_maximizar.setObjectName("btn_maximizar")
+        self.btn_maximizar.setText("|_|")
+        self.btn_maximizar.setMinimumSize(QtCore.QSize(36, 36))
+        self.btn_maximizar.setMaximumSize(QtCore.QSize(36, 36))
+        self.horizontalLayout_4.addWidget(self.btn_maximizar)
+
+        self.btn_cerrar = QtWidgets.QPushButton(self.widget_1)
+        self.btn_cerrar.setObjectName("btn_cerrar")
+        self.btn_cerrar.setText("X")
+        self.btn_cerrar.setMinimumSize(QtCore.QSize(36, 36))
+        self.btn_cerrar.setMaximumSize(QtCore.QSize(36, 36))
+        self.btn_cerrar.setStyleSheet("""
+            
+            """)
+
+        self.horizontalLayout_4.addWidget(self.btn_cerrar)
+        self.gridLayout_2.addWidget(self.widget_1, 0, 0, 1, 2)
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
@@ -337,4 +415,4 @@ class Ui_MainWindow(object):
         item.setText(_translate("MainWindow", "Otros"))
         self.listWidget.setSortingEnabled(__sortingEnabled)
         self.lineEdit.setPlaceholderText(_translate("MainWindow", "Búsqueda"))
-        self.label.setText(_translate("MainWindow", "Acerca de \nVersion: 0.9.6"))
+        self.label.setText(_translate("MainWindow", "Acerca de \nVersion: 0.9.7"))

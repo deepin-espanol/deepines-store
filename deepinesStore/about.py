@@ -162,7 +162,7 @@ class Dialog(QDialog):
     self.label_7.setAlignment(Qt.AlignCenter)
     self.label_7.setObjectName("label_7")
     self.label_7.setFont(font)
-    self.label_7.setText("Interfaz: Akiba @Akibaillusion")
+    self.label_7.setText("Interfaz: Freddy @Akibaillusion")
     self.verticalLayout.addWidget(self.label_7)
     self.label_10 = QLabel(self)
     self.label_10.setAlignment(Qt.AlignCenter)

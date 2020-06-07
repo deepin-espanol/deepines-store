@@ -36,6 +36,7 @@ class Ventana(QMainWindow):
         # Inicializamos la gui
         self.ui = Ui_MainWindow(width, height)
         self.ui.setupUi(self)
+        self.setWindowFlags(self.windowFlags() | Qt.FramelessWindowHint)
         self.setAttribute(Qt.WA_TranslucentBackground, True )
         self.lista_deepines = ['conkys-widgets','deepin-blu-red','deepin-osx',
             'dexter-icon-theme','firefox-latest','halo-icon-theme',
@@ -108,6 +109,10 @@ class Ventana(QMainWindow):
         self.ui.lineEdit.textChanged.connect(self.search_app)
         self.ui.btn_install.setEnabled(False)
         self.ui.label_2.clicked.connect(self.open_deepines)
+        self.ui.btn_cerrar.clicked.connect(self.close)
+        self.ui.btn_maximizar.clicked.connect(self.maximize)
+        self.ui.btn_minimizar.clicked.connect(self.minimize)
+        self.ui.widget_1.installEventFilter(self)
         self.ui.label.clicked.connect(self.acerca_de)
         shadow = QGraphicsDropShadowEffect(self,
           blurRadius=10,
@@ -532,6 +537,40 @@ class Ventana(QMainWindow):
     ################################################
 
 
+    def eventFilter(self, obj, event):
+        if event.type() == QEvent.MouseButtonPress:
+            self.oldPos = event.globalPos()
+        elif event.type() == QEvent.MouseMove:
+            delta = QPoint(event.globalPos() - self.oldPos)
+            self.move(self.x() + delta.x(), self.y() + delta.y())
+            self.oldPos = event.globalPos()
+        return True
+
+
+    def maximize(self):
+        global maximized
+        if maximized: # Restauramos al tamaño original
+          self.setWindowState(Qt.WindowNoState)
+          maximized = False
+          #icono = "./resources/maximizar.svg"
+        else: # Agrandamos la ventana
+          self.setWindowState(Qt.WindowMaximized)
+          maximized = True
+          #icono = "./resources/comprimir.svg"
+
+        # Cambio de icono al maximizar
+        #icon1 = QtGui.QIcon()
+        #icon1.addPixmap(QtGui.QPixmap(icono), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        #self.window.ui.btn_max.setIcon(icon1)
+
+
+    def minimize(self):
+        global maximized
+        # No se ve la app, agrandamos
+        self.setWindowState(Qt.WindowMinimized)
+        if maximized: # Si estaba maximizada, agrandamos
+            self.setWindowState(Qt.WindowMaximized)
+
 ################################################
 #           Card para la aplicacion            #
 
@@ -687,7 +726,8 @@ class Card(QFrame):
 
 def ejecutar():
   app = QApplication(sys.argv)
-  global width, height
+  global width, height, maximized
+  maximized = False
   screen_rect = app.desktop().screenGeometry()
   width, height = screen_rect.width(), screen_rect.height()
   win = Ventana()
