@@ -28,6 +28,7 @@
 - `sudo apt install python3-venv`
 - `python3 -m venv myvenv`
 - `source myvenv/bin/activate`
+- `pip install pip --upgrade`
 - `git clone https://github.com/s384/store_deepines`
 - `cd store_deepines`
 - `git checkout develop`
