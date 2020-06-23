@@ -1,5 +1,5 @@
 Package: deepines-store
-Version: 0.9.6
+Version: 0.9.9
 Installed-Size: 1263577
 Maintainer: SebTrujillo <seba.alexis.trujillo@gmail.com>
 Section: admin
@@ -8,5 +8,5 @@ Architecture: amd64
 Priority: optional
 Depends: python3-pyqt5, python3-requests, python3-bs4
 Description: Tienda de aplicaciones para el repositorio deepines
- Esta aplicación permite instalar de manera gráfica las aplicaciones disponibles en el repositorio Deepines
+ Esta aplicacion permite instalar de manera grafica las aplicaciones disponibles en el repositorio Deepines
 

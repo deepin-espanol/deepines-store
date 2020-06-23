@@ -9,11 +9,12 @@ Created on 2019年4月19日
 @file: FramelessDialog
 @description: 无边框圆角对话框 
 """
-from PyQt5.QtCore import Qt, QSize, QPoint
+from PyQt5.QtCore import Qt, QSize, pyqtSignal
 from PyQt5.QtWidgets import QDialog, QVBoxLayout, QHBoxLayout, QWidget,\
     QPushButton, QGridLayout, QSpacerItem,\
-    QSizePolicy, QLabel, QFrame, QSizePolicy, QDesktopWidget
-from PyQt5.QtGui import QFont, QPixmap
+    QSizePolicy, QLabel, QFrame, QDesktopWidget
+from PyQt5.QtGui import QFont, QPixmap, QCursor
+from subprocess import Popen, PIPE
 from os import system
 from os.path import join, abspath, dirname
 
@@ -33,13 +34,14 @@ Stylesheet = """
 }
 #label_14{
     margin-top: 10px;
+    color: #00bbc8;
 }
 
 #label, #label_2, #label_3,
 #label_4, #label_5, #label_6,
 #label_7, #label_8, #label_9,
 #label_10, #label_11, #label_12,
-#label_13, #label_14{
+#label_13{
   color: white;  
 }
 
@@ -62,21 +64,32 @@ Stylesheet = """
 }
 """
 
+class QLabelClickable(QLabel):
+
+    clicked = pyqtSignal()
+    
+    def __init__(self, *args):
+        QLabel.__init__(self, *args)
+   
+    def mouseReleaseEvent(self, ev):
+        self.clicked.emit()
+
 
 class Dialog(QDialog):
 
-  def __init__(self, width, height):
+  def __init__(self):
     super(Dialog, self).__init__()
     self.setObjectName('Custom_Dialog')
-    self.calcular_tamanio(width, height)
-    #self.setMinimumSize(QSize(r_width, r_height))
-    #self.setMaximumSize(QSize(r_width, r_height))
-    self.resize(r_width, r_height)
+    #self.calcular_tamanio(width, height)
+    self.setMinimumSize(QSize(720, 700))
+    self.setMaximumSize(QSize(720, 700))
+    #self.resize(r_width, r_height)
     self.setWindowFlags(self.windowFlags() | Qt.FramelessWindowHint)
     self.setAttribute(Qt.WA_TranslucentBackground, True )
     self.setStyleSheet(Stylesheet)
     self.initUi()
     self.center()
+    self.label_14.clicked.connect(self.open_deepines)
     
     system('xprop -f _KDE_NET_WM_BLUR_BEHIND_REGION 32c -set _KDE_NET_WM_BLUR_BEHIND_REGION 0 -id {}'.format(int(self.winId())))
 
@@ -201,10 +214,11 @@ class Dialog(QDialog):
     self.label_13.setObjectName("label_13")
     self.label_13.setWordWrap(True)
     self.verticalLayout.addWidget(self.label_13)
-    self.label_14 = QLabel(self)
+    self.label_14 = QLabelClickable(self)
     self.label_14.setAlignment(Qt.AlignCenter)
     self.label_14.setFont(font)
     self.label_14.setText("deepinenespañol.org")
+    self.label_14.setCursor(QCursor(Qt.PointingHandCursor))
     self.label_14.setObjectName("label_14")
     self.verticalLayout.addWidget(self.label_14)
     self.gridLayout.addWidget(self.widget, 0, 0, 1, 1)
@@ -221,3 +235,7 @@ class Dialog(QDialog):
     cp = QDesktopWidget().availableGeometry().center()
     qr.moveCenter(cp)
     self.move(qr.topLeft())
+
+  def open_deepines(self):
+    Popen(["x-www-browser", "deepinenespañol.org"],
+        stdout=PIPE, universal_newlines=True)

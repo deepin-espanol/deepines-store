@@ -26,13 +26,16 @@ class Ui_MainWindow(object):
         #print("El ancho del monitor es: {}".format(width))
 
         self.width_screen = int(width * 0.7)
+        if self.width_screen < 945: self.width_screen = 945
         #print("El width_screen ({}*0.7) es: {}".format(width, self.width_screen))
 
         self.height_screen = int(height * 0.85)
+        if self.height_screen < 670: self.height_screen = 670
         #print("El height_screen ({}*0.8) es: {}".format(height, self.height_screen))
 
         self.size_frame = int(width * 0.14)
         if self.size_frame < 200: self.size_frame = 200
+        if self.size_frame > 300: self.size_frame = 300
         #print("El frame ({}*0.14) es: {}".format(width, self.size_frame))
 
     def setupUi(self, MainWindow):
@@ -49,9 +52,12 @@ class Ui_MainWindow(object):
         ruta_computer = abspath(join(dirname(__file__), 'resources', 'computer.svg'))
         ruta_pamela = abspath(join(dirname(__file__), 'resources', 'pamela.svg'))
         ruta_search = abspath(join(dirname(__file__), 'resources', 'magnifying-glass.svg'))
+        ruta_minimizar = abspath(join(dirname(__file__), 'resources', 'minimizar.svg'))
+        ruta_maximizar = abspath(join(dirname(__file__), 'resources', 'maximizar.svg'))
+        ruta_cerrar = abspath(join(dirname(__file__), 'resources', 'cerrar.svg'))
 
         MainWindow.setObjectName("MainWindow")
-        MainWindow.setMinimumSize(QtCore.QSize(945, 630))
+        MainWindow.setMinimumSize(QtCore.QSize(self.width_screen, self.height_screen))
         MainWindow.resize(self.width_screen, self.height_screen)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(ruta_logo), QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -275,6 +281,7 @@ class Ui_MainWindow(object):
         self.label_2.setText("")
         self.label_2.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.label_2.setPixmap(QtGui.QPixmap(ruta_fondo))
+        self.label_2.setToolTip("Click para visitarnos")
         self.label_2.setScaledContents(True)
         self.label_2.setOpenExternalLinks(True)
         self.label_2.setObjectName("label_2")
@@ -287,6 +294,7 @@ class Ui_MainWindow(object):
         self.label.setFont(font)
         self.label.setStyleSheet("background-color: transparent;\n")
         self.label.setAlignment(QtCore.Qt.AlignCenter)
+        self.label.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.label.setObjectName("label")
         # Quinto item, label version
         self.verticalLayout.addWidget(self.label)
@@ -357,26 +365,28 @@ class Ui_MainWindow(object):
 
         self.btn_minimizar= QtWidgets.QPushButton(self.widget_1)
         self.btn_minimizar.setObjectName("btn_minimizar")
-        self.btn_minimizar.setText("_")
-        self.btn_minimizar.setMinimumSize(QtCore.QSize(36, 36))
-        self.btn_minimizar.setMaximumSize(QtCore.QSize(36, 36))
+        self.btn_minimizar.setText("")
+        icon12 = QtGui.QIcon()
+        icon12.addPixmap(QtGui.QPixmap(ruta_minimizar), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.btn_minimizar.setIcon(icon12)
+        self.btn_minimizar.setIconSize(QtCore.QSize(13, 13))
         self.horizontalLayout_4.addWidget(self.btn_minimizar)
 
         self.btn_maximizar = QtWidgets.QPushButton(self.widget_1)
         self.btn_maximizar.setObjectName("btn_maximizar")
-        self.btn_maximizar.setText("|_|")
-        self.btn_maximizar.setMinimumSize(QtCore.QSize(36, 36))
-        self.btn_maximizar.setMaximumSize(QtCore.QSize(36, 36))
+        self.btn_maximizar.setText("")
+        icon13 = QtGui.QIcon()
+        icon13.addPixmap(QtGui.QPixmap(ruta_maximizar), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.btn_maximizar.setIcon(icon13)
         self.horizontalLayout_4.addWidget(self.btn_maximizar)
 
         self.btn_cerrar = QtWidgets.QPushButton(self.widget_1)
         self.btn_cerrar.setObjectName("btn_cerrar")
-        self.btn_cerrar.setText("X")
-        self.btn_cerrar.setMinimumSize(QtCore.QSize(36, 36))
-        self.btn_cerrar.setMaximumSize(QtCore.QSize(36, 36))
-        self.btn_cerrar.setStyleSheet("""
-            
-            """)
+        self.btn_cerrar.setText("")
+        icon14 = QtGui.QIcon()
+        icon14.addPixmap(QtGui.QPixmap(ruta_cerrar), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.btn_cerrar.setIcon(icon14)
+        self.btn_cerrar.setIconSize(QtCore.QSize(20, 20))
 
         self.horizontalLayout_4.addWidget(self.btn_cerrar)
         self.gridLayout_2.addWidget(self.widget_1, 0, 0, 1, 2)
@@ -415,4 +425,4 @@ class Ui_MainWindow(object):
         item.setText(_translate("MainWindow", "Otros"))
         self.listWidget.setSortingEnabled(__sortingEnabled)
         self.lineEdit.setPlaceholderText(_translate("MainWindow", "Búsqueda"))
-        self.label.setText(_translate("MainWindow", "Acerca de \nVersion: 0.9.7"))
+        self.label.setText(_translate("MainWindow", "Acerca de \nVersion: 0.9.9"))

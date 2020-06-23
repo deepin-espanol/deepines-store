@@ -44,7 +44,7 @@ class Ventana(QMainWindow):
             'mcos--mjv-collection','milky','osx-arc-collection','plastik-colletion',
             'sierra','zukitwo']
         self.lista_excluir = ['brave-keyring','deepines-repository',
-            'docker-ce-cli','gtkdialog','fish-common',
+            'docker-ce-cli','gtkdialog','fish-common', 'libgutenprint2',
             'libobasis6.3-base','libobasis6.3-calc','libobasis6.3-core',
             'libobasis6.3-draw','libobasis6.3-en-us','libobasis6.3-es',
             'libobasis6.3-es-help','libobasis6.3-extension-beanshell-script-provider',
@@ -123,6 +123,7 @@ class Ventana(QMainWindow):
         shadow.setYOffset(0)
         self.ui.btn_install.setGraphicsEffect(shadow)
         self.center()
+
 
     
     ################################################
@@ -357,7 +358,6 @@ class Ventana(QMainWindow):
             item = self.ui.listWidget.item(0)
             item.setSelected(True)
 
-        self.calcular_columnas()
         while self.ui.gridLayout.count():
             item = self.ui.gridLayout.takeAt(0)
             widget = item.widget()
@@ -368,6 +368,7 @@ class Ventana(QMainWindow):
         x = 0 # Creamos la coordenada x 
         # Estas para establecer la ubicacion de la tarjetas en la grilla
         i = 0
+        self.calcular_columnas()
         for key in lista: # Recorremos la lista con los elementos
             i += 1 # Contador para agregar el espaciador horizontal
             # Consultamos si ya tenemos tres tarjetas en y
@@ -396,19 +397,31 @@ class Ventana(QMainWindow):
 
     #              Calcular columnas               #
     def calcular_columnas(self):
-        if width < 1360:
-            base = 200
-        elif width >= 1360 and width < 2500:
-            base = 210
-        elif width > 2500 :
-            base = 420
+      if width < 1360:
+          base = 180
+      elif width >= 1360 and width < 2500:
+          base = 210
+      elif width > 2500:
+          base = 420
 
-        ancho = self.ui.frame.frameGeometry().width()
-        global columnas, tamanio
-        if ancho < 700: ancho = 776
-        columnas = ancho//250
-        restante = ancho % 250
-        tamanio = base + (restante // columnas)
+      ancho = self.ui.frame.frameGeometry().width()
+      global columnas, tamanio
+      
+      if ancho < 700: ancho = ancho_inicio
+      
+      columnas = ancho // (base + 40)
+      restante = ancho % (base + 40)
+      tamanio = base + (restante // columnas)
+
+    def calcular_anchos(self):
+      width_screen = int(width * 0.7)
+      if width_screen < 945: width_screen = 945
+
+      size_frame = int(width * 0.14)
+      if size_frame < 200: size_frame = 200
+      if size_frame > 300: size_frame = 300
+      global ancho_inicio
+      ancho_inicio = width_screen - size_frame
 
 
     #              /Calcular columnas              #
@@ -475,7 +488,7 @@ class Ventana(QMainWindow):
     #                   Acerca de                  #
 
     def acerca_de(self):
-        self.modal = DAbout(width, height)
+        self.modal = DAbout()
         self.modal.show()
 
     #                   /cerca de                  #
@@ -552,16 +565,16 @@ class Ventana(QMainWindow):
         if maximized: # Restauramos al tamaño original
           self.setWindowState(Qt.WindowNoState)
           maximized = False
-          #icono = "./resources/maximizar.svg"
+          icono = abspath(join(dirname(__file__), 'resources', 'maximizar.svg'))
         else: # Agrandamos la ventana
           self.setWindowState(Qt.WindowMaximized)
           maximized = True
-          #icono = "./resources/comprimir.svg"
+          icono = abspath(join(dirname(__file__), 'resources', 'restaurar.svg'))
 
         # Cambio de icono al maximizar
-        #icon1 = QtGui.QIcon()
-        #icon1.addPixmap(QtGui.QPixmap(icono), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        #self.window.ui.btn_max.setIcon(icon1)
+        icon1 = QIcon()
+        icon1.addPixmap(QPixmap(icono), QIcon.Normal, QIcon.Off)
+        self.ui.btn_maximizar.setIcon(icon1)
 
 
     def minimize(self):
@@ -731,6 +744,7 @@ def ejecutar():
   screen_rect = app.desktop().screenGeometry()
   width, height = screen_rect.width(), screen_rect.height()
   win = Ventana()
+  win.calcular_anchos()
   os.system('xprop -f _KDE_NET_WM_BLUR_BEHIND_REGION 32c -set _KDE_NET_WM_BLUR_BEHIND_REGION 0 -id {}'.format(int(win.winId())))
   win.show()
   sys.exit(app.exec_())
