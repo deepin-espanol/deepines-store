@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import subprocess
 from os.path import join, abspath, dirname
 
@@ -12,6 +13,7 @@ def notification(description, icon=abspath(join(dirname(__file__), 'resources', 
         'notify-send', '{}'.format(title),
         '{}'.format(description),
         '-u', urgency,
+        '-a', title,
         '-t', '{}'.format(duration * 1000)
     ]
 
