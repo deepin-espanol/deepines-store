@@ -97,12 +97,11 @@ class Ventana(QMainWindow):
                     "Visite Deepin en Español para más información.",
                     "https://deepinenespañol.org")
         else:
-            self.error("El repositorio de aplicaciones de Deepin en español<br>"
-                "no esta instalado en su sistema, utilize el siguiente enlace<br>"
-                "para realizar instalacion y poder utilizar la Tienda Deepines.<br><br>"
-                "<a href='#'>deepinenespañol.org/repositorio/ | Copiar enlace<a/><br>"
-                "Visite Deepin en Español para más información.",
-                "https://deepinenespañol.org/repositorio/")
+            self.error("El repositorio Deepines no está instalado en su sistema,<br>"
+                "Tienda Deepies necesita este repositorio para funcionar.<br>"
+                "En el siguiente enlace encontrará las instrucciones para instalarlo.<br><br>"
+                "<a href='#'>deepinenespañol.org/repositorio/ | Copiar enlace<a/><br>",
+                "https://deepinenespañol.org/repositorio")
 
         self.ui.lbl_list_apps.setText("Seleccione las aplicaciones a instalar")
         self.ui.btn_install.clicked.connect(self.ventana_install)
