@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="324px" height="234px" viewBox="0 0 324 234" version="1.1">
+<defs>
+<linearGradient id="linear0" gradientUnits="userSpaceOnUse" x1="-1.455352" y1="64.761543" x2="181.728165" y2="64.761543" gradientTransform="matrix(0.00000000000000011,-1.8,1.8,0.00000000000000011,-99.745661,85.499994)">
+<stop offset="0" style="stop-color:rgb(19.607843%,31.37255%,43.137255%);stop-opacity:1;"/>
+<stop offset="1" style="stop-color:rgb(21.960784%,34.901962%,48.627451%);stop-opacity:1;"/>
+</linearGradient>
+<clipPath id="clip1">
+  <path d="M 105 40 L 220 40 L 220 193 L 105 193 Z M 105 40 "/>
+</clipPath>
+<clipPath id="clip2">
+  <path d="M 326.265625 116.570312 C 326.265625 196.628906 252.785156 261.472656 162.246094 261.472656 C 71.707031 261.472656 -1.777344 196.628906 -1.777344 116.570312 C -1.777344 36.511719 71.707031 -28.328125 162.246094 -28.328125 C 252.785156 -28.328125 326.265625 36.511719 326.265625 116.570312 Z M 326.265625 116.570312 "/>
+</clipPath>
+</defs>
+<g id="surface1">
+<rect x="0" y="0" width="324" height="234" style="fill:url(#linear0);stroke:none;"/>
+<path style="fill:none;stroke-width:1.021703;stroke-linecap:butt;stroke-linejoin:miter;stroke:rgb(100%,100%,100%);stroke-opacity:1;stroke-miterlimit:4;" d="M -0.94401 -1.082899 L 181.217448 -1.082899 L 181.217448 130.605469 L -0.94401 130.605469 Z M -0.94401 -1.082899 " transform="matrix(1.8,0,0,1.8,0,0)"/>
+<g clip-path="url(#clip1)" clip-rule="nonzero">
+<g clip-path="url(#clip2)" clip-rule="nonzero">
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(100%,61.176473%,0%);fill-opacity:1;" d="M 105.195312 40.972656 L 147.984375 40.972656 L 219.296875 110.269531 L 147.984375 192.171875 L 105.195312 192.171875 L 176.507812 110.269531 M 105.195312 40.972656 "/>
+</g>
+</g>
+</g>
+</svg>

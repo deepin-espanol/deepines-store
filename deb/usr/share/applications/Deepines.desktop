@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Tienda Deepines
+Version=1.0
+Exec=/usr/bin/deepines
+Comment=Tienda de aplicaciones para el repositorio deepines
+Icon=deepines
+Type=Application
+Terminal=false
+StartupNotify=true
+Encoding=UTF-8
+Categories=System;
