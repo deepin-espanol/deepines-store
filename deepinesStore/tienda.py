@@ -4,10 +4,11 @@ import sys
 import os
 # Modulos de pyqt5
 from PyQt5.Qt import Qt
-from PyQt5.QtCore import QSize, QPointF, QPoint, QEvent, Qt as QtCore
+from PyQt5.QtCore import QSize, QPointF, QPoint, QEvent, Qt as QtCore,\
+                         pyqtSignal
 from PyQt5.QtWidgets import (QMainWindow, QApplication, QFrame, QLabel,
         QSizePolicy, QGraphicsDropShadowEffect, QSpacerItem,
-        QDesktopWidget)
+        QDesktopWidget, QWidget, QHBoxLayout)
 from PyQt5.QtGui import QPixmap, QIcon, QFont, QColor
 # Modulos para el scraping
 from bs4 import BeautifulSoup
@@ -16,10 +17,6 @@ from requests import get
 from random import randint
 # Obtener ruta variable de las imgs
 from os.path import join, abspath, dirname
-# Get username  
-import getpass
-# Procesos en segundo plano
-import subprocess
 # Guis o modulos locales
 from deepinesStore.maing import Ui_MainWindow
 from deepinesStore.cardg import Ui_Frame
@@ -75,7 +72,8 @@ class Ventana(QMainWindow):
             'pix-data','python-twodict','python3-swisseph','radeon-profile-daemon',
             'retroarch-assets','smplayer-skins','smplayer-themes','speedtest-cli','sudo',
             'systemback-cli','systemback-efiboot-amd64','systemback-locales',
-            'systemback-scheduler','tsc-data','tsc-music','unixodbc-dev']
+            'systemback-scheduler','tsc-data','tsc-music','unixodbc-dev',
+            'teamspeak-client']
 
         
         global lista_app, selected_apps, instaladas, lista_global, repo
@@ -91,24 +89,27 @@ class Ventana(QMainWindow):
                 self.Apps_inicio(lista_app)
                 
             else:
-                self.error("No se ha podido establecer conexion con el servidor<br>"
-                    "por favor intentelo nuevamente, si el problema persiste<br>"
-                    "contactenos en @deepinenespanol en Telegram.<br><br>", 
-                    "https://deepinenespañol.org",
-                    "Visita Deepin en Español para mas información.")
+                self.error("No se ha podido establecer conexión con el servidor, <br>"
+                    "por favor verifique su conexión de internet.<br>"
+                    "Si el problema persiste, contáctenos en Telegram <br>"
+                    "por el grupo @deepinenespanol.<br><br>"
+                    "<a href='#'>deepinenespañol.org | Copiar enlace</a><br>"
+                    "Visite Deepin en Español para más información.",
+                    "https://deepinenespañol.org")
         else:
             self.error("El repositorio de aplicaciones de Deepin en español<br>"
                 "no esta instalado en su sistema, utilize el siguiente enlace<br>"
-                "para realizar instalacion y poder utilizar la Tienda Deepines.<br><br>",
-                "https://deepinenespañol.org/repositorio/", 
-                "Visita Deepin en Español para mas información.")
+                "para realizar instalacion y poder utilizar la Tienda Deepines.<br><br>"
+                "<a href='#'>deepinenespañol.org/repositorio/ | Copiar enlace<a/><br>"
+                "Visite Deepin en Español para más información.",
+                "https://deepinenespañol.org/repositorio/")
 
         self.ui.lbl_list_apps.setText("Seleccione las aplicaciones a instalar")
         self.ui.btn_install.clicked.connect(self.ventana_install)
         self.ui.listWidget.itemClicked.connect(self.listwidgetclicked)
         self.ui.lineEdit.textChanged.connect(self.search_app)
         self.ui.btn_install.setEnabled(False)
-        self.ui.label_2.clicked.connect(self.open_deepines)
+        self.ui.label_2.clicked.connect(self.acerca_de)
         self.ui.btn_cerrar.clicked.connect(self.close)
         self.ui.btn_maximizar.clicked.connect(self.maximize)
         self.ui.btn_minimizar.clicked.connect(self.minimize)
@@ -141,9 +142,28 @@ class Ventana(QMainWindow):
     ################################################
     #             Control de errores               #
 
-    def error(self, text: str, enlace: str, referencia: str):
-        self.ui.frame_2.setEnabled(False)
-        self.label_error = QLabel(self)
+    def error(self, text: str, enlace: str):
+        self.horizontalLayout = QHBoxLayout()
+        self.horizontalLayout.setContentsMargins(0, 40, 0, 0)
+        self.horizontalLayout.setSpacing(0)
+        self.horizontalLayout.setObjectName("horizontalLayout")
+        
+        self.raccoon = QLabel(self)
+        self.raccoon.setText("")
+        self.raccoon.setMinimumSize(300, 300)
+        self.raccoon.setMaximumSize(300, 300)
+        self.raccoon.setObjectName("raccoon")
+        self.raccoon.setStyleSheet("#raccoon{"
+            "background-color: transparent;}")
+
+        ruta = abspath(join(dirname(__file__), 'resources', 'raccoon.svg'))
+        pixmap = QPixmap(ruta)
+        self.raccoon.setPixmap(pixmap)
+        self.horizontalLayout.addWidget(self.raccoon)
+        self.ui.gridLayout.addLayout(self.horizontalLayout, 1, 1, 1, 1)
+        
+
+        self.label_error = QLabelClickable(self)
         sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -151,18 +171,26 @@ class Ventana(QMainWindow):
         self.label_error.setSizePolicy(sizePolicy)
         font = QFont()
         font.setPointSize(16)
-        self.text = ("<html><head/><body><p\">{}<a href=\"{}\"><span style=\" text-decoration: underline;"
-            "color:#419fd9;\">{}</span></a></p></body></html>".format(text, enlace, referencia))
+        self.text = ("""<html> <style type=text/css>
+        a:link, a:visited, a:active {
+            text-decoration:none;
+            color: rgba(0, 192, 255, 255);
+        }
+        </style>
+            <head/><body><p>"""
+            + text +
+            """</p></body></html>""")
         self.label_error.setFont(font)
         self.label_error.setScaledContents(True)
-        self.label_error.setOpenExternalLinks(True)
         self.label_error.setText(self.text)
         self.label_error.setStyleSheet("background-color: transparent;\n"
         "color: white;")
         self.label_error.setEnabled(True)
         self.label_error.setAlignment(QtCore.AlignCenter)
         self.label_error.setObjectName("label_error")
-        self.ui.gridLayout.addWidget(self.label_error, 1, 1, 1, 1)
+        self.label_error.clicked.connect(lambda:
+            QApplication.clipboard().setText(enlace))
+        self.ui.gridLayout.addWidget(self.label_error, 2, 1, 1, 1)
     
     #             /Control de errores              #
     ################################################
@@ -171,10 +199,6 @@ class Ventana(QMainWindow):
 
         if repo and lista_app:
             self.Listar_Apps(lista_global)
-
-    def open_deepines(self):
-        subprocess.Popen(["x-www-browser", "deepinenespañol.org"],
-            stdout=subprocess.PIPE, universal_newlines=True)
 
     ################################################
     #              Busqueda de apps                #
@@ -488,7 +512,7 @@ class Ventana(QMainWindow):
     #                   Acerca de                  #
 
     def acerca_de(self):
-        self.modal = DAbout()
+        self.modal = DAbout(self)
         self.modal.show()
 
     #                   /cerca de                  #
@@ -500,9 +524,9 @@ class Ventana(QMainWindow):
         qr = self.frameGeometry()
         cp = QDesktopWidget().availableGeometry().center()
         qr.moveCenter(cp)
-        mover = QPoint(self.x(), 20)
+        #mover = QPoint(self.x(), 100)
         self.move(qr.topLeft())
-        self.move(self.x(), self.y() - mover.y())
+        #self.move(self.x(), self.y() - mover.y())
 
     #                  /Centrar                    #
     ################################################
@@ -557,6 +581,7 @@ class Ventana(QMainWindow):
             delta = QPoint(event.globalPos() - self.oldPos)
             self.move(self.x() + delta.x(), self.y() + delta.y())
             self.oldPos = event.globalPos()
+            
         return True
 
 
@@ -566,10 +591,12 @@ class Ventana(QMainWindow):
           self.setWindowState(Qt.WindowNoState)
           maximized = False
           icono = abspath(join(dirname(__file__), 'resources', 'maximizar.svg'))
+          self.ui.widget_1.installEventFilter(self)
         else: # Agrandamos la ventana
           self.setWindowState(Qt.WindowMaximized)
           maximized = True
           icono = abspath(join(dirname(__file__), 'resources', 'restaurar.svg'))
+          self.ui.widget_1.removeEventFilter(self)
 
         # Cambio de icono al maximizar
         icon1 = QIcon()
@@ -583,6 +610,16 @@ class Ventana(QMainWindow):
         self.setWindowState(Qt.WindowMinimized)
         if maximized: # Si estaba maximizada, agrandamos
             self.setWindowState(Qt.WindowMaximized)
+
+class QLabelClickable(QLabel):
+
+    clicked = pyqtSignal()
+    
+    def __init__(self, *args):
+        QLabel.__init__(self, *args)
+   
+    def mouseReleaseEvent(self, ev):
+        self.clicked.emit()
 
 ################################################
 #           Card para la aplicacion            #

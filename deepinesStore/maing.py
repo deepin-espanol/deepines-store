@@ -30,7 +30,7 @@ class Ui_MainWindow(object):
         #print("El width_screen ({}*0.7) es: {}".format(width, self.width_screen))
 
         self.height_screen = int(height * 0.85)
-        if self.height_screen < 670: self.height_screen = 670
+        if self.height_screen < 700: self.height_screen = 700
         #print("El height_screen ({}*0.8) es: {}".format(height, self.height_screen))
 
         self.size_frame = int(width * 0.14)
@@ -98,14 +98,14 @@ class Ui_MainWindow(object):
         # Frame apps seleccionadas
         self.widget = QtWidgets.QWidget(self.centralwidget)
         self.widget.setMinimumSize(QtCore.QSize(0, 40))
-        self.widget.setMaximumSize(QtCore.QSize(16777215, 40))
+        self.widget.setMaximumSize(QtCore.QSize(16777215, 80))
         self.widget.setStyleSheet("background-color: rgba(16, 16, 16, 180);")
         self.widget.setObjectName("widget")
         self.gridLayout_4 = QtWidgets.QGridLayout(self.widget)
         self.gridLayout_4.setContentsMargins(0, 0, 0, 0)
         self.gridLayout_4.setObjectName("gridLayout_4")
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout()
-        self.horizontalLayout_3.setContentsMargins(10, -1, 10, -1)
+        self.horizontalLayout_3.setContentsMargins(10, 10, 10, 10)
         self.horizontalLayout_3.setSpacing(10)
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
         self.lbl_list_apps = QtWidgets.QLabel(self.widget)
@@ -118,7 +118,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_3.addWidget(self.lbl_list_apps)
         self.btn_install = QtWidgets.QPushButton(self.widget)
         self.btn_install.setMinimumSize(QtCore.QSize(80, 0))
-        self.btn_install.setMaximumSize(QtCore.QSize(80, 16777215))
+        self.btn_install.setMaximumSize(QtCore.QSize(100, 16777215))
         self.btn_install.setStyleSheet("#btn_install{\n"
 "padding: 2px;\n"
 "border-radius: 5px;\n"
@@ -281,7 +281,7 @@ class Ui_MainWindow(object):
         self.label_2.setText("")
         self.label_2.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.label_2.setPixmap(QtGui.QPixmap(ruta_fondo))
-        self.label_2.setToolTip("Click para visitarnos")
+        self.label_2.setToolTip("Acerca de nosotros")
         self.label_2.setScaledContents(True)
         self.label_2.setOpenExternalLinks(True)
         self.label_2.setObjectName("label_2")
@@ -332,14 +332,14 @@ class Ui_MainWindow(object):
                 margin-right: 3px;
                 margin-left: 3px;
             }
-            QPushButton {
+            QPushButton{
                 min-width: 36px;
                 min-height: 36px;
                 border-radius: 10px;
+                background-color: transparent;
             }
-            QPushButton:hover {
-                color: white;
-                background: red;
+            QPushButton:hover{
+                background-color: rgba(50, 50, 50, 100);
             }
             """)
         self.horizontalLayout_4 = QtWidgets.QHBoxLayout(self.widget_1)
@@ -425,4 +425,4 @@ class Ui_MainWindow(object):
         item.setText(_translate("MainWindow", "Otros"))
         self.listWidget.setSortingEnabled(__sortingEnabled)
         self.lineEdit.setPlaceholderText(_translate("MainWindow", "Búsqueda"))
-        self.label.setText(_translate("MainWindow", "Acerca de \nVersion: 0.9.9"))
+        self.label.setText(_translate("MainWindow", "Acerca de \nVersion: 1.0"))

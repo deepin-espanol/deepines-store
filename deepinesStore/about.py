@@ -11,7 +11,7 @@ Created on 2019年4月19日
 """
 from PyQt5.QtCore import Qt, QSize, pyqtSignal
 from PyQt5.QtWidgets import QDialog, QVBoxLayout, QHBoxLayout, QWidget,\
-    QPushButton, QGridLayout, QSpacerItem,\
+    QPushButton, QGridLayout, QSpacerItem, QApplication,\
     QSizePolicy, QLabel, QFrame, QDesktopWidget
 from PyQt5.QtGui import QFont, QPixmap, QCursor
 from subprocess import Popen, PIPE
@@ -33,7 +33,7 @@ Stylesheet = """
     margin-bottom: 10px;
 }
 #label_14{
-    margin-top: 10px;
+    margin-top: 5px;
     color: #00bbc8;
 }
 
@@ -77,19 +77,19 @@ class QLabelClickable(QLabel):
 
 class Dialog(QDialog):
 
-  def __init__(self):
-    super(Dialog, self).__init__()
+  def __init__(self, parent):
+    super(Dialog, self).__init__(parent)
     self.setObjectName('Custom_Dialog')
     #self.calcular_tamanio(width, height)
     self.setMinimumSize(QSize(720, 700))
-    self.setMaximumSize(QSize(720, 700))
+    self.setMaximumSize(QSize(720, 1000))
     #self.resize(r_width, r_height)
     self.setWindowFlags(self.windowFlags() | Qt.FramelessWindowHint)
     self.setAttribute(Qt.WA_TranslucentBackground, True )
     self.setStyleSheet(Stylesheet)
     self.initUi()
     self.center()
-    self.label_14.clicked.connect(self.open_deepines)
+    self.label_15.clicked.connect(self.open_deepines)
     
     system('xprop -f _KDE_NET_WM_BLUR_BEHIND_REGION 32c -set _KDE_NET_WM_BLUR_BEHIND_REGION 0 -id {}'.format(int(self.winId())))
 
@@ -180,12 +180,12 @@ class Dialog(QDialog):
     self.label_10 = QLabel(self)
     self.label_10.setAlignment(Qt.AlignCenter)
     self.label_10.setFont(font)
-    self.label_10.setText("Redaccion: Isaías @igatjens")
+    self.label_10.setText("Redacción: Isaías @igatjens")
     self.label_10.setObjectName("label_10")
     self.verticalLayout.addWidget(self.label_10)
     self.label_8 = QLabel(self)
     self.label_8.setAlignment(Qt.AlignCenter)
-    self.label_8.setText("Diseño: Jhalo @jhalo; @Dziban; Alejandro @durantdurant")
+    self.label_8.setText("Diseño: Jhalo @jhalo; André @Dziban; Alejandro @durantdurant")
     self.label_8.setObjectName("label_8")
     self.label_8.setFont(font)
     self.verticalLayout.addWidget(self.label_8)
@@ -210,14 +210,17 @@ class Dialog(QDialog):
     self.label_13 = QLabel(self)
     self.label_13.setAlignment(Qt.AlignCenter)
     self.label_13.setFont(font)
-    self.label_13.setText("Colaboradores: Alvaro @G4SP3R; Omi @peteromio; Opik @Prophaniti ; Pablo @dev86x; Jose @ProgramacionJS; Jorge @seiyukaras; @n1coc4cola; Oscar @oscararg; Jorge @jotakenobi")
+    self.label_13.setText("Colaboradores: Alvaro @G4SP3R; Omi @peteromio; Opik @Prophaniti; Pablo @dev86x; Jose @ProgramacionJS; Jorge @seiyukaras; @n1coc4cola; Oscar @oscararg; Jorge @jotakenobi")
     self.label_13.setObjectName("label_13")
     self.label_13.setWordWrap(True)
     self.verticalLayout.addWidget(self.label_13)
+    
     self.label_14 = QLabelClickable(self)
     self.label_14.setAlignment(Qt.AlignCenter)
+    font = QFont()
+    font.setPointSize(14)
     self.label_14.setFont(font)
-    self.label_14.setText("deepinenespañol.org")
+    self.label_14.setText("deepinenespañol.org | Copiar enlace")
     self.label_14.setCursor(QCursor(Qt.PointingHandCursor))
     self.label_14.setObjectName("label_14")
     self.verticalLayout.addWidget(self.label_14)
@@ -237,5 +240,7 @@ class Dialog(QDialog):
     self.move(qr.topLeft())
 
   def open_deepines(self):
-    Popen(["x-www-browser", "deepinenespañol.org"],
-        stdout=PIPE, universal_newlines=True)
+    QApplication.clipboard().setText("https://deepinenespañol.org")
+    #webbrowser.open('https://deepinenespañol.org')
+    #Popen(["x-www-browser", "deepinenespañol.org"],
+        #stdout=PIPE, universal_newlines=True)
