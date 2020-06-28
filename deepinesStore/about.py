@@ -1,20 +1,11 @@
-#!/usr/bin/env python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
-"""
-Created on 2019年4月19日
-@author: Irony
-@site: https://pyqt5.com https://github.com/892768447
-@email: 892768447@qq.com
-@file: FramelessDialog
-@description: 无边框圆角对话框 
-"""
 from PyQt5.QtCore import Qt, QSize, pyqtSignal
 from PyQt5.QtWidgets import QDialog, QVBoxLayout, QHBoxLayout, QWidget,\
     QPushButton, QGridLayout, QSpacerItem, QApplication,\
     QSizePolicy, QLabel, QFrame, QDesktopWidget
 from PyQt5.QtGui import QFont, QPixmap, QCursor
-from subprocess import Popen, PIPE
 from os import system
 from os.path import join, abspath, dirname
 
@@ -34,7 +25,7 @@ Stylesheet = """
 }
 #label_14{
     margin-top: 5px;
-    color: #00bbc8;
+    color: rgba(0, 192, 255, 255);
 }
 
 #label, #label_2, #label_3,
@@ -49,18 +40,16 @@ Stylesheet = """
   border: transparent;
 }
 
-#closeButton {
+#btn_close {
     min-width: 36px;
     min-height: 36px;
-    font-family: "Webdings";
-    qproperty-text: "r";
     border-radius: 10px;
     margin-top: 5px;
     margin-right: 5px;
 }
-#closeButton:hover {
-    color: white;
-    background: red;
+
+#btn_close:hover{
+    background-color: rgba(50, 50, 50, 100);
 }
 """
 
@@ -95,6 +84,7 @@ class Dialog(QDialog):
 
   def initUi(self):
     ruta_logo = abspath(join(dirname(__file__), 'resources', 'deepines.svg'))
+    ruta_cerrar = abspath(join(dirname(__file__), 'resources', 'cerrar.svg'))
 
     self.gridLayout = QGridLayout(self)
     self.gridLayout.setContentsMargins(0, 0, 0, 0)
@@ -112,8 +102,13 @@ class Dialog(QDialog):
     self.verticalLayout_2.setObjectName("verticalLayout_2")
     self.verticalLayout_2.addItem(QSpacerItem(
         40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum))
-    self.verticalLayout_2.addWidget(QPushButton(
-        'r', self, clicked=self.accept, objectName='closeButton'))
+
+    self.boton = QLabelClickable(self)
+    self.boton.setObjectName("btn_close")
+    self.boton.setPixmap(QPixmap(ruta_cerrar))
+    self.boton.setAlignment(Qt.AlignCenter)
+    self.boton.clicked.connect(self.accept)
+    self.verticalLayout_2.addWidget(self.boton)
 
     self.verticalLayout.addLayout(self.verticalLayout_2)
     spacerItem2 = QSpacerItem(20, 20, QSizePolicy.Minimum, QSizePolicy.Fixed)

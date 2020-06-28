@@ -151,8 +151,8 @@ class Ui_MainWindow(object):
         # Primer item, spaciador vertical
         self.verticalLayout.addItem(spacerItem2)
         self.frame_4 = QtWidgets.QFrame(self.frame_2)
-        self.frame_4.setMinimumSize(QtCore.QSize(0, 30))
-        self.frame_4.setMaximumSize(QtCore.QSize(16777215, 30))
+        self.frame_4.setMinimumSize(QtCore.QSize(0, 32))
+        self.frame_4.setMaximumSize(QtCore.QSize(16777215, 32))
         self.frame_4.setStyleSheet("border-radius: 10px;\n"
 "background-color: rgba(16, 16, 16, 122);\n"
 "color: white;")

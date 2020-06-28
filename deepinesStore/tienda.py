@@ -91,8 +91,8 @@ class Ventana(QMainWindow):
             else:
                 self.error("No se ha podido establecer conexión con el servidor, <br>"
                     "por favor verifique su conexión de internet.<br>"
-                    "Si el problema persiste, contáctenos en Telegram <br>"
-                    "por el grupo @deepinenespanol.<br><br>"
+                    "Si el problema persiste, contáctenos vía Telegram <br>"
+                    "en @deepinenespanol.<br><br>"
                     "<a href='#'>deepinenespañol.org | Copiar enlace</a><br>"
                     "Visite Deepin en Español para más información.",
                     "https://deepinenespañol.org")
@@ -191,6 +191,8 @@ class Ventana(QMainWindow):
         self.label_error.clicked.connect(lambda:
             QApplication.clipboard().setText(enlace))
         self.ui.gridLayout.addWidget(self.label_error, 2, 1, 1, 1)
+        self.ui.listWidget.setEnabled(False)
+        self.ui.frame_4.setEnabled(False)
     
     #             /Control de errores              #
     ################################################
