@@ -89,7 +89,7 @@ class Dialog(QDialog):
     self.setStyleSheet(Stylesheet)
     self.initUi()
     self.center()
-    self.label_15.clicked.connect(self.open_deepines)
+    self.label_14.clicked.connect(self.open_deepines)
     
     system('xprop -f _KDE_NET_WM_BLUR_BEHIND_REGION 32c -set _KDE_NET_WM_BLUR_BEHIND_REGION 0 -id {}'.format(int(self.winId())))
 
