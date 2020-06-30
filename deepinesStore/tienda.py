@@ -465,11 +465,11 @@ class Ventana(QMainWindow):
             borde = "border: 2px solid #419fd9;"
             r, g, b = 0, 255, 255
             if cuenta != 1:
-                articulo, plural = "es", "s"
+                acentuacion, articulo, plural = "o", "es", "s"
             else:
-                articulo, plural = "", ""
-            texto = "{} aplicacion{} seleccionada{} para instalar.".format(
-                cuenta, articulo, plural)
+                acentuacion, articulo, plural = "ó", "", ""
+            texto = "{} aplicaci{}n{} seleccionada{} para instalar.".format(
+                cuenta, acento, articulo, plural)
 
         estilo = ("#btn_install{\n"
                     "color: #fff;\n"
