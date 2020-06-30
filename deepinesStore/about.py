@@ -149,7 +149,7 @@ class Dialog(QDialog):
     self.label_3.setFont(font)
     self.label_3.setAlignment(Qt.AlignCenter)
     self.label_3.setWordWrap(True)
-    self.label_3.setText("Desarrollado por la comunidad de Deepin en Español")
+    self.label_3.setText("Desarrollada por la comunidad de Deepin en Español")
     self.label_3.setObjectName("label_3")
     self.verticalLayout.addWidget(self.label_3)
     font = QFont()
