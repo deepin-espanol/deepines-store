@@ -469,7 +469,7 @@ class Ventana(QMainWindow):
             else:
                 acentuacion, articulo, plural = "ó", "", ""
             texto = "{} aplicaci{}n{} seleccionada{} para instalar.".format(
-                cuenta, acento, articulo, plural)
+                cuenta, acentuacion, articulo, plural)
 
         estilo = ("#btn_install{\n"
                     "color: #fff;\n"
