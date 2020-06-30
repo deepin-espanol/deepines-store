@@ -89,7 +89,7 @@ class Ventana(QMainWindow):
                 self.Apps_inicio(lista_app)
                 
             else:
-                self.error("No se ha podido establecer conexión con el servidor, <br>"
+                self.error("No ha podido establecer conexión con el servidor, <br>"
                     "por favor verifique su conexión de internet.<br>"
                     "Si el problema persiste, contáctenos vía Telegram <br>"
                     "en @deepinenespanol.<br><br>"
@@ -98,7 +98,7 @@ class Ventana(QMainWindow):
                     "https://deepinenespañol.org")
         else:
             self.error("El repositorio Deepines no está instalado en su sistema,<br>"
-                "Tienda Deepies necesita este repositorio para funcionar.<br>"
+                "Tienda Deepines necesita este repositorio para funcionar.<br>"
                 "En el siguiente enlace encontrará las instrucciones para instalarlo.<br><br>"
                 "<a href='#'>deepinenespañol.org/repositorio/ | Copiar enlace<a/><br>",
                 "https://deepinenespañol.org/repositorio")
