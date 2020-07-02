@@ -35,17 +35,15 @@ class External(QObject):
             	# Enviamos la señal
                 self.start.emit(elemento)
                 # comandos para instalar la app
-                comando = ["sudo", "apt", "install", elemento, "-y"]
+                comando = ["sudo", "DEBIAN_FRONTEND=noninteractive",
+                 "apt", "-q", "-y","install", elemento]
                         
                 ejecucion = subprocess.Popen(comando, 
                             stdout=subprocess.PIPE, universal_newlines=True)
                 while not ejecucion.poll():
                     line = ejecucion.stdout.readline()
                     if line != '\n':
-                        if 'deepines' in line:
-                            self.progress.emit("Descargando {}".format(elemento))
-                        else:
-                            self.progress.emit(line)
+                        self.progress.emit(line)
                     
                     if not line:
                         break
