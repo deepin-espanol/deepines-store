@@ -115,11 +115,11 @@ class Ui_Form(QtWidgets.QWidget):
         notification(message)
         self.plainTextEdit.insertPlainText("\n\nHa ocurrido un error, intentelo"
             " nuevamente.\n"
-            "Si el problema persiste, comuniquese con el administrador.\n")
+            "Si el problema persiste, comuníquese con el administrador.\n")
         self.ventana()
 
     def update(self):
-        self.plainTextEdit.insertPlainText("\nSe esta actualizando la base de datos.\n\n")
+        self.plainTextEdit.insertPlainText("\nSe está actualizando la base de datos.\n\n")
 
     def center(self):
         frameGm = self.frameGeometry()
