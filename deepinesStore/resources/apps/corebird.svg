@@ -50,13 +50,13 @@
      inkscape:snap-intersection-paths="true"
      inkscape:snap-smooth-nodes="true"
      inkscape:snap-global="true"
-     inkscape:zoom="0.50427352"
-     inkscape:cx="-142.43077"
-     inkscape:cy="316.30384"
+     inkscape:zoom="2.0170941"
+     inkscape:cx="115.76963"
+     inkscape:cy="104.42921"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
-     inkscape:current-layer="surface1" />
+     inkscape:current-layer="g888" />
   <defs
      id="defs40">
     <linearGradient
@@ -677,17 +677,15 @@
         <circle
            r="10.718019"
            cy="203.48849"
-           cx="-177.83418"
+           cx="177.83418"
            id="circle1125"
-           style="opacity:1;fill:#102543;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1.49807167;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
-           transform="scale(-1,1)" />
+           style="opacity:1;fill:#102543;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1.49807167;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke" />
         <circle
            style="opacity:1;fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.43905342;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
            id="circle1127"
-           cx="-180.65498"
+           cx="175.01338"
            cy="200.66763"
-           r="3.1412265"
-           transform="scale(-1,1)" />
+           r="3.1412265" />
         <path
            style="fill:url(#radialGradient1141);fill-opacity:1;stroke:none;stroke-width:1.34828699px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
            d="m 161.35937,230.39843 c -0.43986,0.0381 -0.88145,0.0687 -1.32422,0.15625 -0.58731,0.11603 -1.17701,0.30013 -1.77539,0.625 -1.19675,0.64972 -2.42495,1.85946 -3.77148,2.89063 -1.34653,1.03116 -2.81362,1.88694 -4.70703,3.03906 -1.8934,1.15213 -4.21746,2.60474 -5.69141,3.5586 -1.43509,0.92872 -2.04905,1.38627 -2.65625,1.98632 -0.33843,0.61964 -0.73848,1.22351 -0.94141,1.88282 -0.66899,2.17348 -0.55791,4.62205 1.51172,9.10351 2.06965,4.48147 6.17343,11.11567 9.4043,15.79492 3.23088,4.67921 5.62711,7.46298 7.32617,9.27344 1.69906,1.81046 2.70145,2.64872 3.23633,2.94531 v 0.17578 c 0.0182,0 0.0382,0.001 0.0547,-0.004 0.0643,-0.0117 0.1341,-0.036 0.2207,-0.084 0.53488,-0.29659 1.53727,-1.13485 3.23633,-2.94531 1.69906,-1.81046 4.09529,-4.59423 7.32617,-9.27344 3.23087,-4.67925 7.33465,-11.31345 9.4043,-15.79492 2.06963,-4.48146 2.18071,-6.93003 1.51172,-9.10351 -0.20293,-0.65931 -0.60298,-1.26318 -0.94141,-1.88282 -0.6072,-0.60005 -1.22116,-1.05759 -2.65625,-1.98632 -1.47395,-0.95386 -3.79801,-2.40647 -5.69141,-3.5586 -1.89341,-1.15212 -3.3605,-2.0079 -4.70703,-3.03906 -1.34653,-1.03117 -2.57473,-2.24091 -3.77148,-2.89063 -0.59838,-0.32487 -1.18808,-0.50897 -1.77539,-0.625 -0.44277,-0.0875 -0.88436,-0.11815 -1.32422,-0.15625 -0.18829,-0.006 -0.40266,2.7e-4 -0.61133,0.004 v -0.0859 c -0.28154,0.01 -0.61361,-0.0142 -0.88672,-0.006 z"
