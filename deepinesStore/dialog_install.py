@@ -39,7 +39,7 @@ class Ui_Form(QtWidgets.QWidget):
         self.gridLayout.addWidget(self.boton, 1, 1, 1, 1)
         # Line edit para mostrat texto
         self.plainTextEdit = QtWidgets.QPlainTextEdit(self)
-        self.plainTextEdit.setReadOnly(True)
+        #self.plainTextEdit.setReadOnly(True)
         self.plainTextEdit.setTextInteractionFlags(Qt.NoTextInteraction)
         self.plainTextEdit.setCenterOnScroll(True)
         self.plainTextEdit.setObjectName("plainTextEdit")
@@ -90,7 +90,7 @@ class Ui_Form(QtWidgets.QWidget):
 
     def complete(self):
         self.plainTextEdit.insertPlainText(
-            "\nSe han terminado todos los procesos.\n")
+            "\nHan terminado todos los procesos.\n")
         self.plainTextEdit.moveCursor(QTextCursor.End)
         self.main.instalacion_completada()
         self.ventana()
@@ -104,19 +104,30 @@ class Ui_Form(QtWidgets.QWidget):
         self.plainTextEdit.moveCursor(QTextCursor.End)
 
     def finalizar(self, elemento):
-        message = "Se han terminado de instalar {}.\n".format(elemento)
-        notification(message)
+        #message = "Se han terminado de instalar {}.\n".format(elemento)
+        #notification(message)
         self.plainTextEdit.insertPlainText(
-            "\nSe han terminado de instalar {}.\n".format(elemento))
+            "\nSe ha terminado de instalar {}.\n".format(elemento))
         self.plainTextEdit.moveCursor(QTextCursor.End)
 
-    def error(self):
-        message = "Ha ocurrido un error, intentelo nuevamente"
-        notification(message)
-        self.plainTextEdit.insertPlainText("\n\nHa ocurrido un error, intentelo"
-            " nuevamente.\n"
-            "Si el problema persiste, comuníquese con el administrador.\n")
-        self.ventana()
+    def error(self, codigo_error):
+        if codigo_error == 1: # Excepcion no controlada
+            mensaje = ("\n\nHa ocurrido un error, intentelo"
+                " nuevamente.\n"
+                "Si el problema persiste, comuniquese con el administrador.\n")
+        if codigo_error == 2: # Error de red
+            mensaje = ("\n\nLa conexión de red falló y la instalación no se completó.\n"
+                "Verifique que su equipo está conectado a Internet y haga clic en Reintentar.\n"
+                "Si el problema persiste, envíenos un reporte a t.me/deepinenespanol.\n")
+        if codigo_error == 3: # Error de apt
+            mensaje = ("\n\nHa ocurrido un error, intentelo")
+        self.boton_install.setText("Reintentar")
+        self.plainTextEdit.insertPlainText(mensaje)
+        self.boton_install.setEnabled(True)
+        self.boton.setEnabled(True)
+        self.activateWindow()
+        self.thread.quit()
+        #self.ventana()
 
     def update(self):
         self.plainTextEdit.insertPlainText("\nSe está actualizando la base de datos.\n\n")
@@ -127,3 +138,8 @@ class Ui_Form(QtWidgets.QWidget):
         centerPoint = QtWidgets.QApplication.desktop().screenGeometry(screen).center()
         frameGm.moveCenter(centerPoint)
         self.move(frameGm.topLeft())
+
+    def error_red(self):
+        print("Error de internet")
+        print("Error en apt")
+
