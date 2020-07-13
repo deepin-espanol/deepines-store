@@ -151,8 +151,8 @@ class Ui_MainWindow(object):
         # Primer item, spaciador vertical
         self.verticalLayout.addItem(spacerItem2)
         self.frame_4 = QtWidgets.QFrame(self.frame_2)
-        self.frame_4.setMinimumSize(QtCore.QSize(0, 32))
-        self.frame_4.setMaximumSize(QtCore.QSize(16777215, 32))
+        self.frame_4.setMinimumSize(QtCore.QSize(0, 35))
+        self.frame_4.setMaximumSize(QtCore.QSize(16777215, 35))
         self.frame_4.setStyleSheet("border-radius: 10px;\n"
 "background-color: rgba(16, 16, 16, 122);\n"
 "color: white;")
@@ -186,14 +186,14 @@ class Ui_MainWindow(object):
         self.listWidget = QtWidgets.QListWidget(self.frame_2)
         self.listWidget.setStyleSheet("#listWidget{\n"
 "  padding-left:10px;\n"
-"  padding-top:10px;\n"
-"  padding-bottom:10px;\n"
+"  padding-top:6px;\n"
+"  padding-bottom:6px;\n"
 "  border-radius: 10px;\n"
 "  background-color: rgba(16, 16, 16, 163);\n"
 "}\n"
 "#listWidget:item{\n"
 # Top Right Bottom Left
-"  padding: 5px 5px 5px 5px;\n"
+"  padding: 3px 5px 3px 5px;\n"
 "}\n"
 "#listWidget:item:selected{\n"
 "  background-color: transparent;\n"
@@ -425,4 +425,4 @@ class Ui_MainWindow(object):
         item.setText(_translate("MainWindow", "Otros"))
         self.listWidget.setSortingEnabled(__sortingEnabled)
         self.lineEdit.setPlaceholderText(_translate("MainWindow", "Búsqueda"))
-        self.label.setText(_translate("MainWindow", "Acerca de \nVersion: 1.0"))
+        self.label.setText(_translate("MainWindow", "Acerca de \nVersion: 1.1"))

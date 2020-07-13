@@ -72,8 +72,7 @@ class Ventana(QMainWindow):
             'pix-data','python-twodict','python3-swisseph','radeon-profile-daemon',
             'retroarch-assets','smplayer-skins','smplayer-themes','speedtest-cli','sudo',
             'systemback-cli','systemback-efiboot-amd64','systemback-locales',
-            'systemback-scheduler','tsc-data','tsc-music','unixodbc-dev',
-            'teamspeak-client']
+            'systemback-scheduler','tsc-data','tsc-music','unixodbc-dev']
 
         
         global lista_app, selected_apps, instaladas, lista_global, repo

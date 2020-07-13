@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=Tienda Deepines
-Version=1.0
+Version=1.1
 Exec=/usr/bin/deepines
 Comment=Tienda de aplicaciones para el repositorio deepines
 Icon=deepines

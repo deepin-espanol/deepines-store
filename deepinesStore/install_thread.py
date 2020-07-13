@@ -11,11 +11,14 @@ class External(QObject):
     finish = pyqtSignal(object)
     complete = pyqtSignal()
     update = pyqtSignal()
-    error = pyqtSignal()
+    error = pyqtSignal(object)
     
     def __init__(self, app):
         super(External, self).__init__()
         self.app = app
+        self.errores = ('Err:', 
+            'fallo temporal al resolver «mirror.deepines.com»',
+            '101: La red es inaccesible', '101: network is unreachable')
 
     @pyqtSlot()
     def run(self):
@@ -30,6 +33,13 @@ class External(QObject):
                 break
 
         for elemento in self.app:
+            """
+            error = 0 -> sin error
+            error = 1 -> excepcion no controlada
+            error = 2 -> error en red de internet
+            error = 3 -> error en apt
+            """
+            error = 0
             try:
             	# Iniciamos la instalacion
             	# Enviamos la señal
@@ -43,16 +53,27 @@ class External(QObject):
                 while not ejecucion.poll():
                     line = ejecucion.stdout.readline()
                     if line != '\n':
+                        for err in self.errores:
+                            if err in line:
+                                line = ""
                         self.progress.emit(line)
                     
+                    if ('101: La red es inaccesible' in line or 
+                    '101: network is unreachable'): error = 2
+
+
                     if not line:
+                        if error == 0: 
+                            self.finish.emit(elemento)
                         break
+
             except:
                 # Ocurre algun error
-                self.error.emit()
-            finally:
-                # Finaliza correctamente
-                self.finish.emit(elemento)
+                self.error.emit(0)
         else:
             # Termino del ciclo for
-            self.complete.emit()
+            if error == 0:
+                self.complete.emit()
+            else:
+                self.error.emit(error)
+
