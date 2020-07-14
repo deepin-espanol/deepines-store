@@ -39,8 +39,8 @@ class Ui_Form(QtWidgets.QWidget):
         self.gridLayout.addWidget(self.boton, 1, 1, 1, 1)
         # Line edit para mostrat texto
         self.plainTextEdit = QtWidgets.QPlainTextEdit(self)
-        #self.plainTextEdit.setReadOnly(True)
-        self.plainTextEdit.setTextInteractionFlags(Qt.NoTextInteraction)
+        self.plainTextEdit.setReadOnly(True)
+        #self.plainTextEdit.setTextInteractionFlags(Qt.NoTextInteraction)
         self.plainTextEdit.setCenterOnScroll(True)
         self.plainTextEdit.setObjectName("plainTextEdit")
         self.gridLayout.addWidget(self.plainTextEdit, 0, 0, 1, 2)
