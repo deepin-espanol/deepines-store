@@ -466,20 +466,17 @@ class Ventana(QMainWindow):
             r, g, b = 255, 255, 255
             cursor = QtCore.ArrowCursor
             enabled = False
-            radio = 0
         else:
             borde = "border: 2px solid #419fd9;"
             r, g, b = 0, 255, 255
             cursor = QtCore.PointingHandCursor
             enabled = True
-            radio=5
-
 
             if cuenta != 1:
                 acentuacion, articulo, plural = "o", "es", "s"
             else:
                 acentuacion, articulo, plural = "ó", "", ""
-            texto = "{} aplicaci{}n{} seleccionada{} para instalar".format(
+            texto = "{} aplicaci{}n{} seleccionada{} para instalar - clic aquí para verlas".format(
                 cuenta, acentuacion, articulo, plural)
             
         self.ui.btn_install.setEnabled(enabled)
@@ -511,15 +508,6 @@ class Ventana(QMainWindow):
         shadow.setYOffset(0)
         self.ui.btn_install.setGraphicsEffect(shadow)
 
-        shadow2 = QGraphicsDropShadowEffect(self,
-          blurRadius=radio,
-          color=QColor(r,g,b),
-          offset=QPointF(0, 0)
-        )
-        shadow2.setXOffset(0)
-        shadow2.setYOffset(0)
-        self.ui.lbl_list_apps.setGraphicsEffect(shadow2)
-        
 
         self.ui.lbl_list_apps.setText(texto)
 
@@ -775,7 +763,6 @@ class Card(QFrame):
 
         self.texto_version()
         self.parentWindow.contar_apps()
-        print(lista_selected)
 
     def change_color_buton(self, estado: int):
         if estado == 0: # App seleccionada RGB(0,255,255)
