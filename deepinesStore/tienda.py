@@ -476,8 +476,8 @@ class Ventana(QMainWindow):
                 acentuacion, articulo, plural = "o", "es", "s"
             else:
                 acentuacion, articulo, plural = "ó", "", ""
-            texto = "{} aplicaci{}n{} seleccionada{} para instalar - clic aquí para verlas".format(
-                cuenta, acentuacion, articulo, plural)
+            texto = "{} aplicaci{}n{} seleccionada{} para instalar, clic aquí para verla{}".format(
+                cuenta, acentuacion, articulo, plural, plural)
             
         self.ui.btn_install.setEnabled(enabled)
         self.ui.lbl_list_apps.setEnabled(enabled)
