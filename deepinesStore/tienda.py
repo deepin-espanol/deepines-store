@@ -9,7 +9,7 @@ from PyQt5.QtCore import QSize, QPointF, QPoint, QEvent, Qt as QtCore,\
 from PyQt5.QtWidgets import (QMainWindow, QApplication, QFrame, QLabel,
         QSizePolicy, QGraphicsDropShadowEffect, QSpacerItem,
         QDesktopWidget, QWidget, QHBoxLayout)
-from PyQt5.QtGui import QPixmap, QIcon, QFont, QColor
+from PyQt5.QtGui import QPixmap, QIcon, QFont, QColor, QCursor
 # Modulos para el scraping
 from bs4 import BeautifulSoup
 from requests import get
@@ -24,8 +24,8 @@ from deepinesStore.dialog_install import Ui_Form as DInstall
 from deepinesStore.about import Dialog as DAbout
 
 # Variables globales
-global lista_app, total_apps, lista_inicio, lista_global
-global selected_apps, instaladas, columnas, tamanio, repo
+global lista_app, total_apps, lista_inicio, lista_global, lista_selected
+global selected_apps, instaladas, columnas, tamanio, repo, contador_selected
 
 class Ventana(QMainWindow):
     def __init__(self):
@@ -75,11 +75,14 @@ class Ventana(QMainWindow):
             'systemback-scheduler','tsc-data','tsc-music','unixodbc-dev']
 
         
-        global lista_app, selected_apps, instaladas, lista_global, repo
+        global lista_app, selected_apps, instaladas,\
+         lista_global, repo, lista_selected, contador_selected
         repo = self.repo_is_exist()
         if repo:
             # Variables globales
             selected_apps = list()
+            lista_selected = {}
+            contador_selected = 0
             instaladas = self.apps_instaladas()
             # Almacenamos la lista, para cargarla solo al inicio
             lista_app = self.Get_App()
@@ -102,11 +105,13 @@ class Ventana(QMainWindow):
                 "<a href='#'>deepinenespañol.org/repositorio/ | Copiar enlace<a/><br>",
                 "https://deepinenespañol.org/repositorio")
 
-        self.ui.lbl_list_apps.setText("Seleccione las aplicaciones a instalar")
+        self.ui.btn_install.setEnabled(False)
         self.ui.btn_install.clicked.connect(self.ventana_install)
+        self.ui.lbl_list_apps.setText("Seleccione las aplicaciones a instalar")
+        self.ui.lbl_list_apps.setEnabled(False)
+        self.ui.lbl_list_apps.clicked.connect(lambda: self.Listar_Apps(lista_selected))
         self.ui.listWidget.itemClicked.connect(self.listwidgetclicked)
         self.ui.lineEdit.textChanged.connect(self.search_app)
-        self.ui.btn_install.setEnabled(False)
         self.ui.label_2.clicked.connect(self.acerca_de)
         self.ui.btn_cerrar.clicked.connect(self.close)
         self.ui.btn_maximizar.clicked.connect(self.maximize)
@@ -121,6 +126,7 @@ class Ventana(QMainWindow):
         shadow.setXOffset(0)
         shadow.setYOffset(0)
         self.ui.btn_install.setGraphicsEffect(shadow)
+        
         self.center()
 
 
@@ -456,19 +462,29 @@ class Ventana(QMainWindow):
         cuenta = len(selected_apps)
         if cuenta == 0:
             texto = "Seleccione las aplicaciones a instalar"
-            self.ui.btn_install.setEnabled(False)
             borde = "border: 2px solid rgb(45, 45, 45);"
             r, g, b = 255, 255, 255
+            cursor = QtCore.ArrowCursor
+            enabled = False
+            radio = 0
         else:
-            self.ui.btn_install.setEnabled(True)
             borde = "border: 2px solid #419fd9;"
             r, g, b = 0, 255, 255
+            cursor = QtCore.PointingHandCursor
+            enabled = True
+            radio=5
+
+
             if cuenta != 1:
                 acentuacion, articulo, plural = "o", "es", "s"
             else:
                 acentuacion, articulo, plural = "ó", "", ""
             texto = "{} aplicaci{}n{} seleccionada{} para instalar".format(
                 cuenta, acentuacion, articulo, plural)
+            
+        self.ui.btn_install.setEnabled(enabled)
+        self.ui.lbl_list_apps.setEnabled(enabled)
+        self.ui.lbl_list_apps.setCursor(QCursor(cursor))
 
         estilo = ("#btn_install{\n"
                     "color: #fff;\n"
@@ -494,6 +510,16 @@ class Ventana(QMainWindow):
         shadow.setXOffset(0)
         shadow.setYOffset(0)
         self.ui.btn_install.setGraphicsEffect(shadow)
+
+        shadow2 = QGraphicsDropShadowEffect(self,
+          blurRadius=radio,
+          color=QColor(r,g,b),
+          offset=QPointF(0, 0)
+        )
+        shadow2.setXOffset(0)
+        shadow2.setYOffset(0)
+        self.ui.lbl_list_apps.setGraphicsEffect(shadow2)
+        
 
         self.ui.lbl_list_apps.setText(texto)
 
@@ -703,7 +729,7 @@ class Card(QFrame):
         "margin-bottom: 5px;")
 
     def select_app(self, titulo):
-        global selected_apps, lista_app, instaladas
+        global selected_apps, lista_app, instaladas, lista_selected, contador_selected
         
         for elemento in lista_app:
             if titulo in elemento: 
@@ -714,11 +740,33 @@ class Card(QFrame):
             # Si la app no esta seleccionada
             if titulo not in selected_apps:
                 selected_apps.append(titulo)
+                
+                
+                for elemento in lista_app:
+                    if elemento[0] == titulo:    
+                        indice = lista_app.index(elemento)
+                        item = lista_app[indice]
+                        lista_selected[contador_selected] = item
+                        contador_selected += 1
+
                 lista_app[indice][4] = 0
                 self.change_color_buton(0)
                 self.removeEventFilter(self)
             else:
                 selected_apps.remove(titulo)
+                
+
+                count = 0
+                for elemento in lista_selected:
+                    titulo_elemento = lista_selected[elemento]
+
+                    if titulo_elemento[0] == titulo:    
+                        eliminar = elemento
+                    count += 1
+                
+                lista_selected.pop(eliminar)
+                
+
                 lista_app[indice][4] = 1
                 self.change_color_buton(1)
                 self.installEventFilter(self)
@@ -727,6 +775,7 @@ class Card(QFrame):
 
         self.texto_version()
         self.parentWindow.contar_apps()
+        print(lista_selected)
 
     def change_color_buton(self, estado: int):
         if estado == 0: # App seleccionada RGB(0,255,255)

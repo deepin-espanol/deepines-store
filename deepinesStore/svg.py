@@ -11,7 +11,7 @@ def get_svg():
   BASE = abspath(join(dirname(__file__)))
   PATH = abspath(join(BASE, 'resources/apps'))
   URL_HTML = abspath(join(BASE, 'apps'))
-  URL_GITHUB = "https://github.com/s384/store_deepines/tree/master/deepinesStore/resources/apps/"
+  URL_GITHUB = "https://raw.githubusercontent.com/s384/store_deepines/tree/master/deepinesStore/resources/apps/"
 
   archivo = open(URL_HTML, "r")
   # Pasamos el contenido HTML de la web a un objeto BeautifulSoup()

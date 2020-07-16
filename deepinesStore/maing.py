@@ -108,7 +108,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_3.setContentsMargins(10, 10, 10, 10)
         self.horizontalLayout_3.setSpacing(10)
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
-        self.lbl_list_apps = QtWidgets.QLabel(self.widget)
+        self.lbl_list_apps = QLabelClickable(self.widget)
         font = QtGui.QFont()
         font.setPointSize(11)
         self.lbl_list_apps.setFont(font)
