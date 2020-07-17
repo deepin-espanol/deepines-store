@@ -109,7 +109,7 @@ class Ventana(QMainWindow):
         self.ui.btn_install.clicked.connect(self.ventana_install)
         self.ui.lbl_list_apps.setText("Seleccione las aplicaciones a instalar")
         self.ui.lbl_list_apps.setEnabled(False)
-        self.ui.lbl_list_apps.clicked.connect(lambda: self.Listar_Apps(lista_selected))
+        self.ui.lbl_list_apps.clicked.connect(self.apps_seleccionadas)
         self.ui.listWidget.itemClicked.connect(self.listwidgetclicked)
         self.ui.lineEdit.textChanged.connect(self.search_app)
         self.ui.label_2.clicked.connect(self.acerca_de)
@@ -466,11 +466,13 @@ class Ventana(QMainWindow):
             r, g, b = 255, 255, 255
             cursor = QtCore.ArrowCursor
             enabled = False
+            pix_car = "carDisable.svg"
         else:
             borde = "border: 2px solid #419fd9;"
             r, g, b = 0, 255, 255
             cursor = QtCore.PointingHandCursor
             enabled = True
+            pix_car = "carEnable.svg"
 
             if cuenta != 1:
                 acentuacion, articulo, plural = "o", "es", "s"
@@ -478,10 +480,13 @@ class Ventana(QMainWindow):
                 acentuacion, articulo, plural = "ó", "", ""
             texto = "{} aplicaci{}n{} seleccionada{} para instalar, clic aquí para verla{}".format(
                 cuenta, acentuacion, articulo, plural, plural)
-            
+        ruta_car = abspath(join(dirname(__file__), 'resources', pix_car))
         self.ui.btn_install.setEnabled(enabled)
         self.ui.lbl_list_apps.setEnabled(enabled)
         self.ui.lbl_list_apps.setCursor(QCursor(cursor))
+        pix_car = QIcon()
+        pix_car.addPixmap(QPixmap(ruta_car), QIcon.Normal, QIcon.Off)
+        self.ui.icon_car.setIcon(pix_car)
 
         estilo = ("#btn_install{\n"
                     "color: #fff;\n"
@@ -624,6 +629,11 @@ class Ventana(QMainWindow):
         self.setWindowState(Qt.WindowMinimized)
         if maximized: # Si estaba maximizada, agrandamos
             self.setWindowState(Qt.WindowMaximized)
+
+    def apps_seleccionadas(self):
+        self.Listar_Apps(lista_selected)
+        self.ui.listWidget.clearSelection()
+
 
 class QLabelClickable(QLabel):
 
@@ -788,11 +798,10 @@ class Card(QFrame):
             "border-style: solid;"
             "}"
             "QToolTip {"
-            "border: 2px solid #419fd9;"
+            "border: 2px solid transparent;"
             "border-radius: 4px;"
-            "padding: 2px;"
             "font-size: 12px;"
-            "background-color: transparent;"
+            "background-color: rgb: 63, 63, 63;"
             "})")
 
         shadow = QGraphicsDropShadowEffect(self,
