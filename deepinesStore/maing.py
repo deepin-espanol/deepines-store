@@ -109,19 +109,20 @@ class Ui_MainWindow(object):
         self.horizontalLayout_3.setContentsMargins(10, 10, 10, 10)
         self.horizontalLayout_3.setSpacing(10)
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
-        self.icon_car = QtWidgets.QPushButton(self.widget)
+        
+        self.icon_car = QLabelClickable(self.widget)
         self.icon_car.setStyleSheet("margin-left: 0px;\n"
         "background-color: transparent;\n"
         "border-color: transparent;\n"
+        
         "border: 0px solid;")
         self.icon_car.setText("")
-        pix_car = QtGui.QIcon()
-        pix_car.addPixmap(QtGui.QPixmap(ruta_car), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.icon_car.setIcon(pix_car)
-        self.icon_car.setIconSize(QtCore.QSize(20, 20))
+        pix_car = QtGui.QPixmap(ruta_car)
+        self.icon_car.setPixmap(pix_car)
+        self.icon_car.setScaledContents(True)
         self.icon_car.setMinimumSize(QtCore.QSize(20, 20))
         self.icon_car.setMaximumSize(QtCore.QSize(20, 20))
-        self.icon_car.setEnabled(False)
+        
         self.icon_car.setObjectName("icon_car")
         self.horizontalLayout_3.addWidget(self.icon_car)
         self.lbl_list_apps = QLabelClickable(self.widget)

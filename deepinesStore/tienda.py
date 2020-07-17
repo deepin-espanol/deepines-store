@@ -480,13 +480,13 @@ class Ventana(QMainWindow):
                 acentuacion, articulo, plural = "ó", "", ""
             texto = "{} aplicaci{}n{} seleccionada{} para instalar, clic aquí para verla{}".format(
                 cuenta, acentuacion, articulo, plural, plural)
-        ruta_car = abspath(join(dirname(__file__), 'resources', pix_car))
+
         self.ui.btn_install.setEnabled(enabled)
         self.ui.lbl_list_apps.setEnabled(enabled)
         self.ui.lbl_list_apps.setCursor(QCursor(cursor))
-        pix_car = QIcon()
-        pix_car.addPixmap(QPixmap(ruta_car), QIcon.Normal, QIcon.Off)
-        self.ui.icon_car.setIcon(pix_car)
+        
+        pix_car = QPixmap(abspath(join(dirname(__file__), 'resources', pix_car)))
+        self.ui.icon_car.setPixmap(pix_car)
 
         estilo = ("#btn_install{\n"
                     "color: #fff;\n"
