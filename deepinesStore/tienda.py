@@ -109,6 +109,7 @@ class Ventana(QMainWindow):
         self.ui.btn_install.clicked.connect(self.ventana_install)
         self.ui.lbl_list_apps.setText("Seleccione las aplicaciones a instalar")
         self.ui.lbl_list_apps.setEnabled(False)
+        self.ui.icon_car.clicked.connect(self.apps_seleccionadas)
         self.ui.lbl_list_apps.clicked.connect(self.apps_seleccionadas)
         self.ui.listWidget.itemClicked.connect(self.listwidgetclicked)
         self.ui.lineEdit.textChanged.connect(self.search_app)
