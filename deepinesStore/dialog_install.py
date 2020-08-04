@@ -97,30 +97,38 @@ class Ui_Form(QtWidgets.QWidget):
         self.thread.quit()
 
     def comenzar(self, elemento):
-        self.plainTextEdit.insertPlainText("\nInstalando {}".format(elemento))
+        self.plainTextEdit.insertPlainText(f"\nInstalando {elemento}\n")
 
     def progreso(self, elemento):
-        self.plainTextEdit.insertPlainText("{}".format(elemento))
+        self.plainTextEdit.insertPlainText(f"{elemento}")
         self.plainTextEdit.moveCursor(QTextCursor.End)
 
     def finalizar(self, elemento):
         #message = "Se han terminado de instalar {}.\n".format(elemento)
         #notification(message)
         self.plainTextEdit.insertPlainText(
-            "\nSe ha terminado de instalar {}.\n".format(elemento))
+            f"\nSe ha terminado de instalar {elemento}.\n")
         self.plainTextEdit.moveCursor(QTextCursor.End)
 
     def error(self, codigo_error):
         if codigo_error == 1: # Excepcion no controlada
-            mensaje = ("\n\nHa ocurrido un error, intentelo"
-                " nuevamente.\n"
+            mensaje = ("\n\nHa ocurrido un error, intentelo nuevamente.\n"
                 "Si el problema persiste, comuniquese con el administrador.\n")
         if codigo_error == 2: # Error de red
             mensaje = ("\n\nLa conexión de red falló y la instalación no se completó.\n"
                 "Verifique que su equipo está conectado a Internet y haga clic en Reintentar.\n"
                 "Si el problema persiste, envíenos un reporte a t.me/deepinenespanol.\n")
-        if codigo_error == 3: # Error de apt
-            mensaje = ("\n\nHa ocurrido un error, intentelo")
+        if codigo_error == 3: # Error dependencias incumplidas
+            mensaje = ("\n\nUna o más aplicaciones no se pudieron instalar porque\n"
+                       "dependen de otros paquetes que no se pueden instalar.\n\n"
+                       "Puede buscar ayuda en nuestro foro en deepinespañol.org/comunidad\n"
+                       "o en nuestro grupo de Telegram t.me/deepinenespanol.")
+        if codigo_error == 4: # Error de apt
+            mensaje = ("\n\nEl sistema de instalación está bloqueado por \n"
+                       "otro proceso de instalación o actualización, \n"
+                       "espere hasta que termine y haga clic en Reintentar. \n"
+                       "Si usa Synaptic, asegúrese de que esté cerrado.")
+
         self.boton_install.setText("Reintentar")
         self.plainTextEdit.insertPlainText(mensaje)
         self.boton_install.setEnabled(True)
@@ -138,8 +146,3 @@ class Ui_Form(QtWidgets.QWidget):
         centerPoint = QtWidgets.QApplication.desktop().screenGeometry(screen).center()
         frameGm.moveCenter(centerPoint)
         self.move(frameGm.topLeft())
-
-    def error_red(self):
-        print("Error de internet")
-        print("Error en apt")
-

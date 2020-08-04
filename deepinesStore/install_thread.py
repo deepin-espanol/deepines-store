@@ -16,34 +16,45 @@ class External(QObject):
     def __init__(self, app):
         super(External, self).__init__()
         self.app = app
-        self.errores = ('Err:', 
-            'fallo temporal al resolver «mirror.deepines.com»',
-            '101: La red es inaccesible', '101: network is unreachable')
+        self.errores = ('Err:', 'Ign:',
+            'Fallo temporal al resolver',
+            'No se pudieron obtener algunos archivos',
+            '101: La red es inaccesible', '101: network is unreachable',
+            'dependencias inclumplidas',
+            'No se pudo bloquear', 'Unable to acquire the dpkg')
 
     @pyqtSlot()
     def run(self):
+        error = 0
+        validacion = True # Comprobar si es posible usar apt
         self.update.emit()
         update = subprocess.Popen(["sudo", "apt", "update"], 
                  stdout=subprocess.PIPE, universal_newlines=True)
-        while not update.poll():
-            line = update.stdout.readline()
-            if line != '\n':
-                self.progress.emit(line)
-            if not line:
-                break
+        try:
+            while not update.poll():
+                line = update.stdout.readline()
+                
+                if line != '\n':
+                    self.progress.emit(line)
+
+                if not line:
+                    break
+        except:
+            # Ocurre algun error no controlado
+            self.error.emit(1)
 
         for elemento in self.app:
             """
             error = 0 -> sin error
             error = 1 -> excepcion no controlada
             error = 2 -> error en red de internet
-            error = 3 -> error en apt
+            error = 3 -> error de dependencias
+            error = 4 -> apt en uso por otra app
             """
-            error = 0
             try:
             	# Iniciamos la instalacion
-            	# Enviamos la señal
                 self.start.emit(elemento)
+            	# Enviamos la señal
                 # comandos para instalar la app
                 comando = ["sudo", "DEBIAN_FRONTEND=noninteractive",
                  "apt", "-q", "-y","install", elemento]
@@ -52,28 +63,44 @@ class External(QObject):
                             stdout=subprocess.PIPE, universal_newlines=True)
                 while not ejecucion.poll():
                     line = ejecucion.stdout.readline()
+                    # Caso de que la primera linea este vacia
+                    if validacion and not line:
+                        error = 4
+                    # Cambiamos el validador para que no vuelva a ingresar
+                    validacion = False
+                    print(f"linea: {line}")
                     if line != '\n':
+                        if ('101: La red es inaccesible' in line or 
+                            '101: network is unreachable' in line or 
+                            'Fallo temporal al resolver' in line or
+                            'No se pudieron obtener algunos archivos' in line):
+                            error = 2
+
+                        if ('dependencias incumplidas' in line): error = 3
+
+                        if ('No se pudo bloquear' in line or
+                            'Unable to acquire the dpkg' in line):
+                            error = 4
+                        
                         for err in self.errores:
                             if err in line:
                                 line = ""
+                        
                         self.progress.emit(line)
                     
-                    if ('101: La red es inaccesible' in line or 
-                    '101: network is unreachable'): error = 2
-
-
-                    if not line:
-                        if error == 0: 
-                            self.finish.emit(elemento)
-                        break
-
+                else:
+                    if error == 0: 
+                        self.finish.emit(elemento)
+                    else:
+                        self.error.emit(error)
+                        return 0
+                        
             except:
-                # Ocurre algun error
-                self.error.emit(0)
+                # Ocurre algun error no controlado
+                self.error.emit(1)
+                return 0
         else:
             # Termino del ciclo for
-            if error == 0:
-                self.complete.emit()
-            else:
-                self.error.emit(error)
+            self.complete.emit()
+
 
