@@ -294,7 +294,7 @@ class Ventana(QMainWindow):
     def Get_App(self):
         
         # Asignamos la url
-        URL = "http://vps.deepines.com:8081/deepines/paquetes.html"
+        URL = "http://repositorio.deepines.com/pub/deepines/paquetes.html"
         
         try:
             # Realizamos la petición a la web
