@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="324px" height="234px" viewBox="0 0 324 234" version="1.1">
+<defs>
+<linearGradient id="linear0" gradientUnits="userSpaceOnUse" x1="10.078593" y1="23.624882" x2="38.659374" y2="23.624882" gradientTransform="matrix(2.075212,0,0,2.133715,39.80378,14.203832)">
+<stop offset="0" style="stop-color:rgb(49.803922%,66.274512%,20.784314%);stop-opacity:1;"/>
+<stop offset="1" style="stop-color:rgb(53.725493%,72.156864%,22.745098%);stop-opacity:1;"/>
+</linearGradient>
+<linearGradient id="linear1" gradientUnits="userSpaceOnUse" x1="10.612997" y1="23.694914" x2="37.895481" y2="23.694914" gradientTransform="matrix(2.075212,0,0,2.133715,39.80378,14.203832)">
+<stop offset="0" style="stop-color:rgb(98.823529%,98.823529%,98.823529%);stop-opacity:1;"/>
+<stop offset="1" style="stop-color:rgb(78.039217%,78.039217%,78.039217%);stop-opacity:1;"/>
+</linearGradient>
+</defs>
+<g id="surface1">
+<rect x="0" y="0" width="324" height="234" style="fill:rgb(24.313726%,16.078432%,38.82353%);fill-opacity:1;stroke:none;"/>
+<path style="fill:none;stroke-width:1.021703;stroke-linecap:butt;stroke-linejoin:miter;stroke:rgb(100%,100%,100%);stroke-opacity:1;stroke-miterlimit:4;" d="M -0.94401 -1.082899 L 181.217448 -1.082899 L 181.217448 130.605469 L -0.94401 130.605469 Z M -0.94401 -1.082899 " transform="matrix(1.8,0,0,1.8,0,0)"/>
+<path style="fill-rule:nonzero;fill:url(#linear0);stroke-width:3.638443;stroke-linecap:round;stroke-linejoin:round;stroke:url(#linear1);stroke-miterlimit:4;" d="M 74.628906 103.617622 C 74.628906 103.617622 116.137153 45.099826 116.141493 45.091146 L 118.44401 41.764323 C 109.516059 43.43099 89.565972 46.603733 89.503038 46.733941 C 91.588542 42.940538 100.566406 25.907118 100.954861 25.907118 C 92.419705 25.907118 83.884549 25.907118 75.351562 25.907118 L 72.753906 33.943142 L 61.827257 63.066406 L 90.690104 57.96224 Z M 74.628906 103.617622 " transform="matrix(1.8,0,0,1.8,0,0)"/>
+</g>
+</svg>

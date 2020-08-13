@@ -1,0 +1,35 @@
+#! /bin/sh
+
+set -e
+
+CNFMOD="/usr/share/debconf/confmodule"
+
+if [ -f "${CNFMOD}" ]; then
+  . "${CNFMOD}"
+fi
+
+deletefiles() {
+  FILE1="/etc/apt/trusted.gpg.d/deepines.asc"
+  FILE2="/etc/apt/sources.list.d/deepines.list"
+  FILE3="/usr/share/doc/deepines-repository/copyright"
+  FILE4="/usr/share/deepines/deepinesStore/"
+  for F in "${FILE1}" "${FILE2}" "${FILE3}" "${FILE4}"; do
+    if [ -f "${F}" ]; then
+      rm -f "${F}"
+    elif [ -d "${F}"  ]; then
+      rm -rf "${F}"
+    fi
+  done
+}
+
+case "$1" in
+  remove|purge|abort-upgrade)
+    deletefiles
+    db_purge
+    ;;
+  abort-install)
+    db_purge
+    ;;
+esac
+
+exit 0

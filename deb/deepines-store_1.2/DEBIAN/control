@@ -1,0 +1,14 @@
+Package: deepines-store
+Version: 1.2
+Installed-Size: 1263577
+Maintainer: Deepin en Español <soporte@deepines.com>
+Section: admin
+Homepage: https: //github.com/s384/store_deepines
+Architecture: amd64
+Priority: optional
+Depends:  python3-pyqt5, python3-requests, python3-bs4
+Replaces: deepines-repository (<= 3.1)
+Conflicts: deepines-repository (<= 3.1)
+Urgency: critical
+Description: Deepines repository, key and Store
+ Deepines unofficial repository an Store by deepinenespañol.org
