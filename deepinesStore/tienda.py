@@ -35,12 +35,12 @@ class Ventana(QMainWindow):
         self.ui.setupUi(self)
         self.setWindowFlags(self.windowFlags() | Qt.FramelessWindowHint)
         self.setAttribute(Qt.WA_TranslucentBackground, True )
-        self.lista_deepines = ['conkys-widgets','deepin-blu-red','deepin-osx',
-            'dexter-icon-theme','firefox-latest','halo-icon-theme',
-            'marea-icon-theme','marwaita-osx','mcos--hs-collection',
-            'mcos--mjv-collection','milky','osx-arc-collection','plastik-colletion',
-            'sierra','zukitwo']
-        self.lista_excluir = ['brave-keyring','deepines-repository',
+        self.lista_deepines = ['conkys-widgets', 'deepin-lenguage-patch-es',
+            'dexter-icon-theme', 'frases-celebres', 'firefox-latest',
+            'laboon-access','marea-icon-theme','telegram-desktop',
+            'thunderbird-latest']
+        self.lista_excluir = ['dexter-icon-theme', 'marea-icon-theme',
+            'brave-keyring','deepines-repository',
             'docker-ce-cli','gtkdialog','fish-common', 'libgutenprint2',
             'libobasis6.3-base','libobasis6.3-calc','libobasis6.3-core',
             'libobasis6.3-draw','libobasis6.3-en-us','libobasis6.3-es',
