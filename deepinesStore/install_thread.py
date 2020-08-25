@@ -25,7 +25,6 @@ class External(QObject):
 
     @pyqtSlot()
     def run(self):
-        error = 0
         validacion = True # Comprobar si es posible usar apt
         self.update.emit()
         update = subprocess.Popen(["sudo", "apt", "update"], 
@@ -44,6 +43,7 @@ class External(QObject):
             self.error.emit(1)
 
         for elemento in self.app:
+            error = 0
             """
             error = 0 -> sin error
             error = 1 -> excepcion no controlada
@@ -88,9 +88,13 @@ class External(QObject):
                         
                         self.progress.emit(line)
                     
+                    if not line:
+                        break
+                    
                 else:
                     if error == 0: 
                         self.finish.emit(elemento)
+
                     else:
                         self.error.emit(error)
                         return 0
