@@ -88,7 +88,7 @@ class Ui_MainWindow(object):
             "    subcontrol-origin: margin;\n"
         "}")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
-        self.centralwidget.setStyleSheet("background-color: rgba(30, 30, 30, 100);"
+        self.centralwidget.setStyleSheet("background-color: rgba(30, 30, 30, 200);"
             "color: #b5c5d1;")
         self.centralwidget.setObjectName("centralwidget")
         self.gridLayout_2 = QtWidgets.QGridLayout(self.centralwidget)
@@ -100,7 +100,7 @@ class Ui_MainWindow(object):
         self.widget = QtWidgets.QWidget(self.centralwidget)
         self.widget.setMinimumSize(QtCore.QSize(0, 40))
         self.widget.setMaximumSize(QtCore.QSize(16777215, 80))
-        self.widget.setStyleSheet("background-color: rgba(16, 16, 16, 180);")
+        self.widget.setStyleSheet("background-color: rgba(16, 16, 16, 0);")
         self.widget.setObjectName("widget")
         self.gridLayout_4 = QtWidgets.QGridLayout(self.widget)
         self.gridLayout_4.setContentsMargins(0, 0, 0, 0)
@@ -158,13 +158,13 @@ class Ui_MainWindow(object):
         self.frame_2 = QtWidgets.QFrame(self.centralwidget)
         self.frame_2.setMinimumSize(QtCore.QSize(self.size_frame, 0))
         self.frame_2.setMaximumSize(QtCore.QSize(self.size_frame, 16777215))
-        self.frame_2.setStyleSheet("background-color: rgba(16, 16, 16, 180);")
+        self.frame_2.setStyleSheet("background-color: rgba(16, 16, 16, 0);")
         self.frame_2.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame_2.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame_2.setObjectName("frame_2")
         self.verticalLayout = QtWidgets.QVBoxLayout(self.frame_2)
         self.verticalLayout.setObjectName("verticalLayout")
-        spacerItem2 = QtWidgets.QSpacerItem(20, 10, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
+        spacerItem2 = QtWidgets.QSpacerItem(20, 2, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
         # Primer item, spaciador vertical
         self.verticalLayout.addItem(spacerItem2)
         self.frame_4 = QtWidgets.QFrame(self.frame_2)
@@ -321,6 +321,7 @@ class Ui_MainWindow(object):
         self.frame.setWidgetResizable(True)
         self.frame.setAlignment(QtCore.Qt.AlignCenter)
         self.frame.setObjectName("frame")
+        self.frame.setStyleSheet("background-color: rgba(16, 16, 16, 0);")
         self.scroll_apps = QtWidgets.QWidget()
         self.scroll_apps.setGeometry(QtCore.QRect(0, 0, 774, 459))
         self.scroll_apps.setObjectName("scroll_apps")
@@ -442,4 +443,4 @@ class Ui_MainWindow(object):
         item.setText(_translate("MainWindow", "Otros"))
         self.listWidget.setSortingEnabled(__sortingEnabled)
         self.lineEdit.setPlaceholderText(_translate("MainWindow", "Búsqueda"))
-        self.label.setText(_translate("MainWindow", "Acerca de \nVersion: 1.3"))
+        self.label.setText(_translate("MainWindow", "Acerca de \nVersion: 1.3.1"))
