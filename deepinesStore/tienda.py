@@ -38,7 +38,7 @@ class Ventana(QMainWindow):
         self.lista_deepines = ['conkys-widgets', 'deepin-lenguage-patch-es',
             'dexter-icon-theme', 'frases-celebres', 'firefox-latest',
             'laboon-access','marea-icon-theme','telegram-desktop',
-            'thunderbird-latest']
+            'thunderbird-latest','deepin-language-patch-es']
         self.lista_excluir = ['dexter-icon-theme', 'marea-icon-theme',
             'brave-keyring','deepines-repository',
             'docker-ce-cli','gtkdialog','fish-common', 'libgutenprint2',
