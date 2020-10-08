@@ -10,6 +10,7 @@ compatcheck() {
   KERNEL=$(uname -r)
   INCOMP=0
   SRCLIST="/etc/apt/sources.list"
+  SRCLIST="/home/"$(whoami)"/sources.list"
   if [ "${DISTRIB}" != "Deepin" ]; then
     INCOMP=1
   elif [ "${CODENAME}" != "n/a" ]; then
