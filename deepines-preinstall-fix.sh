@@ -170,7 +170,7 @@ case $DEEPINESPKG in
 
   deepines-store)
 
-    echo "\n================================================"
+    echo -e "\n================================================"
     echo "¿Quiere reparar problemas para instalar Repositorio Deepines?"
     echo "Do you want to repair problems to install Deepines Repository
     "
@@ -217,7 +217,7 @@ Ahora puede instalar Repositorio Deepiens / Now you can install Deepiens Reposit
 
   deepines-repository)
 
-    echo "\n================================================"
+    echo -e "\n================================================"
     echo "¿Quiere reparar problemas para instalar Tienda Deepines?"
     echo "Do you want to repair problems to install Deepines Store
     "
