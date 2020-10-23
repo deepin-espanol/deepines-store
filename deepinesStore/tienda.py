@@ -39,42 +39,9 @@ class Ventana(QMainWindow):
             'dexter-icon-theme', 'frases-celebres', 'firefox-latest',
             'laboon-access','marea-icon-theme','telegram-desktop',
             'thunderbird-latest','deepin-language-patch-es']
-        self.lista_excluir = ['dexter-icon-theme', 'marea-icon-theme',
-            'brave-keyring','deepines-repository',
-            'docker-ce-cli','gtkdialog','fish-common', 'libgutenprint2',
-            'libobasis6.3-base','libobasis6.3-calc','libobasis6.3-core',
-            'libobasis6.3-draw','libobasis6.3-en-us','libobasis6.3-es',
-            'libobasis6.3-es-help','libobasis6.3-extension-beanshell-script-provider',
-            'libobasis6.3-extension-javascript-script-provider',
-            'libobasis6.3-extension-mediawiki-publisher',
-            'libobasis6.3-extension-nlpsolver','libobasis6.3-extension-pdf-import',
-            'libobasis6.3-extension-report-builder','libobasis6.3-firebird',
-            'libobasis6.3-gnome-integration','libobasis6.3-graphicfilter',
-            'libobasis6.3-images','libobasis6.3-impress','libobasis6.3-kde-integration',
-            'libobasis6.3-librelogo','libobasis6.3-libreofficekit-data',
-            'libobasis6.3-math','libobasis6.3-ogltrans','libobasis6.3-onlineupdate',
-            'libobasis6.3-ooofonts','libobasis6.3-ooolinguistic',
-            'libobasis6.3-postgresql-sdbc','libobasis6.3-python-script-provider',
-            'libobasis6.3-pyuno','libobasis6.3-writer','libobasis6.3-xsltfilter',
-            'libreoffice6.3','libreoffice6.3-base',
-            'libreoffice6.3-calc','libreoffice6.3-debian-menus',
-            'libreoffice6.3-dict-en','libreoffice6.3-dict-es','libreoffice6.3-dict-fr',
-            'libreoffice6.3-draw','libreoffice6.3-en-us','libreoffice6.3-es',
-            'libreoffice6.3-impress','libreoffice6.3-math','libreoffice6.3-ure',
-            'libreoffice6.3-writer',
-            'libretro-2048','libretro-core-info','libretro-desmume',
-            'libretro-gambatte','libretro-glupen64','libretro-gpsp','libretro-handy',
-            'libretro-mame','libretro-mgba',
-            'libretro-mupen64plus','libretro-nestopia','libretro-picodrive',
-            'libretro-ppsspp','libretro-snes9x','libretro-stella','libretro-yabause',
-            'libssl1.0.0','libsystemback','libtorrent-rasterbar-dev','libtorrent-rasterbar9',
-            'libunarr','libwidevine','mint-translations','mkvtoolnix','openastro.org-data',
-            'pix-data','python-twodict','python3-swisseph','radeon-profile-daemon',
-            'retroarch-assets','smplayer-skins','smplayer-themes','speedtest-cli','sudo',
-            'systemback-cli','systemback-efiboot-amd64','systemback-locales',
-            'systemback-scheduler','tsc-data','tsc-music','unixodbc-dev']
-
         
+        self.lista_excluir = self.Get_App_Exclude()
+
         global lista_app, selected_apps, instaladas,\
          lista_global, repo, lista_selected, contador_selected
         repo = self.repo_is_exist()
@@ -424,8 +391,22 @@ class Ventana(QMainWindow):
             spacerItem8 = QSpacerItem(0, 0, QSizePolicy.Expanding, QSizePolicy.Minimum)
             self.ui.gridLayout.addItem(spacerItem8, x, columnas, 1, 10)
 
-    #                /Lista de apps                #
+    #        Lista aplicaciones excluidas          #
+    def Get_App_Exclude(self):
+        lista = list()
+        ruta_omitidos = abspath(join(dirname(__file__), 'omitidos.txt'))
+        excluidos = open(ruta_omitidos, 'r')
 
+        for line in excluidos:
+            line = line.replace('\n', '')
+            lista.append(line)
+            
+        return lista
+
+    #                /Lista de apps                #
+    ################################################
+
+    ################################################
     #              Calcular columnas               #
     def calcular_columnas(self):
       if width < 1360:
