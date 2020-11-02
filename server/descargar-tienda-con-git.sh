@@ -36,7 +36,7 @@ if [[ -d $CARPETA_TRABAJO/$NOMBRE_REPOSITORIO ]]; then
 else
 
 	echo "La carpeta $CARPETA_TRABAJO/$NOMBRE_REPOSITORIO no existe"
-	echo "Cloando repositorio $URL_REPOSITORIO"
+	echo "Clonando repositorio $URL_REPOSITORIO"
 	git clone $URL_REPOSITORIO
 
 fi
