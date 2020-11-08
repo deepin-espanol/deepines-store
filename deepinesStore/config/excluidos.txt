@@ -8,7 +8,8 @@ libobasis6.3-base
 libobasis6.3-calc
 libobasis6.3-core
 libobasis6.3-draw
-libobasis6.3-en-us,libobasis6.3-es
+libobasis6.3-en-us
+libobasis6.3-es
 libobasis6.3-es-help
 libobasis6.3-extension-beanshell-script-provider
 libobasis6.3-extension-javascript-script-provider
