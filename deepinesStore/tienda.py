@@ -303,6 +303,7 @@ class Ventana(QMainWindow):
         'graphics','media','games','editors','devel','shell',
         'admin','python','network','networking']
         if 'deepines' in filtro:
+            self.lista_deepines = self.Get_App_Deepines()
             for app in self.lista_deepines:
                 for elemento in lista_app:
                     if elemento[0] == app  :
@@ -390,7 +391,7 @@ class Ventana(QMainWindow):
     #        Lista aplicaciones excluidas          #
     def Get_App_Exclude(self):
         lista = list()
-        ruta_excluidos = abspath(join(dirname(__file__), 'excluidos.txt'))
+        ruta_excluidos = abspath(join(dirname(__file__), 'config/excluidos.txt'))
         excluidos = open(ruta_excluidos, 'r')
 
         for line in excluidos:
@@ -402,7 +403,7 @@ class Ventana(QMainWindow):
     #        Lista aplicaciones excluidas          #
     def Get_App_Deepines(self):
         lista = list()
-        ruta_deepines = abspath(join(dirname(__file__), 'deepines.txt'))
+        ruta_deepines = abspath(join(dirname(__file__), 'config/deepines.txt'))
         deepines = open(ruta_deepines, 'r')
 
         for line in deepines:

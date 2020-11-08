@@ -1,6 +1,5 @@
 brave-keyring
 deepines-repository
-dexter-icon-theme
 docker-ce-cli
 gtkdialog
 fish-common
@@ -71,7 +70,6 @@ libtorrent-rasterbar-dev
 libtorrent-rasterbar9
 libunarr
 libwidevine
-marea-icon-theme
 mint-translations
 mkvtoolnix
 openastro.org-data

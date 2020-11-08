@@ -85,6 +85,6 @@ class ThreadingSvg(object):
 
   def download_control(self):
     excluidos = get(self.EXCLUIDOS)
-    open(join(self.LOCAL_PATH, 'excluidos.txt'), 'w').write(excluidos.text)
+    open(join(self.LOCAL_PATH, 'config/excluidos.txt'), 'w').write(excluidos.text)
     deepines = get(self.DEEPINES)
-    open(join(self.LOCAL_PATH, 'deepines.txt'), 'w').write(deepines.text)
+    open(join(self.LOCAL_PATH, 'config/deepines.txt'), 'w').write(deepines.text)
