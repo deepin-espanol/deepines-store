@@ -35,12 +35,8 @@ class Ventana(QMainWindow):
         self.ui.setupUi(self)
         self.setWindowFlags(self.windowFlags() | Qt.FramelessWindowHint)
         self.setAttribute(Qt.WA_TranslucentBackground, True )
-        self.lista_deepines = ['conkys-widgets', 'deepin-lenguage-patch-es',
-            'dexter-icon-theme', 'frases-celebres', 'firefox-latest',
-            'laboon-access','marea-icon-theme','telegram-desktop',
-            'thunderbird-latest','deepin-language-patch-es']
-        
         self.lista_excluir = self.Get_App_Exclude()
+        self.lista_deepines = self.Get_App_Deepines()
 
         global lista_app, selected_apps, instaladas,\
          lista_global, repo, lista_selected, contador_selected
@@ -394,10 +390,22 @@ class Ventana(QMainWindow):
     #        Lista aplicaciones excluidas          #
     def Get_App_Exclude(self):
         lista = list()
-        ruta_omitidos = abspath(join(dirname(__file__), 'omitidos.txt'))
-        excluidos = open(ruta_omitidos, 'r')
+        ruta_excluidos = abspath(join(dirname(__file__), 'excluidos.txt'))
+        excluidos = open(ruta_excluidos, 'r')
 
         for line in excluidos:
+            line = line.replace('\n', '')
+            lista.append(line)
+            
+        return lista
+
+    #        Lista aplicaciones excluidas          #
+    def Get_App_Deepines(self):
+        lista = list()
+        ruta_deepines = abspath(join(dirname(__file__), 'deepines.txt'))
+        deepines = open(ruta_deepines, 'r')
+
+        for line in deepines:
             line = line.replace('\n', '')
             lista.append(line)
             
