@@ -303,7 +303,6 @@ class Ventana(QMainWindow):
         'graphics','media','games','editors','devel','shell',
         'admin','python','network','networking']
         if 'deepines' in filtro:
-            self.lista_deepines = self.Get_App_Deepines()
             for app in self.lista_deepines:
                 for elemento in lista_app:
                     if elemento[0] == app  :
