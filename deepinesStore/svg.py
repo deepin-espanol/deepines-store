@@ -11,10 +11,7 @@ class ThreadingSvg(object):
 
   def __init__(self):
     self.URL_REPO_SVG = 'https://mirror.deepines.com/pub/deepines/store/svg/'
-    self.URL_CONFIG = 'https://mirror.deepines.com/pub/deepines/store/config/'
-    self.URL_REMOTE_SUMS = join(self.URL_CONFIG, 'svg_checksum')
-    self.EXCLUIDOS = join(self.URL_CONFIG, 'excluidos.txt')
-    self.DEEPINES = join(self.URL_CONFIG, 'deepines.txt')
+    self.URL_REMOTE_SUMS = 'https://mirror.deepines.com/pub/deepines/store/config/svg_checksum'
     self.LOCAL_PATH = abspath(join(dirname(__file__)))
     self.PATH_SVG = join(self.LOCAL_PATH, 'resources/apps')
     self.RUTA_TEMP = join(self.LOCAL_PATH, 'remote_svg.txt')
@@ -30,7 +27,6 @@ class ThreadingSvg(object):
   def run(self):
     self.get_remote_checksum()
     if self.STATUS:
-      self.download_control()
       self.get_local_checksum()
       self.compare_check()
       self.check_exists()
@@ -82,9 +78,3 @@ class ThreadingSvg(object):
     url = join(self.URL_REPO_SVG, name)
     descargado = get(url)
     open(join(self.PATH_SVG, name), 'wb').write(descargado.content)
-
-  def download_control(self):
-    excluidos = get(self.EXCLUIDOS)
-    open(join(self.LOCAL_PATH, 'config/excluidos.txt'), 'w').write(excluidos.text)
-    deepines = get(self.DEEPINES)
-    open(join(self.LOCAL_PATH, 'config/deepines.txt'), 'w').write(deepines.text)
