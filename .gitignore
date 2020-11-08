@@ -7,7 +7,7 @@ db.sqlite3
 build
 dist
 .tar.gz
-.deb
+*.deb
 .asc
 deb/temp
 deb/deepines-store_*
