@@ -1,10 +1,8 @@
 conkys-widgets
 deepin-lenguage-patch-es
-dexter-icon-theme
 frases-celebres
-firefox-latest
+firefox-stable-latest
 laboon-access
-marea-icon-theme
 telegram-desktop
 thunderbird-latest
 deepin-language-patch-es
