@@ -6,3 +6,4 @@ laboon-access
 telegram-desktop
 thunderbird-latest
 deepin-language-patch-es
+dexter-icon-theme

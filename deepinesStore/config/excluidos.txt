@@ -1,6 +1,5 @@
 brave-keyring
 deepines-repository
-dexter-icon-theme
 docker-ce-cli
 gtkdialog
 fish-common
@@ -93,3 +92,4 @@ tsc-data
 tsc-music
 unixodbc-dev
 teamspeak-client
+liblcf0
