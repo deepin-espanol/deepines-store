@@ -93,3 +93,6 @@ tsc-music
 unixodbc-dev
 teamspeak-client
 liblcf0
+libsndio6.1
+retroarch-dbg
+adwaita-icon-theme
