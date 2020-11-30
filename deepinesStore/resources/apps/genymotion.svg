@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   id="svg16"
+   version="1.1"
+   viewBox="0 0 324 234"
+   height="234px"
+   width="324px">
+  <metadata
+     id="metadata20">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs7">
+    <radialGradient
+       gradientTransform="matrix(1.2641983,-1.7800416,1.7501288,1.2429541,-65.045948,196.1634)"
+       r="91.592003"
+       fy="64.761497"
+       fx="90.136002"
+       cy="64.761497"
+       cx="90.136002"
+       gradientUnits="userSpaceOnUse"
+       id="radial0">
+      <stop
+         id="stop2"
+         style="stop-color:rgb(81.960785%,10.588235%,34.509805%);stop-opacity:1;"
+         offset="0" />
+      <stop
+         id="stop4"
+         style="stop-color:rgb(50.588238%,6.666667%,22.352941%);stop-opacity:1;"
+         offset="1" />
+    </radialGradient>
+  </defs>
+  <g
+     transform="scale(1.001082,1.0029962)"
+     id="surface1">
+    <rect
+       id="rect9"
+       style="fill:url(#radial0);stroke:none"
+       height="234"
+       width="324"
+       y="0"
+       x="0" />
+  </g>
+  <g
+     id="layer1">
+    <g
+       id="g1518"
+       transform="matrix(3.2535817,0,0,3.2035023,-124.53578,26.43319)">
+      <path
+         style="fill:#f2f2f2;fill-opacity:1"
+         id="path4"
+         d="m 109.0678,28.271186 c 0,11.598 -9.402003,21 -21.000003,21 v 0 c -11.598,0 -21,-9.402 -21,-21 v 0 c 0,-11.598 9.402,-20.9999996 21,-20.9999996 v 0 c 11.598,0 21.000003,9.4019996 21.000003,20.9999996 z"
+         enable-background="new    " />
+      <g
+         transform="translate(64.678274,4.4629949)"
+         id="g1145">
+        <circle
+           style="fill:#ffffff;fill-opacity:1;stroke:#e61a5f;stroke-width:2;stroke-miterlimit:10;stroke-opacity:1"
+           stroke-miterlimit="10"
+           cx="13.888027"
+           cy="24.808191"
+           r="6"
+           id="circle340" />
+        <circle
+           style="fill:#ffffff;fill-opacity:1;stroke:#e61a5f;stroke-width:2;stroke-miterlimit:10;stroke-opacity:1"
+           stroke-miterlimit="10"
+           cx="31.891022"
+           cy="23.808191"
+           r="7"
+           id="circle342" />
+      </g>
+    </g>
+  </g>
+</svg>
