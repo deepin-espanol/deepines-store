@@ -96,3 +96,4 @@ liblcf0
 libsndio6.1
 retroarch-dbg
 adwaita-icon-theme
+deepines-store
