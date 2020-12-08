@@ -177,7 +177,7 @@ case $DEEPINESPKG in
 
     echo "  D) Desintalar Tienda Deepines. / Uninstall Deepines Store.
 
-  X) No reparar y salir. / Do not repair and exit.
+  X) No desinstalar y salir. / Do not uninstall and exit.
 "
 
     while [ $FINISH -eq 0 ]; do
