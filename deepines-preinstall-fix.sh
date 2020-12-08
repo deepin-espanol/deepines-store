@@ -194,7 +194,7 @@ case $DEEPINESPKG in
 
           echo "
 ================================================
-Ahora puede instalar Repositorio Deepiens / Now you can install Deepiens Repository
+Tienda Deepines ha sido desinstalada / Deepines Store has been uninstalled
 ================================================"
           FINISH=1
         ;;
