@@ -175,9 +175,7 @@ case $DEEPINESPKG in
     echo "Do you want to repair problems to install Deepines Repository
     "
 
-    echo "  R) Reparar (Desintalar Tienda Deepines para instalar 
-     Repositorio Deepines). / Repair (Uninstall Deepines Store to install
-     Deepines Repository).
+    echo "  D) Desintalar Tienda Deepines. / Uninstall Deepines Store.
 
   X) No reparar y salir. / Do not repair and exit.
 "
@@ -188,11 +186,11 @@ case $DEEPINESPKG in
 
       case $RESPUESTA in
 
-        R|r)
+        D|d)
 
           echo "Desintalando Tienda Deepines / Uninstalling Deepines Store"
 
-          sudo apt purge deepines-store -y
+          sudo apt purge deepines-store -y && sudo apt autoremove --purge -y
 
           echo "
 ================================================
