@@ -164,7 +164,7 @@ fi
 
 FINISH=0
 RESPUESTA=""
-DEEPINESPKG=$(apt list --installed 2>/dev/null | grep deepines- | cut -d "/" -f1)
+DEEPINESPKG=$(apt list --installed 2>/dev/null | grep -E "(deepines-store|deepines-repository)" | cut -d "/" -f1)
 
 case $DEEPINESPKG in
 
