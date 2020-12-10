@@ -97,3 +97,6 @@ libsndio6.1
 retroarch-dbg
 adwaita-icon-theme
 deepines-store
+libbz2-1.0
+libncurses5
+libtinfo5
