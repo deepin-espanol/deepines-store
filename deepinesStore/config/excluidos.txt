@@ -100,3 +100,4 @@ deepines-store
 libbz2-1.0
 libncurses5
 libtinfo5
+deb-tools
