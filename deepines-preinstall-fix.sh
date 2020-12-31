@@ -15,7 +15,7 @@ compatcheck() {
   elif [ "${CODENAME}" != "n/a" ]; then
     INCOMP=1
   else
-    if dpkg --compare-versions "${RELEASE}" ne "${STABLEVERSION}"; then
+    if dpkg --compare-versions "${RELEASE}" lt "${STABLEVERSION}"; then
       INCOMP=1
     else
       if [ -f "${SRCLIST}" ]; then
