@@ -71,7 +71,6 @@ libtorrent-rasterbar-dev
 libtorrent-rasterbar9
 libunarr
 libwidevine
-marea-icon-theme
 mint-translations
 mkvtoolnix
 openastro.org-data
