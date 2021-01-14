@@ -9,3 +9,4 @@ deepin-language-patch-es
 dexter-icon-theme
 deepines-megasync-fix
 ambi-tuner
+marea-icon-theme
