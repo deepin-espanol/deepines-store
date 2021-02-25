@@ -108,3 +108,4 @@ libmagick++-6.q16-7
 libmagickcore-6.q16-3
 libmagickwand-6.q16-3
 libpoppler73
+pepperflashplugin-nonfree
