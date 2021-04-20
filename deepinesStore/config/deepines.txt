@@ -11,3 +11,4 @@ deepines-megasync-fix
 ambi-tuner
 marea-icon-theme
 deemix
+deepines-win-usb-installer
