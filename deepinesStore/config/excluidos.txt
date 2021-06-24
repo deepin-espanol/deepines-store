@@ -99,7 +99,6 @@ deepines-store
 libbz2-1.0
 libncurses5
 libtinfo5
-deb-tools
 openboard-common
 xapps-common
 gir1.2-xapp-1.0
