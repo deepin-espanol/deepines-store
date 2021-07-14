@@ -12,3 +12,4 @@ ambi-tuner
 marea-icon-theme
 deemix
 deepines-win-usb-installer
+deepines-security-patch
