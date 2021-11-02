@@ -109,3 +109,5 @@ libmagickwand-6.q16-3
 libpoppler73
 pepperflashplugin-nonfree
 fish-common
+microsoft-edge-beta
+microsoft-edge-dev
