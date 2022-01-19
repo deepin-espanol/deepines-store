@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import sys
 import os
+import re
 # Modulos de pyqt5
 from PyQt5.Qt import Qt
 from PyQt5.QtCore import QSize, QPointF, QPoint, QEvent, Qt as QtCore,\
@@ -25,7 +26,7 @@ from deepinesStore.about import Dialog as DAbout
 
 # Variables globales
 global lista_app, total_apps, lista_inicio, lista_global, lista_selected
-global selected_apps, instaladas, columnas, tamanio, repo, contador_selected
+global selected_apps, instaladas, columnas, tamanio, repo, repo_file, contador_selected
 
 class Ventana(QMainWindow):
     def __init__(self):
@@ -39,9 +40,12 @@ class Ventana(QMainWindow):
         self.lista_deepines = self.Get_App_Deepines()
 
         global lista_app, selected_apps, instaladas,\
-         lista_global, repo, lista_selected, contador_selected
+         lista_global, repo, repo_file, lista_selected, contador_selected
+        repo_file = "/etc/apt/sources.list.d/deepines.list"
         repo = self.repo_is_exist()
         if repo:
+            # Obtenemos la url de la .list
+            self.obtener_url_repo = self.Get_Repo_Url()
             # Variables globales
             selected_apps = list()
             lista_selected = {}
@@ -99,7 +103,7 @@ class Ventana(QMainWindow):
     #               Repo en sistema                #
 
     def repo_is_exist(self):
-        if os.path.exists("/etc/apt/sources.list.d/deepines.list"):
+        if os.path.exists(repo_file):
             return True
         else:
             return False
@@ -253,15 +257,27 @@ class Ventana(QMainWindow):
     ################################################
     #                Lista de apps                 #
 
+    #         Obtener URL del repositorio          #
+    def Get_Repo_Url(self):
+        
+        fallback_url = "http://repositorio.deepines.com/pub/deepines/4/paquetes.html"
+
+        try: 
+            repo_text = open(repo_file).read();
+            url = re.search("(?P<url>http?://[^\s]+)", repo_text).group("url") + "paquetes.html"
+            return url
+        except:
+            return fallback_url
+
     #           Obtener lista de apps              #
     def Get_App(self):
         
         # Asignamos la url
-        URL = "http://repositorio.deepines.com/pub/deepines/4/paquetes.html"
+        repo_url = self.obtener_url_repo
         
         try:
             # Realizamos la petición a la web
-            req = get(URL, timeout=10)
+            req = get(repo_url, timeout=10)
 
             # Comprobamos que la petición nos devuelve un Status Code = 200
             status_code = req.status_code
