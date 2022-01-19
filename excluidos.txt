@@ -1,5 +1,5 @@
 ['gtkdialog',
-'libc++1-7','libc++abi1-7','libmozjs-38-0',
+'libc++1-7','libc++abi1-7','libfdk-acc1','libmozjs-38-0',
 'libobasis6.1-base','libobasis6.1-calc','libobasis6.1-core',
 'libobasis6.1-draw','libobasis6.1-en-us','libobasis6.1-es',
 'libobasis6.1-es-help','libobasis6.1-extension-beanshell-script-provider',
