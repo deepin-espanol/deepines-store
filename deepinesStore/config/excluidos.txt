@@ -3,6 +3,7 @@ deepines-repository
 docker-ce-cli
 gtkdialog
 fish-common
+libfdk-acc1
 libgutenprint2
 libobasis6.3-base
 libobasis6.3-calc
