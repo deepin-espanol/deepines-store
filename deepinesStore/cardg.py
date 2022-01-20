@@ -1,26 +1,17 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'guis/card.ui'
-#
-# Created by: PyQt5 UI code generator 5.13.0
-#
-# WARNING! All changes made in this file will be lost!
-
+# UI Source 'guis/card.ui'
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-
 
 
 class QLabelClickable(QtWidgets.QLabel):
 
     clicked = QtCore.pyqtSignal()
-    
     def __init__(self, *args):
         QtWidgets.QLabel.__init__(self, *args)
-   
     def mouseReleaseEvent(self, ev):
         self.clicked.emit()
-
 
 
 class Ui_Frame(object):
@@ -42,8 +33,7 @@ class Ui_Frame(object):
         self.image_app.setStyleSheet("#image_app{margin-top: 10px;}")
         self.verticalLayout.addWidget(self.image_app)
         self.lbl_name_app = QLabelClickable(Frame)
-        self.lbl_name_app.setStyleSheet("background-color: transparent;"
-            "margin-top:5px;")
+        self.lbl_name_app.setStyleSheet("background-color: transparent;" "margin-top:5px;")
         self.lbl_name_app.setText("")
         self.lbl_name_app.setAlignment(QtCore.Qt.AlignCenter)
         self.lbl_name_app.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
@@ -73,4 +63,4 @@ class Ui_Frame(object):
     def retranslateUi(self, Frame):
         _translate = QtCore.QCoreApplication.translate
         Frame.setWindowTitle(_translate("Frame", "Card"))
-        self.btn_select_app.setText(_translate("Frame", "Instalar"))
+        self.btn_select_app.setText(_translate("Frame", "Install"))

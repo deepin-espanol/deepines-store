@@ -1,13 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'guis/dialog_install.ui'
-#
-# Created by: PyQt5 UI code generator 5.13.0
-#
-# WARNING! All changes made in this file will be lost!
+# UI Source 'guis/dialog_install.ui'
 
 
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtCore, QtWidgets
 
 
 class Ui_Form(object):
@@ -35,5 +31,5 @@ class Ui_Form(object):
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
-        self.boton_install.setText(_translate("Form", "Instalar"))
-        self.boton.setText(_translate("Form", "Cerrar"))
+        self.boton_install.setText(_translate("Form", "Install"))
+        self.boton.setText(_translate("Form", "Close"))
