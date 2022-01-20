@@ -5,11 +5,10 @@ import os
 import re
 # Modulos de pyqt5
 from PyQt5.Qt import Qt
-from PyQt5.QtCore import QSize, QPointF, QPoint, QEvent, Qt as QtCore,\
-                         pyqtSignal
+from PyQt5.QtCore import QTranslator, QLocale, QSize, QPointF, QPoint, QEvent, Qt as QtCore, pyqtSignal
 from PyQt5.QtWidgets import (QMainWindow, QApplication, QFrame, QLabel,
-        QSizePolicy, QGraphicsDropShadowEffect, QSpacerItem,
-        QDesktopWidget, QWidget, QHBoxLayout)
+                             QSizePolicy, QGraphicsDropShadowEffect, QSpacerItem,
+                             QDesktopWidget, QHBoxLayout)
 from PyQt5.QtGui import QPixmap, QIcon, QFont, QColor, QCursor
 # Modulos para el scraping
 from bs4 import BeautifulSoup
@@ -19,7 +18,7 @@ from random import randint
 # Obtener ruta variable de las imgs
 from os.path import join, abspath, dirname
 # Guis o modulos locales
-from deepinesStore.maing import Ui_MainWindow
+from deepinesStore.maing import Ui_MainWindow, getResource
 from deepinesStore.cardg import Ui_Frame
 from deepinesStore.dialog_install import Ui_Form as DInstall
 from deepinesStore.about import Dialog as DAbout
@@ -28,19 +27,21 @@ from deepinesStore.about import Dialog as DAbout
 global lista_app, total_apps, lista_inicio, lista_global, lista_selected
 global selected_apps, instaladas, columnas, tamanio, repo, repo_file, contador_selected
 
+
 class Ventana(QMainWindow):
     def __init__(self):
         super(Ventana, self).__init__()
         # Inicializamos la gui
-        self.ui = Ui_MainWindow(width, height)
-        self.ui.setupUi(self)
+        global ui
+        ui = Ui_MainWindow(width, height)
+        ui.setupUi(self)
         self.setWindowFlags(self.windowFlags() | Qt.FramelessWindowHint)
-        self.setAttribute(Qt.WA_TranslucentBackground, True )
+        self.setAttribute(Qt.WA_TranslucentBackground, True)
         self.lista_excluir = self.Get_App_Exclude()
         self.lista_deepines = self.Get_App_Deepines()
 
         global lista_app, selected_apps, instaladas,\
-         lista_global, repo, repo_file, lista_selected, contador_selected
+            lista_global, repo, repo_file, lista_selected, contador_selected
         repo_file = "/etc/apt/sources.list.d/deepines.list"
         repo = self.repo_is_exist()
         if repo:
@@ -56,49 +57,37 @@ class Ventana(QMainWindow):
             if lista_app:
                 # Obtenemos aplicaciones para la lista de apps
                 self.Apps_inicio(lista_app)
-                
-            else:
-                self.error("No ha podido establecer conexión con el servidor, <br>"
-                    "por favor verifique su conexión de internet.<br>"
-                    "Si el problema persiste, contáctenos vía Telegram <br>"
-                    "en @deepinenespanol.<br><br>"
-                    "<a href='#'>deepinenespañol.org | Copiar enlace</a><br>"
-                    "Visite Deepin en Español para más información.",
-                    "https://deepinenespañol.org")
-        else:
-            self.error("El repositorio Deepines no está instalado en su sistema,<br>"
-                "Tienda Deepines necesita este repositorio para funcionar.<br>"
-                "En el siguiente enlace encontrará las instrucciones para instalarlo.<br><br>"
-                "<a href='#'>deepinenespañol.org/repositorio/ | Copiar enlace<a/><br>",
-                "https://deepinenespañol.org/repositorio")
 
-        self.ui.btn_install.setEnabled(False)
-        self.ui.btn_install.clicked.connect(self.ventana_install)
-        self.ui.lbl_list_apps.setText("Seleccione las aplicaciones a instalar")
-        self.ui.lbl_list_apps.setEnabled(False)
-        self.ui.icon_car.clicked.connect(self.apps_seleccionadas)
-        self.ui.lbl_list_apps.clicked.connect(self.apps_seleccionadas)
-        self.ui.listWidget.itemClicked.connect(self.listwidgetclicked)
-        self.ui.lineEdit.textChanged.connect(self.search_app)
-        self.ui.label_2.clicked.connect(self.acerca_de)
-        self.ui.btn_cerrar.clicked.connect(self.close)
-        self.ui.btn_maximizar.clicked.connect(self.maximize)
-        self.ui.btn_minimizar.clicked.connect(self.minimize)
-        self.ui.widget_1.installEventFilter(self)
-        self.ui.label.clicked.connect(self.acerca_de)
+            else:
+                self.error(ui.error_no_server_text, "https://deepinenespañol.org")
+        else:
+            self.error(ui.error_no_deepines_repo_text, "https://deepinenespañol.org/repositorio")
+
+        ui.btn_install.setEnabled(False)
+        ui.btn_install.clicked.connect(self.ventana_install)
+        ui.lbl_list_apps.setText(ui.list_apps_text)
+        ui.lbl_list_apps.setEnabled(False)
+        ui.icon_car.clicked.connect(self.apps_seleccionadas)
+        ui.lbl_list_apps.clicked.connect(self.apps_seleccionadas)
+        ui.listWidget.itemClicked.connect(self.listwidgetclicked)
+        ui.lineEdit.textChanged.connect(self.search_app)
+        ui.label_2.clicked.connect(self.acerca_de)
+        ui.btn_cerrar.clicked.connect(self.close)
+        ui.btn_maximizar.clicked.connect(self.maximize)
+        ui.btn_minimizar.clicked.connect(self.minimize)
+        ui.widget_1.installEventFilter(self)
+        ui.label.clicked.connect(self.acerca_de)
         shadow = QGraphicsDropShadowEffect(self,
-          blurRadius=10,
-          color=QColor(255,255,255),
-          offset=QPointF(0, 0)
-        )
+                                           blurRadius=10,
+                                           color=QColor(255, 255, 255),
+                                           offset=QPointF(0, 0)
+                                           )
         shadow.setXOffset(0)
         shadow.setYOffset(0)
-        self.ui.btn_install.setGraphicsEffect(shadow)
-        
+        ui.btn_install.setGraphicsEffect(shadow)
+
         self.center()
 
-
-    
     ################################################
     #               Repo en sistema                #
 
@@ -107,7 +96,7 @@ class Ventana(QMainWindow):
             return True
         else:
             return False
-    
+
     #               /Repo en sistema               #
     ################################################
 
@@ -119,27 +108,27 @@ class Ventana(QMainWindow):
         self.horizontalLayout.setContentsMargins(0, 40, 0, 0)
         self.horizontalLayout.setSpacing(0)
         self.horizontalLayout.setObjectName("horizontalLayout")
-        
+
         self.raccoon = QLabel(self)
         self.raccoon.setText("")
         self.raccoon.setMinimumSize(300, 300)
         self.raccoon.setMaximumSize(300, 300)
         self.raccoon.setObjectName("raccoon")
         self.raccoon.setStyleSheet("#raccoon{"
-            "background-color: transparent;}")
+                                   "background-color: transparent;}")
 
-        ruta = abspath(join(dirname(__file__), 'resources', 'raccoon.svg'))
+        ruta = getResource('raccoon')
         pixmap = QPixmap(ruta)
         self.raccoon.setPixmap(pixmap)
         self.horizontalLayout.addWidget(self.raccoon)
-        self.ui.gridLayout.addLayout(self.horizontalLayout, 1, 1, 1, 1)
-        
+        ui.gridLayout.addLayout(self.horizontalLayout, 1, 1, 1, 1)
 
         self.label_error = QLabelClickable(self)
         sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.label_error.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.label_error.sizePolicy().hasHeightForWidth())
         self.label_error.setSizePolicy(sizePolicy)
         font = QFont()
         font.setPointSize(16)
@@ -150,22 +139,22 @@ class Ventana(QMainWindow):
         }
         </style>
             <head/><body><p>"""
-            + text +
-            """</p></body></html>""")
+                     + text +
+                     """</p></body></html>""")
         self.label_error.setFont(font)
         self.label_error.setScaledContents(True)
         self.label_error.setText(self.text)
         self.label_error.setStyleSheet("background-color: transparent;\n"
-        "color: white;")
+                                       "color: white;")
         self.label_error.setEnabled(True)
         self.label_error.setAlignment(QtCore.AlignCenter)
         self.label_error.setObjectName("label_error")
         self.label_error.clicked.connect(lambda:
-            QApplication.clipboard().setText(enlace))
-        self.ui.gridLayout.addWidget(self.label_error, 2, 1, 1, 1)
-        self.ui.listWidget.setEnabled(False)
-        self.ui.frame_4.setEnabled(False)
-    
+                                         QApplication.clipboard().setText(enlace))
+        ui.gridLayout.addWidget(self.label_error, 2, 1, 1, 1)
+        ui.listWidget.setEnabled(False)
+        ui.frame_4.setEnabled(False)
+
     #             /Control de errores              #
     ################################################
 
@@ -178,13 +167,13 @@ class Ventana(QMainWindow):
     #              Busqueda de apps                #
 
     def search_app(self):
-        text = self.ui.lineEdit.text()
+        text = ui.lineEdit.text()
 
         lista_search = {}
         contador = 0
         global lista_global
         if len(text) != 0 and len(text) > 2:
-            self.ui.listWidget.clearSelection()
+            ui.listWidget.clearSelection()
             for elemento in lista_app:
                 if elemento[0] not in self.lista_excluir and elemento[0].startswith(text) or text in elemento[1]:
                     indice = lista_app.index(elemento)
@@ -196,9 +185,9 @@ class Ventana(QMainWindow):
         else:
             lista_global = lista_inicio
         self.Listar_Apps(lista_global)
-   
+
     def clear_search_txt(self):
-        self.ui.lineEdit.setText("")
+        ui.lineEdit.setText("")
 
     #              /Busqueda de apps               #
     ################################################
@@ -207,40 +196,40 @@ class Ventana(QMainWindow):
     #                Filtro de apps                #
 
     def listwidgetclicked(self, item):
-        filtro = list() # Limpiamos la lista
+        filtro = list()  # Limpiamos la lista
         global lista_global
 
-        if item.text() == "Inicio":
+        # TODO: Maybe a switch statement would be nice here
+        if item == ui.listWidget.item(0):  # Home
             self.Listar_Apps(lista_inicio)
             filtro.append("inicio")
-        elif item.text() == "Deepines":
+        if item == ui.listWidget.item(1):  # Deepines
             filtro.append("deepines")
-        elif item.text() == "Internet":
+        if item == ui.listWidget.item(2):  # Internet
             filtro.append("web")
             filtro.append("net")
             filtro.append("mail")
             filtro.append("networking")
             filtro.append("network")
-        elif item.text() == "Multimedia":
+        if item == ui.listWidget.item(3):  # Multimedia
             filtro.append("sound")
             filtro.append("audio")
             filtro.append("video")
-        elif item.text() == "Gráficos":
+        if item == ui.listWidget.item(4):  # Graphics
             filtro.append("graphics")
             filtro.append("media")
-        elif item.text() == "Juegos":
+        if item == ui.listWidget.item(5):  # Games
             filtro.append("games")
-        elif item.text() == "Ofimática":
+        if item == ui.listWidget.item(6):  # Office automation
             filtro.append("editors")
-        elif item.text() == "Desarrollo":
+        if item == ui.listWidget.item(7):  # Development
             filtro.append("devel")
             filtro.append("shells")
-        elif item.text() == "Sistema":
+        if item == ui.listWidget.item(8):  # System
             filtro.append("admin")
             filtro.append("python")
-        elif item.text() == "Otros":
+        if item == ui.listWidget.item(9):  # Other
             filtro.append("otros")
-            
 
         if "inicio" not in filtro:
             global lista_global
@@ -259,22 +248,23 @@ class Ventana(QMainWindow):
 
     #         Obtener URL del repositorio          #
     def Get_Repo_Url(self):
-        
+
         fallback_url = "http://repositorio.deepines.com/pub/deepines/4/paquetes.html"
 
-        try: 
-            repo_text = open(repo_file).read();
-            url = re.search("(?P<url>http?://[^\s]+)", repo_text).group("url") + "paquetes.html"
+        try:
+            repo_text = open(repo_file).read()
+            url = re.search(
+                "(?P<url>http?://[^\s]+)", repo_text).group("url") + "paquetes.html"
             return url
         except:
             return fallback_url
 
     #           Obtener lista de apps              #
     def Get_App(self):
-        
+
         # Asignamos la url
         repo_url = self.obtener_url_repo
-        
+
         try:
             # Realizamos la petición a la web
             req = get(repo_url, timeout=10)
@@ -288,7 +278,7 @@ class Ventana(QMainWindow):
 
                 # Obtenemos todos los divs donde están las entradas
                 entradas = html.find_all('tr')
-                
+
                 lista = list()
                 global total_apps
                 total_apps = 0
@@ -296,15 +286,19 @@ class Ventana(QMainWindow):
                 for i, entrada in enumerate(entradas):
                     # Con el método "getText()" no nos devuelve el HTML
                     titulo = entrada.find('td', {'class': 'package'}).getText()
-                    descripcion = entrada.find('td', {'class': 'description'}).getText()
-                    version = entrada.find('td', {'class': 'version'}).getText()
-                    categoria = entrada.find('td', {'class': 'section'}).getText()
+                    descripcion = entrada.find(
+                        'td', {'class': 'description'}).getText()
+                    version = entrada.find(
+                        'td', {'class': 'version'}).getText()
+                    categoria = entrada.find(
+                        'td', {'class': 'section'}).getText()
                     estado = 1
 
                     if titulo not in self.lista_excluir:
-                        lista_origen = [titulo, descripcion, version, categoria, estado]
+                        lista_origen = [titulo, descripcion,
+                                        version, categoria, estado]
                         lista.append(lista_origen)
-                    
+
                         total_apps += 1
 
                 return lista
@@ -315,13 +309,13 @@ class Ventana(QMainWindow):
     def Get_App_Filter(self, lista_app, filtro):
         lista_filtrada = {}
         contador = 0
-        filtros = ['web','net','mail','sound','audio','video',
-        'graphics','media','games','editors','devel','shell',
-        'admin','python','network','networking']
+        filtros = ['web', 'net', 'mail', 'sound', 'audio', 'video',
+                   'graphics', 'media', 'games', 'editors', 'devel', 'shell',
+                   'admin', 'python', 'network', 'networking']
         if 'deepines' in filtro:
             for app in self.lista_deepines:
                 for elemento in lista_app:
-                    if elemento[0] == app  :
+                    if elemento[0] == app:
                         lista_filtrada[contador] = elemento
                         contador += 1
         else:
@@ -339,7 +333,7 @@ class Ventana(QMainWindow):
                         contador += 1
 
         return lista_filtrada
-        
+
     #           Aplicaciones Inicio              #
     def Apps_inicio(self, lista_app):
         global total_apps, lista_inicio, lista_global
@@ -364,55 +358,59 @@ class Ventana(QMainWindow):
     #           Listar aplicaciones              #
     def Listar_Apps(self, lista):
         equal = lista_inicio == lista_global
-        if equal: 
-            item = self.ui.listWidget.item(0)
+        if equal:
+            item = ui.listWidget.item(0)
             item.setSelected(True)
 
-        while self.ui.gridLayout.count():
-            item = self.ui.gridLayout.takeAt(0)
+        while ui.gridLayout.count():
+            item = ui.gridLayout.takeAt(0)
             widget = item.widget()
             if widget:
                 widget.deleteLater()
 
-        y = 0 # Creamos la coordenada y
-        x = 0 # Creamos la coordenada x 
+        y = 0  # Creamos la coordenada y
+        x = 0  # Creamos la coordenada x
         # Estas para establecer la ubicacion de la tarjetas en la grilla
         i = 0
         self.calcular_columnas()
-        for key in lista: # Recorremos la lista con los elementos
-            i += 1 # Contador para agregar el espaciador horizontal
+        for key in lista:  # Recorremos la lista con los elementos
+            i += 1  # Contador para agregar el espaciador horizontal
             # Consultamos si ya tenemos tres tarjetas en y
             if y % columnas == 0 and y != 0:
-                y = 0 # Reiniciamos y
-                x += 1 # Agregamos otra columna
-            y += 1 # agregamos 1 a la coordenada y
+                y = 0  # Reiniciamos y
+                x += 1  # Agregamos otra columna
+            y += 1  # agregamos 1 a la coordenada y
 
             # Creamos una instancia de la clase card
-            carta = Card(lista[key][0], lista[key][1], lista[key][2], lista[key][4], self)
+            carta = Card(lista[key][0], lista[key][1],
+                         lista[key][2], lista[key][4], self)
             # Agregamos dicha instancia a la grilla
-            self.ui.gridLayout.addWidget(carta, x, y, 1, 1)
-        self.ui.frame.verticalScrollBar().setSliderPosition(0)
+            ui.gridLayout.addWidget(carta, x, y, 1, 1)
+        ui.frame.verticalScrollBar().setSliderPosition(0)
 
         # Espaciador vertical
-        spacerItem9 = QSpacerItem(0, 0, QSizePolicy.Minimum, QSizePolicy.Expanding)
-        self.ui.gridLayout.addItem(spacerItem9, (x+1), 1, 1, 1)
+        spacerItem9 = QSpacerItem(
+            0, 0, QSizePolicy.Minimum, QSizePolicy.Expanding)
+        ui.gridLayout.addItem(spacerItem9, (x+1), 1, 1, 1)
 
         # Si tenemos menos apps que las columnas, agregamos el espaciador
         if i < columnas:
             # Espaciador horizontal
-            spacerItem8 = QSpacerItem(0, 0, QSizePolicy.Expanding, QSizePolicy.Minimum)
-            self.ui.gridLayout.addItem(spacerItem8, x, columnas, 1, 10)
+            spacerItem8 = QSpacerItem(
+                0, 0, QSizePolicy.Expanding, QSizePolicy.Minimum)
+            ui.gridLayout.addItem(spacerItem8, x, columnas, 1, 10)
 
     #        Lista aplicaciones excluidas          #
     def Get_App_Exclude(self):
         lista = list()
-        ruta_excluidos = abspath(join(dirname(__file__), 'config/excluidos.txt'))
+        ruta_excluidos = abspath(
+            join(dirname(__file__), 'config/excluidos.txt'))
         excluidos = open(ruta_excluidos, 'r')
 
         for line in excluidos:
             line = line.replace('\n', '')
             lista.append(line)
-            
+
         return lista
 
     #        Lista aplicaciones excluidas          #
@@ -424,7 +422,7 @@ class Ventana(QMainWindow):
         for line in deepines:
             line = line.replace('\n', '')
             lista.append(line)
-            
+
         return lista
 
     #                /Lista de apps                #
@@ -433,32 +431,35 @@ class Ventana(QMainWindow):
     ################################################
     #              Calcular columnas               #
     def calcular_columnas(self):
-      if width < 1360:
-          base = 180
-      elif width >= 1360 and width < 2500:
-          base = 210
-      elif width > 2500:
-          base = 420
+        if width < 1360:
+            base = 180
+        elif width >= 1360 and width < 2500:
+            base = 210
+        elif width > 2500:
+            base = 420
 
-      ancho = self.ui.frame.frameGeometry().width()
-      global columnas, tamanio
-      
-      if ancho < 700: ancho = ancho_inicio
-      
-      columnas = ancho // (base + 40)
-      restante = ancho % (base + 40)
-      tamanio = base + (restante // columnas)
+        ancho = ui.frame.frameGeometry().width()
+        global columnas, tamanio
+
+        if ancho < 700:
+            ancho = ancho_inicio
+
+        columnas = ancho // (base + 40)
+        restante = ancho % (base + 40)
+        tamanio = base + (restante // columnas)
 
     def calcular_anchos(self):
-      width_screen = int(width * 0.7)
-      if width_screen < 945: width_screen = 945
+        width_screen = int(width * 0.7)
+        if width_screen < 945:
+            width_screen = 945
 
-      size_frame = int(width * 0.14)
-      if size_frame < 200: size_frame = 200
-      if size_frame > 300: size_frame = 300
-      global ancho_inicio
-      ancho_inicio = width_screen - size_frame
-
+        size_frame = int(width * 0.14)
+        if size_frame < 200:
+            size_frame = 200
+        if size_frame > 300:
+            size_frame = 300
+        global ancho_inicio
+        ancho_inicio = width_screen - size_frame
 
     #              /Calcular columnas              #
     ################################################
@@ -467,7 +468,7 @@ class Ventana(QMainWindow):
         global selected_apps
         cuenta = len(selected_apps)
         if cuenta == 0:
-            texto = "Seleccione las aplicaciones a instalar"
+            texto = ui.list_apps_text
             borde = "border: 2px solid rgb(45, 45, 45);"
             r, g, b = 255, 255, 255
             cursor = QtCore.ArrowCursor
@@ -481,46 +482,45 @@ class Ventana(QMainWindow):
             pix_car = "carEnable.svg"
 
             if cuenta != 1:
-                acentuacion, articulo, plural = "o", "es", "s"
+                preview_to_install = ui.multi_apps_text
             else:
-                acentuacion, articulo, plural = "ó", "", ""
-            texto = "{} aplicaci{}n{} seleccionada{} para instalar, clic aquí para verla{}".format(
-                cuenta, acentuacion, articulo, plural, plural)
+                preview_to_install = ui.single_app_text
+            texto = preview_to_install.format(app_count=cuenta)
 
-        self.ui.btn_install.setEnabled(enabled)
-        self.ui.lbl_list_apps.setEnabled(enabled)
-        self.ui.lbl_list_apps.setCursor(QCursor(cursor))
-        
-        pix_car = QPixmap(abspath(join(dirname(__file__), 'resources', pix_car)))
-        self.ui.icon_car.setPixmap(pix_car)
+        ui.btn_install.setEnabled(enabled)
+        ui.lbl_list_apps.setEnabled(enabled)
+        ui.lbl_list_apps.setCursor(QCursor(cursor))
+
+        pix_car = QPixmap(
+            abspath(join(dirname(__file__), 'resources', pix_car)))
+        ui.icon_car.setPixmap(pix_car)
 
         estilo = ("#btn_install{\n"
-                    "color: #fff;\n"
-                    "padding: 2px;\n"
-                    "border-radius: 5px;\n"
-                    "background-color: rgb(45, 45, 45);\n"
-                    + borde +
-                    "}\n"
-                    "#btn_install:hover{\n"
-                    "padding: 2px;\n"
-                    "color:white;\n"
-                    "background-color: rgb(65, 159, 217);\n"
-                    "border: 1px solid rgb(142, 231, 255);\n"
-                    "border-radius: 5px;\n"
-                    "}")
-        self.ui.btn_install.setStyleSheet(estilo)
+                  "color: #fff;\n"
+                  "padding: 2px;\n"
+                  "border-radius: 5px;\n"
+                  "background-color: rgb(45, 45, 45);\n"
+                  + borde +
+                  "}\n"
+                  "#btn_install:hover{\n"
+                  "padding: 2px;\n"
+                  "color:white;\n"
+                  "background-color: rgb(65, 159, 217);\n"
+                  "border: 1px solid rgb(142, 231, 255);\n"
+                  "border-radius: 5px;\n"
+                  "}")
+        ui.btn_install.setStyleSheet(estilo)
 
         shadow = QGraphicsDropShadowEffect(self,
-          blurRadius=10,
-          color=QColor(r,g,b),
-          offset=QPointF(0, 0)
-        )
+                                           blurRadius=10,
+                                           color=QColor(r, g, b),
+                                           offset=QPointF(0, 0)
+                                           )
         shadow.setXOffset(0)
         shadow.setYOffset(0)
-        self.ui.btn_install.setGraphicsEffect(shadow)
+        ui.btn_install.setGraphicsEffect(shadow)
 
-
-        self.ui.lbl_list_apps.setText(texto)
+        ui.lbl_list_apps.setText(texto)
 
     ################################################
     #                  Instalacion                 #
@@ -569,7 +569,6 @@ class Ventana(QMainWindow):
             instaladas.append(linea)
 
         return(instaladas)
-        
 
     #               /Apps Instaladas                #
     ################################################
@@ -583,21 +582,19 @@ class Ventana(QMainWindow):
         contador = 0
         for app in selected_apps:
             for elemento in lista_app:
-                if elemento[0] == app:    
+                if elemento[0] == app:
                     indice = lista_app.index(elemento)
                     item = lista_app[indice]
                     lista_complete[contador] = item
                     contador += 1
-            
+
             instaladas.append(app)
         selected_apps = list()
         self.Listar_Apps(lista_complete)
         self.contar_apps()
 
-
     #           /Apps nuevas Instaladas            #
     ################################################
-
 
     def eventFilter(self, obj, event):
         if event.type() == QEvent.MouseButtonPress:
@@ -606,53 +603,54 @@ class Ventana(QMainWindow):
             delta = QPoint(event.globalPos() - self.oldPos)
             self.move(self.x() + delta.x(), self.y() + delta.y())
             self.oldPos = event.globalPos()
-            
-        return True
 
+        return True
 
     def maximize(self):
         global maximized
-        if maximized: # Restauramos al tamaño original
-          self.setWindowState(Qt.WindowNoState)
-          maximized = False
-          icono = abspath(join(dirname(__file__), 'resources', 'maximizar.svg'))
-          self.ui.widget_1.installEventFilter(self)
-        else: # Agrandamos la ventana
-          self.setWindowState(Qt.WindowMaximized)
-          maximized = True
-          icono = abspath(join(dirname(__file__), 'resources', 'restaurar.svg'))
-          self.ui.widget_1.removeEventFilter(self)
+        if maximized:  # Restauramos al tamaño original
+            self.setWindowState(Qt.WindowNoState)
+            maximized = False
+            icono = abspath(
+                join(dirname(__file__), 'resources', 'maximizar.svg'))
+            ui.widget_1.installEventFilter(self)
+        else:  # Agrandamos la ventana
+            self.setWindowState(Qt.WindowMaximized)
+            maximized = True
+            icono = abspath(
+                join(dirname(__file__), 'resources', 'restaurar.svg'))
+            ui.widget_1.removeEventFilter(self)
 
         # Cambio de icono al maximizar
         icon1 = QIcon()
         icon1.addPixmap(QPixmap(icono), QIcon.Normal, QIcon.Off)
-        self.ui.btn_maximizar.setIcon(icon1)
-
+        ui.btn_maximizar.setIcon(icon1)
 
     def minimize(self):
         global maximized
         # No se ve la app, agrandamos
         self.setWindowState(Qt.WindowMinimized)
-        if maximized: # Si estaba maximizada, agrandamos
+        if maximized:  # Si estaba maximizada, agrandamos
             self.setWindowState(Qt.WindowMaximized)
 
     def apps_seleccionadas(self):
         self.Listar_Apps(lista_selected)
-        self.ui.listWidget.clearSelection()
+        ui.listWidget.clearSelection()
 
 
 class QLabelClickable(QLabel):
 
     clicked = pyqtSignal()
-    
+
     def __init__(self, *args):
         QLabel.__init__(self, *args)
-   
+
     def mouseReleaseEvent(self, ev):
         self.clicked.emit()
 
 ################################################
 #           Card para la aplicacion            #
+
 
 class Card(QFrame):
     def __init__(self, titulo: str, descripcion: str, version: str, estado: int, parent):
@@ -661,11 +659,12 @@ class Card(QFrame):
         self.cd = Ui_Frame()
         self.cd.setupUi(self)
         # Establecemos los atributos de la app
-        #self.cd.btn_select_app.setToolTip(version)
+        # self.cd.btn_select_app.setToolTip(version)
         self.titulo = titulo
         self.version = version
         self.cd.lbl_name_app.setText(self.titulo)
-        self.cd.image_app.setToolTip("<p wrap='hard'>{}</p>".format(descripcion))
+        self.cd.image_app.setToolTip(
+            "<p wrap='hard'>{}</p>".format(descripcion))
         self.cd.image_app.setWordWrap(True)
         self.setMinimumSize(QSize(tamanio+30, int((tamanio+115)*0.72222)))
         self.setMaximumSize(QSize(tamanio+30, int((tamanio+115)*0.72222)))
@@ -680,23 +679,27 @@ class Card(QFrame):
                 estado = 0
         else:
             estado = 2
-        
+
         if self.titulo not in selected_apps and self.titulo not in instaladas:
             self.installEventFilter(self)
 
         self.change_color_buton(estado)
         # Consultamos si existe el grafico de la app
-        ruta = abspath(join(dirname(__file__), 'resources/apps', self.titulo + '.svg'))
+        ruta = abspath(
+            join(dirname(__file__), 'resources/apps', self.titulo + '.svg'))
         if not os.path.exists(ruta):
-            url = abspath(join(dirname(__file__), 'resources/apps', 'no-img.svg'))
+            url = abspath(
+                join(dirname(__file__), 'resources/apps', 'no-img.svg'))
         else:
             url = ruta
         # Establecemos la imagen
         pixmap = QPixmap(url)
         self.cd.image_app.setPixmap(pixmap)
-        self.cd.btn_select_app.clicked.connect(lambda: self.select_app(self.titulo))
+        self.cd.btn_select_app.clicked.connect(
+            lambda: self.select_app(self.titulo))
         self.cd.image_app.clicked.connect(lambda: self.select_app(self.titulo))
-        self.cd.lbl_name_app.clicked.connect(lambda: self.select_app(self.titulo))
+        self.cd.lbl_name_app.clicked.connect(
+            lambda: self.select_app(self.titulo))
 
     def eventFilter(self, object, event):
         if event.type() == QEvent.Enter:
@@ -707,36 +710,36 @@ class Card(QFrame):
             return False
 
         shadow = QGraphicsDropShadowEffect(self,
-              blurRadius=radius,
-              color=QColor(255,255,255),
-              offset=QPointF(0, 0))
+                                           blurRadius=radius,
+                                           color=QColor(255, 255, 255),
+                                           offset=QPointF(0, 0))
         shadow.setXOffset(0)
         shadow.setYOffset(0)
         self.setGraphicsEffect(shadow)
         return True
-    
+
     def texto_version(self):
         if self.titulo in selected_apps:
-            self.cd.btn_select_app.setText("Seleccionada")
+            self.cd.btn_select_app.setText(ui.selected_to_install_app_text)
             color = "color: rgb(0, 255, 255);"
         elif self.titulo in instaladas:
-            self.cd.btn_select_app.setText("Instalada")
+            self.cd.btn_select_app.setText(ui.selected_installed_app_text)
             color = "color: rgb(0, 212, 0);"
         else:
             self.cd.btn_select_app.setText("v: {}".format(self.version))
             color = "color: rgb(107,107,107);"
 
         self.cd.btn_select_app.setStyleSheet("border: transparent;\n"
-        "background-color: transparent;"
-        + color + 
-        "border-bottom-right-radius:5px; border-bottom-left-radius:5px;"
-        "margin-bottom: 5px;")
+                                             "background-color: transparent;"
+                                             + color +
+                                             "border-bottom-right-radius:5px; border-bottom-left-radius:5px;"
+                                             "margin-bottom: 5px;")
 
     def select_app(self, titulo):
         global selected_apps, lista_app, instaladas, lista_selected, contador_selected
-        
+
         for elemento in lista_app:
-            if titulo in elemento: 
+            if titulo in elemento:
                 indice = lista_app.index(elemento)
 
         # Si la app no esta instalada
@@ -744,10 +747,9 @@ class Card(QFrame):
             # Si la app no esta seleccionada
             if titulo not in selected_apps:
                 selected_apps.append(titulo)
-                
-                
+
                 for elemento in lista_app:
-                    if elemento[0] == titulo:    
+                    if elemento[0] == titulo:
                         indice = lista_app.index(elemento)
                         item = lista_app[indice]
                         lista_selected[contador_selected] = item
@@ -758,18 +760,16 @@ class Card(QFrame):
                 self.removeEventFilter(self)
             else:
                 selected_apps.remove(titulo)
-                
 
                 count = 0
                 for elemento in lista_selected:
                     titulo_elemento = lista_selected[elemento]
 
-                    if titulo_elemento[0] == titulo:    
+                    if titulo_elemento[0] == titulo:
                         eliminar = elemento
                     count += 1
-                
+
                 lista_selected.pop(eliminar)
-                
 
                 lista_app[indice][4] = 1
                 self.change_color_buton(1)
@@ -781,58 +781,53 @@ class Card(QFrame):
         self.parentWindow.contar_apps()
 
     def change_color_buton(self, estado: int):
-        if estado == 0: # App seleccionada RGB(0,255,255)
-            r, g, b=0, 255, 255
+        if estado == 0:  # App seleccionada RGB(0,255,255)
+            r, g, b = 0, 255, 255
             radio = 20
             border_color = "border-color: #00bbc8;"
-        elif estado == 1: # App no seleccionada RGB(45,45,45)
-            r, g, b=45, 45, 45
+        elif estado == 1:  # App no seleccionada RGB(45,45,45)
+            r, g, b = 45, 45, 45
             radio = 0
             border_color = "border-color: transparent;"
-        else: # app instalada RGB(0,212,0)
-            r, g, b=0, 212, 0
+        else:  # app instalada RGB(0,212,0)
+            r, g, b = 0, 212, 0
             radio = 20
             border_color = "border-color: #009800;"
             self.cd.btn_select_app.setEnabled(False)
 
         self.setStyleSheet("#Frame{"
-            "background-color: #2d2d2d;"
-            "border-radius: 10px;"
-            "margin: 10px;"
-            + border_color +
-            "border-width: 1px;"
-            "border-style: solid;"
-            "}"
-            "QToolTip {"
-            "border: 2px solid transparent;"
-            "border-radius: 4px;"
-            "font-size: 12px;"
-            "background-color: rgb: 63, 63, 63;"
-            "})")
+                           "background-color: #2d2d2d;"
+                           "border-radius: 10px;"
+                           "margin: 10px;"
+                           + border_color +
+                           "border-width: 1px;"
+                           "border-style: solid;"
+                           "}")
 
         shadow = QGraphicsDropShadowEffect(self,
-          blurRadius=radio,
-          color=QColor(r, g, b),
-          offset=QPointF(0, 0)
-        )
+                                           blurRadius=radio,
+                                           color=QColor(r, g, b),
+                                           offset=QPointF(0, 0)
+                                           )
         shadow.setXOffset(0)
         shadow.setYOffset(0)
         self.setGraphicsEffect(shadow)
 
 
-            
-            
 #           /Card para la aplicacion           #
 ################################################
 
 def ejecutar():
-  app = QApplication(sys.argv)
-  global width, height, maximized
-  maximized = False
-  screen_rect = app.desktop().screenGeometry()
-  width, height = screen_rect.width(), screen_rect.height()
-  win = Ventana()
-  win.calcular_anchos()
-  os.system('xprop -f _KDE_NET_WM_BLUR_BEHIND_REGION 32c -set _KDE_NET_WM_BLUR_BEHIND_REGION 0 -id {}'.format(int(win.winId())))
-  win.show()
-  sys.exit(app.exec_())
+    app = QApplication(sys.argv)
+    translator = QTranslator()
+    translator.load(abspath(join(dirname(__file__), 'translations', QLocale.system().name() + '.qm')))
+    app.installTranslator(translator)
+    global width, height, maximized
+    maximized = False
+    screen_rect = app.desktop().screenGeometry()
+    width, height = screen_rect.width(), screen_rect.height()
+    win = Ventana()
+    win.calcular_anchos()
+    os.system('xprop -f _KDE_NET_WM_BLUR_BEHIND_REGION 32c -set _KDE_NET_WM_BLUR_BEHIND_REGION 0 -id {}'.format(int(win.winId())))
+    win.show()
+    sys.exit(app.exec_())

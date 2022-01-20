@@ -23,8 +23,12 @@ Main() {
     fi
 }
 
-Cleanup() { rm -R "$TEMP_DIR" >/dev/null 2>&1 && exit; }
-trap "Cleanup" INT
+Cleanup() { rm -R "$TEMP_DIR" >/dev/null 2>&1; }
+CleanupAndExit() {
+    Cleanup
+    exit 130
+}
+trap "CleanupAndExit" INT
 
 SetVariables() {
     PKG_NAME=deepines-store
@@ -39,7 +43,66 @@ SetVariables() {
     WORK_DIR="$TEMP_DIR/$PKG_FULL_NAME"
 }
 
+# shellcheck disable=SC2016
 PREINSTSCRIPT='#!/bin/sh
+
+set -e
+
+CNFMOD="/usr/share/debconf/confmodule"
+if [ -f "${CNFMOD}" ]; then
+	. "${CNFMOD}"
+fi
+
+SEPARATOR="=============================================================="
+COMPATIBLE_VERSIONS="Deepines Store is only compatible with Deepin 20 and Deepin 23"
+WE_RECOMMEND="  We recommend installing a recent version of Deepin. If you
+  are using Deepin 20, check that the configuration of the
+  repositories does not contain errors."
+
+case "${LANGUAGE:-$LANG}" in
+es*)
+	COMPATIBLE_VERSIONS="Tienda Deepines sólo es compatible con Deepin 20 y Deepin 23"
+	WE_RECOMMEND=" Recomendamos instalar una versión reciente de Deepin. Si está
+ usando Deepin 20, compruebe que la configuración de 
+ los repositorios no contiene errores."
+	;;
+esac
+
+UnsupportedOS() {
+	echo >&2 "$SEPARATOR"
+	echo >&2 "$COMPATIBLE_VERSIONS"
+	echo >&2
+	echo >&2 "$WE_RECOMMEND"
+	echo >&2 "$SEPARATOR"
+	db_go || true
+	exit 1
+}
+
+CheckSupportedOS() {
+	DIST_ID=$(lsb_release -is)
+	REL_NUM=$(lsb_release -rs)
+	if [ "$DIST_ID" = "Deepin" ]; then
+		case $REL_NUM in
+		20 | 20.*) ;;
+		"23 Nightly" | 23 | 23.*) ;;
+		*) UnsupportedOS ;;
+		esac
+	else
+		UnsupportedOS
+	fi
+}
+
+case "$1" in
+install | upgrade)
+	CheckSupportedOS
+	;;
+esac
+
+exit 0
+'
+
+# shellcheck disable=SC2016
+POSTINSTSCRIPT='#!/bin/sh
 
 set -e
 
@@ -55,22 +118,13 @@ REPO="deb http://repositorio.deepines.com/pub/deepines/%d/ stable main"
 
 INSTALLING_DEEPINES="Installing Deepines %d repository and key..."
 INSTALLING_DONE=" done.\n"
-INSTALLING_FAILED=" failed.\n"
-SEPARATOR="=============================================================="
-COMPATIBLE_VERSIONS="Deepines Store is only compatible with Deepin 20 and Deepin 23"
-WE_RECOMMEND="  We recommend installing a recent version of Deepin. If you
-  are using Deepin 20, check that the configuration of the
-  repositories does not contain errors."
+INSTALLING_FAILED=" failed:\n"
 
 case "${LANGUAGE:-$LANG}" in
 es*)
 	INSTALLING_DEEPINES="Instalando repositorio y clave de Deepines %d..."
 	INSTALLING_DONE=" hecho.\n"
-	INSTALLING_FAILED=" falló.\n"
-	COMPATIBLE_VERSIONS="Tienda Deepines sólo es compatible con Deepin 20 y Deepin 23"
-	WE_RECOMMEND=" Recomendamos instalar una versión reciente de Deepin. Si está
- usando Deepin 20, compruebe que la configuración de 
- los repositorios no contiene errores."
+	INSTALLING_FAILED=" falló:\n"
 	;;
 esac
 
@@ -136,46 +190,35 @@ TGGtKg==
 EOF
 }
 
+InstallFiles() {
+	REPO="deb http://repositorio.deepines.com/pub/deepines/%d/ stable main"
+	mkdir -p $TRUSTED_DIR
+	mkdir -p $SOURCES_DIR
+	$Fmt "${REPO}\n" "$1" >$DEEPINES_LIST
+	MakeRepoKey >$DEEPINES_KEY
+}
+
 InstallDeepinesRepository() {
-	$Fmt "${INSTALLING_DEEPINES}" "$1" && {
-		REPO="deb http://repositorio.deepines.com/pub/deepines/%d/ stable main"
-        mkdir -p $TRUSTED_DIR
-        mkdir -p $SOURCES_DIR
-		$Fmt "${REPO}\n" "$1" >$DEEPINES_LIST
-		MakeRepoKey >$DEEPINES_KEY
-	} || {
+	$Fmt "${INSTALLING_DEEPINES}" "$1" && RepoInstallationResult=$(
+		InstallFiles "$1" 2>&1
+	) || {
 		$Fmt "$INSTALLING_FAILED"
+		echo "$RepoInstallationResult"
 		db_go || true
 		exit 1
 	} && $Fmt "$INSTALLING_DONE"
 }
 
-UnsupportedOS() {
-	echo >&2 "$SEPARATOR"
-	echo >&2 "$COMPATIBLE_VERSIONS"
-	echo >&2
-	echo >&2 "$WE_RECOMMEND"
-	echo >&2 "$SEPARATOR"
-	db_go || true
-	exit 1
-}
-
 InstallDeepines() {
-	DIST_ID=$(lsb_release -is)
 	REL_NUM=$(lsb_release -rs)
-	if [ "$DIST_ID" = "Deepin" ]; then
-		case $REL_NUM in
-		20 | 20.*) InstallDeepinesRepository 4 ;;
-		"23 Nightly" | 23 | 23.*) InstallDeepinesRepository 5 ;;
-		*) UnsupportedOS ;;
-		esac
-	else
-		UnsupportedOS
-	fi
+	case $REL_NUM in
+	20 | 20.*) InstallDeepinesRepository 4 ;;
+	"23 Nightly" | 23 | 23.*) InstallDeepinesRepository 5 ;;
+	esac
 }
 
 case "$1" in
-install | upgrade)
+configure)
 	InstallDeepines
 	;;
 esac
@@ -183,6 +226,7 @@ esac
 exit 0
 '
 
+# shellcheck disable=SC2016
 POSTRMSCRIPT='#!/bin/sh
 
 set -e
@@ -272,6 +316,12 @@ echo "Generating main binary..."
 mkdir -p usr/bin
 GenerateMainBinary >usr/bin/deepines
 
+echo "Generating translations..."
+mkdir -p usr/share/deepines/deepinesStore/translations
+for ts_file in "$SH_DIR"/translationsSource/*.ts; do
+    lconvert -i "$ts_file" -o "usr/share/deepines/deepinesStore/translations/$(basename "$ts_file" .ts).qm"
+done
+
 MakeDesktop() {
     cat <<EOF
 [Desktop Entry]
@@ -307,7 +357,7 @@ MakePolkitPolicy() {
 
 <policyconfig>
     <vendor>DeepinenEspañol</vendor>
-	<vendor_url>https://deepinenespañol.org/</vendor_url>
+    <vendor_url>https://deepinenespañol.org/</vendor_url>
     <icon_name>deepines</icon_name>
     <action id="deepines">
         <description>Allows the installation of applications stored in the deepines repository</description>
@@ -334,6 +384,10 @@ MakePolkitPolicy >usr/share/polkit-1/actions/org.freedesktop.deepines.policy
 echo "Generating 'preinst' script..."
 printf "%s" "$PREINSTSCRIPT" >DEBIAN/preinst
 chmod 755 DEBIAN/preinst
+
+echo "Generating 'postinst' script..."
+printf "%s" "$POSTINSTSCRIPT" >DEBIAN/postinst
+chmod 755 DEBIAN/postinst
 
 echo "Generating 'postrm' script..."
 printf "%s" "$POSTRMSCRIPT" >DEBIAN/postrm
@@ -417,7 +471,12 @@ find usr/bin -type f -exec chmod +x {} \;        # Mark each script as executabl
 chmod +x usr/share/deepines/deepines             # Mark main script as executable (script-not-executable).
 
 echo "Build package..."
-fakeroot dpkg-deb --build "$WORK_DIR" "$SH_DIR" # Should use "dpkg-buildpackage -rfakeroot" instead, but no.
+# Should use "dpkg-buildpackage -rfakeroot" instead, but no.
+fakeroot dpkg-deb --build "$WORK_DIR" "$SH_DIR" || {
+    Cleanup
+    exit 1
+}
 
 echo "Finished!"
 Cleanup
+exit 0
