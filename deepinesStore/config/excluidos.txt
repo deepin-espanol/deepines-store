@@ -3,7 +3,7 @@ deepines-repository
 docker-ce-cli
 gtkdialog
 fish-common
-libfdk-acc1
+libfdk-aacc1
 libgutenprint2
 libobasis6.3-base
 libobasis6.3-calc
@@ -122,7 +122,7 @@ libobasis7.1-es-help
 libobasis7.1-es
 libobasis7.1-extension-beanshell-script-provider
 libobasis7.1-extension-javascript-script-provider
-libobasis7.1-extension-mediawiki-publishe
+libobasis7.1-extension-mediawiki-publisher
 libobasis7.1-extension-nlpsolver
 libobasis7.1-extension-pdf-import
 libobasis7.1-extension-report-builder
