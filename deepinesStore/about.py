@@ -107,7 +107,7 @@ class Dialog(QDialog):
         self.boton.setObjectName("btn_close")
         self.boton.setPixmap(QPixmap(svg_cerrar))
         self.boton.setAlignment(Qt.AlignCenter)
-        self.boton.clicked.connect(self.accept)
+        self.boton.clicked.connect(self.close)
         self.verticalLayout_2.addWidget(self.boton)
 
         self.verticalLayout.addLayout(self.verticalLayout_2)

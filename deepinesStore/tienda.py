@@ -26,7 +26,7 @@ from deepinesStore.about import Dialog as DAbout
 # Variables globales
 global lista_app, total_apps, lista_inicio, lista_global, lista_selected
 global selected_apps, instaladas, columnas, tamanio, repo, repo_file, contador_selected
-
+la_vaina_ta_open = False
 
 class Ventana(QMainWindow):
     def __init__(self):
@@ -536,11 +536,26 @@ class Ventana(QMainWindow):
     ################################################
     #                   Acerca de                  #
 
-    def acerca_de(self):
-        self.modal = DAbout(self)
-        self.modal.show()
+    def AboutCloseEvent(self, event):
+        global la_vaina_ta_open
+        la_vaina_ta_open = False
 
-    #                   /cerca de                  #
+    def abrelo_7u7(self):
+        self.modal = DAbout(self)
+        self.modal.closeEvent = self.AboutCloseEvent
+        self.modal.show()
+        self.no_abrir()
+
+    def no_abrir(self):
+        global la_vaina_ta_open
+        la_vaina_ta_open = True
+
+    def acerca_de(self):
+        if la_vaina_ta_open:
+            self.no_abrir()
+        else:
+            self.abrelo_7u7()
+    #                  /Acerca de                  #
     ################################################
 
     ################################################
