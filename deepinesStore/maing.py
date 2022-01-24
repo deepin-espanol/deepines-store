@@ -2,13 +2,14 @@
 
 # UI Source 'guis/main.ui'
 
-
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtGui, QtWidgets
+from PyQt5.QtCore import QCoreApplication, QMetaObject, QRect, QSize, Qt, pyqtSignal
 from os.path import join, abspath, dirname
+
 
 class QLabelClickable(QtWidgets.QLabel):
 
-    clicked = QtCore.pyqtSignal()
+    clicked = pyqtSignal()
 
     def __init__(self, *args):
         QtWidgets.QLabel.__init__(self, *args)
@@ -17,8 +18,49 @@ class QLabelClickable(QtWidgets.QLabel):
         self.clicked.emit()
 
 
-def getResource(svg_name):
-    return abspath(join(dirname(__file__), 'resources', svg_name + '.svg'))
+def getResource(svg_name, dir='resources', ext='.svg'):
+    return abspath(join(dirname(__file__), dir, svg_name + ext))
+
+
+# https://stackoverflow.com/a/67711660
+size = 19
+border = 0.2
+global TitleBarButtonStylesheet
+TitleBarButtonStylesheet = '''
+            QRadioButton {{
+                background-color: transparent;
+                padding: 3px;
+            }}
+            QRadioButton::indicator {{
+                border: {border}px solid {borderColor}; 
+                height: {size}px;
+                width: {size}px;
+                border-radius: {radius}px;
+            }}
+            QRadioButton::indicator:checked, QRadioButton::indicator:unchecked {{
+                background: qradialgradient(
+                    cx:.5, cy:.5, radius: {innerRatio},
+                    fx:.5, fy:.5,
+                    stop:0 {uncheckColor},
+                    stop:0.45 {uncheckColor2},
+                    stop:0.5 transparent,
+                    stop:1 transparent
+                    );
+            }}
+            QRadioButton::indicator:hover {{
+                background: rgba(140, 140, 140, 100);
+            }}
+        '''.format(
+    size=size - border * 2,
+    border=border,
+    borderColor='black',
+    radius=size // 2,
+    innerRatio=1 - (border * 2 + 1) / size,
+    uncheckColor='rgba(125, 125, 125, 100)',
+    uncheckColor2='rgba(127, 127, 127, 100)',
+    checkColor='black'
+)
+
 
 class Ui_MainWindow(object):
 
@@ -59,15 +101,13 @@ class Ui_MainWindow(object):
         svg_pamela = getResource('pamela')
         svg_search = getResource('magnifying-glass')
         svg_car = getResource('carDisable')
-        svg_minimizar = getResource('minimizar')
-        svg_maximizar = getResource('maximizar')
-        svg_cerrar = getResource('cerrar')
 
         MainWindow.setObjectName("MainWindow")
-        MainWindow.setMinimumSize(QtCore.QSize(self.width_screen, self.height_screen))
+        MainWindow.setMinimumSize(QSize(self.width_screen, self.height_screen))
         MainWindow.resize(self.width_screen, self.height_screen)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(svg_logo), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(svg_logo),
+                       QtGui.QIcon.Normal, QtGui.QIcon.Off)
         MainWindow.setWindowIcon(icon)
         MainWindow.setStyleSheet(
             "QScrollBar:vertical {\n"
@@ -95,7 +135,8 @@ class Ui_MainWindow(object):
             "    subcontrol-origin: margin;\n"
             "}")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
-        self.centralwidget.setStyleSheet("background-color: rgba(30, 30, 30, 200);" "color: #b5c5d1;")
+        self.centralwidget.setStyleSheet(
+            "background-color: rgba(30, 30, 30, 200);" "color: #b5c5d1;")
         self.centralwidget.setObjectName("centralwidget")
         self.gridLayout_2 = QtWidgets.QGridLayout(self.centralwidget)
         self.gridLayout_2.setContentsMargins(0, 0, 0, 0)
@@ -104,8 +145,8 @@ class Ui_MainWindow(object):
 
         # Frame apps seleccionadas
         self.widget = QtWidgets.QWidget(self.centralwidget)
-        self.widget.setMinimumSize(QtCore.QSize(0, 40))
-        self.widget.setMaximumSize(QtCore.QSize(16777215, 80))
+        self.widget.setMinimumSize(QSize(0, 40))
+        self.widget.setMaximumSize(QSize(16777215, 80))
         self.widget.setStyleSheet("background-color: rgba(16, 16, 16, 0);")
         self.widget.setObjectName("widget")
         self.gridLayout_4 = QtWidgets.QGridLayout(self.widget)
@@ -125,8 +166,8 @@ class Ui_MainWindow(object):
         pix_car = QtGui.QPixmap(svg_car)
         self.icon_car.setPixmap(pix_car)
         self.icon_car.setScaledContents(True)
-        self.icon_car.setMinimumSize(QtCore.QSize(20, 20))
-        self.icon_car.setMaximumSize(QtCore.QSize(20, 20))
+        self.icon_car.setMinimumSize(QSize(20, 20))
+        self.icon_car.setMaximumSize(QSize(20, 20))
 
         self.icon_car.setObjectName("icon_car")
         self.horizontalLayout_3.addWidget(self.icon_car)
@@ -138,8 +179,8 @@ class Ui_MainWindow(object):
         self.lbl_list_apps.setObjectName("lbl_list_apps")
         self.horizontalLayout_3.addWidget(self.lbl_list_apps)
         self.btn_install = QtWidgets.QPushButton(self.widget)
-        self.btn_install.setMinimumSize(QtCore.QSize(80, 0))
-        self.btn_install.setMaximumSize(QtCore.QSize(100, 16777215))
+        self.btn_install.setMinimumSize(QSize(80, 0))
+        self.btn_install.setMaximumSize(QSize(100, 16777215))
         self.btn_install.setStyleSheet(
             "#btn_install{\n"
             "padding: 2px;\n"
@@ -161,8 +202,8 @@ class Ui_MainWindow(object):
 
         # Frame side bar
         self.frame_2 = QtWidgets.QFrame(self.centralwidget)
-        self.frame_2.setMinimumSize(QtCore.QSize(self.size_frame, 0))
-        self.frame_2.setMaximumSize(QtCore.QSize(self.size_frame, 16777215))
+        self.frame_2.setMinimumSize(QSize(self.size_frame, 0))
+        self.frame_2.setMaximumSize(QSize(self.size_frame, 16777215))
         self.frame_2.setStyleSheet("background-color: rgba(16, 16, 16, 0);")
         self.frame_2.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame_2.setFrameShadow(QtWidgets.QFrame.Raised)
@@ -175,8 +216,8 @@ class Ui_MainWindow(object):
         # Primer item, spaciador vertical
         self.verticalLayout.addItem(spacerItem2)
         self.frame_4 = QtWidgets.QFrame(self.frame_2)
-        self.frame_4.setMinimumSize(QtCore.QSize(0, 35))
-        self.frame_4.setMaximumSize(QtCore.QSize(16777215, 35))
+        self.frame_4.setMinimumSize(QSize(0, 35))
+        self.frame_4.setMaximumSize(QSize(16777215, 35))
         self.frame_4.setStyleSheet("border-radius: 15px;\n"
                                    "background-color: rgba(16, 16, 16, 122);\n"
                                    "color: white;")
@@ -190,7 +231,7 @@ class Ui_MainWindow(object):
                                     "color: white;\n"
                                     "border-color: transparent;\n"
                                     "border: 0px solid;")
-        self.lineEdit.setAlignment(QtCore.Qt.AlignCenter)
+        self.lineEdit.setAlignment(Qt.AlignCenter)
         self.lineEdit.setObjectName("lineEdit")
         self.horizontalLayout_2.addWidget(self.lineEdit)
         self.pushButton = QtWidgets.QPushButton(self.frame_4)
@@ -200,9 +241,10 @@ class Ui_MainWindow(object):
                                       "border: 0px solid;")
         self.pushButton.setText("")
         icon11 = QtGui.QIcon()
-        icon11.addPixmap(QtGui.QPixmap(svg_search), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon11.addPixmap(QtGui.QPixmap(svg_search),
+                         QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.pushButton.setIcon(icon11)
-        self.pushButton.setIconSize(QtCore.QSize(13, 13))
+        self.pushButton.setIconSize(QSize(13, 13))
         self.pushButton.setObjectName("pushButton")
         self.horizontalLayout_2.addWidget(self.pushButton)
         # Segundo item, cuadro busqueda
@@ -225,69 +267,88 @@ class Ui_MainWindow(object):
             "  border: 0px solid transparent;\n"
             "  color: #419fd9;\n"
             "}")
-        self.listWidget.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
-        self.listWidget.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        self.listWidget.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.listWidget.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.listWidget.setAutoScroll(False)
-        self.listWidget.setIconSize(QtCore.QSize(24, 24))
+        self.listWidget.setIconSize(QSize(24, 24))
         self.listWidget.setObjectName("listWidget")
         item = QtWidgets.QListWidgetItem()
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap(svg_star), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon1.addPixmap(QtGui.QPixmap(svg_star),
+                        QtGui.QIcon.Normal, QtGui.QIcon.Off)
         item.setIcon(icon1)
-        item.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsUserCheckable | QtCore.Qt.ItemIsEnabled)
+        item.setFlags(Qt.ItemIsSelectable |
+                      Qt.ItemIsUserCheckable | Qt.ItemIsEnabled)
         self.listWidget.addItem(item)
         item = QtWidgets.QListWidgetItem()
         icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap(svg_deepines), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon2.addPixmap(QtGui.QPixmap(svg_deepines),
+                        QtGui.QIcon.Normal, QtGui.QIcon.Off)
         item.setIcon(icon2)
         self.listWidget.addItem(item)
         item = QtWidgets.QListWidgetItem()
         icon3 = QtGui.QIcon()
-        icon3.addPixmap(QtGui.QPixmap(svg_internet), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon3.addPixmap(QtGui.QPixmap(svg_internet),
+                        QtGui.QIcon.Normal, QtGui.QIcon.Off)
         item.setIcon(icon3)
-        item.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsUserCheckable | QtCore.Qt.ItemIsEnabled)
+        item.setFlags(Qt.ItemIsSelectable |
+                      Qt.ItemIsUserCheckable | Qt.ItemIsEnabled)
         self.listWidget.addItem(item)
         item = QtWidgets.QListWidgetItem()
         icon4 = QtGui.QIcon()
-        icon4.addPixmap(QtGui.QPixmap(svg_music), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon4.addPixmap(QtGui.QPixmap(svg_music),
+                        QtGui.QIcon.Normal, QtGui.QIcon.Off)
         item.setIcon(icon4)
-        item.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsUserCheckable | QtCore.Qt.ItemIsEnabled)
+        item.setFlags(Qt.ItemIsSelectable |
+                      Qt.ItemIsUserCheckable | Qt.ItemIsEnabled)
         self.listWidget.addItem(item)
         item = QtWidgets.QListWidgetItem()
         icon5 = QtGui.QIcon()
-        icon5.addPixmap(QtGui.QPixmap(svg_picture), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon5.addPixmap(QtGui.QPixmap(svg_picture),
+                        QtGui.QIcon.Normal, QtGui.QIcon.Off)
         item.setIcon(icon5)
-        item.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsUserCheckable | QtCore.Qt.ItemIsEnabled)
+        item.setFlags(Qt.ItemIsSelectable |
+                      Qt.ItemIsUserCheckable | Qt.ItemIsEnabled)
         self.listWidget.addItem(item)
         item = QtWidgets.QListWidgetItem()
         icon6 = QtGui.QIcon()
-        icon6.addPixmap(QtGui.QPixmap(svg_console), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon6.addPixmap(QtGui.QPixmap(svg_console),
+                        QtGui.QIcon.Normal, QtGui.QIcon.Off)
         item.setIcon(icon6)
-        item.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsUserCheckable | QtCore.Qt.ItemIsEnabled)
+        item.setFlags(Qt.ItemIsSelectable |
+                      Qt.ItemIsUserCheckable | Qt.ItemIsEnabled)
         self.listWidget.addItem(item)
         item = QtWidgets.QListWidgetItem()
         icon7 = QtGui.QIcon()
-        icon7.addPixmap(QtGui.QPixmap(svg_board), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon7.addPixmap(QtGui.QPixmap(svg_board),
+                        QtGui.QIcon.Normal, QtGui.QIcon.Off)
         item.setIcon(icon7)
-        item.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsUserCheckable | QtCore.Qt.ItemIsEnabled)
+        item.setFlags(Qt.ItemIsSelectable |
+                      Qt.ItemIsUserCheckable | Qt.ItemIsEnabled)
         self.listWidget.addItem(item)
         item = QtWidgets.QListWidgetItem()
         icon8 = QtGui.QIcon()
-        icon8.addPixmap(QtGui.QPixmap(svg_terminal), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon8.addPixmap(QtGui.QPixmap(svg_terminal),
+                        QtGui.QIcon.Normal, QtGui.QIcon.Off)
         item.setIcon(icon8)
-        item.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsUserCheckable | QtCore.Qt.ItemIsEnabled)
+        item.setFlags(Qt.ItemIsSelectable |
+                      Qt.ItemIsUserCheckable | Qt.ItemIsEnabled)
         self.listWidget.addItem(item)
         item = QtWidgets.QListWidgetItem()
         icon9 = QtGui.QIcon()
-        icon9.addPixmap(QtGui.QPixmap(svg_computer), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon9.addPixmap(QtGui.QPixmap(svg_computer),
+                        QtGui.QIcon.Normal, QtGui.QIcon.Off)
         item.setIcon(icon9)
-        item.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsUserCheckable | QtCore.Qt.ItemIsEnabled)
+        item.setFlags(Qt.ItemIsSelectable |
+                      Qt.ItemIsUserCheckable | Qt.ItemIsEnabled)
         self.listWidget.addItem(item)
         item = QtWidgets.QListWidgetItem()
         icon10 = QtGui.QIcon()
-        icon10.addPixmap(QtGui.QPixmap(svg_pamela), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon10.addPixmap(QtGui.QPixmap(svg_pamela),
+                         QtGui.QIcon.Normal, QtGui.QIcon.Off)
         item.setIcon(icon10)
-        item.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsUserCheckable | QtCore.Qt.ItemIsEnabled)
+        item.setFlags(Qt.ItemIsSelectable |
+                      Qt.ItemIsUserCheckable | Qt.ItemIsEnabled)
         self.listWidget.addItem(item)
         # Tercer item, lista de filtros
         self.verticalLayout.addWidget(self.listWidget)
@@ -300,11 +361,11 @@ class Ui_MainWindow(object):
         self.horizontalLayout.setSpacing(0)
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.label_2 = QLabelClickable(self.widget_2)
-        self.label_2.setMinimumSize(QtCore.QSize(180, 180))
-        self.label_2.setMaximumSize(QtCore.QSize(180, 180))
+        self.label_2.setMinimumSize(QSize(180, 180))
+        self.label_2.setMaximumSize(QSize(180, 180))
         self.label_2.setStyleSheet("background-color: transparent;")
         self.label_2.setText("")
-        self.label_2.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.label_2.setCursor(QtGui.QCursor(Qt.PointingHandCursor))
         self.label_2.setPixmap(QtGui.QPixmap(svg_fondo))
         self.label_2.setScaledContents(True)
         self.label_2.setOpenExternalLinks(True)
@@ -317,22 +378,23 @@ class Ui_MainWindow(object):
         font.setPointSize(8)
         self.label.setFont(font)
         self.label.setStyleSheet("background-color: transparent;\n")
-        self.label.setAlignment(QtCore.Qt.AlignCenter)
-        self.label.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.label.setAlignment(Qt.AlignCenter)
+        self.label.setCursor(QtGui.QCursor(Qt.PointingHandCursor))
         self.label.setObjectName("label")
         # Quinto item, label version
         self.verticalLayout.addWidget(self.label)
         self.gridLayout_2.addWidget(self.frame_2, 0, 0, 3, 1)
         self.frame = QtWidgets.QScrollArea(self.centralwidget)
-        self.frame.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)
+        self.frame.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
         self.frame.setWidgetResizable(True)
-        self.frame.setAlignment(QtCore.Qt.AlignCenter)
+        self.frame.setAlignment(Qt.AlignCenter)
         self.frame.setObjectName("frame")
         self.frame.setStyleSheet("background-color: rgba(16, 16, 16, 0);")
         self.scroll_apps = QtWidgets.QWidget()
-        self.scroll_apps.setGeometry(QtCore.QRect(0, 0, 774, 459))
+        self.scroll_apps.setGeometry(QRect(0, 0, 774, 459))
         self.scroll_apps.setObjectName("scroll_apps")
-        self.scroll_apps.setStyleSheet("#scroll_apps{ padding-left: 30px; padding-right: 30px;}")
+        self.scroll_apps.setStyleSheet(
+            "#scroll_apps{ padding-left: 30px; padding-right: 30px;}")
         self.gridLayout = QtWidgets.QGridLayout(self.scroll_apps)
         self.gridLayout.setObjectName("gridLayout")
         self.gridLayout.setContentsMargins(0, 0, 0, 0)
@@ -356,10 +418,12 @@ class Ui_MainWindow(object):
         self.horizontalLayout_4.setContentsMargins(0, 5, 0, 5)
         self.horizontalLayout_4.setSpacing(1)
 
-        spacerItem = QtWidgets.QSpacerItem(130, 20, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+        spacerItem = QtWidgets.QSpacerItem(
+            130, 20, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_4.addItem(spacerItem)
 
-        spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem1 = QtWidgets.QSpacerItem(
+            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_4.addItem(spacerItem1)
 
         self.label_3 = QtWidgets.QLabel(self.widget_1)
@@ -368,128 +432,86 @@ class Ui_MainWindow(object):
         font.setPointSize(12)
         self.horizontalLayout_4.addWidget(self.label_3)
 
-        spacerItem2 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem2 = QtWidgets.QSpacerItem(
+            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_4.addItem(spacerItem2)
 
-        # https://stackoverflow.com/a/67711660
-        size = 19
-        border = 0.2
-        TitleBarButtonStylesheet ='''
-            QRadioButton {{
-                background-color: transparent;
-                padding: 3px;
-            }}
-            QRadioButton::indicator {{
-                border: {border}px solid {borderColor}; 
-                height: {size}px;
-                width: {size}px;
-                border-radius: {radius}px;
-            }}
-            QRadioButton::indicator:unchecked {{
-                background: qradialgradient(
-                    cx:.5, cy:.5, radius: {innerRatio},
-                    fx:.5, fy:.5,
-                    stop:0 {uncheckColor}, 
-                    stop:0.45 {uncheckColor2},
-                    stop:0.5 transparent,
-                    stop:1 transparent
-                    );
-            }}
-            QRadioButton::indicator:hover {{
-                background: rgba(140, 140, 140, 100);
-            }}
-        '''.format(
-            size=size - border * 2, 
-            border=border, 
-            borderColor='black',
-            radius=size // 2, 
-            innerRatio=1 - (border * 2 + 1) / size, 
-            uncheckColor='rgba(125, 125, 125, 100)',
-            uncheckColor2='rgba(127, 127, 127, 100)',
-            checkColor='black'
-        )
+        self.btn_minimize = QtWidgets.QRadioButton(self.widget_1)
+        self.btn_minimize.setObjectName("btn_minimize")
+        self.btn_minimize.setStyleSheet(TitleBarButtonStylesheet)
+        self.horizontalLayout_4.addWidget(self.btn_minimize)
 
-        self.btn_minimizar = QtWidgets.QRadioButton(self.widget_1)
-        self.btn_minimizar.setObjectName("btn_minimizar")
-        self.btn_minimizar.setToolTip("Minimizar")
-        self.btn_minimizar.setStyleSheet(TitleBarButtonStylesheet)
-        #icon12 = QtGui.QIcon()
-        #icon12.addPixmap(QtGui.QPixmap(svg_minimizar), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        #self.btn_minimizar.setIcon(icon12)
-        #self.btn_minimizar.setIconSize(QtCore.QSize(13, 13))
-        self.horizontalLayout_4.addWidget(self.btn_minimizar)
+        self.btn_zoom = QtWidgets.QRadioButton(self.widget_1)
+        self.btn_zoom.setObjectName("btn_zoom")
+        self.btn_zoom.setStyleSheet(TitleBarButtonStylesheet)
+        self.horizontalLayout_4.addWidget(self.btn_zoom)
 
-        self.btn_maximizar = QtWidgets.QRadioButton(self.widget_1)
-        self.btn_maximizar.setObjectName("btn_maximizar")
-        self.btn_maximizar.setToolTip("Maximizar")
-        self.btn_maximizar.setStyleSheet(TitleBarButtonStylesheet)
-        #icon13 = QtGui.QIcon()
-        #icon13.addPixmap(QtGui.QPixmap(svg_maximizar), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        #self.btn_maximizar.setIcon(icon13)
-        self.horizontalLayout_4.addWidget(self.btn_maximizar)
+        self.btn_close = QtWidgets.QRadioButton(self.widget_1)
+        self.btn_close.setObjectName("btn_close")
+        self.btn_close.setStyleSheet(TitleBarButtonStylesheet)
+        self.horizontalLayout_4.addWidget(self.btn_close)
 
-        self.btn_cerrar = QtWidgets.QRadioButton(self.widget_1)
-        self.btn_cerrar.setObjectName("btn_cerrar")
-        self.btn_cerrar.setToolTip("Cerrar")
-        self.btn_cerrar.setStyleSheet(TitleBarButtonStylesheet)
-        #icon14 = QtGui.QIcon()
-        #icon14.addPixmap(QtGui.QPixmap(svg_cerrar), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        #self.btn_cerrar.setIcon(icon14)
-        #self.btn_cerrar.setIconSize(QtCore.QSize(20, 20))
-
-        self.horizontalLayout_4.addWidget(self.btn_cerrar)
         self.gridLayout_2.addWidget(self.widget_1, 0, 1, 1, 1)
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
         self.listWidget.setCurrentRow(-1)
-        QtCore.QMetaObject.connectSlotsByName(MainWindow)
+        QMetaObject.connectSlotsByName(MainWindow)
+
+    def __tr(self, txt, disambiguation=None, n=-1):
+        return QCoreApplication.translate(self.__class__.__name__, txt, disambiguation, n)
 
     def retranslateUi(self, MainWindow):
-        _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "Deepines Store"))
-        self.label_2.setToolTip(_translate("MainWindow", "About us"))
-        self.label_3.setText(_translate("MainWindow", "Deepines Store"))
-        self.lbl_list_apps.setText(_translate("MainWindow", "TextLabel"))
-        self.btn_install.setText(_translate("MainWindow", "Install"))
+        MainWindow.setWindowTitle(self.__tr("Deepines Store"))
+        self.label_2.setToolTip(self.__tr("About us"))
+        self.label_3.setText(self.__tr("Deepines Store"))
+        self.lbl_list_apps.setText(self.__tr("TextLabel"))
+        self.btn_install.setText(self.__tr("Install"))
         __sortingEnabled = self.listWidget.isSortingEnabled()
         self.listWidget.setSortingEnabled(False)
         item = self.listWidget.item(0)
-        item.setText(_translate("MainWindow", "Home"))
+        item.setText(self.__tr("Home"))
         item = self.listWidget.item(1)
-        item.setText(_translate("MainWindow", "Deepines"))
+        item.setText(self.__tr("Deepines"))
         item = self.listWidget.item(2)
-        item.setText(_translate("MainWindow", "Internet"))
+        item.setText(self.__tr("Internet"))
         item = self.listWidget.item(3)
-        item.setText(_translate("MainWindow", "Multimedia"))
+        item.setText(self.__tr("Multimedia"))
         item = self.listWidget.item(4)
-        item.setText(_translate("MainWindow", "Graphics"))
+        item.setText(self.__tr("Graphics"))
         item = self.listWidget.item(5)
-        item.setText(_translate("MainWindow", "Games"))
+        item.setText(self.__tr("Games"))
         item = self.listWidget.item(6)
-        item.setText(_translate("MainWindow", "Office automation"))
+        item.setText(self.__tr("Office automation"))
         item = self.listWidget.item(7)
-        item.setText(_translate("MainWindow", "Development"))
+        item.setText(self.__tr("Development"))
         item = self.listWidget.item(8)
-        item.setText(_translate("MainWindow", "System"))
+        item.setText(self.__tr("System"))
         item = self.listWidget.item(9)
-        item.setText(_translate("MainWindow", "Other"))
+        item.setText(self.__tr("Other"))
         self.listWidget.setSortingEnabled(__sortingEnabled)
-        self.lineEdit.setPlaceholderText(_translate("MainWindow", "Search"))
-        self.about_version_text = _translate("MainWindow", "About \nVersion: {version}")
-        self.label.setText(self.about_version_text.format(version=self.STORE_VERSION))
-        self.list_apps_text = _translate("StoreWindow", "Select the apps to install")
-        self.selected_to_install_app_text = _translate("StoreWindow", "Selected")
-        self.selected_installed_app_text = _translate("StoreWindow", "Installed")
-        self.single_app_text = _translate("StoreWindow", "{app_count} app selected to install, click here to review it")
-        self.multi_apps_text = _translate("StoreWindow", "{app_count} apps selected to install, click here to review them")
-        self.error_no_server_text = _translate("StoreWindow", "Unable to establish connection with the server, <br>"
-                                               "please check your internet connection.<br>"
-                                               "If the problem persists, please contact us via Telegram <br>"
-                                               "at @deepinenespanol.<br><br>"
-                                               "<a href='#'>deepinenespanol.org | Copy link</a><br>"
-                                               "Visit Deepin en Español for more information.")
-        self.error_no_deepines_repo_text = _translate("StoreWindow", "Deepines repository is not installed on your system,<br>"
-                                                      "Deepines Store needs this repository to work.<br>"
-                                                      "In the following link you will find the instructions to install it.<br><br>"
-                                                      "<a href='#'>deepinenespanol.org/repositorio/ | Copy link<a/><br>")
+        self.lineEdit.setPlaceholderText(self.__tr("Search"))
+        self.about_version_text = self.__tr("About \nVersion: {version}")
+        self.btn_minimize.setToolTip(self.__tr("Minimize"))
+        self.btn_zoom.setToolTip(self.__tr("Zoom"))
+        self.btn_close.setToolTip(self.__tr("Close"))
+        self.label.setText(self.about_version_text.format(
+            version=self.STORE_VERSION))
+        # StoreWindow
+        self.list_apps_text = self.__tr("Select the apps to install")
+        self.selected_to_install_app_text = self.__tr("Selected")
+        self.selected_installed_app_text = self.__tr("Installed")
+        self.single_app_text = self.__tr(
+            "{app_count} app selected to install, click here to review it")
+        self.multi_apps_text = self.__tr(
+            "{app_count} apps selected to install, click here to review them")
+        self.error_no_server_text = self.__tr("Unable to establish connection with the server, <br>"
+                                              "please check your internet connection.<br>"
+                                              "If the problem persists, please contact us via Telegram <br>"
+                                              "at @deepinenespanol.<br><br>"
+                                              "<a href='#'>deepinenespanol.org | Copy link</a><br>"
+                                              "Visit Deepin en Espanol for more information.")
+        self.error_no_deepines_repo_text = self.__tr("Deepines repository is not installed on your system,<br>"
+                                                     "Deepines Store needs this repository to work.<br>"
+                                                     "In the following link you will find the instructions to install it.<br><br>"
+                                                     "<a href='#'>deepinenespanol.org/repositorio/ | Copy link<a/><br>")

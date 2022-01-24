@@ -9,7 +9,7 @@ from PyQt5.QtCore import QTranslator, QLocale, QSize, QPointF, QPoint, QEvent, Q
 from PyQt5.QtWidgets import (QMainWindow, QApplication, QFrame, QLabel,
                              QSizePolicy, QGraphicsDropShadowEffect, QSpacerItem,
                              QDesktopWidget, QHBoxLayout)
-from PyQt5.QtGui import QPixmap, QIcon, QFont, QColor, QCursor
+from PyQt5.QtGui import QPixmap, QFont, QColor, QCursor
 # Modulos para el scraping
 from bs4 import BeautifulSoup
 from requests import get
@@ -20,7 +20,7 @@ from os.path import join, abspath, dirname
 # Guis o modulos locales
 from deepinesStore.maing import Ui_MainWindow, getResource
 from deepinesStore.cardg import Ui_Frame
-from deepinesStore.dialog_install import Ui_Form as DInstall
+from deepinesStore.dialog_install import Ui_DialogInstall
 from deepinesStore.about import Dialog as DAbout
 
 # Variables globales
@@ -71,9 +71,9 @@ class StoreMWindow(QMainWindow):
         ui.listWidget.itemClicked.connect(self.listwidgetclicked)
         ui.lineEdit.textChanged.connect(self.search_app)
         ui.label_2.clicked.connect(self.acerca_de)
-        ui.btn_cerrar.clicked.connect(self.close)
-        ui.btn_maximizar.clicked.connect(self.maximize)
-        ui.btn_minimizar.clicked.connect(self.minimize)
+        ui.btn_close.clicked.connect(self.close)
+        ui.btn_zoom.clicked.connect(self.maximize)
+        ui.btn_minimize.clicked.connect(self.minimize)
         ui.widget_1.installEventFilter(self)
         ui.label.clicked.connect(self.acerca_de)
         shadow = QGraphicsDropShadowEffect(self,
@@ -402,8 +402,7 @@ class StoreMWindow(QMainWindow):
     #        Lista aplicaciones excluidas          #
     def Get_App_Exclude(self):
         lista = list()
-        ruta_excluidos = abspath(
-            join(dirname(__file__), 'config/excluidos.txt'))
+        ruta_excluidos = getResource('excluidos', ext='.txt', dir='config')
         excluidos = open(ruta_excluidos, 'r')
 
         for line in excluidos:
@@ -415,7 +414,7 @@ class StoreMWindow(QMainWindow):
     #        Lista aplicaciones excluidas          #
     def Get_App_Deepines(self):
         lista = list()
-        ruta_deepines = abspath(join(dirname(__file__), 'config/deepines.txt'))
+        ruta_deepines = getResource('deepines', ext='.txt', dir='config')
         deepines = open(ruta_deepines, 'r')
 
         for line in deepines:
@@ -525,7 +524,7 @@ class StoreMWindow(QMainWindow):
 
     def window_install(self):
         global selected_apps
-        self.modal = DInstall(self, selected_apps)
+        self.modal = Ui_DialogInstall(self, selected_apps)
         self.modal.show()
 
     #                 /Instalacion                 #
@@ -629,18 +628,11 @@ class StoreMWindow(QMainWindow):
         if maximized:  # Restauramos al tamaño original
             self.setWindowState(Qt.WindowNoState)
             maximized = False
-            icono = getResource('maximizar')
             ui.widget_1.installEventFilter(self)
         else:  # Agrandamos la ventana
             self.setWindowState(Qt.WindowMaximized)
             maximized = True
-            icono = getResource('restaurar')
             ui.widget_1.removeEventFilter(self)
-
-        # Cambio de icono al maximizar
-        icon1 = QIcon()
-        icon1.addPixmap(QPixmap(icono), QIcon.Normal, QIcon.Off)
-        ui.btn_maximizar.setIcon(icon1)
 
     def minimize(self):
         global maximized
@@ -701,11 +693,9 @@ class Card(QFrame):
 
         self.change_color_buton(estado)
         # Consultamos si existe el grafico de la app
-        ruta = abspath(
-            join(dirname(__file__), 'resources/apps', self.titulo + '.svg'))
+        ruta = getResource(self.titulo, 'resources/apps')
         if not os.path.exists(ruta):
-            url = abspath(
-                join(dirname(__file__), 'resources/apps', 'no-img.svg'))
+            url = getResource('no-img', 'resources/apps')
         else:
             url = ruta
         # Establecemos la imagen
@@ -836,7 +826,7 @@ class Card(QFrame):
 def run_gui():
     app = QApplication(sys.argv)
     translator = QTranslator()
-    translator.load(abspath(join(dirname(__file__), 'translations', QLocale.system().name() + '.qm')))
+    translator.load(getResource(QLocale.system().name(), 'translations', '.qm'))
     app.installTranslator(translator)
     global width, height, maximized
     maximized = False

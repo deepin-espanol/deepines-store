@@ -1,10 +1,10 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
-from deepinesStore.maing import getResource
+from deepinesStore.maing import getResource, TitleBarButtonStylesheet
 from PyQt5.QtCore import Qt, QSize, pyqtSignal
 from PyQt5.QtWidgets import QDialog, QVBoxLayout, QHBoxLayout, QWidget, QGridLayout,\
-    QSpacerItem, QApplication, QSizePolicy, QLabel, QFrame, QDesktopWidget
+    QSpacerItem, QApplication, QSizePolicy, QLabel, QFrame, QDesktopWidget, QRadioButton
 from PyQt5.QtGui import QFont, QPixmap, QCursor
 from os import system
 
@@ -40,15 +40,8 @@ Stylesheet = """
 }
 
 #btn_close {
-    min-width: 36px;
-    min-height: 36px;
-    border-radius: 10px;
     margin-top: 5px;
-    margin-right: 5px;
-}
-
-#btn_close:hover{
-    background-color: rgba(50, 50, 50, 100);
+    margin-right: -10px;
 }
 """
 
@@ -84,7 +77,6 @@ class Dialog(QDialog):
 
     def initUi(self):
         svg_logo = getResource('deepines')
-        svg_cerrar = getResource('cerrar')
 
         self.gridLayout = QGridLayout(self)
         self.gridLayout.setContentsMargins(0, 0, 0, 0)
@@ -94,23 +86,22 @@ class Dialog(QDialog):
         self.widget.setObjectName("Custom_Widget")
 
         self.verticalLayout = QVBoxLayout(self.widget)
-        self.verticalLayout.setContentsMargins(30, 0, 30, 30)
+        self.verticalLayout.setContentsMargins(10, 0, 10, 10)
         self.verticalLayout.setSpacing(0)
         self.verticalLayout.setObjectName("verticalLayout")
 
-        self.verticalLayout_2 = QHBoxLayout()
-        self.verticalLayout_2.setObjectName("verticalLayout_2")
-        self.verticalLayout_2.addItem(QSpacerItem(
+        self.horizontalLayout_2 = QHBoxLayout()
+        self.horizontalLayout_2.setObjectName("horizontalLayout_2")
+        self.horizontalLayout_2.addItem(QSpacerItem(
             40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum))
 
-        self.boton = QLabelClickable(self)
-        self.boton.setObjectName("btn_close")
-        self.boton.setPixmap(QPixmap(svg_cerrar))
-        self.boton.setAlignment(Qt.AlignCenter)
-        self.boton.clicked.connect(self.close)
-        self.verticalLayout_2.addWidget(self.boton)
+        self.btn_close = QRadioButton(self)
+        self.btn_close.setObjectName("btn_close")
+        self.btn_close.setStyleSheet(TitleBarButtonStylesheet)
+        self.btn_close.clicked.connect(self.close)
+        self.horizontalLayout_2.addWidget(self.btn_close)
 
-        self.verticalLayout.addLayout(self.verticalLayout_2)
+        self.verticalLayout.addLayout(self.horizontalLayout_2)
         spacerItem2 = QSpacerItem(
             20, 20, QSizePolicy.Minimum, QSizePolicy.Fixed)
         self.verticalLayout.addItem(spacerItem2)

@@ -10,9 +10,9 @@ from deepinesStore.install_thread import External
 from deepinesStore.notification import notification
 
 
-class Ui_Form(QtWidgets.QWidget):
+class Ui_DialogInstall(QtWidgets.QWidget):
     def __init__(self, main, lista):
-        super(Ui_Form, self).__init__()
+        super(Ui_DialogInstall, self).__init__()
         svg_logo = getResource('deepines')
         self.main = main
         self.lista = lista
@@ -132,30 +132,31 @@ class Ui_Form(QtWidgets.QWidget):
         frameGm.moveCenter(centerPoint)
         self.move(frameGm.topLeft())
 
+    def __tr(self, txt, disambiguation=None, n=-1):
+      return QCoreApplication.translate(self.__class__.__name__, txt, disambiguation, n)
+
     def retranslateUi(self, DialogInstall):
-        _translate = QCoreApplication.translate
-        DialogInstall.setWindowTitle(_translate("DialogInstall", "Installation process - Deepines Store"))
-        self.single_app_to_install_text = _translate("DialogInstall", "{app_count} app has been selected for installation:\n")
-        self.multi_apps_to_install_text = _translate("DialogInstall", "{app_count} apps have been selected for installation:\n")
-        self.install_text = _translate("DialogInstall", "Install")
-        self.retry_text = _translate("DialogInstall", "Retry")
-        self.close_text = _translate("DialogInstall", "Close")
-        self.warning_text = _translate(
-            "DialogInstall", "\n\nWarning: do not close the window, interrupting the installation may damage your system.\n")
-        self.all_processes_completed_text = _translate("DialogInstall", "\nAll processes have been completed.\n")
-        self.installing_text = _translate("DialogInstall", "\nInstalling {item}\n")
-        self.finish_install_text = _translate("DialogInstall", "\nThe installation of {item} is finished.\n")
-        self.error_unhandled_text = _translate("DialogInstall", "\n\nAn error has occurred, please try again.\n"
+        DialogInstall.setWindowTitle(self.__tr("Installation process - Deepines Store"))
+        self.single_app_to_install_text = self.__tr("{app_count} app has been selected for installation:\n")
+        self.multi_apps_to_install_text = self.__tr("{app_count} apps have been selected for installation:\n")
+        self.install_text = self.__tr("Install")
+        self.retry_text = self.__tr("Retry")
+        self.close_text = self.__tr("Close")
+        self.warning_text = self.__tr("\n\nWarning: do not close the window, interrupting the installation may damage your system.\n")
+        self.all_processes_completed_text = self.__tr("\nAll processes have been completed.\n")
+        self.installing_text = self.__tr("\nInstalling {item}\n")
+        self.finish_install_text = self.__tr("\nThe installation of {item} is finished.\n")
+        self.error_unhandled_text = self.__tr("\n\nAn error has occurred, please try again.\n"
                                                "If the problem persists, contact the administrator.\n")
-        self.error_network_text = _translate("DialogInstall", "\n\nThe network connection has failed and the installation has not been completed.\n"
+        self.error_network_text = self.__tr("\n\nThe network connection has failed and the installation has not been completed.\n"
                                              "Check that your computer is connected to the Internet and click Retry.\n"
                                              "If the problem persists, send a report to t.me/deepinenespanol.\n")
-        self.error_dependencies_text = _translate("DialogInstall", "\n\nOne or more apps could not be installed because\n"
+        self.error_dependencies_text = self.__tr("\n\nOne or more apps could not be installed because\n"
                                                   "they depend on other packages that cannot be installed.\n\n"
                                                   "You can look for help in our forum at deepinenespanol.org/comunidad\n"
                                                   "or in our Telegram group t.me/deepinenespanol.")
-        self.error_apt_text = _translate("DialogInstall", "\n\nThe installation system is locked by \n"
+        self.error_apt_text = self.__tr("\n\nThe installation system is locked by \n"
                                          "another installation or upgrade process, \n"
                                          "wait until it finishes and click Retry. \n"
                                          "If you use Synaptic, make sure it is closed.")
-        self.updating_database_text = _translate("DialogInstall", "\nThe database is being updated.\n\n")
+        self.updating_database_text = self.__tr("\nThe database is being updated.\n\n")

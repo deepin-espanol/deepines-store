@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 import subprocess
-from os.path import join, abspath, dirname
+from deepinesStore.maing import getResource
 
 
-def notification(description, icon=abspath(join(dirname(__file__), 'resources', 'deepines.png'))):
+def notification(description, icon=getResource('deepines', ext = '.png')):
     title = 'Deepines'
     description = description
     urgency = 'normal'

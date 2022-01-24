@@ -2,11 +2,10 @@
 
 # UI Source 'guis/dialog_install.ui'
 
-
 from PyQt5 import QtCore, QtWidgets
 
 
-class Ui_Form(object):
+class Ui_DialogInstall(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
         Form.resize(547, 331)
@@ -28,8 +27,10 @@ class Ui_Form(object):
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
+    def __tr(self, txt, disambiguation=None, n=-1):
+        return QtCore.QCoreApplication.translate(self.__class__.__name__, txt, disambiguation, n)
+
     def retranslateUi(self, Form):
-        _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "Form"))
-        self.boton_install.setText(_translate("Form", "Install"))
-        self.boton.setText(_translate("Form", "Close"))
+        Form.setWindowTitle(self.__tr("Form"))
+        self.boton_install.setText(self.__tr("Install"))
+        self.boton.setText(self.__tr("Close"))
