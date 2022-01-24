@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from deepinesStore.tienda import ejecutar
+from deepinesStore.tienda import run_gui
 from deepinesStore.svg import ThreadingSvg
 from os.path import join, abspath, dirname
 from requests import get
@@ -18,4 +18,4 @@ def download_control():
 def main():
     ThreadingSvg()
     download_control()
-    ejecutar()
+    run_gui()

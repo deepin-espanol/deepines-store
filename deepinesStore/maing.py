@@ -6,7 +6,6 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from os.path import join, abspath, dirname
 
-
 class QLabelClickable(QtWidgets.QLabel):
 
     clicked = QtCore.pyqtSignal()
@@ -20,7 +19,6 @@ class QLabelClickable(QtWidgets.QLabel):
 
 def getResource(svg_name):
     return abspath(join(dirname(__file__), 'resources', svg_name + '.svg'))
-
 
 class Ui_MainWindow(object):
 
@@ -179,7 +177,7 @@ class Ui_MainWindow(object):
         self.frame_4 = QtWidgets.QFrame(self.frame_2)
         self.frame_4.setMinimumSize(QtCore.QSize(0, 35))
         self.frame_4.setMaximumSize(QtCore.QSize(16777215, 35))
-        self.frame_4.setStyleSheet("border-radius: 10px;\n"
+        self.frame_4.setStyleSheet("border-radius: 15px;\n"
                                    "background-color: rgba(16, 16, 16, 122);\n"
                                    "color: white;")
         self.frame_4.setFrameShape(QtWidgets.QFrame.StyledPanel)
@@ -215,7 +213,7 @@ class Ui_MainWindow(object):
             "  padding-left:10px;\n"
             "  padding-top:6px;\n"
             "  padding-bottom:6px;\n"
-            "  border-radius: 10px;\n"
+            "  border-radius: 15px;\n"
             "  background-color: rgba(16, 16, 16, 163);\n"
             "}\n"
             "#listWidget:item{\n"
@@ -324,7 +322,7 @@ class Ui_MainWindow(object):
         self.label.setObjectName("label")
         # Quinto item, label version
         self.verticalLayout.addWidget(self.label)
-        self.gridLayout_2.addWidget(self.frame_2, 1, 0, 2, 1)
+        self.gridLayout_2.addWidget(self.frame_2, 0, 0, 3, 1)
         self.frame = QtWidgets.QScrollArea(self.centralwidget)
         self.frame.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)
         self.frame.setWidgetResizable(True)
@@ -347,26 +345,10 @@ class Ui_MainWindow(object):
         self.widget_1.setObjectName("widget_1")
         self.widget_1.setStyleSheet("""
             #widget_1{
-                background-color: rgba(16, 16, 16, 180);
+                background-color: transparent;
             }
             #label_3{
                 background-color: transparent;
-            }
-            #btn_cerrar{
-                margin-right: 10px;
-            }
-            #btn_maximizar{
-                margin-right: 3px;
-                margin-left: 3px;
-            }
-            QPushButton{
-                min-width: 36px;
-                min-height: 36px;
-                border-radius: 10px;
-                background-color: transparent;
-            }
-            QPushButton:hover{
-                background-color: rgba(50, 50, 50, 100);
             }
             """)
         self.horizontalLayout_4 = QtWidgets.QHBoxLayout(self.widget_1)
@@ -389,33 +371,74 @@ class Ui_MainWindow(object):
         spacerItem2 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_4.addItem(spacerItem2)
 
-        self.btn_minimizar = QtWidgets.QPushButton(self.widget_1)
+        # https://stackoverflow.com/a/67711660
+        size = 19
+        border = 0.2
+        TitleBarButtonStylesheet ='''
+            QRadioButton {{
+                background-color: transparent;
+                padding: 3px;
+            }}
+            QRadioButton::indicator {{
+                border: {border}px solid {borderColor}; 
+                height: {size}px;
+                width: {size}px;
+                border-radius: {radius}px;
+            }}
+            QRadioButton::indicator:unchecked {{
+                background: qradialgradient(
+                    cx:.5, cy:.5, radius: {innerRatio},
+                    fx:.5, fy:.5,
+                    stop:0 {uncheckColor}, 
+                    stop:0.45 {uncheckColor2},
+                    stop:0.5 transparent,
+                    stop:1 transparent
+                    );
+            }}
+            QRadioButton::indicator:hover {{
+                background: rgba(140, 140, 140, 100);
+            }}
+        '''.format(
+            size=size - border * 2, 
+            border=border, 
+            borderColor='black',
+            radius=size // 2, 
+            innerRatio=1 - (border * 2 + 1) / size, 
+            uncheckColor='rgba(125, 125, 125, 100)',
+            uncheckColor2='rgba(127, 127, 127, 100)',
+            checkColor='black'
+        )
+
+        self.btn_minimizar = QtWidgets.QRadioButton(self.widget_1)
         self.btn_minimizar.setObjectName("btn_minimizar")
-        self.btn_minimizar.setText("")
-        icon12 = QtGui.QIcon()
-        icon12.addPixmap(QtGui.QPixmap(svg_minimizar), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.btn_minimizar.setIcon(icon12)
-        self.btn_minimizar.setIconSize(QtCore.QSize(13, 13))
+        self.btn_minimizar.setToolTip("Minimizar")
+        self.btn_minimizar.setStyleSheet(TitleBarButtonStylesheet)
+        #icon12 = QtGui.QIcon()
+        #icon12.addPixmap(QtGui.QPixmap(svg_minimizar), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        #self.btn_minimizar.setIcon(icon12)
+        #self.btn_minimizar.setIconSize(QtCore.QSize(13, 13))
         self.horizontalLayout_4.addWidget(self.btn_minimizar)
 
-        self.btn_maximizar = QtWidgets.QPushButton(self.widget_1)
+        self.btn_maximizar = QtWidgets.QRadioButton(self.widget_1)
         self.btn_maximizar.setObjectName("btn_maximizar")
-        self.btn_maximizar.setText("")
-        icon13 = QtGui.QIcon()
-        icon13.addPixmap(QtGui.QPixmap(svg_maximizar), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.btn_maximizar.setIcon(icon13)
+        self.btn_maximizar.setToolTip("Maximizar")
+        self.btn_maximizar.setStyleSheet(TitleBarButtonStylesheet)
+        #icon13 = QtGui.QIcon()
+        #icon13.addPixmap(QtGui.QPixmap(svg_maximizar), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        #self.btn_maximizar.setIcon(icon13)
         self.horizontalLayout_4.addWidget(self.btn_maximizar)
 
-        self.btn_cerrar = QtWidgets.QPushButton(self.widget_1)
+        self.btn_cerrar = QtWidgets.QRadioButton(self.widget_1)
         self.btn_cerrar.setObjectName("btn_cerrar")
-        self.btn_cerrar.setText("")
-        icon14 = QtGui.QIcon()
-        icon14.addPixmap(QtGui.QPixmap(svg_cerrar), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.btn_cerrar.setIcon(icon14)
-        self.btn_cerrar.setIconSize(QtCore.QSize(20, 20))
+        self.btn_cerrar.setToolTip("Cerrar")
+        self.btn_cerrar.setStyleSheet(TitleBarButtonStylesheet)
+        #icon14 = QtGui.QIcon()
+        #icon14.addPixmap(QtGui.QPixmap(svg_cerrar), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        #self.btn_cerrar.setIcon(icon14)
+        #self.btn_cerrar.setIconSize(QtCore.QSize(20, 20))
 
         self.horizontalLayout_4.addWidget(self.btn_cerrar)
-        self.gridLayout_2.addWidget(self.widget_1, 0, 0, 1, 2)
+        self.gridLayout_2.addWidget(self.widget_1, 0, 1, 1, 1)
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)

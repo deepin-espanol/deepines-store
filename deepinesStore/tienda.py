@@ -27,9 +27,9 @@ from deepinesStore.about import Dialog as DAbout
 global lista_app, total_apps, lista_inicio, lista_global, lista_selected
 global selected_apps, instaladas, columnas, tamanio, repo, repo_file, contador_selected
 
-class Ventana(QMainWindow):
+class StoreMWindow(QMainWindow):
     def __init__(self):
-        super(Ventana, self).__init__()
+        super(StoreMWindow, self).__init__()
         # Inicializamos la gui
         global ui
         ui = Ui_MainWindow(width, height)
@@ -63,7 +63,7 @@ class Ventana(QMainWindow):
             self.error(ui.error_no_deepines_repo_text, "https://deepinenespañol.org/repositorio")
 
         ui.btn_install.setEnabled(False)
-        ui.btn_install.clicked.connect(self.ventana_install)
+        ui.btn_install.clicked.connect(self.window_install)
         ui.lbl_list_apps.setText(ui.list_apps_text)
         ui.lbl_list_apps.setEnabled(False)
         ui.icon_car.clicked.connect(self.apps_seleccionadas)
@@ -472,13 +472,13 @@ class Ventana(QMainWindow):
             r, g, b = 255, 255, 255
             cursor = QtCore.ArrowCursor
             enabled = False
-            pix_car = "carDisable.svg"
+            pix_car = "carDisable"
         else:
             borde = "border: 2px solid #419fd9;"
             r, g, b = 0, 255, 255
             cursor = QtCore.PointingHandCursor
             enabled = True
-            pix_car = "carEnable.svg"
+            pix_car = "carEnable"
 
             if cuenta != 1:
                 preview_to_install = ui.multi_apps_text
@@ -490,8 +490,7 @@ class Ventana(QMainWindow):
         ui.lbl_list_apps.setEnabled(enabled)
         ui.lbl_list_apps.setCursor(QCursor(cursor))
 
-        pix_car = QPixmap(
-            abspath(join(dirname(__file__), 'resources', pix_car)))
+        pix_car = QPixmap(getResource(pix_car))
         ui.icon_car.setPixmap(pix_car)
 
         estilo = ("#btn_install{\n"
@@ -524,7 +523,7 @@ class Ventana(QMainWindow):
     ################################################
     #                  Instalacion                 #
 
-    def ventana_install(self):
+    def window_install(self):
         global selected_apps
         self.modal = DInstall(self, selected_apps)
         self.modal.show()
@@ -618,9 +617,10 @@ class Ventana(QMainWindow):
         if event.type() == QEvent.MouseButtonPress:
             self.oldPos = event.globalPos()
         elif event.type() == QEvent.MouseMove:
-            delta = QPoint(event.globalPos() - self.oldPos)
-            self.move(self.x() + delta.x(), self.y() + delta.y())
-            self.oldPos = event.globalPos()
+            if hasattr(self, 'oldPos'):
+                delta = QPoint(event.globalPos() - self.oldPos)
+                self.move(self.x() + delta.x(), self.y() + delta.y())
+                self.oldPos = event.globalPos()
 
         return True
 
@@ -629,14 +629,12 @@ class Ventana(QMainWindow):
         if maximized:  # Restauramos al tamaño original
             self.setWindowState(Qt.WindowNoState)
             maximized = False
-            icono = abspath(
-                join(dirname(__file__), 'resources', 'maximizar.svg'))
+            icono = getResource('maximizar')
             ui.widget_1.installEventFilter(self)
         else:  # Agrandamos la ventana
             self.setWindowState(Qt.WindowMaximized)
             maximized = True
-            icono = abspath(
-                join(dirname(__file__), 'resources', 'restaurar.svg'))
+            icono = getResource('restaurar')
             ui.widget_1.removeEventFilter(self)
 
         # Cambio de icono al maximizar
@@ -835,7 +833,7 @@ class Card(QFrame):
 #           /Card para la aplicacion           #
 ################################################
 
-def ejecutar():
+def run_gui():
     app = QApplication(sys.argv)
     translator = QTranslator()
     translator.load(abspath(join(dirname(__file__), 'translations', QLocale.system().name() + '.qm')))
@@ -844,8 +842,8 @@ def ejecutar():
     maximized = False
     screen_rect = app.desktop().screenGeometry()
     width, height = screen_rect.width(), screen_rect.height()
-    win = Ventana()
-    win.calcular_anchos()
-    os.system('xprop -f _KDE_NET_WM_BLUR_BEHIND_REGION 32c -set _KDE_NET_WM_BLUR_BEHIND_REGION 0 -id {}'.format(int(win.winId())))
-    win.show()
+    store_win = StoreMWindow()
+    store_win.calcular_anchos()
+    os.system('xprop -f _KDE_NET_WM_BLUR_BEHIND_REGION 32c -set _KDE_NET_WM_BLUR_BEHIND_REGION 0 -id {}'.format(int(store_win.winId())))
+    store_win.show()
     sys.exit(app.exec_())
