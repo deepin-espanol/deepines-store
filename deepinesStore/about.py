@@ -5,7 +5,7 @@ from deepinesStore.maing import getResource, TitleBarButtonStylesheet
 from PyQt5.QtCore import Qt, QSize, pyqtSignal
 from PyQt5.QtWidgets import QDialog, QVBoxLayout, QHBoxLayout, QWidget, QGridLayout,\
     QSpacerItem, QApplication, QSizePolicy, QLabel, QFrame, QDesktopWidget, QRadioButton
-from PyQt5.QtGui import QFont, QPixmap, QCursor
+from PyQt5.QtGui import QFont, QIcon, QCursor
 from os import system
 
 Stylesheet = """
@@ -132,7 +132,7 @@ class Dialog(QDialog):
         self.label.setBaseSize(QSize(50, 50))
         self.label.setScaledContents(True)
         self.label.setText("")
-        self.label.setPixmap(QPixmap(svg_logo))
+        self.label.setPixmap(QIcon.fromTheme('deepines', QIcon(svg_logo)).pixmap(222))
         self.label.setObjectName("label")
         self.horizontalLayout.addWidget(self.label)
         self.verticalLayout.addWidget(self.frame)

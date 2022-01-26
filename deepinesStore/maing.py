@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# UI Source 'guis/main.ui'
+# UI Source 'gui/main.ui'
 
 from PyQt5 import QtGui, QtWidgets
 from PyQt5.QtCore import QCoreApplication, QMetaObject, QRect, QSize, Qt, pyqtSignal
@@ -25,7 +25,6 @@ def getResource(svg_name, dir='resources', ext='.svg'):
 # https://stackoverflow.com/a/67711660
 size = 19
 border = 0.2
-global TitleBarButtonStylesheet
 TitleBarButtonStylesheet = '''
             QRadioButton {{
                 background-color: transparent;

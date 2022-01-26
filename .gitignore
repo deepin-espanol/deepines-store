@@ -1,6 +1,6 @@
 __pycache__
 venv
-.pyc
+*.pyc
 db.sqlite3
 .idea
 .vscode
@@ -9,5 +9,9 @@ dist
 .tar.gz
 *.deb
 .asc
+output/
+deb/
 deb/temp
 deb/deepines-store_*
+deepinesStore/translations/
+svg_checksum

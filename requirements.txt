@@ -1,0 +1,4 @@
+beautifulsoup4==4.10.0
+PyQt5==5.15.6
+requests==2.21.0
+setuptools==40.8.0

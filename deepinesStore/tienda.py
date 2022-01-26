@@ -3,7 +3,7 @@
 import sys
 import os
 import re
-# Modulos de pyqt5
+# PyQt5 modules
 from PyQt5.Qt import Qt
 from PyQt5.QtCore import QTranslator, QLocale, QSize, QPointF, QPoint, QEvent, Qt as QtCore, pyqtSignal
 from PyQt5.QtWidgets import (QMainWindow, QApplication, QFrame, QLabel,
@@ -17,13 +17,13 @@ from requests import get
 from random import randint
 # Obtener ruta variable de las imgs
 from os.path import join, abspath, dirname
-# Guis o modulos locales
+# GUI o modulos locales
 from deepinesStore.maing import Ui_MainWindow, getResource
 from deepinesStore.cardg import Ui_Frame
 from deepinesStore.dialog_install import Ui_DialogInstall
 from deepinesStore.about import Dialog as DAbout
 
-# Variables globales
+# Global variables
 global lista_app, total_apps, lista_inicio, lista_global, lista_selected
 global selected_apps, instaladas, columnas, tamanio, repo, repo_file, contador_selected
 

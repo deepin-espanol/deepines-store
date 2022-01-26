@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# UI Source 'guis/card.ui'
+# UI Source 'gui/card.ui'
 
 from PyQt5 import QtGui, QtWidgets
 from PyQt5.QtCore import QCoreApplication, QMetaObject, QSize, Qt, pyqtSignal

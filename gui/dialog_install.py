@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# UI Source 'guis/dialog_install.ui'
+# UI Source 'gui/dialog_install.ui'
 
 from PyQt5 import QtCore, QtWidgets
 

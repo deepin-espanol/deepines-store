@@ -1,0 +1,66 @@
+:project-name: Deepines Store
+:project-handle: deepines-store
+:project-description: La tienda de aplicaciones de Deepin en Español
+:project-logo: ./deepinesStore/resources/deepines.svg
+:project-repository: deepin-espanol/{project-handle}
+:!showtitle:
+:icons: font
+:!toc-title:
+:url-repository: https://github.com/{project-repository}
+:url-licence: {url-repository}/blob/Develop/LICENSE
+:url-shields: https://img.shields.io/github
+:img-licence-badge: {url-shields}/license/{project-repository}.svg?label=Licencia
+
+= {project-name}
+
+ifdef::env-github[]
+[subs=attributes+]
+++++
+<div align="center">
+   <a href="{url-repository}"> <img src="{project-logo}" width="256" height="256"></a>
+   <h1>{project-name}</h1>
+   <h3>{project-description}</h3>
+   <br />
+</div>
+<p align="center">
+  <a href="{url-licence}">
+    <img src="{img-licence-badge}">
+  </a>
+</p>
+++++
+endif::[]
+
+ifndef::env-github[]
+image::{project-logo}[{project-name}, align=center, link="{url-repository}"]
+
+[.text-center]
+[.lead]
+*{project-name}*
+
+[.text-center]
+{project-description}
+
+[.text-center]
+image:{img-licence-badge}[Licencia, align=center, link="{url-licence}"]
+endif::[]
+
+== Instrucciones para el desarrollo
+
+=== Preparación del entorno
+[source,sh]
+ sudo apt install git python3-venv
+ python3 -m venv myvenv
+ . myvenv/bin/activate
+ pip install pip --upgrade
+ git clone https://github.com/deepin-espanol/deepines-store
+ cd deepines-store
+ git checkout Develop
+ pip install -r requirements.txt
+
+=== Probar
+[source,sh]
+ python3 deepines.py
+
+=== Generar un paquete deb
+[source,sh]
+ ./deepines-store-packager.sh -v VERSION

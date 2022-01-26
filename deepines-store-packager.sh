@@ -298,8 +298,8 @@ mkdir -p "$WORK_DIR/DEBIAN"
 cd "$WORK_DIR" || exit 1
 
 echo "Copying scripts..."
-mkdir -p usr/share/deepines/deepinesStore/
-cp -a "$SH_DIR/deepinesStore/." usr/share/deepines/deepinesStore/
+mkdir -p usr/share/deepines/deepinesStore
+rsync -aqr --exclude='translations' --exclude="*.pyc" --exclude='__pycache__' "$SH_DIR/deepinesStore" usr/share/deepines
 cp -a "$SH_DIR/deepines.py" usr/share/deepines/deepines
 
 echo "Updating user interface version..."
@@ -318,7 +318,7 @@ GenerateMainBinary >usr/bin/deepines
 
 echo "Generating translations..."
 mkdir -p usr/share/deepines/deepinesStore/translations
-for ts_file in "$SH_DIR"/translationsSource/*.ts; do
+for ts_file in "$SH_DIR"/translations/*.ts; do
     lconvert -i "$ts_file" -o "usr/share/deepines/deepinesStore/translations/$(basename "$ts_file" .ts).qm"
 done
 
@@ -344,9 +344,21 @@ echo "Generating .desktop..."
 mkdir -p usr/share/applications
 MakeDesktop >usr/share/applications/deepines.desktop
 
-# Copy the .svg icon (no linking for now).
-mkdir -p usr/share/icons/hicolor/48x48/apps
-cp usr/share/deepines/deepinesStore/resources/deepines.svg usr/share/icons/hicolor/48x48/apps/deepines.svg
+echo "Generating icons..."
+HICOLORPATH="usr/share/icons/hicolor"
+ICONSVG="$HICOLORPATH/scalable/apps/deepines.svg"
+mkdir -p $HICOLORPATH/scalable/apps
+cp "usr/share/deepines/deepinesStore/resources/deepines.svg" "$ICONSVG"
+ICONS="16:24:32:48:64:128"
+CDR="${ICONS}:"
+while [ -n "$CDR" ]; do
+    ICONSZ=${CDR%%:*}
+    mkdir -p $HICOLORPATH/${ICONSZ}x${ICONSZ}/apps
+    rsvg-convert -w "$ICONSZ" "$ICONSVG" -o $HICOLORPATH/${ICONSZ}x${ICONSZ}/apps/deepines.png ||
+        Error "Couldn't found the icon to convert!"
+    CDR=${CDR#*:}
+done
+unset ICONSZ CDR
 
 MakePolkitPolicy() {
     cat <<EOF
