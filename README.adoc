@@ -7,7 +7,7 @@
 :icons: font
 :!toc-title:
 :url-repository: https://github.com/{project-repository}
-:url-licence: {url-repository}/blob/Develop/LICENSE
+:url-licence: {url-repository}/blob/nightly/LICENSE
 :url-shields: https://img.shields.io/github
 :img-licence-badge: {url-shields}/license/{project-repository}.svg?label=Licencia
 
@@ -54,7 +54,7 @@ endif::[]
  pip install pip --upgrade
  git clone https://github.com/deepin-espanol/deepines-store
  cd deepines-store
- git checkout Develop
+ git checkout nightly
  pip install -r requirements.txt
 
 === Probar

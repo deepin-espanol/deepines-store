@@ -5,7 +5,7 @@ Fmt="printf"
 WORK_DIR=~/temp
 REPO_NAME=deepines-store
 REPO_URL="https://github.com/deepin-espanol/$REPO_NAME"
-BRANCH=Develop
+BRANCH=nightly
 
 FOLDER_EXISTS="La carpeta '%s' existe.\n"
 FOLDER_NO_EXISTS="La carpeta '%s' no existe.\n"
