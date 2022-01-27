@@ -15,8 +15,6 @@ from bs4 import BeautifulSoup
 from requests import get
 # Para obtener applicacion random
 from random import randint
-# Obtener ruta variable de las imgs
-from os.path import join, abspath, dirname
 # GUI o modulos locales
 from deepinesStore.maing import Ui_MainWindow, getResource
 from deepinesStore.cardg import Ui_Frame
@@ -26,6 +24,7 @@ from deepinesStore.about import Dialog as DAbout
 # Global variables
 global lista_app, total_apps, lista_inicio, lista_global, lista_selected
 global selected_apps, instaladas, columnas, tamanio, repo, repo_file, contador_selected
+
 
 class StoreMWindow(QMainWindow):
     def __init__(self):
@@ -248,12 +247,13 @@ class StoreMWindow(QMainWindow):
     #         Obtener URL del repositorio          #
     def Get_Repo_Url(self):
 
+        # TODO: Update for Deepines 5 when 23 gets released
         fallback_url = "http://repositorio.deepines.com/pub/deepines/4/paquetes.html"
 
         try:
             repo_text = open(repo_file).read()
             url = re.search(
-                "(?P<url>http?://[^\s]+)", repo_text).group("url") + "paquetes.html"
+                "(?P<url>https?://[^\s]+)", repo_text).group("url") + "paquetes.html"
             return url
         except:
             return fallback_url

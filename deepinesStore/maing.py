@@ -18,8 +18,8 @@ class QLabelClickable(QtWidgets.QLabel):
         self.clicked.emit()
 
 
-def getResource(svg_name, dir='resources', ext='.svg'):
-    return abspath(join(dirname(__file__), dir, svg_name + ext))
+def getResource(res_name, dir='resources', ext='.svg'):
+    return abspath(join(dirname(__file__), dir, res_name + ext))
 
 
 # https://stackoverflow.com/a/67711660

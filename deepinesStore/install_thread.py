@@ -27,6 +27,7 @@ class External(QObject):
     def run(self):
         validacion = True # Comprobar si es posible usar apt
         self.update.emit()
+        # TODO: Don't use Popen!!
         update = subprocess.Popen(["sudo", "apt", "update"], 
                  stdout=subprocess.PIPE, universal_newlines=True)
         try:
