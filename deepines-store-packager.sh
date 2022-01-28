@@ -299,7 +299,7 @@ cd "$WORK_DIR" || exit 1
 
 echo "Copying scripts..."
 mkdir -p usr/share/deepines/deepinesStore
-rsync -aqr --exclude='translations' --exclude="*.pyc" --exclude='__pycache__' "$SH_DIR/deepinesStore" usr/share/deepines
+rsync -aqr --exclude='translations' --exclude="remote_svg.txt" --exclude="*.pyc" --exclude='__pycache__' "$SH_DIR/deepinesStore" usr/share/deepines
 cp -a "$SH_DIR/deepines.py" usr/share/deepines/deepines
 
 echo "Updating user interface version..."
