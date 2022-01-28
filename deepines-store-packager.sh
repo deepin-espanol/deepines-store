@@ -346,9 +346,10 @@ MakeDesktop >usr/share/applications/deepines.desktop
 
 echo "Generating icons..."
 HICOLORPATH="usr/share/icons/hicolor"
+RESSVG="usr/share/deepines/deepinesStore/resources/deepines.svg"
 ICONSVG="$HICOLORPATH/scalable/apps/deepines.svg"
 mkdir -p $HICOLORPATH/scalable/apps
-cp "usr/share/deepines/deepinesStore/resources/deepines.svg" "$ICONSVG"
+mv "$RESSVG" "$ICONSVG"
 ICONS="16:24:32:48:64:128"
 CDR="${ICONS}:"
 while [ -n "$CDR" ]; do
@@ -359,6 +360,7 @@ while [ -n "$CDR" ]; do
     CDR=${CDR#*:}
 done
 unset ICONSZ CDR
+ln -sf "../../../icons/hicolor/scalable/apps/deepines.svg" "$RESSVG"
 
 MakePolkitPolicy() {
     cat <<EOF
