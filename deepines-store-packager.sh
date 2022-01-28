@@ -36,7 +36,7 @@ SetVariables() {
     PKG_DEV="Deepin en Español <soporte@deepines.com>"
     PKG_ARCH=all
     PKG_FULL_NAME=${PKG_NAME}_${PKG_VER}_${PKG_ARCH}
-    PKG_SRC="https://github.com/s384/store_deepines"
+    PKG_SRC="https://github.com/deepin-espanol/deepines-store"
     PKG_BUGS="$PKG_SRC/issues"
     SH_DIR="$(pwd -P)"
     TEMP_DIR="$(mktemp -d)"
