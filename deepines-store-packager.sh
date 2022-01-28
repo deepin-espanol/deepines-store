@@ -299,7 +299,9 @@ cd "$WORK_DIR" || exit 1
 
 echo "Copying scripts..."
 mkdir -p usr/share/deepines/deepinesStore
-rsync -aqr --exclude='translations' --exclude="remote_svg.txt" --exclude="*.pyc" --exclude='__pycache__' "$SH_DIR/deepinesStore" usr/share/deepines
+rsync -aqr --exclude='translations' --exclude="remote_svg.txt" \
+    --exclude="*.pyc" --exclude='__pycache__' --exclude='svg_checksum' \
+    "$SH_DIR/deepinesStore" usr/share/deepines
 cp -a "$SH_DIR/deepines.py" usr/share/deepines/deepines
 
 echo "Updating user interface version..."
@@ -455,6 +457,8 @@ find . -not \( -path ./DEBIAN -prune \) -type f -exec md5sum {} \; |
 INSIZE=$(du -s --exclude='DEBIAN/*' | grep -Eo "[0-9]*")
 Open "./DEBIAN/" # (-m) Manually update preinst, postinst, etc.
 
+P3=python3
+
 GenerateControl() {
     cat <<EOF
 Package: $PKG_NAME
@@ -466,7 +470,7 @@ Maintainer: $PKG_DEV
 Homepage: $PKG_SRC
 Priority: optional
 Pre-Depends: debconf (>= 0.5)
-Depends: python3, python3-pyqt5, python3-requests, python3-bs4, libqt5designer5, libqt5help5, python3-certifi, python3-html5lib, python3-idna, python3-lxml, python3-sip, python3-soupsieve, python3-urllib3, python3-webencodings
+Depends: $P3, $P3-pyqt5, $P3-requests, $P3-bs4, libqt5designer5, libqt5help5, $P3-certifi, $P3-html5lib, $P3-idna, $P3-lxml, $P3-sip, $P3-soupsieve, $P3-urllib3, $P3-webencodings
 Replaces: deepines-repository (<= 1:4.1), deepines-store:amd64 (<= 1.3.3)
 Description: Deepines repository, key and Store
  Deepines unofficial repository and Store by deepinenespañol.org
