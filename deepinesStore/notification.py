@@ -3,7 +3,7 @@ import subprocess
 from deepinesStore.maing import getResource
 
 
-def notification(description, icon=getResource('deepines', ext = '.png')):
+def notification(description, icon=getResource('deepines')):
     title = 'Deepines'
     description = description
     urgency = 'normal'

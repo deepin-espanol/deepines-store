@@ -356,7 +356,7 @@ while [ -n "$CDR" ]; do
     ICONSZ=${CDR%%:*}
     mkdir -p $HICOLORPATH/${ICONSZ}x${ICONSZ}/apps
     rsvg-convert -w "$ICONSZ" "$ICONSVG" -o $HICOLORPATH/${ICONSZ}x${ICONSZ}/apps/deepines.png ||
-        Error "Couldn't found the icon to convert!"
+        echo >&2 "Couldn't found the icon to convert!"
     CDR=${CDR#*:}
 done
 unset ICONSZ CDR
