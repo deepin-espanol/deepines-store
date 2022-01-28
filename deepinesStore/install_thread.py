@@ -1,7 +1,6 @@
 import subprocess
 # Importamos las librerias necesarias
-from PyQt5.QtCore import QThread, QObject, pyqtSignal, pyqtSlot
-import time
+from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot
 
 
 # Creamos la clase y heredamos de QThread
