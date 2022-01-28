@@ -16,4 +16,4 @@ jobs:
         with:
           submodules: recursive
       - name: Check scripts
-        run: 'find . -type f \( -name "*.sh" \) -print | while IFS="" read -r script; do shellcheck "$script"; done'
+        run: 'shellcheck ./*.sh ./server/*.sh'
