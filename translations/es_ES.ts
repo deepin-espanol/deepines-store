@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS><TS version="2.0" language="es" sourcelanguage="">
+<!DOCTYPE TS>
+<TS version="2.0" language="es" sourcelanguage="">
 <context>
     <name>Ui_DialogInstall</name>
     <message>
@@ -156,7 +157,7 @@ o en nuestro grupo de Telegram t.me/deepinenespanol.</translation>
     <message>
         <location filename="../deepinesStore/cardg.py" line="68"/>
         <source>Card</source>
-        <translation type="unfinished"></translation>
+        <translation>Tarjeta</translation>
     </message>
 </context>
 <context>
@@ -241,7 +242,7 @@ Versión: {version}</translation>
     <message>
         <location filename="../deepinesStore/maing.py" line="468"/>
         <source>TextLabel</source>
-        <translation type="unfinished"></translation>
+        <translation>TextLabel</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="506"/>
