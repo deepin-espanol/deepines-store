@@ -826,7 +826,7 @@ class Card(QFrame):
 def run_gui():
 	app = QApplication(sys.argv)
 	translator = QTranslator()
-	translator.load(get_res(QLocale.system().name(), 'translations', '.qm'))
+	translator.load(QLocale(), "", "", get_res('', 'translations', ''), ".qm")
 	app.installTranslator(translator)
 	global width, height, maximized
 	maximized = False
