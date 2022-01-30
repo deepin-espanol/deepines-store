@@ -9,8 +9,10 @@
 :!toc-title:
 :url-repository: https://github.com/{project-repository}
 :url-licence: {url-repository}/blob/nightly/LICENSE
-:url-shields: https://img.shields.io/github
-:img-licence-badge: {url-shields}/license/{project-repository}.svg?label=Licencia
+:url-weblate: https://hosted.weblate.org/engage/{project-handle}/
+:url-shields: https://img.shields.io
+:img-licence-badge: {url-shields}/github/license/{project-repository}.svg?label=Licencia
+:img-weblate-badge: {url-shields}/weblate/progress/{project-handle}?label=Traducido
 
 = {project-name}
 
@@ -25,16 +27,11 @@ ifdef::env-github[]
 </div>
 <p align="center">
   <a href="{url-licence}">
-    <img src="{img-licence-badge}">
+    <img src="{img-licence-badge}" alt="Licencia del proyecto" >
   </a>
-  <a href="https://hosted.weblate.org/engage/store-deepines/">
-    <img src="https://hosted.weblate.org/widgets/store-deepines/-/store-deepines/svg-badge.svg" alt="Estado de la traducción" />
+  <a href="{url-weblate}">
+    <img src="{img-weblate-badge}" alt="Estado de la traducción" />
   </a>
-</p>
-<p>
-   <a href="https://hosted.weblate.org/engage/store-deepines/">
-    <img src="https://hosted.weblate.org/widgets/store-deepines/-/store-deepines/multi-auto.svg" alt="Estado de la traducción" />
-   </a>
 </p>
 ++++
 endif::[]
@@ -51,6 +48,7 @@ image::{project-logo}[{project-name}, align=center, link="{url-repository}"]
 
 [.text-center]
 image:{img-licence-badge}[Licencia, align=center, link="{url-licence}"]
+image:{img-weblate-badge}[Traducción, align=center, link="{url-weblate}"]
 endif::[]
 
 == Instrucciones para el desarrollo
