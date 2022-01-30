@@ -1,3 +1,4 @@
+
 :project-name: Deepines Store
 :project-handle: deepines-store
 :project-description: La tienda de aplicaciones de Deepin en Español
@@ -26,6 +27,14 @@ ifdef::env-github[]
   <a href="{url-licence}">
     <img src="{img-licence-badge}">
   </a>
+  <a href="https://hosted.weblate.org/engage/store-deepines/">
+    <img src="https://hosted.weblate.org/widgets/store-deepines/-/store-deepines/svg-badge.svg" alt="Estado de la traducción" />
+  </a>
+</p>
+<p>
+   <a href="https://hosted.weblate.org/engage/store-deepines/">
+    <img src="https://hosted.weblate.org/widgets/store-deepines/-/store-deepines/multi-auto.svg" alt="Estado de la traducción" />
+   </a>
 </p>
 ++++
 endif::[]
