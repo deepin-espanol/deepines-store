@@ -1,7 +1,7 @@
 
-:proj-name: Deepines Store
+:proj-name: Tienda Deepines
 :proj-handle: deepines-store
-:proj-desc: Deepin en Español App Store
+:proj-desc: La tienda de aplicaciones de Deepin en Español
 :proj-logo: ./deepinesStore/resources/deepines.svg
 :proj-repo: deepin-espanol/{proj-handle}
 :!showtitle:
@@ -10,12 +10,12 @@
 :uri-repo: https://github.com/{proj-repo}
 :uri-licence: {uri-repo}/blob/nightly/LICENSE
 :uri-hostedw: https://hosted.weblate.org
-:uri-weblate: {uri-hostedw}/engage/{proj-handle}/
+:uri-weblate: {uri-hostedw}/engage/{proj-handle}/es/
 :uri-shields: https://img.shields.io
-:img-licence-badge: {uri-shields}/github/license/{proj-repo}.svg?label=Licence
-:img-weblate-badge: {uri-shields}/weblate/progress/{proj-handle}?label=Translated
-:img-weblate-widget: {uri-hostedw}/widgets/deepines-store/-/287x66-grey.png
-:tr-status: Translation status
+:img-licence-badge: {uri-shields}/github/license/{proj-repo}.svg?label=Licencia
+:img-weblate-badge: {uri-shields}/weblate/progress/{proj-handle}?label=Traducido
+:img-weblate-widget: {uri-hostedw}/widgets/deepines-store/es/multi-auto.svg
+:tr-status: Estado de la traducción
 
 = {proj-name}
 
@@ -54,9 +54,9 @@ image:{img-licence-badge}[align=center, link="{uri-licence}"]
 image:{img-weblate-badge}[{tr-status}, align=center, link="{uri-weblate}"]
 endif::[]
 
-== Development Guide
+== Instrucciones para el desarrollo
 
-=== Preparing the environment
+=== Preparación del entorno
 [source,sh]
  sudo apt install git python3-venv
  python3 -m venv myvenv
@@ -67,16 +67,16 @@ endif::[]
  git checkout nightly
  pip install -r requirements.txt
 
-=== Try out
+=== Probar
 [source,sh]
  python3 deepines.py
 
-=== Build a deb package
+=== Generar un paquete deb
 [source,sh]
  ./deepines-store-packager.sh -v VERSION
 
-== Translation
+== Traducción
 
-Translations are managed by Weblate, contributions are welcome.
+Las traducciones son gestionadas por Weblate, las contribuciones son bienvenidas.
 
 image:{img-weblate-widget}[{tr-status}, link="{uri-weblate}"]
