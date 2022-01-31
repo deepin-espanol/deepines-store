@@ -318,33 +318,16 @@ echo "Generating main binary..."
 mkdir -p usr/bin
 GenerateMainBinary >usr/bin/deepines
 
-echo "Generating translations..."
+echo "Generating app translations..."
 mkdir -p usr/share/deepines/deepinesStore/translations
 for ts_file in "$SH_DIR"/translations/*.ts; do
     lconvert -i "$ts_file" -o "usr/share/deepines/deepinesStore/translations/$(basename "$ts_file" .ts).qm"
 done
 
-MakeDesktop() {
-    cat <<EOF
-[Desktop Entry]
-Name=Deepines Store
-Name[es]=Tienda Deepines
-Version=1.1
-Exec=deepines
-Comment=Application store for the deepines repository
-Comment[es]=Tienda de aplicaciones para el repositorio de deepines
-Icon=deepines
-Type=Application
-Terminal=false
-StartupNotify=true
-Encoding=UTF-8
-Categories=System;
-EOF
-}
-
-echo "Generating .desktop..."
+echo "Generating .desktop:"
 mkdir -p usr/share/applications
-MakeDesktop >usr/share/applications/deepines.desktop
+deepin-desktop-ts-convert ts2desktop "$SH_DIR/data/desktop/deepines.desktop" \
+    "$SH_DIR/data/desktop/translations" usr/share/applications/deepines.desktop
 
 echo "Generating icons..."
 HICOLORPATH="usr/share/icons/hicolor"
@@ -364,38 +347,10 @@ done
 unset ICONSZ CDR
 ln -sf "../../../icons/hicolor/scalable/apps/deepines.svg" "$RESSVG"
 
-MakePolkitPolicy() {
-    cat <<EOF
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE policyconfig PUBLIC
- "-//freedesktop//DTD PolicyKit Policy Configuration 1.0//EN"
- "http://www.freedesktop.org/standards/PolicyKit/1/policyconfig.dtd">
-
-<policyconfig>
-    <vendor>DeepinenEspañol</vendor>
-    <vendor_url>https://deepinenespañol.org/</vendor_url>
-    <icon_name>deepines</icon_name>
-    <action id="deepines">
-        <description>Allows the installation of applications stored in the deepines repository</description>
-        <description xml:lang="es">Permite la instalación de aplicaciones almacenadas en el repositorio de deepines</description>
-        <message>Deepines Store requires authentication</message>
-        <message xml:lang="es">Tienda Deepines requiere autenticación</message>
-        <defaults>
-          <allow_any>auth_admin</allow_any>
-          <allow_inactive>auth_admin</allow_inactive>
-          <allow_active>auth_admin</allow_active>
-        </defaults>
-        <annotate key="org.freedesktop.policykit.exec.path">/usr/share/deepines/deepines</annotate>
-        <annotate key="org.freedesktop.policykit.exec.allow_gui">true</annotate>
-  </action>
-
-</policyconfig>
-EOF
-}
-
-echo "Generating Polkit action..."
+echo "Generating Polkit action:"
 mkdir -p usr/share/polkit-1/actions
-MakePolkitPolicy >usr/share/polkit-1/actions/org.freedesktop.deepines.policy
+deepin-policy-ts-convert ts2policy "$SH_DIR/data/pkexec/org.freedesktop.deepines.policy" \
+    "$SH_DIR/data/pkexec/translations" usr/share/polkit-1/actions/org.freedesktop.deepines.policy
 
 echo "Generating 'preinst' script..."
 printf "%s" "$PREINSTSCRIPT" >DEBIAN/preinst
@@ -473,7 +428,7 @@ Pre-Depends: debconf (>= 0.5)
 Depends: $P3, $P3-pyqt5, $P3-requests, $P3-bs4, libqt5designer5, libqt5help5, $P3-certifi, $P3-html5lib, $P3-idna, $P3-lxml, $P3-sip, $P3-soupsieve, $P3-urllib3, $P3-webencodings
 Replaces: deepines-repository (<= 1:4.1), deepines-store:amd64 (<= 1.3.3)
 Description: Deepines repository, key and Store
- Deepines unofficial repository and Store by deepinenespañol.org
+ Deepines unofficial repository and Store by deepinenespanol.org
 EOF
 }
 

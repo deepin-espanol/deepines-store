@@ -1,0 +1,13 @@
+[Desktop Entry]
+Categories=Qt;System;PackageManager;
+Comment=Download and install applications from Deepines repository
+Encoding=UTF-8
+Exec=deepines
+GenericName=App Store
+Icon=deepines
+Keywords=store;app;apps;applications;install;program;software;
+Name=Deepines Store
+StartupNotify=true
+Terminal=false
+Type=Application
+Version=1.1
