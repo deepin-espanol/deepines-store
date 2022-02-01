@@ -4,8 +4,8 @@
 
 from PyQt5 import QtWidgets
 from PyQt5.QtCore import QThread, QCoreApplication
-from PyQt5.QtGui import QPixmap, QIcon, QTextCursor
-from deepinesStore.maing import get_res
+from PyQt5.QtGui import QTextCursor
+from deepinesStore.maing import app_icon
 from deepinesStore.install_thread import External
 from deepinesStore.notification import notification
 
@@ -13,14 +13,11 @@ from deepinesStore.notification import notification
 class Ui_DialogInstall(QtWidgets.QWidget):
 	def __init__(self, main, lista):
 		super(Ui_DialogInstall, self).__init__()
-		svg_logo = get_res('deepines')
 		self.main = main
 		self.lista = lista
 		self.resize(600, 300)
-		icon = QIcon()
-		icon.addPixmap(QPixmap(svg_logo), QIcon.Normal, QIcon.Off)
 		self.retranslateUi(self)
-		self.setWindowIcon(icon)
+		self.setWindowIcon(app_icon)
 		#self.setWindowFlags(self.windowFlags() | Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint)
 
 		self.gridLayout = QtWidgets.QGridLayout(self)
@@ -133,7 +130,7 @@ class Ui_DialogInstall(QtWidgets.QWidget):
 		self.move(frameGm.topLeft())
 
 	def __tr(self, txt, disambiguation=None, n=-1):
-	  return QCoreApplication.translate(self.__class__.__name__, txt, disambiguation, n)
+		return QCoreApplication.translate(self.__class__.__name__, txt, disambiguation, n)
 
 	def retranslateUi(self, DialogInstall):
 		DialogInstall.setWindowTitle(self.__tr("Installation process - Deepines Store"))

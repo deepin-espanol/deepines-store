@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
-from deepinesStore.maing import get_res, TitleBarButtonStylesheet
+from deepinesStore.maing import get_res, app_icon, TitleBarButtonStylesheet
 from PyQt5.QtCore import Qt, QSize, pyqtSignal
 from PyQt5.QtWidgets import QDialog, QVBoxLayout, QHBoxLayout, QWidget, QGridLayout,\
 	QSpacerItem, QApplication, QSizePolicy, QLabel, QFrame, QDesktopWidget, QRadioButton
@@ -74,8 +74,6 @@ class Dialog(QDialog):
 		system('xprop -f _KDE_NET_WM_BLUR_BEHIND_REGION 32c -set _KDE_NET_WM_BLUR_BEHIND_REGION 0 -id {}'.format(int(self.winId())))
 
 	def initUi(self):
-		svg_logo = get_res('deepines')
-
 		self.gridLayout = QGridLayout(self)
 		self.gridLayout.setContentsMargins(0, 0, 0, 0)
 		self.gridLayout.setSpacing(0)
@@ -128,7 +126,7 @@ class Dialog(QDialog):
 		self.label.setBaseSize(QSize(50, 50))
 		self.label.setScaledContents(True)
 		self.label.setText("")
-		self.label.setPixmap(QIcon.fromTheme('deepines', QIcon(svg_logo)).pixmap(222))
+		self.label.setPixmap(app_icon.pixmap(222))
 		self.label.setObjectName("label")
 		self.horizontalLayout.addWidget(self.label)
 		self.verticalLayout.addWidget(self.frame)

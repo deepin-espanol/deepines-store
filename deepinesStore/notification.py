@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 import subprocess
-from deepinesStore.maing import get_res
 
 
-def notification(description, icon=get_res('deepines')):
+def notification(description, icon='deepines'):
 	title = 'Deepines'
 	description = description
 	urgency = 'normal'

@@ -7,6 +7,14 @@ from PyQt5.QtCore import QCoreApplication, QMetaObject, QRect, QSize, Qt, pyqtSi
 from os.path import join, abspath, dirname
 
 
+def get_res(res_name, dir='resources', ext='.svg'):
+	return abspath(join(dirname(__file__), dir, res_name + ext))
+
+svg_logo = get_res('deepines')
+
+# Themed app store icon
+app_icon = QtGui.QIcon.fromTheme('deepines', QtGui.QIcon(svg_logo))
+
 class QLabelClickable(QtWidgets.QLabel):
 
 	clicked = pyqtSignal()
@@ -16,10 +24,6 @@ class QLabelClickable(QtWidgets.QLabel):
 
 	def mouseReleaseEvent(self, ev):
 		self.clicked.emit()
-
-
-def get_res(res_name, dir='resources', ext='.svg'):
-	return abspath(join(dirname(__file__), dir, res_name + ext))
 
 
 # https://stackoverflow.com/a/67711660
@@ -86,7 +90,6 @@ class Ui_MainWindow(object):
 		#print("El frame ({}*0.14) es: {}".format(width, self.size_frame))
 
 	def setupUi(self, MainWindow):
-		svg_logo = get_res('deepines')
 		svg_fondo = get_res('icono')
 		svg_star = get_res('star')
 		svg_deepines = get_res('deepines_filter')
@@ -104,10 +107,7 @@ class Ui_MainWindow(object):
 		MainWindow.setObjectName("MainWindow")
 		MainWindow.setMinimumSize(QSize(self.width_screen, self.height_screen))
 		MainWindow.resize(self.width_screen, self.height_screen)
-		icon = QtGui.QIcon()
-		icon.addPixmap(QtGui.QPixmap(svg_logo),
-					   QtGui.QIcon.Normal, QtGui.QIcon.Off)
-		MainWindow.setWindowIcon(icon)
+		MainWindow.setWindowIcon(app_icon)
 		MainWindow.setStyleSheet(
 			"QScrollBar:vertical {\n"
 			"	background: transparent;\n"
