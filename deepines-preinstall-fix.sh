@@ -39,7 +39,7 @@ SRC_LIST_IMPROPER2="These repositories are incorrectly configured
 in /etc/apt/sources.list instead of being separate
 files under /etc/apt/sources.list.d/"
 CHOOSE_OPTION="Choose one of the following options:"
-WANT_RESTORE_OPTIONS="  A) Restore the original repository configuration.
+WANT_RESTORE_OPTIONS="  R) Restore the original repository configuration.
 
   X) Do not repair and exit."
 NO_RESTORE="The Deepines Store may not be able to be installed
