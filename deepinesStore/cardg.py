@@ -62,7 +62,7 @@ class Ui_Frame(object):
 		QMetaObject.connectSlotsByName(Frame)
 
 	def __tr(self, txt, disambiguation=None, n=-1):
-	  return QCoreApplication.translate(self.__class__.__name__, txt, disambiguation, n)
+		return QCoreApplication.translate(self.__class__.__name__, txt, disambiguation, n)
 
 	def retranslateUi(self, Frame):
 		Frame.setWindowTitle(self.__tr("Card"))

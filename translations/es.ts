@@ -3,7 +3,7 @@
 <context>
     <name>Ui_DialogInstall</name>
     <message>
-        <location filename="../deepinesStore/dialog_install.py" line="147"/>
+        <location filename="../deepinesStore/dialog_install.py" line="144"/>
         <source>
 Installing {item}
 </source>
@@ -12,17 +12,17 @@ Instalando {item}
 </translation>
     </message>
     <message>
-        <location filename="../deepinesStore/dialog_install.py" line="144"/>
+        <location filename="../deepinesStore/dialog_install.py" line="141"/>
         <source>Close</source>
         <translation>Cerrar</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/dialog_install.py" line="143"/>
+        <location filename="../deepinesStore/dialog_install.py" line="140"/>
         <source>Retry</source>
         <translation>Reintentar</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/dialog_install.py" line="158"/>
+        <location filename="../deepinesStore/dialog_install.py" line="155"/>
         <source>
 
 The installation system is locked by 
@@ -37,12 +37,12 @@ espere a que termine y haga clic en Reintentar.
 Si usa Synaptic, asegúrese de que está cerrado.</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/dialog_install.py" line="142"/>
+        <location filename="../deepinesStore/dialog_install.py" line="139"/>
         <source>Install</source>
         <translation>Instalar</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/dialog_install.py" line="146"/>
+        <location filename="../deepinesStore/dialog_install.py" line="143"/>
         <source>
 All processes have been completed.
 </source>
@@ -51,7 +51,7 @@ Todos los procesos se han completado.
 </translation>
     </message>
     <message>
-        <location filename="../deepinesStore/dialog_install.py" line="145"/>
+        <location filename="../deepinesStore/dialog_install.py" line="142"/>
         <source>
 
 Warning: do not close the window, interrupting the installation may damage your system.
@@ -62,12 +62,12 @@ Aviso: no cierre la ventana, interrumpir la instalación puede dañar su sistema
 </translation>
     </message>
     <message>
-        <location filename="../deepinesStore/dialog_install.py" line="139"/>
+        <location filename="../deepinesStore/dialog_install.py" line="136"/>
         <source>Installation process - Deepines Store</source>
         <translation>Proceso de instalación - Tienda Deepines</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/dialog_install.py" line="162"/>
+        <location filename="../deepinesStore/dialog_install.py" line="159"/>
         <source>
 The database is being updated.
 
@@ -78,7 +78,7 @@ La base de datos se está actualizando.
 </translation>
     </message>
     <message>
-        <location filename="../deepinesStore/dialog_install.py" line="148"/>
+        <location filename="../deepinesStore/dialog_install.py" line="145"/>
         <source>
 The installation of {item} is finished.
 </source>
@@ -87,7 +87,7 @@ La instalación de {item} ha terminado.
 </translation>
     </message>
     <message>
-        <location filename="../deepinesStore/dialog_install.py" line="151"/>
+        <location filename="../deepinesStore/dialog_install.py" line="148"/>
         <source>
 
 The network connection has failed and the installation has not been completed.
@@ -102,21 +102,21 @@ Si el problema persiste, envíe un informe a t.me/deepinenespanol.
 </translation>
     </message>
     <message>
-        <location filename="../deepinesStore/dialog_install.py" line="140"/>
+        <location filename="../deepinesStore/dialog_install.py" line="137"/>
         <source>{app_count} app has been selected for installation:
 </source>
         <translation>Se ha seleccionado {app_count} aplicación para su instalación:
 </translation>
     </message>
     <message>
-        <location filename="../deepinesStore/dialog_install.py" line="141"/>
+        <location filename="../deepinesStore/dialog_install.py" line="138"/>
         <source>{app_count} apps have been selected for installation:
 </source>
         <translation>Se han seleccionado {app_count} aplicaciones para su instalación:
 </translation>
     </message>
     <message>
-        <location filename="../deepinesStore/dialog_install.py" line="149"/>
+        <location filename="../deepinesStore/dialog_install.py" line="146"/>
         <source>
 
 An error has occurred, please try again.
@@ -129,7 +129,7 @@ Si el problema persiste, póngase en contacto con el administrador.
 </translation>
     </message>
     <message>
-        <location filename="../deepinesStore/dialog_install.py" line="154"/>
+        <location filename="../deepinesStore/dialog_install.py" line="151"/>
         <source>
 
 One or more apps could not be installed because
