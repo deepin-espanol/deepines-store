@@ -5,7 +5,6 @@
 from PyQt5 import QtWidgets
 from PyQt5.QtCore import QThread, QCoreApplication
 from PyQt5.QtGui import QTextCursor
-from deepinesStore.maing import app_icon
 from deepinesStore.install_thread import External
 from deepinesStore.notification import notification
 
@@ -17,7 +16,6 @@ class Ui_DialogInstall(QtWidgets.QWidget):
 		self.lista = lista
 		self.resize(600, 300)
 		self.retranslateUi(self)
-		self.setWindowIcon(app_icon)
 		#self.setWindowFlags(self.windowFlags() | Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint)
 
 		self.gridLayout = QtWidgets.QGridLayout(self)
@@ -100,18 +98,18 @@ class Ui_DialogInstall(QtWidgets.QWidget):
 			self.finish_install_text.format(item=elemento))
 		self.plainTextEdit.moveCursor(QTextCursor.End)
 
-	def error(self, codigo_error):
-		if codigo_error == 1:  # Excepcion no controlada
-			mensaje = (self.error_unhandled_text)
-		if codigo_error == 2:  # Error de red
-			mensaje = (self.error_network_text)
-		if codigo_error == 3:  # Error dependencias incumplidas
-			mensaje = (self.error_dependencies_text)
-		if codigo_error == 4:  # Error de apt
-			mensaje = (self.error_apt_text)
+	def error(self, error_code):
+		if error_code == 1:  # Excepcion no controlada
+			msg = (self.error_unhandled_text)
+		if error_code == 2:  # Error de red
+			msg = (self.error_network_text)
+		if error_code == 3:  # Error dependencias incumplidas
+			msg = (self.error_dependencies_text)
+		if error_code == 4:  # Error de apt
+			msg = (self.error_apt_text)
 
 		self.boton_install.setText(self.retry_text)
-		self.plainTextEdit.insertPlainText(mensaje)
+		self.plainTextEdit.insertPlainText(msg)
 		self.boton_install.setEnabled(True)
 		self.boton.setEnabled(True)
 		self.activateWindow()

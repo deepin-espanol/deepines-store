@@ -16,10 +16,18 @@ from requests import get
 # Para obtener applicacion random
 from random import randint
 # GUI o modulos locales
-from deepinesStore.maing import Ui_MainWindow, get_res
+from deepinesStore.maing import Ui_MainWindow, get_res, app_icon
 from deepinesStore.cardg import Ui_Frame
 from deepinesStore.dialog_install import Ui_DialogInstall
 from deepinesStore.about import Dialog as DAbout
+
+if os.name == 'nt':
+	try:
+		from ctypes import windll
+		windll.shell32.SetCurrentProcessExplicitAppUserModelID('Deepines Store')
+	except AttributeError:
+        # Not available?
+		pass
 
 # Global variables
 global lista_app, total_apps, lista_inicio, lista_global, lista_selected
@@ -825,6 +833,7 @@ class Card(QFrame):
 
 def run_gui():
 	app = QApplication(sys.argv)
+	app.setWindowIcon(app_icon)
 	translator = QTranslator()
 	translator.load(QLocale(), "", "", get_res('', 'translations', ''), ".qm")
 	app.installTranslator(translator)

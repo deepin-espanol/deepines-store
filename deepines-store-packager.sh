@@ -307,16 +307,9 @@ cp -a "$SH_DIR/deepines.py" usr/share/deepines/deepines
 echo "Updating user interface version..."
 sed -i "s/[[]VERSION[]]/$PKG_VER/" usr/share/deepines/deepinesStore/maing.py
 
-GenerateMainBinary() {
-    cat <<EOF
-#!/bin/sh
-pkexec /usr/share/deepines/deepines
-EOF
-}
-
-echo "Generating main binary..."
+echo "Copying main binary..."
 mkdir -p usr/bin
-GenerateMainBinary >usr/bin/deepines
+cp -a "$SH_DIR/loader.py" usr/bin/deepines
 
 echo "Generating app translations..."
 mkdir -p usr/share/deepines/deepinesStore/translations

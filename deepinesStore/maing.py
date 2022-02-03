@@ -107,7 +107,6 @@ class Ui_MainWindow(object):
 		MainWindow.setObjectName("MainWindow")
 		MainWindow.setMinimumSize(QSize(self.width_screen, self.height_screen))
 		MainWindow.resize(self.width_screen, self.height_screen)
-		MainWindow.setWindowIcon(app_icon)
 		MainWindow.setStyleSheet(
 			"QScrollBar:vertical {\n"
 			"	background: transparent;\n"
