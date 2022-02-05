@@ -357,9 +357,7 @@ echo "Generating 'postrm' script..."
 printf "%s" "$POSTRMSCRIPT" >DEBIAN/postrm
 chmod 755 DEBIAN/postrm
 
-SY="2020"
-CY=$(date +%Y)
-YEAR=$(if [ "$SY" = "$CY" ]; then echo "$CY"; else echo "$SY-$CY"; fi)
+YEAR="2022"
 
 MakeCopyright() {
     cat <<EOF
