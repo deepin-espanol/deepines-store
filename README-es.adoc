@@ -10,7 +10,7 @@
 :uri-repo: https://github.com/{proj-repo}
 :uri-licence: {uri-repo}/blob/nightly/LICENSE
 :uri-hostedw: https://hosted.weblate.org
-:uri-weblate: {uri-hostedw}/engage/{proj-handle}/es/
+:uri-weblate: {uri-hostedw}/engage/{proj-handle}/
 :uri-shields: https://img.shields.io
 :img-licence-badge: {uri-shields}/github/license/{proj-repo}.svg?label=Licencia
 :img-weblate-badge: {uri-shields}/weblate/progress/{proj-handle}?label=Traducido
