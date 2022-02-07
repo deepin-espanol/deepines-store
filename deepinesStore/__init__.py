@@ -9,9 +9,9 @@ DEEPINES = 'https://raw.githubusercontent.com/deepin-espanol/deepines-store/nigh
 
 def download_control():
 	excluidos = get(EXCLUIDOS)
-	open(get_res('excluidos', 'config', '.txt'), 'w').write(excluidos.text)
+	open(get_res('excluidos', 'config', '.txt'), 'w', newline='\n').write(excluidos.text)
 	deepines = get(DEEPINES)
-	open(get_res('deepines', 'config', '.txt'), 'w').write(deepines.text)
+	open(get_res('deepines', 'config', '.txt'), 'w', newline='\n').write(deepines.text)
 
 
 def main():
