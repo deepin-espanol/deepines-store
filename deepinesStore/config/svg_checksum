@@ -6,7 +6,7 @@ e8f5487395302e065cc7e6c5fc3da396  4kvideotomp3.svg
 0ab06c27a1b2d6a2345eb38b7ffbb34a  albert.svg
 cf53f302478be07135f76b4fdb23104a  alexandra.svg
 e13d24b8b5b0d3cfa1c8cce092c2a492  alltomp3.svg
-cf07a87f3683af996ad3a58c7c56b3a2  ambi-tuner.svg
+0dcbce7f2f22fe4b7a14df70f191ee0d  ambi-tuner.svg
 aba53cbb5375024816faf4fc395f16b3  anbox-appmgr.svg
 e566e8c0b366fea8256b9b05ecb9b9fa  android-studio.svg
 0666e79874665c1b701d09287e422ec7  antimicro.svg
@@ -44,7 +44,7 @@ b819acfbfb68195ad2d383f05aed4129  corectrl.svg
 5be6e139847cabbc81877aeaf200bf7b  deb-tools.svg
 be4ff8369ec5d8cafee5c8d6580c032f  debreate.svg
 13e33aea7dd5ab62d8b84734f044388e  deemix.svg
-5b739277c8ef7583af0905a74cedcdb2  deepin-minesweeper.svg
+49a96d89e69709421ef4b780eae71b93  deepin-minesweeper.svg
 62a35d5e7d3eb36ffeae048e004aab93  deepines-megasync-fix.svg
 3ca75e84139cf5eae09680c14b2dde11  deepines-security-patch.svg
 26b2fa94cd64367e36693b72489690a8  deepines-win-usb-installer.svg
@@ -53,7 +53,9 @@ ddc4d5468ce5347d3ad8c70da7b00164  deezer-unofficial-player.svg
 2fc02b27748fe01795aacd05dcccc382  dexter-icon-theme.svg
 827ee9c7a6d204b4cccff7b6761a05e9  discord.svg
 fb40d3d198322a4d0ac59518ad755c7c  dixmax.svg
+81f1160826515fc738a130a258e57b78  docker-ce-rootless-extras.svg
 650b575b3e6211cc85d989a7e389cc52  docker-ce.svg
+edfd8023da754c0b28486f85d0a1b580  docker-scan-plugin.svg
 e74f2897a8836a5a2b5ca8368febe981  doublecmd.svg
 78f9d925c41f49d5c2be2b6f257d0de1  draw.io.svg
 f1d750b87b9d46cd387b80dc9208f231  drawing.svg
@@ -167,6 +169,7 @@ a1e50566c635763a9f3c76d43e2ada63  rhythmbox-plugin-tray-icon.svg
 7fe7d3e5858bfac2e33d57f699402af1  signal-desktop.svg
 0d64af9fc75cbfc7e720ec5c7da0a691  skypeforlinux.svg
 9129bbf72c6bcf74c5444774fd099e96  softmaker-freeoffice-2018.svg
+9129bbf72c6bcf74c5444774fd099e96  softmaker-freeoffice-2021.svg
 0de4b17b8ca93b51be4fc86c359b68fc  songrec.svg
 38e69fd0b6524d083f161423d430709b  soulseek.svg
 b5db65d3091deb6147698d0953c5b668  spark-uengine-runner.svg
