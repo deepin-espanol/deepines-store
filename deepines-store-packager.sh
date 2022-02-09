@@ -395,6 +395,24 @@ Open "$SH_DIR/changelog" # (-m) Manually update the changelog file.
 # TODO: Use dch (devscripts package) if available.
 gzip -9n <"$SH_DIR/changelog" >usr/share/doc/$PKG_NAME/changelog.gz
 
+BIN_UPPER=$(echo "deepines" | tr '[:lower:]' '[:upper:]')
+
+MakeManPage() {
+	cat <<EOF | gzip -9n
+.TH $BIN_UPPER 1 "February 2022"
+
+.SH NAME
+deepines \- Install applications from the Deepines repository
+
+.SH HOMEPAGE
+.I $PKG_SRC
+EOF
+}
+
+echo "Generating manual page..."
+mkdir -p usr/share/man/man1 &&
+MakeManPage >usr/share/man/man1/deepines.1.gz
+
 # Generate md5sums.
 find . -not \( -path ./DEBIAN -prune \) -type f -exec md5sum {} \; |
     sed "s|\./||" >DEBIAN/md5sums
