@@ -1,0 +1,19 @@
+name: CI
+on:
+  push:
+    branches: nightly
+    paths: '**.sh'
+  pull_request:
+    paths: '**.sh'
+jobs:
+  ShellCheck:
+    runs-on: ubuntu-latest
+    container: koalaman/shellcheck-alpine
+    steps:
+      - name: Checkout Store repo
+        id: checkout_repo
+        uses: actions/checkout@v1
+        with:
+          submodules: recursive
+      - name: Check scripts
+        run: 'shellcheck ./*.sh ./server/*.sh'

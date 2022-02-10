@@ -1,0 +1,82 @@
+
+:proj-name: Tienda Deepines
+:proj-handle: deepines-store
+:proj-desc: La tienda de aplicaciones de Deepin en Español
+:proj-logo: ./deepinesStore/resources/deepines.svg
+:proj-repo: deepin-espanol/{proj-handle}
+:!showtitle:
+:icons: font
+:!toc-title:
+:uri-repo: https://github.com/{proj-repo}
+:uri-licence: {uri-repo}/blob/nightly/LICENSE
+:uri-hostedw: https://hosted.weblate.org
+:uri-weblate: {uri-hostedw}/engage/{proj-handle}/
+:uri-shields: https://img.shields.io
+:img-licence-badge: {uri-shields}/github/license/{proj-repo}.svg?label=Licencia
+:img-weblate-badge: {uri-shields}/weblate/progress/{proj-handle}?label=Traducido
+:img-weblate-widget: {uri-hostedw}/widgets/deepines-store/es/multi-auto.svg
+:tr-status: Estado de la traducción
+
+= {proj-name}
+
+ifdef::env-github[]
+[subs=attributes+]
+++++
+<div align="center">
+   <a href="{uri-repo}"> <img src="{proj-logo}" width="256" height="256"></a>
+   <h1>{proj-name}</h1>
+   <h3>{proj-desc}</h3>
+   <br />
+</div>
+<p align="center">
+  <a href="{uri-licence}">
+    <img src="{img-licence-badge}" />
+  </a>
+  <a href="{uri-weblate}">
+    <img src="{img-weblate-badge}" alt="{tr-status}" />
+  </a>
+</p>
+++++
+endif::[]
+
+ifndef::env-github[]
+image::{proj-logo}[{proj-name}, align=center, link="{uri-repo}"]
+
+[.text-center]
+[.lead]
+*{proj-name}*
+
+[.text-center]
+{proj-desc}
+
+[.text-center]
+image:{img-licence-badge}[align=center, link="{uri-licence}"]
+image:{img-weblate-badge}[{tr-status}, align=center, link="{uri-weblate}"]
+endif::[]
+
+== Instrucciones para el desarrollo
+
+=== Preparación del entorno
+[source,sh]
+ sudo apt install git python3-venv
+ python3 -m venv myvenv
+ . myvenv/bin/activate
+ pip install pip --upgrade
+ git clone https://github.com/deepin-espanol/deepines-store
+ cd deepines-store
+ git checkout nightly
+ pip install -r requirements.txt
+
+=== Probar
+[source,sh]
+ python3 deepines.py
+
+=== Generar un paquete deb
+[source,sh]
+ ./deepines-store-packager.sh -v VERSION
+
+== Traducción
+
+Las traducciones son gestionadas por Weblate, las contribuciones son bienvenidas.
+
+image:{img-weblate-widget}[{tr-status}, link="{uri-weblate}"]
