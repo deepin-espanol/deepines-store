@@ -95,7 +95,12 @@ The network connection has failed and the installation has not been completed.
 Check that your computer is connected to the Internet and click Retry.
 If the problem persists, send a report to t.me/deepinenespanol.
 </source>
-        <translation type="unfinished"></translation>
+        <translation>
+
+De installatie is afgebroken omdat er geen internetverbinding is.
+Controleer of je verbonden bent en probeer het opnieuw.
+Als het probleem aanhoudt, maak er dan melding van op t.me/deepinenespanol.
+</translation>
     </message>
     <message>
         <location filename="../deepinesStore/dialog_install.py" line="137"/>
