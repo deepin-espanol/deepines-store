@@ -138,7 +138,13 @@ they depend on other packages that cannot be installed.
 
 You can look for help in our forum at deepinenespanol.org/comunidad
 or in our Telegram group t.me/deepinenespanol.</source>
-        <translation type="unfinished"></translation>
+        <translation>
+
+Een of meerdere programma&apos;s kunnen niet worden geïnstalleerd omdat
+zij afhankelijk zijn van andere pakketten die ook niet kunnen worden geïnstalleerd.
+
+Vraag hulp op ons forum: deepinenespanol.org/comunidad
+Of in onze Telegram-groep: t.me/deepinenespanol</translation>
     </message>
 </context>
 <context>
