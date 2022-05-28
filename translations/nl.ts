@@ -272,12 +272,12 @@ Versie: {version}</translation>
     <message>
         <location filename="../deepinesStore/maing.py" line="513"/>
         <source>Deepines repository is not installed on your system,&lt;br&gt;Deepines Store needs this repository to work.&lt;br&gt;In the following link you will find the instructions to install it.&lt;br&gt;&lt;br&gt;&lt;a href=&apos;#&apos;&gt;deepinenespanol.org/repositorio/ | Copy link&lt;a/&gt;&lt;br&gt;</source>
-        <translation>De Deepines-pakketbron is niet aanwezig op je computer.&lt;br&gt;De Deepines-winkel werkt alleen met deze pakketbron.&lt;br&gt;Open onderstaande link om de installatie-instructies te bekijken.&lt;br&gt;&lt;br&gt;&lt;a href=&quot;#&quot;&gt;deepinenespanol.org/repositorio/ | Link kopiëren&lt;/a&gt;&lt;a&gt;&lt;br&gt;&lt;/a&gt;</translation>
+        <translation>De Deepines-pakketbron is niet aanwezig op je computer.&lt;br&gt;De Deepines-winkel werkt alleen met deze pakketbron.&lt;br&gt;Klik op onderstaande link om de installatie-instructies te bekijken.&lt;br&gt;&lt;br&gt;&lt;a href=&quot;#&quot;&gt;deepinenespanol.org/repositorio/ | Link kopiëren&lt;/a&gt;&lt;a&gt;&lt;br&gt;&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="507"/>
         <source>Unable to establish connection with the server, &lt;br&gt;please check your internet connection.&lt;br&gt;If the problem persists, please contact us via Telegram &lt;br&gt;at @deepinenespanol.&lt;br&gt;&lt;br&gt;&lt;a href=&apos;#&apos;&gt;deepinenespanol.org | Copy link&lt;/a&gt;&lt;br&gt;Visit Deepin en Espanol for more information.</source>
-        <translation type="unfinished"></translation>
+        <translation>Er kan geen verbinding worden gemaakt met de server. &lt;br&gt;Controleer je internetverbinding.&lt;br&gt;Als het probleem zich blijft voordoen, neem dan contact met ons op via Telegram: &lt;br&gt;@deepinenespanol&lt;br&gt;&lt;br&gt;&lt;a href=&quot;#&quot;&gt;deepinenespanol.org | Link kopiëren&lt;/a&gt;&lt;br&gt;Ga voor meer informatie naar Deepin en Espanol.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="494"/>
