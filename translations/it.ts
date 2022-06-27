@@ -28,7 +28,12 @@ The installation system is locked by
 another installation or upgrade process, 
 wait until it finishes and click Retry. 
 If you use Synaptic, make sure it is closed.</source>
-        <translation type="unfinished"></translation>
+        <translation>
+
+Il processo di installazione è bloccato da
+un&apos;altra installazione o da un upgrade in corso,
+attendi la fine del processo e dopo premi Riprova.
+Se stai usando Synaptic, accertati che prima sia chiuso.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/dialog_install.py" line="142"/>
@@ -40,7 +45,9 @@ If you use Synaptic, make sure it is closed.</source>
         <source>
 All processes have been completed.
 </source>
-        <translation type="unfinished"></translation>
+        <translation>
+Tutti i processi sono stati completati.
+</translation>
     </message>
     <message>
         <location filename="../deepinesStore/dialog_install.py" line="145"/>
@@ -48,7 +55,10 @@ All processes have been completed.
 
 Warning: do not close the window, interrupting the installation may damage your system.
 </source>
-        <translation type="unfinished"></translation>
+        <translation>
+
+Attenzione: non chiudere la finestra, interrompere l&apos;installazione in corso potrebbe danneggiare il tuo sistema.
+</translation>
     </message>
     <message>
         <location filename="../deepinesStore/dialog_install.py" line="139"/>
@@ -62,7 +72,7 @@ The database is being updated.
 
 </source>
         <translation>
-La base di dati è in fase di aggiornamento.
+Il database è in fase di aggiornamento.
 
 </translation>
     </message>
@@ -72,7 +82,7 @@ La base di dati è in fase di aggiornamento.
 The installation of {item} is finished.
 </source>
         <translation>
-L&apos;installazione di {item} è finita.
+L&apos;installazione di {item} si è conclusa.
 </translation>
     </message>
     <message>
@@ -83,19 +93,26 @@ The network connection has failed and the installation has not been completed.
 Check that your computer is connected to the Internet and click Retry.
 If the problem persists, send a report to t.me/deepinenespanol.
 </source>
-        <translation type="unfinished"></translation>
+        <translation>
+
+La connessione alla rete è fallita e l&apos;installazione non è stata completata.
+Controlla se il tuo computer è connesso alla rete e in seguito premi Riprova.
+Se il problema persiste, invia una segnalazione a t.me/deepinenespanol.
+</translation>
     </message>
     <message>
         <location filename="../deepinesStore/dialog_install.py" line="140"/>
         <source>{app_count} app has been selected for installation:
 </source>
-        <translation type="unfinished"></translation>
+        <translation>L&apos;applicazione {app_count} è stata selezionata per l&apos;installazione:
+</translation>
     </message>
     <message>
         <location filename="../deepinesStore/dialog_install.py" line="141"/>
         <source>{app_count} apps have been selected for installation:
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Le applicazioni {app_count} sono state selezionate per l&apos;installazione.
+</translation>
     </message>
     <message>
         <location filename="../deepinesStore/dialog_install.py" line="149"/>
@@ -104,7 +121,11 @@ If the problem persists, send a report to t.me/deepinenespanol.
 An error has occurred, please try again.
 If the problem persists, contact the administrator.
 </source>
-        <translation type="unfinished"></translation>
+        <translation>
+
+Si è verificato un errore, ti preghiamo di riprovare.
+Se il problema persiste, contatta l&apos;amministratore.
+</translation>
     </message>
     <message>
         <location filename="../deepinesStore/dialog_install.py" line="154"/>
@@ -115,7 +136,13 @@ they depend on other packages that cannot be installed.
 
 You can look for help in our forum at deepinenespanol.org/comunidad
 or in our Telegram group t.me/deepinenespanol.</source>
-        <translation type="unfinished"></translation>
+        <translation>
+
+Una o più applicazioni non possono essere installate perché 
+dipendono da pacchetti che non possono essere installati.
+
+Puoi chiedere aiuto nel nostro forum deepinenespanol.org/comunidad
+o nel nostro gruppo Telegram t.me/deepinenespanol.</translation>
     </message>
 </context>
 <context>
@@ -128,7 +155,7 @@ or in our Telegram group t.me/deepinenespanol.</source>
     <message>
         <location filename="../deepinesStore/cardg.py" line="68"/>
         <source>Card</source>
-        <translation>Carta</translation>
+        <translation>Scheda</translation>
     </message>
 </context>
 <context>
@@ -203,7 +230,7 @@ Versione: {version}</translation>
     <message>
         <location filename="../deepinesStore/maing.py" line="484"/>
         <source>Office automation</source>
-        <translation>Burotica</translation>
+        <translation>Domotica</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="466"/>
