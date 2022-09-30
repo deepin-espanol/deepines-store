@@ -3,8 +3,8 @@ from deepinesStore.store import run_gui
 from deepinesStore.svg import threading_svg
 from deepinesStore.maing import get_res
 from requests import get
-EXCLUIDOS = 'https://raw.githubusercontent.com/deepin-espanol/deepines-store/nightly/deepinesStore/config/excluidos.txt'
-DEEPINES = 'https://raw.githubusercontent.com/deepin-espanol/deepines-store/nightly/deepinesStore/config/deepines.txt'
+EXCLUIDOS = 'https://mirror.deepines.com/pub/deepines/store/config/excluidos.txt'
+DEEPINES = 'https://mirror.deepines.com/pub/deepines/store/config/deepines.txt'
 
 
 def download_control():
