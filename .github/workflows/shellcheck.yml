@@ -16,4 +16,4 @@ jobs:
         with:
           submodules: recursive
       - name: Check scripts
-        run: 'shellcheck ./*.sh ./server/*.sh'
+        run: 'shellcheck --exclude SC2086,SC2317 ./*.sh'
