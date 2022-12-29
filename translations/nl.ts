@@ -113,7 +113,7 @@ Als het probleem aanhoudt, maak er dan melding van op t.me/deepinenespanol.
         <location filename="../deepinesStore/dialog_install.py" line="136"/>
         <source>{app_count} apps have been selected for installation:
 </source>
-        <translation>Er zullen {app_count} programma's worden geïnstalleerd:
+        <translation>Er zullen {app_count} programma&apos;s worden geïnstalleerd:
 </translation>
     </message>
     <message>
@@ -140,7 +140,7 @@ You can look for help in our forum at deepinenespanol.org/comunidad
 or in our Telegram group t.me/deepinenespanol.</source>
         <translation>
 
-Een of meerdere programma's kunnen niet worden geïnstalleerd omdat
+Een of meerdere programma&apos;s kunnen niet worden geïnstalleerd omdat
 zij afhankelijk zijn van andere pakketten die ook niet kunnen worden geïnstalleerd.
 
 Vraag hulp op ons forum: deepinenespanol.org/comunidad
@@ -247,7 +247,7 @@ Versie: {version}</translation>
     <message>
         <location filename="../deepinesStore/maing.py" line="504"/>
         <source>{app_count} apps selected to install, click here to review them</source>
-        <translation>Er zullen {app_count} programma's worden geïnstalleerd. Klik hier voor details.</translation>
+        <translation>Er zullen {app_count} programma&apos;s worden geïnstalleerd. Klik hier voor details.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="501"/>
@@ -267,7 +267,7 @@ Versie: {version}</translation>
     <message>
         <location filename="../deepinesStore/maing.py" line="499"/>
         <source>Select the apps to install</source>
-        <translation>Selecteer de te installeren programma's</translation>
+        <translation>Selecteer de te installeren programma&apos;s</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="512"/>

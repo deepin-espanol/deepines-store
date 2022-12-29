@@ -272,12 +272,12 @@ Versjon: {version}</translation>
     <message>
         <location filename="../deepinesStore/maing.py" line="512"/>
         <source>Deepines repository is not installed on your system,&lt;br&gt;Deepines Store needs this repository to work.&lt;br&gt;In the following link you will find the instructions to install it.&lt;br&gt;&lt;br&gt;&lt;a href=&apos;#&apos;&gt;deepinenespanol.org/repositorio/ | Copy link&lt;a/&gt;&lt;br&gt;</source>
-        <translation>Deepines-pakkebrønnen er ikke installert på systemet ditt.&lt;br&gt;Deepines-butikken trenger dette for å fungere.&lt;br&gt;&lt;br&gt;&lt;a href='#'&gt;deepinenespanol.org/repositorio/ | Kopier lenke&lt;a/&gt;&lt;br&gt;</translation>
+        <translation>Deepines-pakkebrønnen er ikke installert på systemet ditt.&lt;br&gt;Deepines-butikken trenger dette for å fungere.&lt;br&gt;&lt;br&gt;&lt;a href=&apos;#&apos;&gt;deepinenespanol.org/repositorio/ | Kopier lenke&lt;a/&gt;&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="506"/>
         <source>Unable to establish connection with the server, &lt;br&gt;please check your internet connection.&lt;br&gt;If the problem persists, please contact us via Telegram &lt;br&gt;at @deepinenespanol.&lt;br&gt;&lt;br&gt;&lt;a href=&apos;#&apos;&gt;deepinenespanol.org | Copy link&lt;/a&gt;&lt;br&gt;Visit Deepin en Espanol for more information.</source>
-        <translation type="unfinished">Kunne ikke etablere kontakt med tjeneren, &lt;br&gt;sjekk din tilkobling til Internett.&lt;br&gt;Hvis problemet vedvarer kan du kontakte oss på Telegram&lt;br&gt;på @deepinenespanol.&lt;br&gt;&lt;br&gt;&lt;a href='#'&gt;deepinenespanol.org | Kopier lenke&lt;/a&gt;&lt;br&gt;Besøk Deepin en Espanol for mor info.</translation>
+        <translation type="unfinished">Kunne ikke etablere kontakt med tjeneren, &lt;br&gt;sjekk din tilkobling til Internett.&lt;br&gt;Hvis problemet vedvarer kan du kontakte oss på Telegram&lt;br&gt;på @deepinenespanol.&lt;br&gt;&lt;br&gt;&lt;a href=&apos;#&apos;&gt;deepinenespanol.org | Kopier lenke&lt;/a&gt;&lt;br&gt;Besøk Deepin en Espanol for mor info.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="493"/>

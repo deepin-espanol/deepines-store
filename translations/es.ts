@@ -272,12 +272,12 @@ Versión: {version}</translation>
     <message>
         <location filename="../deepinesStore/maing.py" line="512"/>
         <source>Deepines repository is not installed on your system,&lt;br&gt;Deepines Store needs this repository to work.&lt;br&gt;In the following link you will find the instructions to install it.&lt;br&gt;&lt;br&gt;&lt;a href=&apos;#&apos;&gt;deepinenespanol.org/repositorio/ | Copy link&lt;a/&gt;&lt;br&gt;</source>
-        <translation>El repositorio Deepines no está instalado en su sistema,&lt;br&gt;la Tienda Deepines necesita este repositorio para funcionar.&lt;br&gt;En el siguiente enlace encontrará las instrucciones para instalarlo.&lt;br&gt;&lt;br&gt;&lt;a href='#'&gt;deepinenespañol.org/repositorio/ | Copiar enlace&lt;a/&gt;&lt;br&gt;</translation>
+        <translation>El repositorio Deepines no está instalado en su sistema,&lt;br&gt;la Tienda Deepines necesita este repositorio para funcionar.&lt;br&gt;En el siguiente enlace encontrará las instrucciones para instalarlo.&lt;br&gt;&lt;br&gt;&lt;a href=&apos;#&apos;&gt;deepinenespañol.org/repositorio/ | Copiar enlace&lt;a/&gt;&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="506"/>
         <source>Unable to establish connection with the server, &lt;br&gt;please check your internet connection.&lt;br&gt;If the problem persists, please contact us via Telegram &lt;br&gt;at @deepinenespanol.&lt;br&gt;&lt;br&gt;&lt;a href=&apos;#&apos;&gt;deepinenespanol.org | Copy link&lt;/a&gt;&lt;br&gt;Visit Deepin en Espanol for more information.</source>
-        <translation>No se puede establecer la conexión con el servidor, &lt;br&gt;por favor, compruebe su conexión a Internet.&lt;br&gt;Si el problema persiste, póngase en contacto con nosotros &lt;br&gt;a través de Telegram en @deepinenespanol.&lt;br&gt;&lt;br&gt;&lt;a href='#'&gt;deepinenespañol.org | Copiar enlace&lt;/a&gt;&lt;br&gt;Visite Deepin en Español para más información.</translation>
+        <translation>No se puede establecer la conexión con el servidor, &lt;br&gt;por favor, compruebe su conexión a Internet.&lt;br&gt;Si el problema persiste, póngase en contacto con nosotros &lt;br&gt;a través de Telegram en @deepinenespanol.&lt;br&gt;&lt;br&gt;&lt;a href=&apos;#&apos;&gt;deepinenespañol.org | Copiar enlace&lt;/a&gt;&lt;br&gt;Visite Deepin en Español para más información.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="493"/>

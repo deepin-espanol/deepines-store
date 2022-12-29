@@ -8,7 +8,7 @@
         <source>
 Installing {item}
 </source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../deepinesStore/dialog_install.py" line="139"/>
@@ -31,7 +31,7 @@ If you use Synaptic, make sure it is closed.</source>
         <translation>
 
 Il processo di installazione è bloccato da
-un'altra installazione o da un upgrade in corso,
+un&apos;altra installazione o da un upgrade in corso,
 attendi la fine del processo e dopo premi Riprova.
 Se stai usando Synaptic, accertati che prima sia chiuso.</translation>
     </message>
@@ -57,13 +57,13 @@ Warning: do not close the window, interrupting the installation may damage your 
 </source>
         <translation>
 
-Attenzione: non chiudere la finestra, interrompere l'installazione in corso potrebbe danneggiare il tuo sistema.
+Attenzione: non chiudere la finestra, interrompere l&apos;installazione in corso potrebbe danneggiare il tuo sistema.
 </translation>
     </message>
     <message>
         <location filename="../deepinesStore/dialog_install.py" line="134"/>
         <source>Installation process - Deepines Store</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../deepinesStore/dialog_install.py" line="157"/>
@@ -82,7 +82,7 @@ Il database è in fase di aggiornamento.
 The installation of {item} is finished.
 </source>
         <translation>
-L'installazione di {item} si è conclusa.
+L&apos;installazione di {item} si è conclusa.
 </translation>
     </message>
     <message>
@@ -95,7 +95,7 @@ If the problem persists, send a report to t.me/deepinenespanol.
 </source>
         <translation>
 
-La connessione alla rete è fallita e l'installazione non è stata completata.
+La connessione alla rete è fallita e l&apos;installazione non è stata completata.
 Controlla se il tuo computer è connesso alla rete e in seguito premi Riprova.
 Se il problema persiste, invia una segnalazione a t.me/deepinenespanol.
 </translation>
@@ -104,14 +104,14 @@ Se il problema persiste, invia una segnalazione a t.me/deepinenespanol.
         <location filename="../deepinesStore/dialog_install.py" line="135"/>
         <source>{app_count} app has been selected for installation:
 </source>
-        <translation>L'applicazione {app_count} è stata selezionata per l'installazione:
+        <translation>L&apos;applicazione {app_count} è stata selezionata per l&apos;installazione:
 </translation>
     </message>
     <message>
         <location filename="../deepinesStore/dialog_install.py" line="136"/>
         <source>{app_count} apps have been selected for installation:
 </source>
-        <translation>Le applicazioni {app_count} sono state selezionate per l'installazione.
+        <translation>Le applicazioni {app_count} sono state selezionate per l&apos;installazione.
 </translation>
     </message>
     <message>
@@ -124,7 +124,7 @@ If the problem persists, contact the administrator.
         <translation>
 
 Si è verificato un errore, ti preghiamo di riprovare.
-Se il problema persiste, contatta l'amministratore.
+Se il problema persiste, contatta l&apos;amministratore.
 </translation>
     </message>
     <message>
@@ -235,27 +235,27 @@ Versione: {version}</translation>
     <message>
         <location filename="../deepinesStore/maing.py" line="465"/>
         <source>Deepines Store</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="466"/>
         <source>TextLabel</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="504"/>
         <source>{app_count} apps selected to install, click here to review them</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="501"/>
         <source>Installed</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="502"/>
         <source>{app_count} app selected to install, click here to review it</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="500"/>
@@ -270,12 +270,12 @@ Versione: {version}</translation>
     <message>
         <location filename="../deepinesStore/maing.py" line="512"/>
         <source>Deepines repository is not installed on your system,&lt;br&gt;Deepines Store needs this repository to work.&lt;br&gt;In the following link you will find the instructions to install it.&lt;br&gt;&lt;br&gt;&lt;a href=&apos;#&apos;&gt;deepinenespanol.org/repositorio/ | Copy link&lt;a/&gt;&lt;br&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="506"/>
         <source>Unable to establish connection with the server, &lt;br&gt;please check your internet connection.&lt;br&gt;If the problem persists, please contact us via Telegram &lt;br&gt;at @deepinenespanol.&lt;br&gt;&lt;br&gt;&lt;a href=&apos;#&apos;&gt;deepinenespanol.org | Copy link&lt;/a&gt;&lt;br&gt;Visit Deepin en Espanol for more information.</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="493"/>
