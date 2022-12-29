@@ -112,7 +112,7 @@ Jeżeli problem nie został rozwiązany, wyślij zawiadomienie do t.me/deepinene
         <location filename="../deepinesStore/dialog_install.py" line="136"/>
         <source>{app_count} apps have been selected for installation:
 </source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../deepinesStore/dialog_install.py" line="144"/>
@@ -255,7 +255,7 @@ Wersja: {version}</translation>
     <message>
         <location filename="../deepinesStore/maing.py" line="502"/>
         <source>{app_count} app selected to install, click here to review it</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="500"/>
@@ -270,22 +270,22 @@ Wersja: {version}</translation>
     <message>
         <location filename="../deepinesStore/maing.py" line="512"/>
         <source>Deepines repository is not installed on your system,&lt;br&gt;Deepines Store needs this repository to work.&lt;br&gt;In the following link you will find the instructions to install it.&lt;br&gt;&lt;br&gt;&lt;a href=&apos;#&apos;&gt;deepinenespanol.org/repositorio/ | Copy link&lt;a/&gt;&lt;br&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="506"/>
         <source>Unable to establish connection with the server, &lt;br&gt;please check your internet connection.&lt;br&gt;If the problem persists, please contact us via Telegram &lt;br&gt;at @deepinenespanol.&lt;br&gt;&lt;br&gt;&lt;a href=&apos;#&apos;&gt;deepinenespanol.org | Copy link&lt;/a&gt;&lt;br&gt;Visit Deepin en Espanol for more information.</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="493"/>
         <source>Minimize</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="494"/>
         <source>Zoom</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="495"/>
