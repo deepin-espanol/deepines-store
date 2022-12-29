@@ -1,14 +1,43 @@
 #!/bin/sh
 
+UpdTS() {
+    SRC_FILES='deepinesStore/*.py'
+    TS_FILES='translations/*.ts'
+    TR_FUNCTION="__tr"
+    pylupdate5 $SRC_FILES -ts $TS_FILES -tr-function $TR_FUNCTION
+}
+
+GenQM() {
+    TS_d="translations"
+    TS_DIR=${1:-$TS_d}
+    QM_d="deepinesStore/translations"
+    QM_DIR=${2:-$QM_d}
+    mkdir -p $QM_DIR
+    for ts_file in "$TS_DIR"/*.ts; do
+    lconvert -i "$ts_file" -o "$QM_DIR"/"$(basename "$ts_file" .ts).qm"
+    done
+}
+
+Run() {
+    case $1 in
+    update-ts) UpdTS ;;
+    generate-qm) GenQM ;;
+    *) echo >&2 "Specify update-ts or generate-qm." && exit 1 ;;
+    esac
+    echo "Done!"
+    exit
+}
+
 Main() {
     unset VER MANUAL AUTO
-    while getopts ":v:ma" OPTION >/dev/null 2>&1; do
+    while getopts ":v:mar" OPTION >/dev/null 2>&1; do
         case $OPTION in
         v) VER=$OPTARG ;;
         m) MANUAL=true ;;
         a) AUTO=true ;;
+        r) Run "$2" ;;
         :) echo >&2 "Option '$OPTARG' requires a version to be specified." && exit 1 ;;
-        *) echo >&2 "Unknown option: '$OPTARG'." && echo "Usage: ${0##*/} [-v 'version'] [-m] [-a]" && exit 1 ;;
+        *) echo >&2 "Unknown option: '$OPTARG'." && echo "Usage: ${0##*/} [-v 'version'] [-m] [-a] [-r]" && exit 1 ;;
         esac
     done
     if [ -z "$VER" ]; then
@@ -312,10 +341,7 @@ mkdir -p usr/bin
 cp -a "$SH_DIR/loader.py" usr/bin/deepines
 
 echo "Generating app translations..."
-mkdir -p usr/share/deepines/deepinesStore/translations
-for ts_file in "$SH_DIR"/translations/*.ts; do
-    lconvert -i "$ts_file" -o "usr/share/deepines/deepinesStore/translations/$(basename "$ts_file" .ts).qm"
-done
+GenQM "$SH_DIR"/translations/ "usr/share/deepines/deepinesStore/translations"
 
 echo "Generating .desktop:"
 mkdir -p usr/share/applications
