@@ -341,7 +341,7 @@ mkdir -p usr/bin
 cp -a "$SH_DIR/loader.py" usr/bin/deepines
 
 echo "Generating app translations..."
-GenQM "$SH_DIR"/translations/ "usr/share/deepines/deepinesStore/translations"
+GenQM "$SH_DIR"/translations "usr/share/deepines/deepinesStore/translations"
 
 echo "Generating .desktop:"
 mkdir -p usr/share/applications
@@ -383,7 +383,7 @@ echo "Generating 'postrm' script..."
 printf "%s" "$POSTRMSCRIPT" >DEBIAN/postrm
 chmod 755 DEBIAN/postrm
 
-YEAR="2022"
+YEAR="2023"
 
 MakeCopyright() {
     cat <<EOF
@@ -480,7 +480,7 @@ chmod +x usr/share/deepines/deepines             # Mark main script as executabl
 
 echo "Build package..."
 # Should use "dpkg-buildpackage -rfakeroot" instead, but no.
-fakeroot dpkg-deb --build "$WORK_DIR" "$SH_DIR" || {
+fakeroot dpkg-deb -Z xz --build "$WORK_DIR" "$SH_DIR" || {
     Cleanup
     exit 1
 }
