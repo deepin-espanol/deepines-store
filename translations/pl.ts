@@ -32,9 +32,10 @@ wait until it finishes and click Retry.
 If you use Synaptic, make sure it is closed.</source>
         <translation>
 
-Instalacja systemu jest zablokowana przez inną instalacje lub proces aktualizacji,
-poczekaj na zakończenie i kliknij Spróbuj ponownie.
- Jeżeli używasz Synaptic, upewnij się, że jest zamknięty.</translation>
+Instalacja systemu jest zablokowana przez
+inną instalację lub proces aktualizacji,
+poczekaj na ich zakończenie i kliknij Spróbuj ponownie.
+Jeżeli używasz Synaptic, upewnij się, że jest zamknięty.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/dialog_install.py" line="137"/>
@@ -112,7 +113,8 @@ Jeżeli problem nie został rozwiązany, wyślij zawiadomienie do t.me/deepinene
         <location filename="../deepinesStore/dialog_install.py" line="136"/>
         <source>{app_count} apps have been selected for installation:
 </source>
-        <translation></translation>
+        <translation>{app_count} aplikacji zostało zaznaczone do instalacji:
+</translation>
     </message>
     <message>
         <location filename="../deepinesStore/dialog_install.py" line="144"/>
@@ -255,7 +257,7 @@ Wersja: {version}</translation>
     <message>
         <location filename="../deepinesStore/maing.py" line="502"/>
         <source>{app_count} app selected to install, click here to review it</source>
-        <translation></translation>
+        <translation>{app_count} aplikacja została zaznaczona do instalacji, kliknij tutaj, aby to przejrzeć</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="500"/>
@@ -270,27 +272,27 @@ Wersja: {version}</translation>
     <message>
         <location filename="../deepinesStore/maing.py" line="512"/>
         <source>Deepines repository is not installed on your system,&lt;br&gt;Deepines Store needs this repository to work.&lt;br&gt;In the following link you will find the instructions to install it.&lt;br&gt;&lt;br&gt;&lt;a href=&apos;#&apos;&gt;deepinenespanol.org/repositorio/ | Copy link&lt;a/&gt;&lt;br&gt;</source>
-        <translation></translation>
+        <translation>Repozytorium Deepines nie jest zainstalowane w twoim systemie,&lt;br&gt;Sklep Deepines potrzebuje tego repozytorium do pracy.&lt;br&gt;W poniższym linku znajdziesz instrukcje, jak je zainstalować.&lt;br&gt;&lt;br&gt;&lt;a href=&quot;#&quot;&gt;deepinenespanol.org/repositorio/ | Kopiuj link&lt;/a&gt;&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="506"/>
         <source>Unable to establish connection with the server, &lt;br&gt;please check your internet connection.&lt;br&gt;If the problem persists, please contact us via Telegram &lt;br&gt;at @deepinenespanol.&lt;br&gt;&lt;br&gt;&lt;a href=&apos;#&apos;&gt;deepinenespanol.org | Copy link&lt;/a&gt;&lt;br&gt;Visit Deepin en Espanol for more information.</source>
-        <translation></translation>
+        <translation>Nie można nawiązać połączenia z serwerem, &lt;br&gt;proszę sprawdzić połączenie z internetem.&lt;br&gt;Jeśli problem nie ustąpi, prosimy o kontakt poprzez Telegram &lt;br&gt;na adres @deepinenespanol.&lt;br&gt;&lt;br&gt;&lt;a href=&quot;#&quot;&gt;deepinenespanol.org | Kopiuj link&lt;/a&gt;&lt;br&gt;Odwiedź Deepin en Espanol, aby uzyskać więcej informacji.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="493"/>
         <source>Minimize</source>
-        <translation></translation>
+        <translation>Minimalizuj</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="494"/>
         <source>Zoom</source>
-        <translation></translation>
+        <translation>Powiększ</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="495"/>
         <source>Close</source>
-        <translation type="unfinished">Zamknij</translation>
+        <translation>Zamknij</translation>
     </message>
 </context>
 </TS>
