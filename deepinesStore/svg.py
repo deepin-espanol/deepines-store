@@ -3,7 +3,7 @@
 from os.path import join, abspath, dirname
 from os import listdir, remove
 from hashlib import md5
-from requests import get
+from deepinesStore.core import get_dl
 import threading
 
 
@@ -44,7 +44,7 @@ class threading_svg(object):
 
 	# Obteniendo la lista remota de svg y su checksum
 	def get_remote_checksum(self):
-		SVG_REMOTE = get(self.URL_REMOTE_SUMS)
+		SVG_REMOTE = get_dl(self.URL_REMOTE_SUMS)
 
 		status_code = SVG_REMOTE.status_code
 		if status_code == 200:
@@ -73,8 +73,7 @@ class threading_svg(object):
 			if nombre not in self.LOCAL_CHECK:
 				self.download_svg(nombre)
 
-	# Descarga el archivo desde el repo
 	def download_svg(self, name):
-		url = join(self.URL_REPO_SVG, name)
-		descargado = get(url)
-		open(join(self.PATH_SVG, name), 'wb').write(descargado.content)
+		dl_svg = get_dl(join(self.URL_REPO_SVG, name))
+		if dl_svg.status_code == 200:
+			open(join(self.PATH_SVG, name), 'wb').write(dl_svg.content)

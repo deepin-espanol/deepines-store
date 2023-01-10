@@ -12,14 +12,15 @@ from PyQt5.QtWidgets import (QMainWindow, QApplication, QFrame, QLabel,
 from PyQt5.QtGui import QPixmap, QFont, QColor, QCursor
 # Modulos para el scraping
 from bs4 import BeautifulSoup
-from requests import get
+from deepinesStore.core import get_dl
 # Para obtener applicacion random
 from random import randint
 # GUI o modulos locales
-from deepinesStore.maing import Ui_MainWindow, get_res, app_icon
+from deepinesStore.maing import Ui_MainWindow, app_icon
 from deepinesStore.cardg import Ui_Frame
 from deepinesStore.dialog_install import Ui_DialogInstall
 from deepinesStore.about import Dialog as DAbout
+from deepinesStore.core import get_res
 
 if os.name == 'nt':
 	try:
@@ -274,7 +275,7 @@ class StoreMWindow(QMainWindow):
 
 		try:
 			# Realizamos la petición a la web
-			req = get(repo_url, timeout=10)
+			req = get_dl(repo_url, timeout=10)
 
 			# Comprobamos que la petición nos devuelve un Status Code = 200
 			status_code = req.status_code

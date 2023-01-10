@@ -4,11 +4,7 @@
 
 from PyQt5 import QtGui, QtWidgets
 from PyQt5.QtCore import QCoreApplication, QMetaObject, QRect, QSize, Qt, pyqtSignal
-from os.path import join, abspath, dirname
-
-
-def get_res(res_name, dir='resources', ext='.svg'):
-	return abspath(join(dirname(__file__), dir, res_name + ext))
+from deepinesStore.core import get_res
 
 svg_logo = get_res('deepines')
 

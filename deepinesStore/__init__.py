@@ -1,16 +1,14 @@
 #!/usr/bin/env python3
 from deepinesStore.store import run_gui
 from deepinesStore.svg import threading_svg
-from deepinesStore.maing import get_res
-from requests import get
+from deepinesStore.core import get_dl, get_res
 EXCLUIDOS = 'https://mirror.deepines.com/pub/deepines/store/config/excluidos.txt'
 DEEPINES = 'https://mirror.deepines.com/pub/deepines/store/config/deepines.txt'
 
-
 def download_control():
-	excluidos = get(EXCLUIDOS)
+	excluidos = get_dl(EXCLUIDOS)
 	open(get_res('excluidos', 'config', '.txt'), 'w', newline='\n').write(excluidos.text)
-	deepines = get(DEEPINES)
+	deepines = get_dl(DEEPINES)
 	open(get_res('deepines', 'config', '.txt'), 'w', newline='\n').write(deepines.text)
 
 
