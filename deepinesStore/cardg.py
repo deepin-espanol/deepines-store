@@ -3,7 +3,7 @@
 # UI Source 'gui/card.ui'
 
 from PyQt5 import QtGui, QtWidgets
-from PyQt5.QtCore import QCoreApplication, QMetaObject, QSize, Qt, pyqtSignal
+from PyQt5.QtCore import QMetaObject, QSize, Qt, pyqtSignal
 
 
 class QLabelClickable(QtWidgets.QLabel):
@@ -62,7 +62,8 @@ class Ui_Frame(object):
 		QMetaObject.connectSlotsByName(Frame)
 
 	def __tr(self, txt, disambiguation=None, n=-1):
-		return QCoreApplication.translate(self.__class__.__name__, txt, disambiguation, n)
+		from deepinesStore.core import tr
+		return tr(self, txt, disambiguation, n)
 
 	def retranslateUi(self, Frame):
 		Frame.setWindowTitle(self.__tr("Card"))

@@ -3,7 +3,7 @@
 # UI Source 'gui/dialog_install.ui'
 
 from PyQt5 import QtWidgets
-from PyQt5.QtCore import QThread, QCoreApplication
+from PyQt5.QtCore import QThread
 from PyQt5.QtGui import QTextCursor
 from deepinesStore.install_thread import External
 from deepinesStore.notification import notification
@@ -128,7 +128,8 @@ class Ui_DialogInstall(QtWidgets.QWidget):
 		self.move(frameGm.topLeft())
 
 	def __tr(self, txt, disambiguation=None, n=-1):
-		return QCoreApplication.translate(self.__class__.__name__, txt, disambiguation, n)
+		from deepinesStore.core import tr
+		return tr(self, txt, disambiguation, n)
 
 	def retranslateUi(self, DialogInstall):
 		DialogInstall.setWindowTitle(self.__tr("Installation process - Deepines Store"))

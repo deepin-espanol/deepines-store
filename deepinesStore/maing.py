@@ -3,8 +3,8 @@
 # UI Source 'gui/main.ui'
 
 from PyQt5 import QtGui, QtWidgets
-from PyQt5.QtCore import QCoreApplication, QMetaObject, QRect, QSize, Qt, pyqtSignal
-from deepinesStore.core import get_res
+from PyQt5.QtCore import QMetaObject, QRect, QSize, Qt, pyqtSignal
+from deepinesStore.core import get_res, tr
 
 svg_logo = get_res('deepines')
 
@@ -41,13 +41,13 @@ TitleBarButtonStylesheet = '''
 					cx:.5, cy:.5, radius: {innerRatio},
 					fx:.5, fy:.5,
 					stop:0 {uncheckColor},
-					stop:0.45 {uncheckColor2},
-					stop:0.5 transparent,
+					stop:0.49 {uncheckColor2},
+					stop:0.54 transparent,
 					stop:1 transparent
 					);
 			}}
 			QRadioButton::indicator:hover {{
-				background: rgba(140, 140, 140, 100);
+				background: rgba(245, 245, 245, 72);
 			}}
 		'''.format(
 	size=size - border * 2,
@@ -55,8 +55,8 @@ TitleBarButtonStylesheet = '''
 	borderColor='black',
 	radius=size // 2,
 	innerRatio=1 - (border * 2 + 1) / size,
-	uncheckColor='rgba(125, 125, 125, 100)',
-	uncheckColor2='rgba(127, 127, 127, 100)',
+	uncheckColor='rgba(245, 245, 245, 38)',
+	uncheckColor2='rgba(247, 247, 247, 38)',
 	checkColor='black'
 )
 
@@ -453,7 +453,7 @@ class Ui_MainWindow(object):
 		QMetaObject.connectSlotsByName(MainWindow)
 
 	def __tr(self, txt, disambiguation=None, n=-1):
-		return QCoreApplication.translate(self.__class__.__name__, txt, disambiguation, n)
+		return tr(self, txt, disambiguation, n)
 
 	def retranslateUi(self, MainWindow):
 		MainWindow.setWindowTitle(self.__tr("Deepines Store"))

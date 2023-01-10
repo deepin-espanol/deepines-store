@@ -14,3 +14,7 @@ def get_dl(uri, params=None, **kwargs):
 			content = b""
 			text = "" # FIXME: Use some kind of fallback for this, a text file maybe?
 		return DummyResponse()
+
+def tr(m, txt, disambiguation=None, n=-1):
+	from PyQt5.QtCore import QCoreApplication
+	return QCoreApplication.translate(m.__class__.__name__, txt, disambiguation, n)
