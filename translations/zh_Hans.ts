@@ -4,63 +4,68 @@
 <context>
     <name>AboutDialog</name>
     <message>
-        <location filename="../deepinesStore/about.py" line="238"/>
+        <location filename="../deepinesStore/about.py" line="236"/>
         <source>Deepines Store</source>
         <translation type="unfinished">深度商店</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/about.py" line="239"/>
+        <location filename="../deepinesStore/about.py" line="237"/>
         <source>Developed by Deepin en Español</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../deepinesStore/about.py" line="237"/>
+        <location filename="../deepinesStore/about.py" line="235"/>
         <source>About</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../deepinesStore/about.py" line="240"/>
+        <location filename="../deepinesStore/about.py" line="238"/>
         <source>Project Leader: {}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../deepinesStore/about.py" line="241"/>
+        <location filename="../deepinesStore/about.py" line="239"/>
         <source>Development: {}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../deepinesStore/about.py" line="242"/>
+        <location filename="../deepinesStore/about.py" line="240"/>
         <source>UI: {}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../deepinesStore/about.py" line="243"/>
+        <location filename="../deepinesStore/about.py" line="241"/>
         <source>OG UX Writer: {}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../deepinesStore/about.py" line="244"/>
+        <location filename="../deepinesStore/about.py" line="242"/>
         <source>Design: {}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../deepinesStore/about.py" line="245"/>
+        <location filename="../deepinesStore/about.py" line="243"/>
         <source>SysAdmin: {}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../deepinesStore/about.py" line="246"/>
+        <location filename="../deepinesStore/about.py" line="244"/>
         <source>Web: {}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../deepinesStore/about.py" line="247"/>
+        <location filename="../deepinesStore/about.py" line="245"/>
         <source>Servers: {}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../deepinesStore/about.py" line="248"/>
+        <location filename="../deepinesStore/about.py" line="246"/>
         <source>Collaborators: {}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/about.py" line="247"/>
+        <source>deepinenespañol.org | Copy link</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
