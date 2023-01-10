@@ -13,7 +13,6 @@
 :uri-weblate: {uri-hostedw}/engage/{proj-handle}/
 :uri-shields: https://img.shields.io
 :img-licence-badge: {uri-shields}/github/license/{proj-repo}.svg?label=Licencia
-:img-weblate-badge: {uri-shields}/weblate/progress/{proj-handle}?label=Traducido
 :img-weblate-widget: {uri-hostedw}/widgets/deepines-store/es/multi-auto.svg
 :tr-status: Estado de la traducción
 
@@ -32,9 +31,6 @@ ifdef::env-github[]
   <a href="{uri-licence}">
     <img src="{img-licence-badge}" />
   </a>
-  <a href="{uri-weblate}">
-    <img src="{img-weblate-badge}" alt="{tr-status}" />
-  </a>
 </p>
 ++++
 endif::[]
@@ -51,29 +47,30 @@ image::{proj-logo}[{proj-name}, align=center, link="{uri-repo}"]
 
 [.text-center]
 image:{img-licence-badge}[align=center, link="{uri-licence}"]
-image:{img-weblate-badge}[{tr-status}, align=center, link="{uri-weblate}"]
 endif::[]
 
 == Instrucciones para el desarrollo
 
 === Preparación del entorno
-[source,sh]
- sudo apt install git python3-venv
- python3 -m venv myvenv
- . myvenv/bin/activate
- pip install pip --upgrade
- git clone https://github.com/deepin-espanol/deepines-store
- cd deepines-store
- git checkout nightly
- pip install -r requirements.txt
+[source,shell]
+sudo apt install git python3-venv
+python3 -m venv myvenv
+. myvenv/bin/activate
+pip install pip --upgrade
+git clone https://github.com/deepin-espanol/deepines-store
+cd deepines-store
+git checkout nightly
+pip install -r requirements.txt
 
 === Probar
-[source,sh]
- python3 deepines.py
+[source,shell]
+python3 deepines.py
 
 === Generar un paquete deb
-[source,sh]
- ./deepines-store-packager.sh -v VERSION
+[source,shell]
+----
+./store-setup.sh -v VERSION
+----
 
 == Traducción
 
