@@ -2,8 +2,8 @@
 from deepinesStore.store import run_gui
 from deepinesStore.svg import threading_svg
 from deepinesStore.core import get_dl, get_res, write
-IGNORE = 'https://mirror.deepines.com/pub/deepines/store/config/excluidos.txt'
-DEEPINES = 'https://mirror.deepines.com/pub/deepines/store/config/deepines.txt'
+IGNORE = 'https://repositorio.deepines.com/pub/deepines/store/config/excluidos.txt'
+DEEPINES = 'https://repositorio.deepines.com/pub/deepines/store/config/deepines.txt'
 
 
 def download_control():

@@ -10,8 +10,8 @@ import threading
 class threading_svg(object):
 
 	def __init__(self):
-		self.URL_REPO_SVG = 'https://mirror.deepines.com/pub/deepines/store/svg/'
-		self.URL_REMOTE_SUMS = 'https://mirror.deepines.com/pub/deepines/store/config/svg_checksum'
+		self.URL_REPO_SVG = 'https://repositorio.deepines.com/pub/deepines/store/svg/'
+		self.URL_REMOTE_SUMS = 'https://repositorio.deepines.com/pub/deepines/store/config/svg_checksum'
 		self.LOCAL_PATH = abspath(join(dirname(__file__)))
 		self.PATH_SVG = join(self.LOCAL_PATH, 'resources/apps')
 		self.RUTA_TEMP = join(self.LOCAL_PATH, 'remote_svg.txt')
