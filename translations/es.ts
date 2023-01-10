@@ -2,6 +2,69 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="es">
 <context>
+    <name>AboutDialog</name>
+    <message>
+        <location filename="../deepinesStore/about.py" line="237"/>
+        <source>About</source>
+        <translation>Acerca de</translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/about.py" line="238"/>
+        <source>Deepines Store</source>
+        <translation>Tienda Deepines</translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/about.py" line="239"/>
+        <source>Developed by Deepin en Español</source>
+        <translation>Desarrollada por la comunidad de Deepin en Español</translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/about.py" line="240"/>
+        <source>Project Leader: {}</source>
+        <translation>Jefe de proyecto: {}</translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/about.py" line="241"/>
+        <source>Development: {}</source>
+        <translation>Desarrollo: {}</translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/about.py" line="242"/>
+        <source>UI: {}</source>
+        <translation>Interfaz: {}</translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/about.py" line="243"/>
+        <source>OG UX Writer: {}</source>
+        <translation>Redacción original: {}</translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/about.py" line="244"/>
+        <source>Design: {}</source>
+        <translation>Diseño: {}</translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/about.py" line="245"/>
+        <source>SysAdmin: {}</source>
+        <translation>SysAdmins: {}</translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/about.py" line="246"/>
+        <source>Web: {}</source>
+        <translation>Web: {}</translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/about.py" line="247"/>
+        <source>Servers: {}</source>
+        <translation>Servidores: {}</translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/about.py" line="248"/>
+        <source>Collaborators: {}</source>
+        <translation>Colaboradores: {}</translation>
+    </message>
+</context>
+<context>
     <name>Ui_DialogInstall</name>
     <message>
         <location filename="../deepinesStore/dialog_install.py" line="143"/>

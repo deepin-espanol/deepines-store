@@ -1,37 +1,37 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
+from deepinesStore.core import tr, site, set_blur
 from deepinesStore.maing import app_icon, TitleBarButtonStylesheet
 from PyQt5.QtCore import Qt, QSize, pyqtSignal
 from PyQt5.QtWidgets import QDialog, QVBoxLayout, QHBoxLayout, QWidget, QGridLayout,\
-	QSpacerItem, QApplication, QSizePolicy, QLabel, QFrame, QDesktopWidget, QRadioButton
-from PyQt5.QtGui import QFont, QIcon, QCursor
-from os import system
+	QSpacerItem, QSizePolicy, QLabel, QFrame, QDesktopWidget, QRadioButton
+from PyQt5.QtGui import QFont, QCursor
 
 Stylesheet = """
 
-#Custom_Dialog{
+#AboutDialog{
   background-color: transparent;
-  border-radius: 10px;
+  border-radius: 0px;
 }
 
-#Custom_Widget{
+#AboutWidget{
   background-color: rgba(30, 30, 30, 150);
 }
 
-#label_3{
+#devBy{
 	margin-bottom: 10px;
 }
-#label_14{
+#deepinesLink{
 	margin-top: 5px;
 	color: rgba(0, 192, 255, 255);
 }
 
-#label, #label_2, #label_3,
-#label_4, #label_5, #label_6,
-#label_7, #label_8, #label_9,
-#label_10, #label_11, #label_12,
-#label_13{
+#label, #sName,
+#devBy, #devPs, #devPr,
+#uiDes, #desgn, #saPro,
+#uxWrt, #wbPro, #srvPr,
+#collb{
   color: white;  
 }
 
@@ -45,6 +45,27 @@ Stylesheet = """
 }
 """
 
+credits = [
+"Car @Xhafas",
+
+"Sebastian @SebTrujillo; Amaro M. @xoascf",
+
+"Freddy @Akibaillusion",
+
+"Isaías @igatjens",
+
+"jhalo @jhalo; André",
+
+"Jose @fenoll; Hugo @geekmidget",
+
+"Eli @RealAct; Diego @s_d1112",
+
+"@filhoarrais; Bruno @bigbruno",
+
+"Alvaro @G4SP3R; Omi @peteromio; "
+"Opik @Prophaniti; Jose @ProgramacionJS; "
+"Jorge @seiyukaras; @n1coc4cola; Oscar @oscararg; Jorge @jotakenobi"
+]
 
 class QLabelClickable(QLabel):
 
@@ -57,11 +78,11 @@ class QLabelClickable(QLabel):
 		self.clicked.emit()
 
 
-class Dialog(QDialog):
+class AboutDialog(QDialog):
 
 	def __init__(self, parent):
-		super(Dialog, self).__init__(parent)
-		self.setObjectName('Custom_Dialog')
+		super(AboutDialog, self).__init__(parent)
+		self.setObjectName('AboutDialog')
 		self.setMinimumSize(QSize(720, 700))
 		self.setMaximumSize(QSize(720, 1000))
 		self.setWindowFlags(self.windowFlags() | Qt.FramelessWindowHint)
@@ -69,9 +90,8 @@ class Dialog(QDialog):
 		self.setStyleSheet(Stylesheet)
 		self.initUi()
 		self.center()
-		self.label_14.clicked.connect(self.open_deepines)
-
-		system('xprop -f _KDE_NET_WM_BLUR_BEHIND_REGION 32c -set _KDE_NET_WM_BLUR_BEHIND_REGION 0 -id {}'.format(int(self.winId())))
+		self.deepinesLink.clicked.connect(site)
+		set_blur(self)
 
 	def initUi(self):
 		self.gridLayout = QGridLayout(self)
@@ -79,7 +99,7 @@ class Dialog(QDialog):
 		self.gridLayout.setSpacing(0)
 		self.gridLayout.setObjectName("gridLayout")
 		self.widget = QWidget(self)
-		self.widget.setObjectName("Custom_Widget")
+		self.widget.setObjectName("AboutWidget")
 
 		self.verticalLayout = QVBoxLayout(self.widget)
 		self.verticalLayout.setContentsMargins(10, 0, 10, 10)
@@ -100,14 +120,13 @@ class Dialog(QDialog):
 		self.verticalLayout.addLayout(self.horizontalLayout_2)
 		spacerItem2 = QSpacerItem(20, 20, QSizePolicy.Minimum, QSizePolicy.Fixed)
 		self.verticalLayout.addItem(spacerItem2)
-		self.label_2 = QLabel(self)
+		self.sName = QLabel(self)
 		font = QFont()
 		font.setPointSize(20)
-		self.label_2.setFont(font)
-		self.label_2.setAlignment(Qt.AlignCenter)
-		self.label_2.setText("Tienda Deepines")
-		self.label_2.setObjectName("label_2")
-		self.verticalLayout.addWidget(self.label_2)
+		self.sName.setFont(font)
+		self.sName.setAlignment(Qt.AlignCenter)
+		self.sName.setObjectName("sName")
+		self.verticalLayout.addWidget(self.sName)
 		self.frame = QFrame(self)
 		self.frame.setFrameShape(QFrame.StyledPanel)
 		self.frame.setFrameShadow(QFrame.Raised)
@@ -130,84 +149,75 @@ class Dialog(QDialog):
 		self.label.setObjectName("label")
 		self.horizontalLayout.addWidget(self.label)
 		self.verticalLayout.addWidget(self.frame)
-		self.label_3 = QLabel(self)
+		self.devBy = QLabel(self)
 		font = QFont()
 		font.setPointSize(14)
-		self.label_3.setFont(font)
-		self.label_3.setAlignment(Qt.AlignCenter)
-		self.label_3.setWordWrap(True)
-		self.label_3.setText("Desarrollada por la comunidad de Deepin en Español")
-		self.label_3.setObjectName("label_3")
-		self.verticalLayout.addWidget(self.label_3)
+		self.devBy.setFont(font)
+		self.devBy.setAlignment(Qt.AlignCenter)
+		self.devBy.setWordWrap(True)
+		self.devBy.setObjectName("devBy")
+		self.verticalLayout.addWidget(self.devBy)
 		font = QFont()
 		font.setPointSize(12)
-		self.label_6 = QLabel(self)
-		self.label_6.setFont(font)
-		self.label_6.setAlignment(Qt.AlignCenter)
-		self.label_6.setObjectName("label_6")
-		self.label_6.setText("Proyecto: Car @Xhafas ")
-		self.verticalLayout.addWidget(self.label_6)
-		self.label_4 = QLabel(self)
-		self.label_4.setAlignment(Qt.AlignCenter)
-		self.label_4.setFont(font)
-		self.label_4.setText("Development: Sebastian @SebTrujillo; Amaro M. @xoascf")
-		self.label_4.setObjectName("label_4")
-		self.verticalLayout.addWidget(self.label_4)
-		self.label_7 = QLabel(self)
-		self.label_7.setAlignment(Qt.AlignCenter)
-		self.label_7.setObjectName("label_7")
-		self.label_7.setFont(font)
-		self.label_7.setText("UI: Freddy @Akibaillusion")
-		self.verticalLayout.addWidget(self.label_7)
-		self.label_10 = QLabel(self)
-		self.label_10.setAlignment(Qt.AlignCenter)
-		self.label_10.setFont(font)
-		self.label_10.setText("OG UX Writer: Isaías @igatjens")
-		self.label_10.setObjectName("label_10")
-		self.verticalLayout.addWidget(self.label_10)
-		self.label_8 = QLabel(self)
-		self.label_8.setAlignment(Qt.AlignCenter)
-		self.label_8.setText("Design: jhalo @jhalo; André")
-		self.label_8.setObjectName("label_8")
-		self.label_8.setFont(font)
-		self.verticalLayout.addWidget(self.label_8)
-		self.label_9 = QLabel(self)
-		self.label_9.setAlignment(Qt.AlignCenter)
-		self.label_9.setFont(font)
-		self.label_9.setText("SysAdmin: Jose @fenoll; Hugo @geekmidget")
-		self.label_9.setObjectName("label_9")
-		self.verticalLayout.addWidget(self.label_9)
-		self.label_11 = QLabel(self)
-		self.label_11.setAlignment(Qt.AlignCenter)
-		self.label_11.setFont(font)
-		self.label_11.setText("Web: Eli @RealAct; Diego @s_d1112")
-		self.label_11.setObjectName("label_11")
-		self.verticalLayout.addWidget(self.label_11)
-		self.label_12 = QLabel(self)
-		self.label_12.setAlignment(Qt.AlignCenter)
-		self.label_12.setFont(font)
-		self.label_12.setText("Servers: @filhoarrais; Bruno @bigbruno")
-		self.label_12.setObjectName("label_12")
-		self.verticalLayout.addWidget(self.label_12)
-		self.label_13 = QLabel(self)
-		self.label_13.setAlignment(Qt.AlignCenter)
-		self.label_13.setFont(font)
-		self.label_13.setText(
-			"Collaborators: Alvaro @G4SP3R; Omi @peteromio; Opik @Prophaniti; Jose @ProgramacionJS; Jorge @seiyukaras; @n1coc4cola; Oscar @oscararg; Jorge @jotakenobi")
-		self.label_13.setObjectName("label_13")
-		self.label_13.setWordWrap(True)
-		self.verticalLayout.addWidget(self.label_13)
+		self.devPr = QLabel(self)
+		self.devPr.setFont(font)
+		self.devPr.setAlignment(Qt.AlignCenter)
+		self.devPr.setObjectName("devPr")
+		self.verticalLayout.addWidget(self.devPr)
+		self.devPs = QLabel(self)
+		self.devPs.setAlignment(Qt.AlignCenter)
+		self.devPs.setFont(font)
+		self.devPs.setObjectName("devPs")
+		self.verticalLayout.addWidget(self.devPs)
+		self.uiDes = QLabel(self)
+		self.uiDes.setAlignment(Qt.AlignCenter)
+		self.uiDes.setObjectName("uiDes")
+		self.uiDes.setFont(font)
+		self.verticalLayout.addWidget(self.uiDes)
+		self.uxWrt = QLabel(self)
+		self.uxWrt.setAlignment(Qt.AlignCenter)
+		self.uxWrt.setFont(font)
+		self.uxWrt.setObjectName("uxWrt")
+		self.verticalLayout.addWidget(self.uxWrt)
+		self.desgn = QLabel(self)
+		self.desgn.setAlignment(Qt.AlignCenter)
+		self.desgn.setObjectName("desgn")
+		self.desgn.setFont(font)
+		self.verticalLayout.addWidget(self.desgn)
+		self.saPro = QLabel(self)
+		self.saPro.setAlignment(Qt.AlignCenter)
+		self.saPro.setFont(font)
+		self.saPro.setObjectName("saPro")
+		self.verticalLayout.addWidget(self.saPro)
+		self.wbPro = QLabel(self)
+		self.wbPro.setAlignment(Qt.AlignCenter)
+		self.wbPro.setFont(font)
+		self.wbPro.setObjectName("wbPro")
+		self.verticalLayout.addWidget(self.wbPro)
+		self.srvPr = QLabel(self)
+		self.srvPr.setAlignment(Qt.AlignCenter)
+		self.srvPr.setFont(font)
+		self.srvPr.setText("Servers: @filhoarrais; Bruno @bigbruno")
+		self.srvPr.setObjectName("srvPr")
+		self.verticalLayout.addWidget(self.srvPr)
+		self.collb = QLabel(self)
+		self.collb.setAlignment(Qt.AlignCenter)
+		self.collb.setFont(font)
+		self.collb.setObjectName("collb")
+		self.collb.setWordWrap(True)
+		self.verticalLayout.addWidget(self.collb)
 
-		self.label_14 = QLabelClickable(self)
-		self.label_14.setAlignment(Qt.AlignCenter)
+		self.deepinesLink = QLabelClickable(self)
+		self.deepinesLink.setAlignment(Qt.AlignCenter)
 		font = QFont()
 		font.setPointSize(14)
-		self.label_14.setFont(font)
-		self.label_14.setText("deepinenespañol.org | Copy link")
-		self.label_14.setCursor(QCursor(Qt.PointingHandCursor))
-		self.label_14.setObjectName("label_14")
-		self.verticalLayout.addWidget(self.label_14)
+		self.deepinesLink.setFont(font)
+		self.deepinesLink.setText("deepinenespañol.org | Copy link")
+		self.deepinesLink.setCursor(QCursor(Qt.PointingHandCursor))
+		self.deepinesLink.setObjectName("deepinesLink")
+		self.verticalLayout.addWidget(self.deepinesLink)
 		self.gridLayout.addWidget(self.widget, 0, 0, 1, 1)
+		self.retranslateUi(self)
 
 	def calcular_tamanio(self, width, height):
 		global r_width, r_height
@@ -220,6 +230,19 @@ class Dialog(QDialog):
 		qr.moveCenter(cp)
 		self.move(qr.topLeft())
 
-	def open_deepines(self):
-		# TODO: Maybe we should open this in a browser
-		QApplication.clipboard().setText("https://deepinenespañol.org")
+	def __tr(self, txt, disambiguation=None, n=-1):
+		return tr(self, txt, disambiguation, n)
+
+	def retranslateUi(self, AboutDialog):
+		AboutDialog.setWindowTitle(self.__tr("About"))
+		self.sName.setText(self.__tr("Deepines Store"))
+		self.devBy.setText(self.__tr("Developed by Deepin en Español"))
+		self.devPr.setText(self.__tr("Project Leader: {}").format(credits[0]))
+		self.devPs.setText(self.__tr("Development: {}").format(credits[1]))
+		self.uiDes.setText(self.__tr("UI: {}").format(credits[2]))
+		self.uxWrt.setText(self.__tr("OG UX Writer: {}").format(credits[3]))
+		self.desgn.setText(self.__tr("Design: {}").format(credits[4]))
+		self.saPro.setText(self.__tr("SysAdmin: {}").format(credits[5]))
+		self.wbPro.setText(self.__tr("Web: {}").format(credits[6]))
+		self.srvPr.setText(self.__tr("Servers: {}").format(credits[7]))
+		self.collb.setText(self.__tr("Collaborators: {}").format(credits[8]))

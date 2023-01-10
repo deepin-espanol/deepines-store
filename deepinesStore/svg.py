@@ -3,7 +3,7 @@
 from os.path import join, abspath, dirname
 from os import listdir, remove
 from hashlib import md5
-from deepinesStore.core import get_dl
+from deepinesStore.core import get_dl, write
 import threading
 
 
@@ -48,7 +48,7 @@ class threading_svg(object):
 
 		status_code = SVG_REMOTE.status_code
 		if status_code == 200:
-			open(self.RUTA_TEMP, 'w').write(SVG_REMOTE.text)
+			write(SVG_REMOTE, to=self.RUTA_TEMP)
 			with open(self.RUTA_TEMP, 'r') as f:
 				for line in f:
 					line = line.replace('\n', '')
@@ -76,4 +76,4 @@ class threading_svg(object):
 	def download_svg(self, name):
 		dl_svg = get_dl(join(self.URL_REPO_SVG, name))
 		if dl_svg.status_code == 200:
-			open(join(self.PATH_SVG, name), 'wb').write(dl_svg.content)
+			write(dl_svg, to=join(self.PATH_SVG, name))

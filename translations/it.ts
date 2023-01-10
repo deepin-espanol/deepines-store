@@ -2,6 +2,69 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="it">
 <context>
+    <name>AboutDialog</name>
+    <message>
+        <location filename="../deepinesStore/about.py" line="238"/>
+        <source>Deepines Store</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/about.py" line="239"/>
+        <source>Developed by Deepin en Español</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/about.py" line="237"/>
+        <source>About</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/about.py" line="240"/>
+        <source>Project Leader: {}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/about.py" line="241"/>
+        <source>Development: {}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/about.py" line="242"/>
+        <source>UI: {}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/about.py" line="243"/>
+        <source>OG UX Writer: {}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/about.py" line="244"/>
+        <source>Design: {}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/about.py" line="245"/>
+        <source>SysAdmin: {}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/about.py" line="246"/>
+        <source>Web: {}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/about.py" line="247"/>
+        <source>Servers: {}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/about.py" line="248"/>
+        <source>Collaborators: {}</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Ui_DialogInstall</name>
     <message>
         <location filename="../deepinesStore/dialog_install.py" line="143"/>

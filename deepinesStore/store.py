@@ -12,14 +12,14 @@ from PyQt5.QtWidgets import (QMainWindow, QApplication, QFrame, QLabel,
 from PyQt5.QtGui import QPixmap, QFont, QColor, QCursor
 # Modulos para el scraping
 from bs4 import BeautifulSoup
-from deepinesStore.core import get_dl
+from deepinesStore.core import get_dl, set_blur
 # Para obtener applicacion random
 from random import randint
 # GUI o modulos locales
 from deepinesStore.maing import Ui_MainWindow, app_icon
 from deepinesStore.cardg import Ui_Frame
 from deepinesStore.dialog_install import Ui_DialogInstall
-from deepinesStore.about import Dialog as DAbout
+from deepinesStore.about import AboutDialog
 from deepinesStore.core import get_res
 
 if os.name == 'nt':
@@ -110,7 +110,7 @@ class StoreMWindow(QMainWindow):
 	################################################
 	#			 Control de errores			   #
 
-	def error(self, text: str, enlace: str):
+	def error(self, text: str, link: str):
 		self.horizontalLayout = QHBoxLayout()
 		self.horizontalLayout.setContentsMargins(0, 40, 0, 0)
 		self.horizontalLayout.setSpacing(0)
@@ -156,8 +156,7 @@ class StoreMWindow(QMainWindow):
 		self.label_error.setEnabled(True)
 		self.label_error.setAlignment(QtCore.AlignCenter)
 		self.label_error.setObjectName("label_error")
-		self.label_error.clicked.connect(lambda:
-										 QApplication.clipboard().setText(enlace))
+		self.label_error.clicked.connect(lambda: QApplication.clipboard().setText(link))
 		ui.gridLayout.addWidget(self.label_error, 2, 1, 1, 1)
 		ui.listWidget.setEnabled(False)
 		ui.frame_4.setEnabled(False)
@@ -551,7 +550,7 @@ class StoreMWindow(QMainWindow):
 		self.la_vaina_ta_open = False
 
 	def abrelo_7u7(self):
-		self.modal = DAbout(self)
+		self.modal = AboutDialog(self)
 		self.modal.showEvent = self.AboutShowEvent
 		self.modal.closeEvent = self.AboutCloseEvent
 		self.modal.show()
@@ -844,6 +843,6 @@ def run_gui():
 	width, height = screen_rect.width(), screen_rect.height()
 	store_win = StoreMWindow()
 	store_win.calcular_anchos()
-	os.system('xprop -f _KDE_NET_WM_BLUR_BEHIND_REGION 32c -set _KDE_NET_WM_BLUR_BEHIND_REGION 0 -id {}'.format(int(store_win.winId())))
+	set_blur(store_win)
 	store_win.show()
 	sys.exit(app.exec_())
