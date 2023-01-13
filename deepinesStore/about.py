@@ -64,7 +64,7 @@ credits = [
 
 "Alvaro @G4SP3R; Omi @peteromio; Opik @Prophaniti; Jose @ProgramacionJS; "
 "Jorge @seiyukaras; @n1coc4cola; Oscar @oscararg; Jorge @jotakenobi; "
-"Tomás @TomasWarynyca"
+"Tomás @TomasWarynyca; Edwinsiño @Shokatsuo"
 ]
 
 class QLabelClickable(QLabel):
