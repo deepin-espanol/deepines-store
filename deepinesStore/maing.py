@@ -4,7 +4,7 @@
 
 from PyQt5 import QtGui, QtWidgets
 from PyQt5.QtCore import QMetaObject, QRect, QSize, Qt, pyqtSignal
-from deepinesStore.core import get_res, tr
+from deepinesStore.core import get_res, tr, STORE_VERSION
 
 svg_logo = get_res('deepines')
 
@@ -62,8 +62,6 @@ TitleBarButtonStylesheet = '''
 
 
 class Ui_MainWindow(object):
-
-	STORE_VERSION = "[VERSION]"
 
 	def __init__(self, width, height):
 		#print("El ancho del monitor es: {}".format(width))
@@ -365,6 +363,7 @@ class Ui_MainWindow(object):
 		self.label_2.setOpenExternalLinks(True)
 		self.label_2.setObjectName("label_2")
 		self.horizontalLayout.addWidget(self.label_2)
+
 		# Cuarto item, img deepines
 		self.verticalLayout.addWidget(self.widget_2)
 		self.label = QLabelClickable(self.frame_2)
@@ -375,6 +374,7 @@ class Ui_MainWindow(object):
 		self.label.setAlignment(Qt.AlignCenter)
 		self.label.setCursor(QtGui.QCursor(Qt.PointingHandCursor))
 		self.label.setObjectName("label")
+
 		# Quinto item, label version
 		self.verticalLayout.addWidget(self.label)
 		self.gridLayout_2.addWidget(self.frame_2, 0, 0, 3, 1)
@@ -489,8 +489,8 @@ class Ui_MainWindow(object):
 		self.btn_minimize.setToolTip(self.__tr("Minimize"))
 		self.btn_zoom.setToolTip(self.__tr("Zoom"))
 		self.btn_close.setToolTip(self.__tr("Close"))
-		self.label.setText(self.about_version_text.format(
-			version=self.STORE_VERSION))
+		self.label.setText(self.about_version_text.format(version=STORE_VERSION))
+		
 		# StoreWindow
 		self.list_apps_text = self.__tr("Select the apps to install")
 		self.selected_to_install_app_text = self.__tr("Selected")

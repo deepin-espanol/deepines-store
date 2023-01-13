@@ -334,7 +334,7 @@ rsync -aqr --exclude='translations' --exclude="remote_svg.txt" \
 cp -a "$SH_DIR/deepines.py" usr/share/deepines/deepines
 
 echo "Updating user interface version..."
-sed -i "s/[[]VERSION[]]/$PKG_VER/" usr/share/deepines/deepinesStore/maing.py
+sed -i "s/[[]VERSION[]]/$PKG_VER/" usr/share/deepines/deepinesStore/core.py
 
 echo "Copying main binary..."
 mkdir -p usr/bin

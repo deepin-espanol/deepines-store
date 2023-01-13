@@ -1,6 +1,7 @@
-from os.path import join, abspath, dirname
+STORE_VERSION = "[VERSION]" # TODO: Use Git Hash as fallback.
 
 def get_res(res_name, dir='resources', ext='.svg'):
+	from os.path import join, abspath, dirname
 	return abspath(join(dirname(__file__), dir, res_name + ext))
 
 def get_dl(uri, params=None, **kwargs):
@@ -29,4 +30,4 @@ def set_blur(win):
 	system('xprop -f _KDE_NET_WM_BLUR_BEHIND_REGION 32c -set _KDE_NET_WM_BLUR_BEHIND_REGION 0 -id {}'.format(int(win.winId())))
 
 def write(b, to):
-	open(to, 'wb').write(b.content) # wb should work with text and binary, keeps newlines
+	open(to, 'wb').write(b.content) # wb should work with text and binary, keeps newlines.
