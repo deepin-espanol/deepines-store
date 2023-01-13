@@ -6,67 +6,67 @@
     <message>
         <location filename="../deepinesStore/about.py" line="236"/>
         <source>Deepines Store</source>
-        <translation type="unfinished">Deepines-winkel</translation>
+        <translation>Deepines-winkel</translation>
     </message>
     <message>
         <location filename="../deepinesStore/about.py" line="237"/>
         <source>Developed by Deepin en Español</source>
-        <translation type="unfinished"></translation>
+        <translation>Ontwikkeld door Deepin en Español</translation>
     </message>
     <message>
         <location filename="../deepinesStore/about.py" line="235"/>
         <source>About</source>
-        <translation type="unfinished"></translation>
+        <translation>Over</translation>
     </message>
     <message>
         <location filename="../deepinesStore/about.py" line="238"/>
         <source>Project Leader: {}</source>
-        <translation type="unfinished"></translation>
+        <translation>Projectleider: {}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/about.py" line="239"/>
         <source>Development: {}</source>
-        <translation type="unfinished"></translation>
+        <translation>Ontwikkeling: {}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/about.py" line="240"/>
         <source>UI: {}</source>
-        <translation type="unfinished"></translation>
+        <translation>Vormgeving: {}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/about.py" line="241"/>
         <source>OG UX Writer: {}</source>
-        <translation type="unfinished"></translation>
+        <translation>Oorspronkelijke vormgeving: {}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/about.py" line="242"/>
         <source>Design: {}</source>
-        <translation type="unfinished"></translation>
+        <translation>Ontwerp: {}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/about.py" line="243"/>
         <source>SysAdmin: {}</source>
-        <translation type="unfinished"></translation>
+        <translation>Systeembeheerder: {}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/about.py" line="244"/>
         <source>Web: {}</source>
-        <translation type="unfinished"></translation>
+        <translation>Web: {}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/about.py" line="245"/>
         <source>Servers: {}</source>
-        <translation type="unfinished"></translation>
+        <translation>Servers: {}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/about.py" line="246"/>
         <source>Collaborators: {}</source>
-        <translation type="unfinished"></translation>
+        <translation>Bijdragers: {}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/about.py" line="247"/>
         <source>deepinenespañol.org | Copy link</source>
-        <translation type="unfinished"></translation>
+        <translation>deepinenespañol.org | Link kopiëren</translation>
     </message>
 </context>
 <context>
@@ -181,7 +181,7 @@ Als het probleem aanhoudt, maak er dan melding van op t.me/deepinenespanol.
         <location filename="../deepinesStore/dialog_install.py" line="137"/>
         <source>{app_count} apps have been selected for installation:
 </source>
-        <translation>Er zullen {app_count} programma's worden geïnstalleerd:
+        <translation>Er zullen {app_count} programma&apos;s worden geïnstalleerd:
 </translation>
     </message>
     <message>
@@ -208,7 +208,7 @@ You can look for help in our forum at deepinenespanol.org/comunidad
 or in our Telegram group t.me/deepinenespanol.</source>
         <translation>
 
-Een of meerdere programma's kunnen niet worden geïnstalleerd omdat
+Een of meerdere programma&apos;s kunnen niet worden geïnstalleerd omdat
 zij afhankelijk zijn van andere pakketten die ook niet kunnen worden geïnstalleerd.
 
 Vraag hulp op ons forum: deepinenespanol.org/comunidad
@@ -315,7 +315,7 @@ Versie: {version}</translation>
     <message>
         <location filename="../deepinesStore/maing.py" line="500"/>
         <source>{app_count} apps selected to install, click here to review them</source>
-        <translation>Er zullen {app_count} programma's worden geïnstalleerd. Klik hier voor details.</translation>
+        <translation>Er zullen {app_count} programma&apos;s worden geïnstalleerd. Klik hier voor details.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="497"/>
@@ -335,7 +335,7 @@ Versie: {version}</translation>
     <message>
         <location filename="../deepinesStore/maing.py" line="495"/>
         <source>Select the apps to install</source>
-        <translation>Selecteer de te installeren programma's</translation>
+        <translation>Selecteer de te installeren programma&apos;s</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="508"/>
