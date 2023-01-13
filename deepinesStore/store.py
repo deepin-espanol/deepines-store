@@ -12,7 +12,7 @@ from PyQt5.QtWidgets import (QMainWindow, QApplication, QFrame, QLabel,
 from PyQt5.QtGui import QPixmap, QFont, QColor, QCursor
 # Modulos para el scraping
 from bs4 import BeautifulSoup
-from deepinesStore.core import get_dl, set_blur
+from deepinesStore.core import get_dl, set_blur, get_deepines_uri
 # Para obtener applicacion random
 from random import randint
 # GUI o modulos locales
@@ -256,7 +256,7 @@ class StoreMWindow(QMainWindow):
 	def Get_Repo_Url(self):
 
 		# TODO: Update for Deepines 5 when 23 gets released
-		fallback_url = "http://repositorio.deepines.com/pub/deepines/4/paquetes.html"
+		fallback_url = get_deepines_uri("/4/paquetes.html")
 
 		try:
 			repo_text = open(repo_file).read()

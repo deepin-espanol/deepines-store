@@ -3,18 +3,16 @@
 from os.path import join, abspath, dirname
 from os import listdir, remove
 from hashlib import md5
-from deepinesStore.core import get_dl, write
+from deepinesStore.core import get_dl, write, get_deepines_uri
 import threading
 
 
 class threading_svg(object):
 
 	def __init__(self):
-		self.URL_REPO_SVG = 'https://repositorio.deepines.com/pub/deepines/store/svg/'
-		self.URL_REMOTE_SUMS = 'https://repositorio.deepines.com/pub/deepines/store/config/svg_checksum'
 		self.LOCAL_PATH = abspath(join(dirname(__file__)))
 		self.PATH_SVG = join(self.LOCAL_PATH, 'resources/apps')
-		self.RUTA_TEMP = join(self.LOCAL_PATH, 'remote_svg.txt')
+		self.PATH_TEMP = join(self.LOCAL_PATH, 'remote_svg.txt')
 		self.LOCAL_CHECK = dict()
 		self.REMOTE_CHECK = dict()
 		self.LIST_SVG_REMOTE = list()
@@ -30,7 +28,7 @@ class threading_svg(object):
 			self.get_local_checksum()
 			self.compare_check()
 			self.check_exists()
-			remove(self.RUTA_TEMP)
+			remove(self.PATH_TEMP)
 
 	# Obteniendo la lista local de svg y su checksum
 	def get_local_checksum(self):
@@ -44,12 +42,12 @@ class threading_svg(object):
 
 	# Obteniendo la lista remota de svg y su checksum
 	def get_remote_checksum(self):
-		SVG_REMOTE = get_dl(self.URL_REMOTE_SUMS)
+		SVG_REMOTE = get_dl(get_deepines_uri('/store/config/svg_checksum'))
 
 		status_code = SVG_REMOTE.status_code
 		if status_code == 200:
-			write(SVG_REMOTE, to=self.RUTA_TEMP)
-			with open(self.RUTA_TEMP, 'r') as f:
+			write(SVG_REMOTE, to=self.PATH_TEMP)
+			with open(self.PATH_TEMP, 'r') as f:
 				for line in f:
 					line = line.replace('\n', '')
 					(check, space, name) = line.split(' ')
@@ -74,6 +72,6 @@ class threading_svg(object):
 				self.download_svg(nombre)
 
 	def download_svg(self, name):
-		dl_svg = get_dl(join(self.URL_REPO_SVG, name))
+		dl_svg = get_dl(get_deepines_uri(f'/store/svg/{name}'))
 		if dl_svg.status_code == 200:
 			write(dl_svg, to=join(self.PATH_SVG, name))
