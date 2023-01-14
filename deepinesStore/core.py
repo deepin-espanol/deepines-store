@@ -6,6 +6,9 @@ def get_res(res_name, dir='resources', ext='.svg'):
 	from os.path import join, abspath, dirname
 	return abspath(join(dirname(__file__), dir, res_name + ext))
 
+def get_app_icon():
+	from PyQt5.QtGui import QIcon
+	return QIcon.fromTheme('deepines', QIcon(get_res('deepines')))
 
 def get_dl(uri, params=None, **kwargs):
 	from requests import get

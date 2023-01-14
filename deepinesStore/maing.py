@@ -6,11 +6,6 @@ from PyQt5 import QtGui, QtWidgets
 from PyQt5.QtCore import QMetaObject, QRect, QSize, Qt, pyqtSignal
 from deepinesStore.core import get_res, tr, STORE_VERSION
 
-svg_logo = get_res('deepines')
-
-# Themed app store icon
-app_icon = QtGui.QIcon.fromTheme('deepines', QtGui.QIcon(svg_logo))
-
 class QLabelClickable(QtWidgets.QLabel):
 
 	clicked = pyqtSignal()

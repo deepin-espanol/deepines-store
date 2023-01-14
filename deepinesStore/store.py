@@ -16,11 +16,11 @@ from deepinesStore.core import get_dl, set_blur, get_deepines_uri
 # Para obtener applicacion random
 from random import randint
 # GUI o modulos locales
-from deepinesStore.maing import Ui_MainWindow, app_icon
+from deepinesStore.maing import Ui_MainWindow
 from deepinesStore.cardg import Ui_Frame
 from deepinesStore.dialog_install import Ui_DialogInstall
 from deepinesStore.about import AboutDialog
-from deepinesStore.core import get_res
+from deepinesStore.core import get_res, get_app_icon
 
 if os.name == 'nt':
 	try:
@@ -78,12 +78,13 @@ class StoreMWindow(QMainWindow):
 		ui.lbl_list_apps.clicked.connect(self.apps_seleccionadas)
 		ui.listWidget.itemClicked.connect(self.listwidgetclicked)
 		ui.lineEdit.textChanged.connect(self.search_app)
-		ui.label_2.clicked.connect(self.acerca_de)
+		self.about_dialog = AboutDialog(self) #  FIXME: This is preloading.
+		ui.label_2.clicked.connect(self.show_about_dialog)
 		ui.btn_close.clicked.connect(self.close)
 		ui.btn_zoom.clicked.connect(self.maximize)
 		ui.btn_minimize.clicked.connect(self.minimize)
 		ui.widget_1.installEventFilter(self)
-		ui.label.clicked.connect(self.acerca_de)
+		ui.label.clicked.connect(self.show_about_dialog)
 		shadow = QGraphicsDropShadowEffect(self,
 										   blurRadius=10,
 										   color=QColor(255, 255, 255),
@@ -539,32 +540,13 @@ class StoreMWindow(QMainWindow):
 	################################################
 
 	################################################
-	#				   Acerca de				  #
+	#				     About   				  #
 
-	la_vaina_ta_open = False
+	def show_about_dialog(self):
+		if not self.about_dialog.isVisible():
+			self.about_dialog.show()
 
-	def AboutShowEvent(self, event):
-		self.la_vaina_ta_open = True
-
-	def AboutCloseEvent(self, event):
-		self.la_vaina_ta_open = False
-
-	def abrelo_7u7(self):
-		self.modal = AboutDialog(self)
-		self.modal.showEvent = self.AboutShowEvent
-		self.modal.closeEvent = self.AboutCloseEvent
-		self.modal.show()
-
-	def no_abrir(self):
-		pass
-
-	def acerca_de(self):
-		if self.la_vaina_ta_open:
-			self.no_abrir()
-		else:
-			self.abrelo_7u7()
-
-	#				  /Acerca de				  #
+	#				     /About   				  #
 	################################################
 
 	################################################
@@ -833,7 +815,7 @@ class Card(QFrame):
 
 def run_gui():
 	app = QApplication(sys.argv)
-	app.setWindowIcon(app_icon)
+	app.setWindowIcon(get_app_icon())
 	translator = QTranslator()
 	translator.load(QLocale(), "", "", get_res('', 'translations', ''), ".qm")
 	app.installTranslator(translator)
