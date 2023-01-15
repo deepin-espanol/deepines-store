@@ -42,7 +42,7 @@ class StoreMWindow(QMainWindow):
 		global ui
 		ui = Ui_MainWindow(width, height)
 		ui.setupUi(self)
-		self.setWindowFlags(self.windowFlags() | Qt.FramelessWindowHint)
+		self.setWindowFlags(self.windowFlags() | Qt.WindowMaximizeButtonHint)
 		self.setAttribute(Qt.WA_TranslucentBackground, True)
 		self.lista_excluir = self.Get_App_Exclude()
 		self.lista_deepines = self.Get_App_Deepines()
@@ -78,7 +78,7 @@ class StoreMWindow(QMainWindow):
 		ui.lbl_list_apps.clicked.connect(self.apps_seleccionadas)
 		ui.listWidget.itemClicked.connect(self.listwidgetclicked)
 		ui.lineEdit.textChanged.connect(self.search_app)
-		self.about_dialog = AboutDialog(self) #  FIXME: This is preloading.
+		self.about_dialog = AboutDialog(self) #  Intentional preloading.
 		ui.label_2.clicked.connect(self.show_about_dialog)
 		ui.btn_close.clicked.connect(self.close)
 		ui.btn_zoom.clicked.connect(self.maximize)
