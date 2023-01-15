@@ -42,7 +42,7 @@ class StoreMWindow(QMainWindow):
 		global ui
 		ui = Ui_MainWindow(width, height)
 		ui.setupUi(self)
-		self.setWindowFlags(self.windowFlags() | Qt.WindowMaximizeButtonHint)
+		self.setWindowFlags(self.windowFlags() | Qt.FramelessWindowHint)
 		self.setAttribute(Qt.WA_TranslucentBackground, True)
 		self.lista_excluir = self.Get_App_Exclude()
 		self.lista_deepines = self.Get_App_Deepines()
