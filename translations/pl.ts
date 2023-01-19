@@ -6,32 +6,32 @@
     <message>
         <location filename="../deepinesStore/about.py" line="236"/>
         <source>Deepines Store</source>
-        <translation type="unfinished">Sklep Deepin</translation>
+        <translation>Sklep Deepines</translation>
     </message>
     <message>
         <location filename="../deepinesStore/about.py" line="237"/>
         <source>Developed by Deepin en Español</source>
-        <translation type="unfinished"></translation>
+        <translation>Stworzone przez Deepin en Español</translation>
     </message>
     <message>
         <location filename="../deepinesStore/about.py" line="235"/>
         <source>About</source>
-        <translation type="unfinished"></translation>
+        <translation>O aplikacji</translation>
     </message>
     <message>
         <location filename="../deepinesStore/about.py" line="238"/>
         <source>Project Leader: {}</source>
-        <translation type="unfinished"></translation>
+        <translation>Lider projektu: {}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/about.py" line="239"/>
         <source>Development: {}</source>
-        <translation type="unfinished"></translation>
+        <translation>Programowanie: {}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/about.py" line="240"/>
         <source>UI: {}</source>
-        <translation type="unfinished"></translation>
+        <translation>Interfejs użytkownika: {}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/about.py" line="241"/>
@@ -41,32 +41,32 @@
     <message>
         <location filename="../deepinesStore/about.py" line="242"/>
         <source>Design: {}</source>
-        <translation type="unfinished"></translation>
+        <translation>Projekt: {}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/about.py" line="243"/>
         <source>SysAdmin: {}</source>
-        <translation type="unfinished"></translation>
+        <translation>Administrator systemu: {}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/about.py" line="244"/>
         <source>Web: {}</source>
-        <translation type="unfinished"></translation>
+        <translation>Strona internetowa: {}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/about.py" line="245"/>
         <source>Servers: {}</source>
-        <translation type="unfinished"></translation>
+        <translation>Serwery: {}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/about.py" line="246"/>
         <source>Collaborators: {}</source>
-        <translation type="unfinished"></translation>
+        <translation>Współpracownicy: {}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/about.py" line="247"/>
         <source>deepinenespañol.org | Copy link</source>
-        <translation type="unfinished"></translation>
+        <translation>deepinenespañol.org | Skopiuj link</translation>
     </message>
 </context>
 <context>
