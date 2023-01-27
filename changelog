@@ -1,3 +1,10 @@
+deepines-store (1.3.5-1) stable; urgency=high
+
+  * Se actualizaron las URL de obtención de información de paquetes.
+  * Banners actualizados.
+
+ -- Amaro Martínez <xoas@airmail.cc>  Fri, 27 Jan 2023 16:15:38 -0500
+
 deepines-store (1.3.5) stable; urgency=low
 
   * Se solucionó el problema de que al actualizar se borraba el repositorio.

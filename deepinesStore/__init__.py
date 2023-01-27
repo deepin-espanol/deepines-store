@@ -4,8 +4,8 @@ from deepinesStore.svg import ThreadingSvg
 from os.path import join, abspath, dirname
 from requests import get
 
-EXCLUIDOS = 'https://mirror.deepines.com/pub/deepines/store/config/excluidos.txt'
-DEEPINES = 'https://mirror.deepines.com/pub/deepines/store/config/deepines.txt'
+EXCLUIDOS = 'https://repositorio.deepines.com/pub/deepines/store/config/excluidos.txt'
+DEEPINES = 'https://repositorio.deepines.com/pub/deepines/store/config/deepines.txt'
 LOCAL_PATH = abspath(join(dirname(__file__)))
 PATH_CONTROL = join(LOCAL_PATH, 'config')
 
