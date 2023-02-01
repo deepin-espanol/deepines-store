@@ -36,7 +36,7 @@
     <message>
         <location filename="../deepinesStore/about.py" line="241"/>
         <source>OG UX Writer: {}</source>
-        <translation type="unfinished"></translation>
+        <translation>OG UX Writer: {}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/about.py" line="242"/>
