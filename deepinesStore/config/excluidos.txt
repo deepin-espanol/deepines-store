@@ -112,6 +112,6 @@ pepperflashplugin-nonfree
 fish-common
 microsoft-edge-beta
 microsoft-edge-dev
-spotify
+spotify-client
 protonvpn-cli
 protonvpn-gui
