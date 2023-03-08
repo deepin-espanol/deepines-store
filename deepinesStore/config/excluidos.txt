@@ -113,3 +113,5 @@ fish-common
 microsoft-edge-beta
 microsoft-edge-dev
 spotify
+protonvpn-cli
+protonvpn-gui
