@@ -6,12 +6,12 @@
     <message>
         <location filename="deepines!message" line="0"/>
         <source>Deepines Store requires authentication</source>
-        <translation type="unfinished"></translation>
+        <translation>Deepines Store benötigt Authentifizierung</translation>
     </message>
     <message>
         <location filename="deepines!description" line="0"/>
         <source>Allows graphical installation of applications from the Deepines repository</source>
-        <translation type="unfinished"></translation>
+        <translation>Bietet grafische Installtion von Anwendungen aus der Deepines Paketquelle</translation>
     </message>
 </context>
 </TS>
