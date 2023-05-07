@@ -6,32 +6,32 @@
     <message>
         <location filename="../deepinesStore/about.py" line="236"/>
         <source>Deepines Store</source>
-        <translation type="unfinished"></translation>
+        <translation>Deepines Store</translation>
     </message>
     <message>
         <location filename="../deepinesStore/about.py" line="237"/>
         <source>Developed by Deepin en Español</source>
-        <translation type="unfinished"></translation>
+        <translation>Entwickelt von Deepin in Spanisch</translation>
     </message>
     <message>
         <location filename="../deepinesStore/about.py" line="235"/>
         <source>About</source>
-        <translation type="unfinished"></translation>
+        <translation>Über</translation>
     </message>
     <message>
         <location filename="../deepinesStore/about.py" line="238"/>
         <source>Project Leader: {}</source>
-        <translation type="unfinished"></translation>
+        <translation>Projektleiter: {}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/about.py" line="239"/>
         <source>Development: {}</source>
-        <translation type="unfinished"></translation>
+        <translation>Entwicklung: {}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/about.py" line="240"/>
         <source>UI: {}</source>
-        <translation type="unfinished"></translation>
+        <translation>Design: {}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/about.py" line="241"/>
