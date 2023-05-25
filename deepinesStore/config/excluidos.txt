@@ -115,3 +115,5 @@ microsoft-edge-dev
 spotify-client
 protonvpn-cli
 protonvpn-gui
+python3-proton-client
+python3-protonvpn-nm-lib
