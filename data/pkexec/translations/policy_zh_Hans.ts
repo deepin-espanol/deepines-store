@@ -6,12 +6,12 @@
     <message>
         <location filename="deepines!message" line="0"/>
         <source>Deepines Store requires authentication</source>
-        <translation type="unfinished"></translation>
+        <translation>深度西班牙商店需要身份验证</translation>
     </message>
     <message>
         <location filename="deepines!description" line="0"/>
         <source>Allows graphical installation of applications from the Deepines repository</source>
-        <translation type="unfinished"></translation>
+        <translation>允许从 Deepines 存储库图形化安装应用</translation>
     </message>
 </context>
 </TS>
