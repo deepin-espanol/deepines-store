@@ -6,67 +6,67 @@
     <message>
         <location filename="../deepinesStore/about.py" line="236"/>
         <source>Deepines Store</source>
-        <translation type="unfinished">深度商店</translation>
+        <translation>深度西班牙商店</translation>
     </message>
     <message>
         <location filename="../deepinesStore/about.py" line="237"/>
         <source>Developed by Deepin en Español</source>
-        <translation type="unfinished"></translation>
+        <translation>由深度西班牙社区开发</translation>
     </message>
     <message>
         <location filename="../deepinesStore/about.py" line="235"/>
         <source>About</source>
-        <translation type="unfinished"></translation>
+        <translation>关于</translation>
     </message>
     <message>
         <location filename="../deepinesStore/about.py" line="238"/>
         <source>Project Leader: {}</source>
-        <translation type="unfinished"></translation>
+        <translation>项目负责人：{}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/about.py" line="239"/>
         <source>Development: {}</source>
-        <translation type="unfinished"></translation>
+        <translation>开发：{}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/about.py" line="240"/>
         <source>UI: {}</source>
-        <translation type="unfinished"></translation>
+        <translation>UI: {}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/about.py" line="241"/>
         <source>OG UX Writer: {}</source>
-        <translation type="unfinished"></translation>
+        <translation>官方手册和与用户界面编写者： {}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/about.py" line="242"/>
         <source>Design: {}</source>
-        <translation type="unfinished"></translation>
+        <translation>设计： {}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/about.py" line="243"/>
         <source>SysAdmin: {}</source>
-        <translation type="unfinished"></translation>
+        <translation>系统管理员：{}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/about.py" line="244"/>
         <source>Web: {}</source>
-        <translation type="unfinished"></translation>
+        <translation>网页：{}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/about.py" line="245"/>
         <source>Servers: {}</source>
-        <translation type="unfinished"></translation>
+        <translation>服务器：{}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/about.py" line="246"/>
         <source>Collaborators: {}</source>
-        <translation type="unfinished"></translation>
+        <translation>共同作者：{}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/about.py" line="247"/>
         <source>deepinenespañol.org | Copy link</source>
-        <translation type="unfinished"></translation>
+        <translation>deepinenespañol.org | 复制链接</translation>
     </message>
 </context>
 <context>
