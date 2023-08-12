@@ -31,7 +31,7 @@
     <message>
         <location filename="../deepinesStore/about.py" line="240"/>
         <source>UI: {}</source>
-        <translation>UI: {}</translation>
+        <translation>图形界面：{}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/about.py" line="241"/>
