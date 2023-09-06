@@ -162,3 +162,6 @@ libreoffice7.2-impress
 libreoffice7.2-math
 libreoffice7.2-ure
 libreoffice7.2-writer
+gir1.2-appindicator3-0.1
+libappindicator1
+libappindicator3-1
