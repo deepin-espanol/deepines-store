@@ -223,6 +223,8 @@ configure)
 	;;
 esac
 
+mkdir -p /usr/share/desktop-directories
+
 exit 0
 '
 
@@ -431,14 +433,20 @@ MakeCopyright >usr/share/doc/$PKG_NAME/copyright
 echo "Generating changelog..."
 Open "$SH_DIR/changelog" # (-m) Manually update the changelog file.
 # TODO: Use dch (devscripts package) if available.
-gzip -9n <"$SH_DIR/changelog" >usr/share/doc/$PKG_NAME/changelog.gz
+gzip -9 <"$SH_DIR/changelog" >usr/share/doc/$PKG_NAME/changelog.Debian.gz
 
 # Generate md5sums.
-find . -not \( -path ./DEBIAN -prune \) -type f -exec md5sum {} \; |
-    sed "s|\./||" >DEBIAN/md5sums
+> DEBIAN/md5sums
+LISTA=$(find ./ -type f -name  "*" )
+for i in $LISTA; do
+    if echo "$i" | grep -v -E "^\.\/DEBIAN"; then
+        echo "$i"
+        md5sum "$(echo $i | sed "s/^\.\///")" >> DEBIAN/md5sums
+    fi
+done
 
 # Generate 'Installed-Size' variable.
-INSIZE=$(du -s --exclude='DEBIAN/*' | grep -Eo "[0-9]*")
+INSIZE=$(expr $(du --max-depth=1 | grep -E "(DEBIAN|\.$)" | sed "s|$| |; s|\t| |g" | tr -d "\n" | tr -s [:blank:] | cut -d " " -f1,3 | sed "s|^|-|; s| | + |"))
 Open "./DEBIAN/" # (-m) Manually update preinst, postinst, etc.
 
 GenerateControl() {
@@ -453,7 +461,7 @@ Homepage: $PKG_SRC
 Priority: optional
 Pre-Depends: debconf (>= 0.5)
 Depends: python3, python3-pyqt5, python3-requests, python3-bs4, libqt5designer5, libqt5help5, python3-certifi, python3-html5lib, python3-idna, python3-lxml, python3-sip, python3-soupsieve, python3-urllib3, python3-webencodings
-Replaces: deepines-repository (<= 1:4.1), deepines-store:amd64 (<= 1.3.3)
+Replaces: deepines-repository (<= 1:4.1), deepines-store:amd64 (<= 1.3.5-1)
 Description: Deepines repository, key and Store
  Deepines unofficial repository and Store by deepinenespañol.org
 EOF
