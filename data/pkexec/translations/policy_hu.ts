@@ -6,12 +6,12 @@
     <message>
         <location filename="deepines!message" line="0"/>
         <source>Deepines Store requires authentication</source>
-        <translation type="unfinished"></translation>
+        <translation>A Deepines Áruház hitelesítést igényel</translation>
     </message>
     <message>
         <location filename="deepines!description" line="0"/>
         <source>Allows graphical installation of applications from the Deepines repository</source>
-        <translation type="unfinished"></translation>
+        <translation>Lehetővé teszi alkalmazások grafikus telepítését a Deepines adattárból</translation>
     </message>
 </context>
 </TS>
