@@ -410,16 +410,47 @@ class Ui_MainWindow(object):
 		spacerItem = QtWidgets.QSpacerItem(
 			130, 20, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
 		self.horizontalLayout_4.addItem(spacerItem)
+		
+		self.btn_app_deb = QtWidgets.QPushButton(self.widget_1)
+		self.btn_app_deb.setObjectName(u"btn_app_deb")
+		sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
+		sizePolicy.setHorizontalStretch(0)
+		sizePolicy.setVerticalStretch(0)
+		sizePolicy.setHeightForWidth(self.btn_app_deb.sizePolicy().hasHeightForWidth())
+		self.btn_app_deb.setSizePolicy(sizePolicy)
+		self.btn_app_deb.setEnabled(False)
+		self.btn_app_deb.setStyleSheet("background-color: rgb(203, 203, 203);")
+		self.btn_app_deb.setMinimumSize(QSize(200, 30))
+
+		self.horizontalLayout_4.addWidget(self.btn_app_deb)
 
 		spacerItem1 = QtWidgets.QSpacerItem(
-			40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+			40, 20, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
 		self.horizontalLayout_4.addItem(spacerItem1)
 
 		self.label_3 = QtWidgets.QLabel(self.widget_1)
 		self.label_3.setObjectName("label_3")
 		font = QtGui.QFont()
-		font.setPointSize(12)
+		font.setPointSize(20)
+		self.label_3.setFont(font)
 		self.horizontalLayout_4.addWidget(self.label_3)
+
+		spacerItem2 = QtWidgets.QSpacerItem(
+			40, 20, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+		self.horizontalLayout_4.addItem(spacerItem2)
+
+		self.btn_app_flatpak = QtWidgets.QPushButton(self.widget_1)
+		self.btn_app_flatpak.setObjectName(u"btn_app_flatpak")
+		sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
+		sizePolicy.setHorizontalStretch(0)
+		sizePolicy.setVerticalStretch(0)
+		sizePolicy.setHeightForWidth(self.btn_app_flatpak.sizePolicy().hasHeightForWidth())
+		self.btn_app_flatpak.setSizePolicy(sizePolicy)
+		self.btn_app_flatpak.setMinimumSize(QSize(200, 30))
+
+		self.horizontalLayout_4.addWidget(self.btn_app_flatpak)
+
+
 
 		spacerItem2 = QtWidgets.QSpacerItem(
 			40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
@@ -485,6 +516,8 @@ class Ui_MainWindow(object):
 		self.btn_zoom.setToolTip(self.__tr("Zoom"))
 		self.btn_close.setToolTip(self.__tr("Close"))
 		self.label.setText(self.about_version_text.format(version=STORE_VERSION))
+		self.btn_app_deb.setText(self.__tr("Apps .deb"))
+		self.btn_app_flatpak.setText(self.__tr("Apps flatpak"))
 		
 		# StoreWindow
 		self.list_apps_text = self.__tr("Select the apps to install")

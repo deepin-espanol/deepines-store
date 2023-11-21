@@ -21,6 +21,7 @@ from deepinesStore.cardg import Ui_Frame
 from deepinesStore.dialog_install import Ui_DialogInstall
 from deepinesStore.about import AboutDialog
 from deepinesStore.core import get_res, get_app_icon
+from deepinesStore.flatpak.get_apps_flatpak import fetch_list_app_flatpak, apps_flatpak_in_categories
 
 if os.name == 'nt':
 	try:
@@ -31,7 +32,7 @@ if os.name == 'nt':
 		pass
 
 # Global variables
-global lista_app, total_apps, lista_inicio, lista_global, lista_selected
+global lista_app_deb, total_apps_deb, lista_inicio, lista_global, lista_selected
 global selected_apps, instaladas, columnas, tamanio, repo, repo_file, contador_selected
 
 
@@ -47,8 +48,9 @@ class StoreMWindow(QMainWindow):
 		self.lista_excluir = self.Get_App_Exclude()
 		self.lista_deepines = self.Get_App_Deepines()
 
-		global lista_app, selected_apps, instaladas,\
-			lista_global, repo, repo_file, lista_selected, contador_selected
+		global lista_app_deb, selected_apps, instaladas,\
+			lista_global, repo, repo_file, lista_selected, \
+			contador_selected, selected_type_app
 		repo_file = "/etc/apt/sources.list.d/deepines.list"
 		repo = self.repo_is_exist()
 		if repo:
@@ -60,11 +62,22 @@ class StoreMWindow(QMainWindow):
 			contador_selected = 0
 			instaladas = self.apps_instaladas()
 			# Almacenamos la lista, para cargarla solo al inicio
-			lista_app = self.Get_App()
-			if lista_app:
-				# Obtenemos aplicaciones para la lista de apps
-				self.Apps_inicio(lista_app)
+			lista_app_deb = self.Get_App()
+			global total_apps_deb, total_apps_flatpak
+			total_apps_deb = len(lista_app_deb)
+			lista_app_flatpak = fetch_list_app_flatpak()
+			total_apps_flatpak = len(lista_app_flatpak)
+			lista_app_flatpak_by_category = apps_flatpak_in_categories()
 
+			selected_type_app = 0 # 0 by debs
+
+			if lista_app_deb and lista_app_flatpak and lista_app_flatpak_by_category:
+				# Obtenemos aplicaciones para la lista de apps
+				self.inicio_apps_deb = self.Apps_inicio(lista_app_deb)
+				self.inicio_apps_flatpak = self.Apps_inicio(lista_app_flatpak)
+
+				lista_global = self.inicio_apps_deb
+				
 			else:
 				self.error(ui.error_no_server_text, "https://deepinenespañol.org")
 		else:
@@ -85,6 +98,8 @@ class StoreMWindow(QMainWindow):
 		ui.btn_minimize.clicked.connect(self.minimize)
 		ui.widget_1.installEventFilter(self)
 		ui.label.clicked.connect(self.show_about_dialog)
+		ui.btn_app_deb.clicked.connect(self.change_type_app_selected)
+		ui.btn_app_flatpak.clicked.connect(self.change_type_app_selected)
 		shadow = QGraphicsDropShadowEffect(self,
 										   blurRadius=10,
 										   color=QColor(255, 255, 255),
@@ -167,8 +182,40 @@ class StoreMWindow(QMainWindow):
 
 	def resizeEvent(self, event):
 
-		if repo and lista_app:
+		if repo and lista_app_deb:
 			self.Listar_Apps(lista_global)
+
+
+	################################################
+	#			  Cambiar tipo de app			#
+
+	def change_type_app_selected(self):
+		global selected_type_app
+		style_selected = """
+		background-color: rgb(203, 203, 203);
+		"""
+		style_unselected = ""
+		if selected_type_app == 0:
+			# Seleccionamos flatpak
+			selected_type_app = 1
+			ui.btn_app_deb.setEnabled(True)
+			ui.btn_app_deb.setStyleSheet(style_unselected)
+			ui.btn_app_flatpak.setEnabled(False)
+			ui.btn_app_flatpak.setStyleSheet(style_selected)
+			lista_global = self.inicio_apps_flatpak
+		else:
+			# Seleccionamos deb
+			selected_type_app = 0
+			ui.btn_app_deb.setEnabled(False)
+			ui.btn_app_deb.setStyleSheet(style_selected)
+			ui.btn_app_flatpak.setEnabled(True)
+			ui.btn_app_flatpak.setStyleSheet(style_unselected)
+			lista_global = self.inicio_apps_deb
+		
+		self.Listar_Apps(lista_global)
+
+	#			  /Cambiar tipo de app			#
+	################################################
 
 	################################################
 	#			  Busqueda de apps				#
@@ -181,10 +228,10 @@ class StoreMWindow(QMainWindow):
 		global lista_global
 		if len(text) != 0 and len(text) > 2:
 			ui.listWidget.clearSelection()
-			for elemento in lista_app:
+			for elemento in lista_app_deb:
 				if elemento[0] not in self.lista_excluir and elemento[0].startswith(text) or text in elemento[1]:
-					indice = lista_app.index(elemento)
-					item = lista_app[indice]
+					indice = lista_app_deb.index(elemento)
+					item = lista_app_deb[indice]
 					lista_search[contador] = item
 					contador += 1
 			else:
@@ -222,25 +269,36 @@ class StoreMWindow(QMainWindow):
 			filtro.append("sound")
 			filtro.append("audio")
 			filtro.append("video")
+			filtro.append("audiovideo")
 		if item == ui.listWidget.item(4):  # Graphics
 			filtro.append("graphics")
 			filtro.append("media")
 		if item == ui.listWidget.item(5):  # Games
 			filtro.append("games")
+			filtro.append("game")
 		if item == ui.listWidget.item(6):  # Office automation
 			filtro.append("editors")
+			filtro.append("office")
+			filtro.append("productivity")
 		if item == ui.listWidget.item(7):  # Development
 			filtro.append("devel")
 			filtro.append("shells")
+			filtro.append("development")
 		if item == ui.listWidget.item(8):  # System
 			filtro.append("admin")
 			filtro.append("python")
+			filtro.append("system")
+			filtro.append("utility")
 		if item == ui.listWidget.item(9):  # Other
 			filtro.append("otros")
+			filtro.append("education")
+			filtro.append("science")
 
 		if "inicio" not in filtro:
+			# TODO: Cambiar funcionamiento por una separacion de las app
+			# TODO: en listas en diccionarios fijos, al cargar la tienda.
 			global lista_global
-			lista_global = self.Get_App_Filter(lista_app, filtro)
+			lista_global = self.Get_App_Filter(lista_app_deb, filtro)
 			self.Listar_Apps(lista_global)
 		else:
 			lista_global = lista_inicio
@@ -288,8 +346,7 @@ class StoreMWindow(QMainWindow):
 				entradas = html.find_all('tr')
 
 				lista = list()
-				global total_apps
-				total_apps = 0
+				
 				# Recorremos todas las entradas para extraer el título, autor y fecha
 				for i, entrada in enumerate(entradas):
 					# Con el método "getText()" no nos devuelve el HTML
@@ -307,19 +364,18 @@ class StoreMWindow(QMainWindow):
 										version, categoria, estado]
 						lista.append(lista_origen)
 
-						total_apps += 1
-
 				return lista
 		except:
 			pass
+
 
 	#		   Filtrar aplicaciones			 #
 	def Get_App_Filter(self, lista_app, filtro):
 		lista_filtrada = {}
 		contador = 0
 		filtros = ['web', 'net', 'mail', 'sound', 'audio', 'video',
-				   'graphics', 'media', 'games', 'editors', 'devel', 'shell',
-				   'admin', 'python', 'network', 'networking']
+					'graphics', 'media', 'games', 'editors', 'devel', 'shell',
+					'admin', 'python', 'network', 'networking']
 		if 'deepines' in filtro:
 			for app in self.lista_deepines:
 				for elemento in lista_app:
@@ -344,7 +400,7 @@ class StoreMWindow(QMainWindow):
 
 	#		   Aplicaciones Inicio			  #
 	def Apps_inicio(self, lista_app):
-		global total_apps, lista_inicio, lista_global
+		global total_apps_deb, lista_inicio, lista_global
 		lista_inicio = {}
 		lista_key = []
 		contador = True
@@ -352,7 +408,7 @@ class StoreMWindow(QMainWindow):
 			if len(lista_key) == 8:
 				contador = False
 			else:
-				key = randint(0, (total_apps-1))
+				key = randint(0, (total_apps_deb-1))
 				if key not in lista_key:
 					lista_key.append(key)
 
@@ -361,7 +417,7 @@ class StoreMWindow(QMainWindow):
 			lista_inicio[contador] = lista_app[key]
 			contador += 1
 
-		lista_global = lista_inicio
+		return lista_inicio
 
 	#		   Listar aplicaciones			  #
 	def Listar_Apps(self, lista):
@@ -587,10 +643,10 @@ class StoreMWindow(QMainWindow):
 		lista_complete = {}
 		contador = 0
 		for app in selected_apps:
-			for elemento in lista_app:
+			for elemento in lista_app_deb:
 				if elemento[0] == app:
-					indice = lista_app.index(elemento)
-					item = lista_app[indice]
+					indice = lista_app_deb.index(elemento)
+					item = lista_app_deb[indice]
 					lista_complete[contador] = item
 					contador += 1
 
@@ -732,11 +788,11 @@ class Card(QFrame):
 											 "margin-bottom: 5px;")
 
 	def select_app(self, titulo):
-		global selected_apps, lista_app, instaladas, lista_selected, contador_selected
+		global selected_apps, lista_app_deb, instaladas, lista_selected, contador_selected
 
-		for elemento in lista_app:
+		for elemento in lista_app_deb:
 			if titulo in elemento:
-				indice = lista_app.index(elemento)
+				indice = lista_app_deb.index(elemento)
 
 		# Si la app no esta instalada
 		if titulo not in instaladas:
@@ -744,14 +800,14 @@ class Card(QFrame):
 			if titulo not in selected_apps:
 				selected_apps.append(titulo)
 
-				for elemento in lista_app:
+				for elemento in lista_app_deb:
 					if elemento[0] == titulo:
-						indice = lista_app.index(elemento)
-						item = lista_app[indice]
+						indice = lista_app_deb.index(elemento)
+						item = lista_app_deb[indice]
 						lista_selected[contador_selected] = item
 						contador_selected += 1
 
-				lista_app[indice][4] = 0
+				lista_app_deb[indice][4] = 0
 				self.change_color_buton(0)
 				self.removeEventFilter(self)
 			else:
@@ -767,7 +823,7 @@ class Card(QFrame):
 
 				lista_selected.pop(eliminar)
 
-				lista_app[indice][4] = 1
+				lista_app_deb[indice][4] = 1
 				self.change_color_buton(1)
 				self.installEventFilter(self)
 		else:
