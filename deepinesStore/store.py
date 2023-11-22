@@ -13,7 +13,7 @@ from PyQt5.QtGui import QPixmap, QFont, QColor, QCursor
 from bs4 import BeautifulSoup
 from deepinesStore.core import get_dl, set_blur, get_deepines_uri
 # Para obtener applicacion random
-from random import randint
+from random import choice
 # GUI o modulos locales
 from deepinesStore.maing import Ui_MainWindow
 from deepinesStore.cardg import Ui_Frame
@@ -32,7 +32,7 @@ if os.name == 'nt':
 		pass
 
 # Global variables
-global lista_inicio, lista_global, lista_selected
+global lista_inicio, lista_global, lista_selected, lista_temp
 global selected_apps, instaladas, columnas, tamanio,\
 	  contador_selected
 
@@ -62,19 +62,18 @@ class StoreMWindow(QMainWindow):
 			# Almacenamos la lista, para cargarla solo al inicio
 			self.lista_app_deb = fetch_list_app_deb(self.lista_excluir)
 			self.total_apps_deb = len(self.lista_app_deb)
-			self.lista_app_flatpak = fetch_list_app_flatpak()
+			self.lista_app_flatpak = apps_flatpak_in_categories()
 			self.total_apps_flatpak = len(self.lista_app_flatpak)
-			self.lista_app_flatpak_by_category = apps_flatpak_in_categories()
 
 			selected_type_app = 0 # 0 by debs
 
-			if self.lista_app_deb and self.lista_app_flatpak and self.lista_app_flatpak_by_category:
+			if self.lista_app_deb and self.lista_app_flatpak:
 				# Obtenemos aplicaciones para la lista de apps
 				self.inicio_apps_deb = self.Apps_inicio(self.lista_app_deb)
 				self.inicio_apps_flatpak = self.Apps_inicio(self.lista_app_flatpak)
-				print(type(self.inicio_apps_deb))
-				lista_global = self.inicio_apps_deb
+				lista_global = self.lista_app_deb
 				lista_inicio = self.inicio_apps_deb
+				self.primer_inicio = True
 				
 			else:
 				self.error(ui.error_no_server_text, "https://deepinenespañol.org")
@@ -167,9 +166,11 @@ class StoreMWindow(QMainWindow):
 	################################################
 
 	def resizeEvent(self, event):
-		global lista_inicio
-		if self.lista_app_deb and self.lista_app_flatpak:
-			self.Listar_Apps(lista_global)
+		if self.primer_inicio:
+			self.Listar_Apps(lista_inicio)
+			self.primer_inicio = False
+		else: 
+			self.Listar_Apps(lista_temp)
 
 
 	################################################
@@ -286,7 +287,7 @@ class StoreMWindow(QMainWindow):
 		if "inicio" not in filtro:
 			# TODO: Cambiar funcionamiento por una separacion de las app
 			# TODO: en listas en diccionarios fijos, al cargar la tienda.
-			global lista_global
+			global lista_temp
 			lista_temp = self.Get_App_Filter(lista_global, filtro)
 		else:
 			lista_temp = lista_inicio
@@ -305,8 +306,7 @@ class StoreMWindow(QMainWindow):
 
 	#		   Filtrar aplicaciones			 #
 	def Get_App_Filter(self, lista_app, filtro):
-		lista_filtrada = {}
-		contador = 0
+		lista_filtrada = list()
 		filtros = ['web', 'net', 'mail', 'sound', 'audio', 'video',
 					'graphics', 'media', 'games', 'editors', 'devel', 'shell',
 					'admin', 'python', 'network', 'networking']
@@ -314,36 +314,34 @@ class StoreMWindow(QMainWindow):
 			for app in self.lista_deepines:
 				for elemento in lista_app:
 					if elemento[0] == app:
-						lista_filtrada[contador] = elemento
-						contador += 1
+						lista_filtrada.append(elemento)
 		else:
 			if "otros" not in filtro:
-				print(lista_app)
 				for elemento in lista_app:
 					categoria_app = elemento[3].lower().split("/")
 					for filtro_uno in categoria_app:
 						if filtro_uno in filtro:
-							lista_filtrada[contador] = elemento
-							contador += 1
+							lista_filtrada.append(elemento)
 			else:
 				for elemento in lista_app:
 					if elemento[3].lower() not in filtros:
-						lista_filtrada[contador] = elemento
-						contador += 1
+						lista_filtrada.append(elemento)
 
 		return lista_filtrada
 
 	#		   Aplicaciones Inicio			  #
 	def Apps_inicio(self, lista_app):
-		lista_key = list()
+		lista_key = []
 		contador = True
+		i=0
 		while contador:
 			if len(lista_key) == 8:
 				contador = False
 			else:
-				key = randint(0, (len(lista_app)-1))
+				key = choice(lista_app)
 				if key not in lista_key:
 					lista_key.append(key)
+					i+= 1
 
 		return lista_key
 
@@ -366,7 +364,7 @@ class StoreMWindow(QMainWindow):
 		# Estas para establecer la ubicacion de la tarjetas en la grilla
 		i = 0
 		self.calcular_columnas()
-		for key in lista:  # Recorremos la lista con los elementos
+		for item in lista:  # Recorremos la lista con los elementos
 			i += 1  # Contador para agregar el espaciador horizontal
 			# Consultamos si ya tenemos tres tarjetas en y
 			if y % columnas == 0 and y != 0:
@@ -375,8 +373,8 @@ class StoreMWindow(QMainWindow):
 			y += 1  # agregamos 1 a la coordenada y
 
 			# Creamos una instancia de la clase card
-			carta = Card(lista[key][0], lista[key][1],
-						 lista[key][2], lista[key][4], self)
+			carta = Card(item[0], item[1],
+						 item[2], item[4], self)
 			# Agregamos dicha instancia a la grilla
 			ui.gridLayout.addWidget(carta, x, y, 1, 1)
 		ui.frame.verticalScrollBar().setSliderPosition(0)
@@ -572,10 +570,10 @@ class StoreMWindow(QMainWindow):
 		lista_complete = {}
 		contador = 0
 		for app in selected_apps:
-			for elemento in lista_app_deb:
+			for elemento in self.lista_app_deb:
 				if elemento[0] == app:
-					indice = lista_app_deb.index(elemento)
-					item = lista_app_deb[indice]
+					indice = self.lista_app_deb.index(elemento)
+					item = self.lista_app_deb[indice]
 					lista_complete[contador] = item
 					contador += 1
 
@@ -717,11 +715,11 @@ class Card(QFrame):
 											 "margin-bottom: 5px;")
 
 	def select_app(self, titulo):
-		global selected_apps, lista_app_deb, instaladas, lista_selected, contador_selected
+		global selected_apps, instaladas, lista_selected, contador_selected
 
-		for elemento in lista_app_deb:
+		for elemento in self.parentWindow.lista_app_deb:
 			if titulo in elemento:
-				indice = lista_app_deb.index(elemento)
+				indice = self.parentWindow.lista_app_deb.index(elemento)
 
 		# Si la app no esta instalada
 		if titulo not in instaladas:
@@ -729,14 +727,14 @@ class Card(QFrame):
 			if titulo not in selected_apps:
 				selected_apps.append(titulo)
 
-				for elemento in lista_app_deb:
+				for elemento in self.parentWindow.lista_app_deb:
 					if elemento[0] == titulo:
-						indice = lista_app_deb.index(elemento)
-						item = lista_app_deb[indice]
+						indice = self.parentWindow.lista_app_deb.index(elemento)
+						item = self.parentWindow.lista_app_deb[indice]
 						lista_selected[contador_selected] = item
 						contador_selected += 1
 
-				lista_app_deb[indice][4] = 0
+				self.parentWindow.lista_app_deb[indice][4] = 0
 				self.change_color_buton(0)
 				self.removeEventFilter(self)
 			else:
@@ -752,7 +750,7 @@ class Card(QFrame):
 
 				lista_selected.pop(eliminar)
 
-				lista_app_deb[indice][4] = 1
+				self.parentWindow.lista_app_deb[indice][4] = 1
 				self.change_color_buton(1)
 				self.installEventFilter(self)
 		else:
