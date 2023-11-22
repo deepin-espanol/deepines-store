@@ -167,10 +167,11 @@ class StoreMWindow(QMainWindow):
 
 	def resizeEvent(self, event):
 		if self.primer_inicio:
-			self.Listar_Apps(lista_inicio)
+			global lista_temp
+			lista_temp = lista_inicio
 			self.primer_inicio = False
-		else: 
-			self.Listar_Apps(lista_temp)
+
+		self.Listar_Apps(lista_temp)
 
 
 	################################################
@@ -191,6 +192,7 @@ class StoreMWindow(QMainWindow):
 			ui.btn_app_flatpak.setStyleSheet(style_selected)
 			lista_global = self.lista_app_flatpak
 			lista_inicio = self.inicio_apps_flatpak
+			ui.listWidget.item(1).setHidden(True)
 		else:
 			# Seleccionamos deb
 			selected_type_app = 0
@@ -200,6 +202,7 @@ class StoreMWindow(QMainWindow):
 			ui.btn_app_flatpak.setStyleSheet(style_unselected)
 			lista_global = self.lista_app_deb
 			lista_inicio = self.inicio_apps_deb
+			ui.listWidget.item(1).setHidden(False)
 		
 		self.Listar_Apps(lista_inicio)
 		item = ui.listWidget.item(0)
@@ -212,24 +215,22 @@ class StoreMWindow(QMainWindow):
 	#			  Busqueda de apps				#
 
 	def search_app(self):
-		text = ui.lineEdit.text()
+		text = ui.lineEdit.text().lower()
 
-		lista_search = {}
-		contador = 0
-		global lista_global
+		lista_search = list()
+		global lista_global, lista_temp
 		if len(text) != 0 and len(text) > 2:
 			ui.listWidget.clearSelection()
-			for elemento in lista_app_deb:
-				if elemento[0] not in self.lista_excluir and elemento[0].startswith(text) or text in elemento[1]:
-					indice = lista_app_deb.index(elemento)
-					item = lista_app_deb[indice]
-					lista_search[contador] = item
-					contador += 1
+			for elemento in lista_global:
+				if elemento[0] not in self.lista_excluir and text in str(elemento[0]).lower() or text in str(elemento[1]).lower():
+					indice = lista_global.index(elemento)
+					item = lista_global[indice]
+					lista_search.append(item)
 			else:
-				lista_global = lista_search
+				lista_temp = lista_search
 		else:
-			lista_global = lista_inicio
-		self.Listar_Apps(lista_global)
+			lista_temp = lista_inicio
+		self.Listar_Apps(lista_temp)
 
 	def clear_search_txt(self):
 		ui.lineEdit.setText("")
