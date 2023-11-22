@@ -43,7 +43,8 @@ def fetch_list_app_deb(lista_excluir):
 					estado = 1
 					if titulo not in lista_excluir:
 						lista_origen = [titulo, descripcion,
-										version, categoria, estado]
+										version, categoria, estado, 
+										titulo, 0]
 						lista.append(lista_origen)
 		
 				return lista

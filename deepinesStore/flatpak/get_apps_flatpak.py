@@ -46,16 +46,20 @@ def add_apps_dict_by_categories():
 def apps_flatpak_in_categories():
     app_data = add_apps_dict_by_categories()
     lista = list()
-
+    lista_agregados = list()
     for category in categories:
         for app in app_data[category]:
-            titulo = app['name']
-            descripcion = app['summary']
-            categoria= category
-            estado= 1
-            install = app['flatpakAppId']
-            lista_origen = [titulo, descripcion, 'None',
-                            categoria, estado, install]
-            lista.append(lista_origen)
+            if not app['flatpakAppId'] in lista_agregados: 
+                titulo = app['name']
+                descripcion = app['summary']
+                categoria= category
+                estado= 1
+                install = app['flatpakAppId']
+                lista_origen = [titulo, descripcion, 'None',
+                                categoria, estado, 
+                                install, 1]
+                lista_agregados.append(install)
+                lista.append(lista_origen)
     
+    lista.sort()
     return lista

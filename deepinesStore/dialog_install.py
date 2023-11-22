@@ -50,7 +50,7 @@ class Ui_DialogInstall(QtWidgets.QWidget):
 		self.plainTextEdit.insertPlainText(
 			preview_installed.format(app_count=count_apps))
 		for item in self.lista:
-			self.plainTextEdit.insertPlainText("\n{}".format(item))
+			self.plainTextEdit.insertPlainText("\n{}".format(item[0]))
 
 		self.plainTextEdit.insertPlainText(self.warning_text)
 

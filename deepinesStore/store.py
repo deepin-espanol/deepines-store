@@ -56,7 +56,7 @@ class StoreMWindow(QMainWindow):
 		if os.path.exists(repo_file):
 			# Variables globales
 			selected_apps = list()
-			lista_selected = {}
+			lista_selected = list()
 			contador_selected = 0
 			instaladas = self.apps_instaladas()
 			# Almacenamos la lista, para cargarla solo al inicio
@@ -374,8 +374,7 @@ class StoreMWindow(QMainWindow):
 			y += 1  # agregamos 1 a la coordenada y
 
 			# Creamos una instancia de la clase card
-			carta = Card(item[0], item[1],
-						 item[2], item[4], self)
+			carta = Card(item, self)
 			# Agregamos dicha instancia a la grilla
 			ui.gridLayout.addWidget(carta, x, y, 1, 1)
 		ui.frame.verticalScrollBar().setSliderPosition(0)
@@ -558,6 +557,13 @@ class StoreMWindow(QMainWindow):
 			linea = linea.replace("install", "")
 			instaladas.append(linea)
 
+		comando = "flatpak list"
+		lista = os.popen(comando)
+		for linea in lista.readlines():
+			linea = linea.rstrip("\n").split("\t")
+			linea = linea[0] # 0 = nombre, 1 = flatpakid
+			instaladas.append(linea)
+
 		return(instaladas)
 
 	#			   /Apps Instaladas				#
@@ -635,18 +641,19 @@ class QLabelClickable(QLabel):
 
 
 class Card(QFrame):
-	def __init__(self, titulo: str, descripcion: str, version: str, estado: int, parent):
+	def __init__(self, application: list, parent):
 		super(Card, self).__init__()
 		self.parentWindow = parent
 		self.cd = Ui_Frame()
 		self.cd.setupUi(self)
 		# Establecemos los atributos de la app
 		# self.cd.btn_select_app.setToolTip(version)
-		self.titulo = titulo
-		self.version = version
+		self.application = application
+		self.titulo = self.application[0]
+		self.descripcion = self.application[1]
 		self.cd.lbl_name_app.setText(self.titulo)
 		self.cd.image_app.setToolTip(
-			"<p wrap='hard'>{}</p>".format(descripcion))
+			"<p wrap='hard'>{}</p>".format(self.descripcion))
 		self.cd.image_app.setWordWrap(True)
 		self.setMinimumSize(QSize(tamanio+30, int((tamanio+115)*0.72222)))
 		self.setMaximumSize(QSize(tamanio+30, int((tamanio+115)*0.72222)))
@@ -657,7 +664,7 @@ class Card(QFrame):
 		global instaladas
 		if self.titulo not in instaladas:
 			estado = 1
-			if self.titulo in selected_apps:
+			if self.application in selected_apps:
 				estado = 0
 		else:
 			estado = 2
@@ -667,7 +674,7 @@ class Card(QFrame):
 
 		self.change_color_buton(estado)
 		# Consultamos si existe el grafico de la app
-		ruta = get_res(self.titulo, 'resources/apps')
+		ruta = get_res(self.application[5], 'resources/apps')
 		if not os.path.exists(ruta):
 			url = get_res('no-img', 'resources/apps')
 		else:
@@ -706,7 +713,7 @@ class Card(QFrame):
 			self.cd.btn_select_app.setText(ui.selected_installed_app_text)
 			color = "color: rgb(0, 212, 0);"
 		else:
-			self.cd.btn_select_app.setText("v: {}".format(self.version))
+			self.cd.btn_select_app.setText("v: {}".format(self.application[2]))
 			color = "color: rgb(107,107,107);"
 
 		self.cd.btn_select_app.setStyleSheet("border: transparent;\n"
@@ -716,44 +723,32 @@ class Card(QFrame):
 											 "margin-bottom: 5px;")
 
 	def select_app(self, titulo):
-		global selected_apps, instaladas, lista_selected, contador_selected
-
-		for elemento in self.parentWindow.lista_app_deb:
-			if titulo in elemento:
-				indice = self.parentWindow.lista_app_deb.index(elemento)
+		global lista_global, selected_apps, instaladas, lista_selected
 
 		# Si la app no esta instalada
 		if titulo not in instaladas:
+			lista_global_temp = lista_global
+			if self.application[6] == 0: # app deb
+				lista_global = self.parentWindow.lista_app_deb
+			else: # app flatpak
+				lista_global = self.parentWindow.lista_app_flatpak
+			indice = lista_global.index(self.application)
 			# Si la app no esta seleccionada
-			if titulo not in selected_apps:
-				selected_apps.append(titulo)
-
-				for elemento in self.parentWindow.lista_app_deb:
-					if elemento[0] == titulo:
-						indice = self.parentWindow.lista_app_deb.index(elemento)
-						item = self.parentWindow.lista_app_deb[indice]
-						lista_selected[contador_selected] = item
-						contador_selected += 1
-
-				self.parentWindow.lista_app_deb[indice][4] = 0
-				self.change_color_buton(0)
+			if self.application not in selected_apps:
+				selected_apps.append(self.application)
+				lista_selected.append(self.application)
+				change_state = 0
 				self.removeEventFilter(self)
 			else:
-				selected_apps.remove(titulo)
-
-				count = 0
-				for elemento in lista_selected:
-					titulo_elemento = lista_selected[elemento]
-
-					if titulo_elemento[0] == titulo:
-						eliminar = elemento
-					count += 1
-
-				lista_selected.pop(eliminar)
-
-				self.parentWindow.lista_app_deb[indice][4] = 1
-				self.change_color_buton(1)
+				selected_apps.remove(self.application)
+				lista_selected.remove(self.application)
+				change_state = 1
 				self.installEventFilter(self)
+				
+
+			lista_global[indice][4] = change_state
+			lista_global = lista_global_temp
+			self.change_color_buton(change_state)
 		else:
 			self.change_color_buton(2)
 
