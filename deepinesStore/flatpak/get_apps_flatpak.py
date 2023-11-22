@@ -18,11 +18,10 @@ def fetch_list_app_flatpak():
             categoria= "None"
             estado= 1
             install = app['flatpakAppId']
-            lista_origen = [titulo, descripcion,
+            lista_origen = [titulo, descripcion, 'None',
                             categoria, estado, install]
             lista.append(lista_origen)
-            
-
+        
     except Exception as e:
         print("Error fetching apps:", e)
         return []

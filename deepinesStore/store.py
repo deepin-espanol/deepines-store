@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 import sys
 import os
-import re
 # PyQt5 modules
 from PyQt5.Qt import Qt
 from PyQt5.QtCore import QTranslator, QLocale, QSize, QPointF, QPoint, QEvent, Qt as QtCore, pyqtSignal
@@ -22,6 +21,7 @@ from deepinesStore.dialog_install import Ui_DialogInstall
 from deepinesStore.about import AboutDialog
 from deepinesStore.core import get_res, get_app_icon
 from deepinesStore.flatpak.get_apps_flatpak import fetch_list_app_flatpak, apps_flatpak_in_categories
+from deepinesStore.deb.get_apps_deb import fetch_list_app_deb
 
 if os.name == 'nt':
 	try:
@@ -32,8 +32,9 @@ if os.name == 'nt':
 		pass
 
 # Global variables
-global lista_app_deb, total_apps_deb, lista_inicio, lista_global, lista_selected
-global selected_apps, instaladas, columnas, tamanio, repo, repo_file, contador_selected
+global lista_inicio, lista_global, lista_selected
+global selected_apps, instaladas, columnas, tamanio,\
+	  contador_selected
 
 
 class StoreMWindow(QMainWindow):
@@ -48,35 +49,32 @@ class StoreMWindow(QMainWindow):
 		self.lista_excluir = self.Get_App_Exclude()
 		self.lista_deepines = self.Get_App_Deepines()
 
-		global lista_app_deb, selected_apps, instaladas,\
-			lista_global, repo, repo_file, lista_selected, \
+		global selected_apps, instaladas,\
+			lista_inicio, lista_global, lista_selected, \
 			contador_selected, selected_type_app
 		repo_file = "/etc/apt/sources.list.d/deepines.list"
-		repo = self.repo_is_exist()
-		if repo:
-			# Obtenemos la url de la .list
-			self.obtener_url_repo = self.Get_Repo_Url()
+		if os.path.exists(repo_file):
 			# Variables globales
 			selected_apps = list()
 			lista_selected = {}
 			contador_selected = 0
 			instaladas = self.apps_instaladas()
 			# Almacenamos la lista, para cargarla solo al inicio
-			lista_app_deb = self.Get_App()
-			global total_apps_deb, total_apps_flatpak
-			total_apps_deb = len(lista_app_deb)
-			lista_app_flatpak = fetch_list_app_flatpak()
-			total_apps_flatpak = len(lista_app_flatpak)
-			lista_app_flatpak_by_category = apps_flatpak_in_categories()
+			self.lista_app_deb = fetch_list_app_deb(self.lista_excluir)
+			self.total_apps_deb = len(self.lista_app_deb)
+			self.lista_app_flatpak = fetch_list_app_flatpak()
+			self.total_apps_flatpak = len(self.lista_app_flatpak)
+			self.lista_app_flatpak_by_category = apps_flatpak_in_categories()
 
 			selected_type_app = 0 # 0 by debs
 
-			if lista_app_deb and lista_app_flatpak and lista_app_flatpak_by_category:
+			if self.lista_app_deb and self.lista_app_flatpak and self.lista_app_flatpak_by_category:
 				# Obtenemos aplicaciones para la lista de apps
-				self.inicio_apps_deb = self.Apps_inicio(lista_app_deb)
-				self.inicio_apps_flatpak = self.Apps_inicio(lista_app_flatpak)
-
+				self.inicio_apps_deb = self.Apps_inicio(self.lista_app_deb)
+				self.inicio_apps_flatpak = self.Apps_inicio(self.lista_app_flatpak)
+				print(type(self.inicio_apps_deb))
 				lista_global = self.inicio_apps_deb
+				lista_inicio = self.inicio_apps_deb
 				
 			else:
 				self.error(ui.error_no_server_text, "https://deepinenespañol.org")
@@ -110,18 +108,6 @@ class StoreMWindow(QMainWindow):
 		ui.btn_install.setGraphicsEffect(shadow)
 
 		self.center()
-
-	################################################
-	#			   Repo en sistema				#
-
-	def repo_is_exist(self):
-		if os.path.exists(repo_file):
-			return True
-		else:
-			return False
-
-	#			   /Repo en sistema			   #
-	################################################
 
 	################################################
 	#			 Control de errores			   #
@@ -181,8 +167,8 @@ class StoreMWindow(QMainWindow):
 	################################################
 
 	def resizeEvent(self, event):
-
-		if repo and lista_app_deb:
+		global lista_inicio
+		if self.lista_app_deb and self.lista_app_flatpak:
 			self.Listar_Apps(lista_global)
 
 
@@ -190,7 +176,7 @@ class StoreMWindow(QMainWindow):
 	#			  Cambiar tipo de app			#
 
 	def change_type_app_selected(self):
-		global selected_type_app
+		global selected_type_app, lista_inicio, lista_global
 		style_selected = """
 		background-color: rgb(203, 203, 203);
 		"""
@@ -202,7 +188,8 @@ class StoreMWindow(QMainWindow):
 			ui.btn_app_deb.setStyleSheet(style_unselected)
 			ui.btn_app_flatpak.setEnabled(False)
 			ui.btn_app_flatpak.setStyleSheet(style_selected)
-			lista_global = self.inicio_apps_flatpak
+			lista_global = self.lista_app_flatpak
+			lista_inicio = self.inicio_apps_flatpak
 		else:
 			# Seleccionamos deb
 			selected_type_app = 0
@@ -210,9 +197,12 @@ class StoreMWindow(QMainWindow):
 			ui.btn_app_deb.setStyleSheet(style_selected)
 			ui.btn_app_flatpak.setEnabled(True)
 			ui.btn_app_flatpak.setStyleSheet(style_unselected)
-			lista_global = self.inicio_apps_deb
+			lista_global = self.lista_app_deb
+			lista_inicio = self.inicio_apps_deb
 		
-		self.Listar_Apps(lista_global)
+		self.Listar_Apps(lista_inicio)
+		item = ui.listWidget.item(0)
+		item.setSelected(True)
 
 	#			  /Cambiar tipo de app			#
 	################################################
@@ -251,11 +241,10 @@ class StoreMWindow(QMainWindow):
 
 	def listwidgetclicked(self, item):
 		filtro = list()  # Limpiamos la lista
-		global lista_global
+		global lista_global, lista_inicio
 
 		# TODO: Maybe a switch statement would be nice here
 		if item == ui.listWidget.item(0):  # Home
-			self.Listar_Apps(lista_inicio)
 			filtro.append("inicio")
 		if item == ui.listWidget.item(1):  # Deepines
 			filtro.append("deepines")
@@ -298,11 +287,11 @@ class StoreMWindow(QMainWindow):
 			# TODO: Cambiar funcionamiento por una separacion de las app
 			# TODO: en listas en diccionarios fijos, al cargar la tienda.
 			global lista_global
-			lista_global = self.Get_App_Filter(lista_app_deb, filtro)
-			self.Listar_Apps(lista_global)
+			lista_temp = self.Get_App_Filter(lista_global, filtro)
 		else:
-			lista_global = lista_inicio
+			lista_temp = lista_inicio
 
+		self.Listar_Apps(lista_temp)
 		self.clear_search_txt()
 
 	#			   /Filtro de apps				#
@@ -311,62 +300,7 @@ class StoreMWindow(QMainWindow):
 	################################################
 	#				Lista de apps				 #
 
-	#		 Obtener URL del repositorio		  #
-	def Get_Repo_Url(self):
 
-		# TODO: Update for Deepines 5 when 23 gets released
-		fallback_url = get_deepines_uri("/4/paquetes.html")
-
-		try:
-			repo_text = open(repo_file).read()
-			url = re.search(
-				"(?P<url>https?://[^\s]+)", repo_text).group("url") + "paquetes.html"
-			return url
-		except:
-			return fallback_url
-
-	#		   Obtener lista de apps			  #
-	def Get_App(self):
-
-		# Asignamos la url
-		repo_url = self.obtener_url_repo
-
-		try:
-			# Realizamos la petición a la web
-			req = get_dl(repo_url, timeout=10)
-
-			# Comprobamos que la petición nos devuelve un Status Code = 200
-			status_code = req.status_code
-			if status_code == 200:
-
-				# Pasamos el contenido HTML de la web a un objeto BeautifulSoup()
-				html = BeautifulSoup(req.text, "html.parser")
-
-				# Obtenemos todos los divs donde están las entradas
-				entradas = html.find_all('tr')
-
-				lista = list()
-				
-				# Recorremos todas las entradas para extraer el título, autor y fecha
-				for i, entrada in enumerate(entradas):
-					# Con el método "getText()" no nos devuelve el HTML
-					titulo = entrada.find('td', {'class': 'package'}).getText()
-					descripcion = entrada.find(
-						'td', {'class': 'description'}).getText()
-					version = entrada.find(
-						'td', {'class': 'version'}).getText()
-					categoria = entrada.find(
-						'td', {'class': 'section'}).getText()
-					estado = 1
-
-					if titulo not in self.lista_excluir:
-						lista_origen = [titulo, descripcion,
-										version, categoria, estado]
-						lista.append(lista_origen)
-
-				return lista
-		except:
-			pass
 
 
 	#		   Filtrar aplicaciones			 #
@@ -384,6 +318,7 @@ class StoreMWindow(QMainWindow):
 						contador += 1
 		else:
 			if "otros" not in filtro:
+				print(lista_app)
 				for elemento in lista_app:
 					categoria_app = elemento[3].lower().split("/")
 					for filtro_uno in categoria_app:
@@ -400,27 +335,21 @@ class StoreMWindow(QMainWindow):
 
 	#		   Aplicaciones Inicio			  #
 	def Apps_inicio(self, lista_app):
-		global total_apps_deb, lista_inicio, lista_global
-		lista_inicio = {}
-		lista_key = []
+		lista_key = list()
 		contador = True
 		while contador:
 			if len(lista_key) == 8:
 				contador = False
 			else:
-				key = randint(0, (total_apps_deb-1))
+				key = randint(0, (len(lista_app)-1))
 				if key not in lista_key:
 					lista_key.append(key)
 
-		contador = 0
-		for key in lista_key:
-			lista_inicio[contador] = lista_app[key]
-			contador += 1
-
-		return lista_inicio
+		return lista_key
 
 	#		   Listar aplicaciones			  #
 	def Listar_Apps(self, lista):
+		global lista_inicio, lista_global
 		equal = lista_inicio == lista_global
 		if equal:
 			item = ui.listWidget.item(0)
