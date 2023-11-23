@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import subprocess
+import locale
 
-command = f'pkexec /usr/share/deepines/deepines'
-subprocess.check_call(command, shell=True)
+cmd = f"pkexec /usr/share/deepines/deepines -l '{locale.getdefaultlocale()[0]}' -d $XDG_CURRENT_DESKTOP"
+subprocess.check_call(cmd, shell=True)

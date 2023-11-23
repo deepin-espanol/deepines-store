@@ -9,9 +9,8 @@ from PyQt5.QtWidgets import (QMainWindow, QApplication, QFrame, QLabel,
 							 QSizePolicy, QGraphicsDropShadowEffect, QSpacerItem,
 							 QDesktopWidget, QHBoxLayout)
 from PyQt5.QtGui import QPixmap, QFont, QColor, QCursor, QPainter
-# Modulos para el scraping
-from bs4 import BeautifulSoup
-from deepinesStore.core import get_dl, set_blur, get_deepines_uri
+
+from deepinesStore.core import set_blur
 # Para obtener applicacion random
 from random import choice
 # GUI o modulos locales
@@ -22,14 +21,6 @@ from deepinesStore.about import AboutDialog
 from deepinesStore.core import get_res, get_app_icon
 from deepinesStore.flatpak.get_apps_flatpak import fetch_list_app_flatpak, apps_flatpak_in_categories
 from deepinesStore.deb.get_apps_deb import fetch_list_app_deb
-
-if os.name == 'nt':
-	try:
-		from ctypes import windll
-		windll.shell32.SetCurrentProcessExplicitAppUserModelID('Deepines Store')
-	except AttributeError:
-        # Not available?
-		pass
 
 # Global variables
 global lista_inicio, lista_global, lista_selected, lista_temp

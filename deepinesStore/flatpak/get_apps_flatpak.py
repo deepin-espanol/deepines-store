@@ -1,5 +1,5 @@
 import requests
-import subprocess
+import deepinesStore.demoted_actions as actions
 
 # Categorias de app en flathub
 categories = [
@@ -38,7 +38,7 @@ def fetch_apps_by_category(category):
             print(f"Error fetching apps in category {category}:", e)
             return []
 
-def two_columns_split(output):
+def two_columns_split(output: str):
     lines = output.split('\n')
     result = {}
     for line in lines:
@@ -48,7 +48,7 @@ def two_columns_split(output):
 
     return result
 
-app_id_ver_dict = two_columns_split(subprocess.check_output(['flatpak', 'remote-ls', 'flathub', '--app', '--columns=application,version'], text=True))
+app_id_ver_dict = two_columns_split(actions.get_flatpak_info_cmd())
 
 def add_apps_dict_by_categories():
     app_data = {}
