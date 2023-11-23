@@ -1,4 +1,5 @@
 import requests
+import subprocess
 
 # Categorias de app en flathub
 categories = [
@@ -37,6 +38,18 @@ def fetch_apps_by_category(category):
             print(f"Error fetching apps in category {category}:", e)
             return []
 
+def two_columns_split(output):
+    lines = output.split('\n')
+    result = {}
+    for line in lines:
+        columns = line.split(maxsplit=1)
+        if len(columns) == 2:
+            result[columns[0]] = columns[1].strip()
+
+    return result
+
+app_id_ver_dict = two_columns_split(subprocess.check_output(['flatpak', 'remote-ls', 'flathub', '--app', '--columns=application,version'], text=True))
+
 def add_apps_dict_by_categories():
     app_data = {}
     for category in categories:
@@ -55,7 +68,8 @@ def apps_flatpak_in_categories():
                 categoria= category
                 estado= 1
                 install = app['flatpakAppId']
-                lista_origen = [titulo, descripcion, 'None',
+                version = app_id_ver_dict.get(install) or "No version"
+                lista_origen = [titulo, descripcion, version,
                                 categoria, estado, 
                                 install, 1]
                 lista_agregados.append(install)
