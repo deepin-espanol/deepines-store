@@ -28,7 +28,7 @@ class External(QObject):
 		self.update.emit()
 		# TODO: Don't use Popen!!
 		update = subprocess.Popen(["sudo", "apt", "update"], 
-				 stdout=subprocess.PIPE, universal_newlines=True)
+				stdout=subprocess.PIPE, universal_newlines=True)
 		try:
 			while not update.poll():
 				line = update.stdout.readline()
@@ -53,11 +53,16 @@ class External(QObject):
 			"""
 			try:
 				# Iniciamos la instalacion
-				self.start.emit(elemento)
+				self.start.emit(elemento[5])
 				# Enviamos la señal
 				# comandos para instalar la app
-				comando = ["sudo", "DEBIAN_FRONTEND=noninteractive",
-				 "apt", "-q", "-y","install", elemento]
+				if elemento[6] == 0:
+					comando = ["sudo", "DEBIAN_FRONTEND=noninteractive",
+				"apt", "-q", "-y","install", elemento[5]]
+				else:
+					comando = ["flatpak", "install",
+				"flathub", "-y", elemento[5]]
+
 						
 				ejecucion = subprocess.Popen(comando, 
 							stdout=subprocess.PIPE, universal_newlines=True)
@@ -68,7 +73,6 @@ class External(QObject):
 						error = 4
 					# Cambiamos el validador para que no vuelva a ingresar
 					validacion = False
-					print(f"linea: {line}")
 					if line != '\n':
 						if ('101: La red es inaccesible' in line or 
 							'101: network is unreachable' in line or 

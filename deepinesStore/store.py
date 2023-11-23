@@ -574,17 +574,11 @@ class StoreMWindow(QMainWindow):
 
 	def instalacion_completada(self):
 		global selected_apps, instaladas
-		lista_complete = {}
-		contador = 0
+		lista_complete = list()
 		for app in selected_apps:
-			for elemento in self.lista_app_deb:
-				if elemento[0] == app:
-					indice = self.lista_app_deb.index(elemento)
-					item = self.lista_app_deb[indice]
-					lista_complete[contador] = item
-					contador += 1
-
-			instaladas.append(app)
+			lista_complete.append(app)
+			instaladas.append(app[0])
+			
 		selected_apps = list()
 		self.Listar_Apps(lista_complete)
 		self.contar_apps()
