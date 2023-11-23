@@ -8,7 +8,7 @@ from PyQt5.QtCore import QTranslator, QLocale, QSize, QPointF, QPoint, QEvent, Q
 from PyQt5.QtWidgets import (QMainWindow, QApplication, QFrame, QLabel,
 							 QSizePolicy, QGraphicsDropShadowEffect, QSpacerItem,
 							 QDesktopWidget, QHBoxLayout)
-from PyQt5.QtGui import QPixmap, QFont, QColor, QCursor
+from PyQt5.QtGui import QPixmap, QFont, QColor, QCursor, QPainter
 # Modulos para el scraping
 from bs4 import BeautifulSoup
 from deepinesStore.core import get_dl, set_blur, get_deepines_uri
@@ -667,15 +667,22 @@ class Card(QFrame):
 			self.installEventFilter(self)
 
 		self.change_color_buton(estado)
-		# Consultamos si existe el grafico de la app
-		ruta = get_res(self.application[5], 'resources/apps')
-		if not os.path.exists(ruta):
-			url = get_res('no-img', 'resources/apps')
-		else:
-			url = ruta
+
 		# Establecemos la imagen
-		pixmap = QPixmap(url)
-		self.cd.image_app.setPixmap(pixmap)
+		if (self.application[6] == 0): # Deb then
+			app_banner = QPixmap(self.get_banner_path(self.application[5]))
+			self.cd.image_app.setPixmap(app_banner)
+		else: # Flatpak then
+			# use app id, if not found, then use the alternative app name
+			alt_app_name = str(self.application[0]).lower().replace(" ", "")
+			app_banner = QPixmap(self.get_banner_path(self.application[5], alt_app_name))
+			app_overlay = QPixmap(get_res('flatpak'))
+			app_pixmap = QPixmap(app_banner)
+			painter = QPainter(app_pixmap)
+			painter.drawPixmap(0, 0, app_overlay)
+			painter.end()
+			self.cd.image_app.setPixmap(app_pixmap)
+
 		self.cd.btn_select_app.clicked.connect(
 			lambda: self.select_app(self.titulo))
 		self.cd.image_app.clicked.connect(lambda: self.select_app(self.titulo))
@@ -698,6 +705,17 @@ class Card(QFrame):
 		shadow.setYOffset(0)
 		self.setGraphicsEffect(shadow)
 		return True
+
+	def get_banner_path(self, app_name: str, alt_app_name: str = ""):
+		path = get_res(app_name, 'resources/apps')
+
+		if alt_app_name and not os.path.exists(path):
+			return self.get_banner_path(alt_app_name)
+
+		if not os.path.exists(path):
+			path = get_res('no-img', 'resources/apps')
+
+		return path
 
 	def texto_version(self):
 		if self.titulo in selected_apps:
