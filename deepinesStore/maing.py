@@ -4,17 +4,9 @@
 
 from PyQt5 import QtGui, QtWidgets
 from PyQt5.QtCore import QMetaObject, QRect, QSize, Qt, pyqtSignal
+
 from deepinesStore.core import get_res, tr, STORE_VERSION
-
-class QLabelClickable(QtWidgets.QLabel):
-
-	clicked = pyqtSignal()
-
-	def __init__(self, *args):
-		QtWidgets.QLabel.__init__(self, *args)
-
-	def mouseReleaseEvent(self, ev):
-		self.clicked.emit()
+from deepinesStore.widgets import ClickableLabel
 
 
 # https://stackoverflow.com/a/67711660
@@ -144,7 +136,7 @@ class Ui_MainWindow(object):
 		self.horizontalLayout_3.setSpacing(10)
 		self.horizontalLayout_3.setObjectName("horizontalLayout_3")
 
-		self.icon_car = QLabelClickable(self.widget)
+		self.icon_car = ClickableLabel(self.widget)
 		self.icon_car.setStyleSheet("margin-left: 0px;\n"
 									"background-color: transparent;\n"
 									"border-color: transparent;\n"
@@ -158,7 +150,7 @@ class Ui_MainWindow(object):
 
 		self.icon_car.setObjectName("icon_car")
 		self.horizontalLayout_3.addWidget(self.icon_car)
-		self.lbl_list_apps = QLabelClickable(self.widget)
+		self.lbl_list_apps = ClickableLabel(self.widget)
 		font = QtGui.QFont()
 		font.setPointSize(11)
 		self.lbl_list_apps.setFont(font)
@@ -347,7 +339,7 @@ class Ui_MainWindow(object):
 		self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
 		self.horizontalLayout.setSpacing(0)
 		self.horizontalLayout.setObjectName("horizontalLayout")
-		self.label_2 = QLabelClickable(self.widget_2)
+		self.label_2 = ClickableLabel(self.widget_2)
 		self.label_2.setMinimumSize(QSize(180, 180))
 		self.label_2.setMaximumSize(QSize(180, 180))
 		self.label_2.setStyleSheet("background-color: transparent;")
@@ -361,7 +353,7 @@ class Ui_MainWindow(object):
 
 		# Cuarto item, img deepines
 		self.verticalLayout.addWidget(self.widget_2)
-		self.label = QLabelClickable(self.frame_2)
+		self.label = ClickableLabel(self.frame_2)
 		font = QtGui.QFont()
 		font.setPointSize(8)
 		self.label.setFont(font)

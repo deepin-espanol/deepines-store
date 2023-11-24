@@ -21,6 +21,7 @@ from deepinesStore.about import AboutDialog
 from deepinesStore.core import get_res, get_app_icon
 from deepinesStore.flatpak.get_apps_flatpak import fetch_list_app_flatpak, apps_flatpak_in_categories
 from deepinesStore.deb.get_apps_deb import fetch_list_app_deb
+from deepinesStore.widgets import LinkLabel
 import deepinesStore.demoted_actions as demoted
 
 # Global variables
@@ -123,7 +124,7 @@ class StoreMWindow(QMainWindow):
 		self.horizontalLayout.addWidget(self.raccoon)
 		ui.gridLayout.addLayout(self.horizontalLayout, 1, 1, 1, 1)
 
-		self.label_error = QLabelClickable(self)
+		self.label_error = LinkLabel(self)
 		sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
 		sizePolicy.setHorizontalStretch(0)
 		sizePolicy.setVerticalStretch(0)
@@ -144,12 +145,12 @@ class StoreMWindow(QMainWindow):
 		self.label_error.setFont(font)
 		self.label_error.setScaledContents(True)
 		self.label_error.setText(self.text)
+		self.label_error.setTextInteractionFlags(Qt.TextBrowserInteraction)
 		self.label_error.setStyleSheet("background-color: transparent;\n"
 									   "color: white;")
 		self.label_error.setEnabled(True)
 		self.label_error.setAlignment(QtCore.AlignCenter)
 		self.label_error.setObjectName("label_error")
-		self.label_error.clicked.connect(lambda: QApplication.clipboard().setText(link))
 		ui.gridLayout.addWidget(self.label_error, 2, 1, 1, 1)
 		ui.listWidget.setEnabled(False)
 		ui.frame_4.setEnabled(False)
@@ -605,17 +606,6 @@ class StoreMWindow(QMainWindow):
 	def apps_seleccionadas(self):
 		self.Listar_Apps(lista_selected)
 		ui.listWidget.clearSelection()
-
-
-class QLabelClickable(QLabel):
-
-	clicked = pyqtSignal()
-
-	def __init__(self, *args):
-		QLabel.__init__(self, *args)
-
-	def mouseReleaseEvent(self, ev):
-		self.clicked.emit()
 
 ################################################
 #		   Card para la aplicacion			#

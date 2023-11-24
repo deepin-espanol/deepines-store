@@ -56,3 +56,14 @@ def get_flatpak_info_cmd():
 	except CalledProcessError:
 		print("Couldn't get flatpak app info: Error running flatpak command!")
 	return p
+
+def browse(uri: str):
+	if platform.system() == 'Linux':
+		run_cmd(DEF, ['xdg-open', uri])
+	else:
+		import webbrowser
+		try:
+			webbrowser.open(uri)
+			return True
+		except webbrowser.Error:
+			return False

@@ -1,5 +1,7 @@
-from PyQt5 import QtCore, QtGui, QtWidgets
-import webbrowser
+from PyQt5 import QtGui, QtWidgets as w
+from PyQt5.QtCore import pyqtSignal, Qt, QEvent
+
+from deepinesStore.demoted_actions import browse
 
 
 class G:
@@ -7,20 +9,19 @@ class G:
 		self.name = name
 		self.contact = contact
 
-
-class ContactListWidget(QtWidgets.QListWidget):
+class ContactListWidget(w.QListWidget):
 	def viewportEvent(self, event):
-		if event.type() == QtCore.QEvent.HoverMove:
+		if event.type() == QEvent.HoverMove:
 			pos = event.pos()
 			item = self.itemAt(pos)
 			if item:
-				contact = item.data(QtCore.Qt.UserRole)
+				contact = item.data(Qt.UserRole)
 				if contact:
-					self.viewport().setCursor(QtCore.Qt.PointingHandCursor)
+					self.viewport().setCursor(Qt.PointingHandCursor)
 				else:
-					self.viewport().setCursor(QtCore.Qt.ArrowCursor)
+					self.viewport().setCursor(Qt.ArrowCursor)
 			else:
-				self.viewport().setCursor(QtCore.Qt.ArrowCursor)
+				self.viewport().setCursor(Qt.ArrowCursor)
 		return super().viewportEvent(event)
 
 	def __init__(self, parent=None):
@@ -28,24 +29,42 @@ class ContactListWidget(QtWidgets.QListWidget):
 		self.itemClicked.connect(self.on_item_click)
 
 	def on_item_click(self, item):
-		contact = item.data(QtCore.Qt.UserRole)
+		contact = item.data(Qt.UserRole)
 		if contact:
 			if contact.startswith('@'):
-				webbrowser.open(f'https://t.me/{contact[1:]}')
+				browse(f'https://t.me/{contact[1:]}')
 			else:
-				webbrowser.open(f'mailto:{contact}')
+				browse(f'mailto:{contact}')
 
+class ClickableLabel(w.QLabel):
+	clicked = pyqtSignal()
+
+	def __init__(self, parent=None):
+		super().__init__(parent)
+
+	def mousePressEvent(self, event):
+		if event.button() == Qt.LeftButton:
+			self.clicked.emit()
+
+class LinkLabel(w.QLabel):
+	def on_link_clicked(self, link):
+		browse(link)
+
+	def __init__(self, parent=None):
+		super().__init__(parent)
+		self.setTextInteractionFlags(Qt.TextBrowserInteraction)
+		self.linkActivated.connect(self.on_link_clicked)
 
 def add_people_to_list(people, list_widget):
-	group_box = QtWidgets.QGroupBox()
-	layout = QtWidgets.QVBoxLayout()
+	group_box = w.QGroupBox()
+	layout = w.QVBoxLayout()
 	for person in people:
-		item = QtWidgets.QListWidgetItem()
+		item = w.QListWidgetItem()
 		item.setText(person.name)
-		item.setData(QtCore.Qt.UserRole, person.contact)
+		item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
+		item.setData(Qt.UserRole, person.contact)
 		if person.contact:
 			font = item.font()
-			font.setUnderline(True)
 			item.setFont(font)
 			item.setForeground(QtGui.QColor('#4b71fa'))
 			if person.contact.startswith('@'):
