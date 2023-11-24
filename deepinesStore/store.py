@@ -21,6 +21,7 @@ from deepinesStore.about import AboutDialog
 from deepinesStore.core import get_res, get_app_icon
 from deepinesStore.flatpak.get_apps_flatpak import fetch_list_app_flatpak, apps_flatpak_in_categories
 from deepinesStore.deb.get_apps_deb import fetch_list_app_deb
+import deepinesStore.demoted_actions as demoted
 
 # Global variables
 global lista_inicio, lista_global, lista_selected, lista_temp
@@ -549,8 +550,8 @@ class StoreMWindow(QMainWindow):
 			instaladas.append(linea)
 
 		comando = "flatpak list"
-		lista = os.popen(comando)
-		for linea in lista.readlines():
+		lista = demoted.run_cmd(demoted.DEF, cmd=["flatpak", "list"])
+		for linea in lista.stdout.readlines():
 			linea = linea.rstrip("\n").split("\t")
 			linea = linea[0] # 0 = nombre, 1 = flatpakid
 			instaladas.append(linea)
