@@ -3,7 +3,7 @@
 
 from PyQt5.Qt import Qt
 from PyQt5 import QtWidgets, QtGui
-from deepinesStore.core import tr, site, set_blur, get_app_icon
+from deepinesStore.core import tr, set_blur, get_app_icon
 from deepinesStore.widgets import G, ContactListWidget, add_people_to_list
 
 authors = [G("Sebastian", "@SebTrujillo"), G("Amaro", "@xoascf")]

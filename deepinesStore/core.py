@@ -1,5 +1,6 @@
 from os import environ as env, name
 import argparse
+import json
 
 
 def get_ver():
@@ -51,17 +52,17 @@ def uri_join(base_uri, *args):
 def get_deepines_uri(rel_uri):
 	return uri_join(BASE_URI, 'pub', 'deepines', rel_uri)
 
+def get_text_link(text, uri=None):
+	if uri is None:
+		if text.startswith("@"):
+			uri = f"https://t.me/{text[1:]}"
+		else:
+			uri = f"https://{text}"
+	return f"<a href='{uri}' style='text-decoration: none; color: #004EE5;'>{text}</a>"
 
 def tr(m, txt, disambiguation=None, n=-1):
 	from PyQt5.QtCore import QCoreApplication
 	return QCoreApplication.translate(m.__class__.__name__, txt, disambiguation, n)
-
-
-def site():
-	# FIXME: It copies the link, need to open browser instead.
-	from PyQt5.QtWidgets import QApplication
-	QApplication.clipboard().setText('https://deepinenespañol.org')
-
 
 def set_blur(win):
 	import platform
@@ -86,8 +87,8 @@ if name == 'nt':
 		pass
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-l", type=str)  # locale
-parser.add_argument("-d", type=str)  # desktop
+parser.add_argument("-l", type=str, help="Language")
+parser.add_argument("--env", help="Serialized user environment as JSON")
 args = parser.parse_args()
 
 if args.l:
@@ -96,7 +97,8 @@ else:
 	import locale
 	lang = locale.getdefaultlocale()[0]
 
-if args.d:
-	env['XDG_CURRENT_DESKTOP'] = args.d
-
 default_env = env.copy()
+
+if args.env:
+    new_env = json.loads(args.env)
+    default_env.update(new_env)

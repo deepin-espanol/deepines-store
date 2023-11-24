@@ -69,9 +69,9 @@ class StoreMWindow(QMainWindow):
 				self.primer_inicio = True
 				
 			else:
-				self.error(ui.error_no_server_text, "https://deepinenespañol.org")
+				self.error(ui.error_no_server_text)
 		else:
-			self.error(ui.error_no_deepines_repo_text, "https://deepinenespañol.org/repositorio")
+			self.error(ui.error_no_deepines_repo_text)
 
 		ui.btn_install.setEnabled(False)
 		ui.btn_install.clicked.connect(self.window_install)
@@ -104,7 +104,7 @@ class StoreMWindow(QMainWindow):
 	################################################
 	#			 Control de errores			   #
 
-	def error(self, text: str, link: str):
+	def error(self, text: str):
 		self.horizontalLayout = QHBoxLayout()
 		self.horizontalLayout.setContentsMargins(0, 40, 0, 0)
 		self.horizontalLayout.setSpacing(0)
@@ -133,21 +133,9 @@ class StoreMWindow(QMainWindow):
 		self.label_error.setSizePolicy(sizePolicy)
 		font = QFont()
 		font.setPointSize(16)
-		self.text = ("""<html> <style type=text/css>
-		a:link, a:visited, a:active {
-			text-decoration:none;
-			color: rgba(0, 192, 255, 255);
-		}
-		</style>
-			<head/><body><p>"""
-					 + text +
-					 """</p></body></html>""")
 		self.label_error.setFont(font)
 		self.label_error.setScaledContents(True)
-		self.label_error.setText(self.text)
-		self.label_error.setTextInteractionFlags(Qt.TextBrowserInteraction)
-		self.label_error.setStyleSheet("background-color: transparent;\n"
-									   "color: white;")
+		self.label_error.setText(text)
 		self.label_error.setEnabled(True)
 		self.label_error.setAlignment(QtCore.AlignCenter)
 		self.label_error.setObjectName("label_error")

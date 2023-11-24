@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# UI Source 'gui/main.ui'
-
 from PyQt5 import QtGui, QtWidgets
 from PyQt5.QtCore import QMetaObject, QRect, QSize, Qt, pyqtSignal
 
-from deepinesStore.core import get_res, tr, STORE_VERSION
+from deepinesStore.core import get_res, tr, get_text_link, STORE_VERSION
 from deepinesStore.widgets import ClickableLabel
 
 
@@ -515,17 +513,14 @@ class Ui_MainWindow(object):
 		self.list_apps_text = self.__tr("Select the apps to install")
 		self.selected_to_install_app_text = self.__tr("Selected")
 		self.selected_installed_app_text = self.__tr("Installed")
-		self.single_app_text = self.__tr(
-			"{app_count} app selected to install, click here to review it")
-		self.multi_apps_text = self.__tr(
-			"{app_count} apps selected to install, click here to review them")
+		self.single_app_text = self.__tr("{app_count} app selected to install, click here to review it")
+		self.multi_apps_text = self.__tr("{app_count} apps selected to install, click here to review them")
 		self.error_no_server_text = self.__tr("Unable to establish connection with the server, <br>"
 											  "please check your internet connection.<br>"
 											  "If the problem persists, please contact us via Telegram <br>"
-											  "at @deepinenespanol.<br><br>"
-											  "<a href='#'>deepinenespanol.org | Copy link</a><br>"
-											  "Visit Deepin en Espanol for more information.")
+											  "at {atTlURL}.<br><br>"
+											  "Visit Deepin en Español for more information: {siteURL}").format(atTlURL=get_text_link("@deepinenespanol"), siteURL=get_text_link("deepinenespañol.org"))
 		self.error_no_deepines_repo_text = self.__tr("Deepines repository is not installed on your system,<br>"
 													 "Deepines Store needs this repository to work.<br>"
-													 "In the following link you will find the instructions to install it.<br><br>"
-													 "<a href='#'>deepinenespanol.org/repositorio/ | Copy link<a/><br>")
+													 "In the following link you will find the instructions to install it:<br><br>"
+													 "{repoURL}").format(repoURL=get_text_link("deepinenespañol.org/deepines/"))
