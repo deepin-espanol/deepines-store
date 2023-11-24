@@ -50,7 +50,7 @@ class StoreMWindow(QMainWindow):
 			selected_apps = list()
 			lista_selected = list()
 			contador_selected = 0
-			instaladas = self.apps_instaladas()
+			instaladas = self.get_installed_apps()
 			# Almacenamos la lista, para cargarla solo al inicio
 			self.lista_app_deb = fetch_list_app_deb(self.lista_excluir)
 			self.total_apps_deb = len(self.lista_app_deb)
@@ -540,23 +540,18 @@ class StoreMWindow(QMainWindow):
 	################################################
 	#			   Apps Instaladas				#
 
-	def apps_instaladas(self):
-		comando = "dpkg --get-selections | grep -w install"
-		lista = os.popen(comando)
-		instaladas = list()
-		for linea in lista.readlines():
-			linea = ''.join(linea.split())
-			linea = linea.replace("install", "")
-			instaladas.append(linea)
+	def get_installed_apps(self):
+		dpkg_cmd = os.popen("dpkg --get-selections")
+		installed_list = [line.split()[0] for line in dpkg_cmd.read().splitlines() if line.split()[1] == "install"]
+		dpkg_cmd.close()
 
-		comando = "flatpak list"
-		lista = demoted.run_cmd(demoted.DEF, cmd=["flatpak", "list"])
-		for linea in lista.stdout.readlines():
-			linea = linea.rstrip("\n").split("\t")
-			linea = linea[0] # 0 = nombre, 1 = flatpakid
-			instaladas.append(linea)
+		flatpak_cmd = demoted.run_cmd(demoted.DEF, cmd=["flatpak", "list"])
+		for line in flatpak_cmd.stdout.readlines():
+			line = line.rstrip("\n").split("\t")
+			line = line[0] # 0 = name, 1 = flatpakid
+			installed_list.append(line)
 
-		return(instaladas)
+		return(installed_list)
 
 	#			   /Apps Instaladas				#
 	################################################
