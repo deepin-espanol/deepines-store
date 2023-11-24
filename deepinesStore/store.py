@@ -39,24 +39,24 @@ class StoreMWindow(QMainWindow):
 		ui.setupUi(self)
 		self.setWindowFlags(self.windowFlags() | Qt.FramelessWindowHint)
 		self.setAttribute(Qt.WA_TranslucentBackground, True)
-		self.lista_excluir = self.Get_App_Exclude()
-		self.lista_deepines = self.Get_App_Deepines()
 
 		global selected_apps, instaladas,\
 			lista_inicio, lista_global, lista_selected, \
 			contador_selected, selected_type_app
 		repo_file = "/etc/apt/sources.list.d/deepines.list"
 		if os.path.exists(repo_file):
+			self.lista_excluir = self.Get_App_Exclude()
+			self.lista_deepines = self.Get_App_Deepines()
 			# Variables globales
 			selected_apps = list()
 			lista_selected = list()
 			contador_selected = 0
-			instaladas = self.get_installed_apps()
 			# Almacenamos la lista, para cargarla solo al inicio
 			self.lista_app_deb = fetch_list_app_deb(self.lista_excluir)
 			self.total_apps_deb = len(self.lista_app_deb)
 			self.lista_app_flatpak = apps_flatpak_in_categories()
 			self.total_apps_flatpak = len(self.lista_app_flatpak)
+			instaladas = self.get_installed_apps()
 
 			selected_type_app = 0 # 0 by debs
 
@@ -267,12 +267,16 @@ class StoreMWindow(QMainWindow):
 			filtro.append("otros")
 			filtro.append("education")
 			filtro.append("science")
+		if item == ui.listWidget.item(11):
+			filtro.append("installed")			
 
-		if "inicio" not in filtro:
+		if "inicio" not in filtro and "installed" not in filtro:
 			# TODO: Cambiar funcionamiento por una separacion de las app
 			# TODO: en listas en diccionarios fijos, al cargar la tienda.
 			global lista_temp
 			lista_temp = self.Get_App_Filter(lista_global, filtro)
+		elif "installed" in filtro:
+			lista_temp = instaladas
 		else:
 			lista_temp = lista_inicio
 
@@ -285,15 +289,13 @@ class StoreMWindow(QMainWindow):
 	################################################
 	#				Lista de apps				 #
 
-
-
-
 	#		   Filtrar aplicaciones			 #
 	def Get_App_Filter(self, lista_app, filtro):
 		lista_filtrada = list()
-		filtros = ['web', 'net', 'mail', 'sound', 'audio', 'video',
-					'graphics', 'media', 'games', 'editors', 'devel', 'shell',
-					'admin', 'python', 'network', 'networking']
+		filtros = ['web', 'net', 'mail', 'sound', 'audio', 'video', 'audiovideo'
+					'graphics', 'office','media', 'games', 'game', 'editors', 'devel', 'shell',
+					'admin', 'python', 'development','network', 'networking',
+					'productivity', 'system', 'utility']
 		if 'deepines' in filtro:
 			for app in self.lista_deepines:
 				for elemento in lista_app:
@@ -317,7 +319,6 @@ class StoreMWindow(QMainWindow):
 	def Apps_inicio(self, lista_app):
 		lista_key = []
 		contador = True
-		i=0
 		while contador:
 			if len(lista_key) == 8:
 				contador = False
@@ -325,7 +326,6 @@ class StoreMWindow(QMainWindow):
 				key = choice(lista_app)
 				if key not in lista_key:
 					lista_key.append(key)
-					i+= 1
 
 		return lista_key
 
@@ -532,17 +532,29 @@ class StoreMWindow(QMainWindow):
 	#			   Apps Instaladas				#
 
 	def get_installed_apps(self):
+		self.list_installed = list()
 		dpkg_cmd = os.popen("dpkg --get-selections")
-		installed_list = [line.split()[0] for line in dpkg_cmd.read().splitlines() if line.split()[1] == "install"]
+		installed_list_temp = [line.split()[0] for line in dpkg_cmd.read().splitlines() if line.split()[1] == "install"]
 		dpkg_cmd.close()
+
+		for app in installed_list_temp:
+			for item in self.lista_app_deb:
+				if app == item[0]:
+					index = self.lista_app_deb.index(item)
+					self.list_installed.append(self.lista_app_deb[index])
+			
 
 		flatpak_cmd = demoted.run_cmd(demoted.DEF, cmd=["flatpak", "list"])
 		for line in flatpak_cmd.stdout.readlines():
 			line = line.rstrip("\n").split("\t")
-			line = line[0] # 0 = name, 1 = flatpakid
-			installed_list.append(line)
+			# line = line[0] # 0 = name, 1 = flatpakid
+			for item in self.lista_app_flatpak:
+				if line[0] == item[0]:
+					index = self.lista_app_flatpak.index(item)
+					self.lista_app_flatpak[index][2] = line[2]
+					self.list_installed.append(self.lista_app_flatpak[index])
 
-		return(installed_list)
+		return(self.list_installed)
 
 	#			   /Apps Instaladas				#
 	################################################
@@ -555,7 +567,7 @@ class StoreMWindow(QMainWindow):
 		lista_complete = list()
 		for app in selected_apps:
 			lista_complete.append(app)
-			instaladas.append(app[0]) # FIXME: Check if it is really installed
+			instaladas.append(app) # FIXME: Check if it is really installed
 			
 		selected_apps = list()
 		self.do_list_apps(lista_complete)
@@ -623,14 +635,14 @@ class Card(QFrame):
 		self.texto_version()
 
 		global instaladas
-		if self.titulo not in instaladas:
+		if self.application not in instaladas:
 			estado = 1
 			if self.application in selected_apps:
 				estado = 0
 		else:
 			estado = 2
 
-		if self.titulo not in selected_apps and self.titulo not in instaladas:
+		if self.application not in selected_apps and self.application not in instaladas:
 			self.installEventFilter(self)
 
 		self.change_color_buton(estado)
@@ -685,7 +697,7 @@ class Card(QFrame):
 		return path
 
 	def texto_version(self):
-		if self.titulo in selected_apps:
+		if self.application in selected_apps:
 			self.cd.btn_select_app.setText(ui.selected_to_install_app_text)
 			color = "color: rgb(0, 255, 255);"
 		elif self.titulo in instaladas:
@@ -705,7 +717,7 @@ class Card(QFrame):
 		global lista_global, selected_apps, instaladas, lista_selected
 
 		# Si la app no esta instalada
-		if titulo not in instaladas:
+		if self.application not in instaladas:
 			lista_global_temp = lista_global
 			if self.application[6] == 0: # app deb
 				lista_global = self.parentWindow.lista_app_deb

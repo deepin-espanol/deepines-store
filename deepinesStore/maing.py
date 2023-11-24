@@ -324,6 +324,17 @@ class Ui_MainWindow(object):
 		icon10.addPixmap(QtGui.QPixmap(svg_pamela),
 						 QtGui.QIcon.Normal, QtGui.QIcon.Off)
 		item.setIcon(icon10)
+		item.setFlags(Qt.ItemIsSelectable | 
+					  Qt.ItemIsUserCheckable | Qt.ItemIsEnabled)
+		self.listWidget.addItem(item)
+		item = QtWidgets.QListWidgetItem()
+		item.setFlags(Qt.NoItemFlags)
+		self.listWidget.addItem(item)
+		item = QtWidgets.QListWidgetItem()
+		icon11 = QtGui.QIcon()
+		icon11.addPixmap(QtGui.QPixmap(svg_pamela),
+						 QtGui.QIcon.Normal, QtGui.QIcon.Off)
+		item.setIcon(icon11)
 		item.setFlags(Qt.ItemIsSelectable |
 					  Qt.ItemIsUserCheckable | Qt.ItemIsEnabled)
 		self.listWidget.addItem(item)
@@ -499,6 +510,10 @@ class Ui_MainWindow(object):
 		item.setText(self.__tr("System"))
 		item = self.listWidget.item(9)
 		item.setText(self.__tr("Other"))
+		item = self.listWidget.item(10)
+		item.setText(self.__tr(""))
+		item = self.listWidget.item(11)
+		item.setText(self.__tr("Installed apps"))
 		self.listWidget.setSortingEnabled(__sortingEnabled)
 		self.lineEdit.setPlaceholderText(self.__tr("Search"))
 		self.about_version_text = self.__tr("About \nVersion: {version}")
