@@ -27,7 +27,9 @@ def get_app_icon():
 def get_dl(uri, params=None, **kwargs):
 	from requests import get
 	try:
-		return get(uri, params=params, **kwargs)
+		response = get(uri, params=params, **kwargs)
+		response.raise_for_status()
+		return response
 	except Exception as e:
 		from sys import stderr
 		print(f'DL ERROR: {type(e).__name__}, URI: {uri}', file=stderr)
@@ -36,6 +38,7 @@ def get_dl(uri, params=None, **kwargs):
 			status_code = None
 			content = b''
 			text = ''
+			def json(self): return {}
 		return DummyResponse()
 
 
