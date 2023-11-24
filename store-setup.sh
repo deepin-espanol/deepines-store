@@ -142,6 +142,8 @@ fi
 
 Fmt="printf"
 
+mkdir -p /usr/share/desktop-directories
+
 SOURCES_DIR=/etc/apt/sources.list.d
 REPO="deb http://repositorio.deepines.com/pub/deepines/%d/ stable main"
 
