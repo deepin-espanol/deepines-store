@@ -563,12 +563,12 @@ class StoreMWindow(QMainWindow):
 	################################################
 	#			Apps nuevas Instaladas			#
 
-	def instalacion_completada(self):
+	def installation_completed(self):
 		global selected_apps, instaladas
 		lista_complete = list()
 		for app in selected_apps:
 			lista_complete.append(app)
-			instaladas.append(app[0])
+			instaladas.append(app[0]) # FIXME: Check if it is really installed
 			
 		selected_apps = list()
 		self.Listar_Apps(lista_complete)

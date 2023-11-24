@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 import os
 from subprocess import Popen, PIPE, check_output, CalledProcessError
-from deepinesStore.core import lang, default_env
 import platform
+
+from deepinesStore.core import lang, default_env
 
 
 def get_real_uid():
@@ -38,7 +39,7 @@ class UserDefault:
 
 
 def run_cmd(user: UserDefault, cmd):
-	return Popen(cmd, env=user.env, preexec_fn=set(user.uid, user.gid), stderr=PIPE, stdout=PIPE)
+	return Popen(cmd, env=user.env, preexec_fn=set(user.uid, user.gid), stderr=PIPE, stdout=PIPE, encoding='utf8', universal_newlines=True)
 
 
 if platform.system() == 'Windows':

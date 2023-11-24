@@ -1,114 +1,109 @@
-import subprocess
-# Importamos las librerias necesarias
+import subprocess as sp
+from enum import Enum
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot
 
+from deepinesStore.core import default_env
+import deepinesStore.demoted_actions as demoted
 
-# Creamos la clase y heredamos de QThread
+class Code(Enum):
+	NO_ERROR = 0
+	UNHANDLED_ERROR = 1
+	NO_INTERNET = 2
+	FAIL_DEPS = 3
+	APT_LOCKED = 4
+
+# FIXME: Try to run this by elevate to root using set(0, 0)
 class External(QObject):
 	start = pyqtSignal(object)
 	progress = pyqtSignal(object)
 	finish = pyqtSignal(object)
 	complete = pyqtSignal()
 	update = pyqtSignal()
-	error = pyqtSignal(object)
-	
+	error = pyqtSignal(Code)
+
 	def __init__(self, app):
 		super(External, self).__init__()
 		self.app = app
-		self.errores = ('Err:', 'Ign:',
-			'Fallo temporal al resolver',
-			'No se pudieron obtener algunos archivos',
-			'101: La red es inaccesible', '101: network is unreachable',
-			'dependencias inclumplidas',
-			'No se pudo bloquear', 'Unable to acquire the dpkg')
+		self.no_net = ('Cannot initiate the connection', 'Could not resolve', 'Temporary failure', 'Unable to fetch')
+		self.no_dep = ('Unmet dependencies.', 'The following packages have unmet dependencies:')
+		self.locked = ('Could not get lock', 'Unable to acquire the dpkg')
+		self.errors = ('Err:', 'Ign:', '101: network is unreachable')
+
+	def run_cmd(self, cmd):
+		return sp.Popen(cmd, stdout=sp.PIPE, encoding='utf8', universal_newlines=True, env={**default_env, 'LANG': 'C', 'DEBIAN_FRONTEND': 'noninteractive'})
+
+	def check_string(self, string: str, values: tuple):
+		return any(value in string for value in values)
 
 	@pyqtSlot()
 	def run(self):
-		validacion = True # Comprobar si es posible usar apt
+		if any(item[6] == 0 for item in self.app): # There's at least one Debian app!
+			self.apt_update()
+
+		for item in self.app:
+			self.code = Code.NO_ERROR
+			try: # Let's install!
+				app_install_name = item[5]
+				self.start.emit(app_install_name)
+				if item[6] == 0:
+					self.install_debian_app(app_install_name)
+				else:
+					self.install_flatpak_app(app_install_name)
+			except:
+				self.error.emit(Code.UNHANDLED_ERROR)
+				return 0
+		else: # End for loop.
+			self.complete.emit()
+	
+	def apt_update(self):
 		self.update.emit()
-		# TODO: Don't use Popen!!
-		update = subprocess.Popen(["sudo", "apt", "update"], 
-				stdout=subprocess.PIPE, universal_newlines=True)
+		update = self.run_cmd(["apt", "update"])
 		try:
 			while not update.poll():
 				line = update.stdout.readline()
-				
 				if line != '\n':
 					self.progress.emit(line)
-
 				if not line:
 					break
 		except:
-			# Ocurre algun error no controlado
-			self.error.emit(1)
+			self.error.emit(Code.UNHANDLED_ERROR)
 
-		for elemento in self.app:
-			error = 0
-			"""
-			error = 0 -> sin error
-			error = 1 -> excepcion no controlada
-			error = 2 -> error en red de internet
-			error = 3 -> error de dependencias
-			error = 4 -> apt en uso por otra app
-			"""
-			try:
-				# Iniciamos la instalacion
-				self.start.emit(elemento[5])
-				# Enviamos la señal
-				# comandos para instalar la app
-				if elemento[6] == 0:
-					comando = ["sudo", "DEBIAN_FRONTEND=noninteractive",
-				"apt", "-q", "-y","install", elemento[5]]
+	def install_debian_app(self, app_name: str):
+		apt_install = self.run_cmd(["apt", "-q", "-y", "install", app_name, "-t" "stable"])
+		while not apt_install.poll():
+			line = apt_install.stdout.readline()
+			if line:
+				print(f"L: {line}", end="")
+				if self.check_string(line, self.no_net):
+					self.code = Code.NO_INTERNET
+				if self.check_string(line, self.no_dep):
+					self.code = Code.FAIL_DEPS
+				if self.check_string(line, self.locked):
+					self.code = Code.APT_LOCKED
+				for err in self.errors:  # FIXME: What is this?
+					if err in line:
+						line = ""
+				self.progress.emit(line)
+			else:
+				if self.code == Code.NO_ERROR:
+					self.finish.emit(app_name)
 				else:
-					comando = ["flatpak", "install",
-				"flathub", "-y", elemento[5]]
+					self.error.emit(self.code)
+					return 0
+				break
 
-						
-				ejecucion = subprocess.Popen(comando, 
-							stdout=subprocess.PIPE, universal_newlines=True)
-				while not ejecucion.poll():
-					line = ejecucion.stdout.readline()
-					# Caso de que la primera linea este vacia
-					if validacion and not line:
-						error = 4
-					# Cambiamos el validador para que no vuelva a ingresar
-					validacion = False
-					if line != '\n':
-						if ('101: La red es inaccesible' in line or 
-							'101: network is unreachable' in line or 
-							'Fallo temporal al resolver' in line or
-							'No se pudieron obtener algunos archivos' in line):
-							error = 2
-
-						if ('dependencias incumplidas' in line): error = 3
-
-						if ('No se pudo bloquear' in line or
-							'Unable to acquire the dpkg' in line):
-							error = 4
-						
-						for err in self.errores:
-							if err in line:
-								line = ""
-						
-						self.progress.emit(line)
-					
-					if not line:
-						break
-					
+	def install_flatpak_app(self, app_id: str):
+		flatpak_install = demoted.run_cmd(demoted.DEF, cmd=["flatpak", "install", "flathub", "-y",app_id])
+		while not flatpak_install.poll():
+			line = flatpak_install.stdout.readline()
+			if line:
+				print(f"L: {line}", end="")
+				# FIXME: Handle flatpak errors here!!!
+				self.progress.emit(line)
+			else:
+				if self.code == Code.NO_ERROR:
+					self.finish.emit(app_id)
 				else:
-					if error == 0: 
-						self.finish.emit(elemento)
-
-					else:
-						self.error.emit(error)
-						return 0
-						
-			except:
-				# Ocurre algun error no controlado
-				self.error.emit(1)
-				return 0
-		else:
-			# Termino del ciclo for
-			self.complete.emit()
-
-
+					self.error.emit(self.code)
+					return 0
+				break
