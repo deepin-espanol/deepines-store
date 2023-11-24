@@ -16,27 +16,28 @@ def get_repo_url():
 		return fallback_url
 
 def fetch_list_app_deb(list_ignored):
-		repo_url = get_repo_url()
-		try:
-			request = get_dl(repo_url, timeout=10)
-			if request.status_code == 200:
-				html_tree = html.fromstring(request.content.decode("utf-8"))
-				entries = html_tree.xpath('//tr')
-				the_app_list = []
-				for entry in entries:
-					app_title = entry.xpath('.//td[@class="package"]/text()')[0]
-					if app_title not in list_ignored:
-						the_app_list.append([
-							app_title, # Name
-							entry.xpath('.//td[@class="description"]/text()')[0], # Description
-							entry.xpath('.//td[@class="version"]/text()')[0], # Version
-							entry.xpath('.//td[@class="section"]/text()')[0], # Category
-							1, # State
-							app_title, # "ID" (package name)
-							0, # Type (.deb in this case)
-							])
+	repo_url = get_repo_url()
+	request = get_dl(repo_url, timeout=10)
 
-				return the_app_list
-		except Exception as e:
-			print("Error fetching apps:", e)
-			return []
+	if request.status_code == 200:
+		html_tree = html.fromstring(request.content.decode("utf-8"))
+		entries = html_tree.xpath('//tr')
+		the_app_list = []
+
+		for entry in entries:
+			app_title = entry.xpath('.//td[@class="package"]/text()')[0]
+			if app_title not in list_ignored:
+				the_app_list.append([
+					app_title,  # Name
+					entry.xpath('.//td[@class="description"]/text()')[0],  # Description
+					entry.xpath('.//td[@class="version"]/text()')[0],  # Version
+					entry.xpath('.//td[@class="section"]/text()')[0],  # Category
+					1,  # State
+					app_title,  # "ID" (package name)
+					0,  # Type (.deb in this case)
+				])
+
+		return the_app_list
+	else:
+		print(f"Flatpak app list fetch request has failed with status code {request.status_code}")
+		return []

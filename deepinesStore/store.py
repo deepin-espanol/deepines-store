@@ -159,12 +159,14 @@ class StoreMWindow(QMainWindow):
 	################################################
 
 	def resizeEvent(self, event):
-		if self.primer_inicio:
+		if hasattr(self, 'primer_inicio') and self.primer_inicio:
 			global lista_temp
 			lista_temp = lista_inicio
 			self.primer_inicio = False
-
-		self.Listar_Apps(lista_temp)
+		try:
+			self.do_list_apps(lista_temp)
+		except NameError:
+			pass  # There are no apps, lista_temp is not defined...
 
 
 	################################################
@@ -197,7 +199,7 @@ class StoreMWindow(QMainWindow):
 			lista_inicio = self.inicio_apps_deb
 			ui.listWidget.item(1).setHidden(False)
 		
-		self.Listar_Apps(lista_inicio)
+		self.do_list_apps(lista_inicio)
 		item = ui.listWidget.item(0)
 		item.setSelected(True)
 
@@ -223,7 +225,7 @@ class StoreMWindow(QMainWindow):
 				lista_temp = lista_search
 		else:
 			lista_temp = lista_inicio
-		self.Listar_Apps(lista_temp)
+		self.do_list_apps(lista_temp)
 
 	def clear_search_txt(self):
 		ui.lineEdit.setText("")
@@ -286,7 +288,7 @@ class StoreMWindow(QMainWindow):
 		else:
 			lista_temp = lista_inicio
 
-		self.Listar_Apps(lista_temp)
+		self.do_list_apps(lista_temp)
 		self.clear_search_txt()
 
 	#			   /Filtro de apps				#
@@ -340,7 +342,7 @@ class StoreMWindow(QMainWindow):
 		return lista_key
 
 	#		   Listar aplicaciones			  #
-	def Listar_Apps(self, lista):
+	def do_list_apps(self, lista):
 		global lista_inicio, lista_global
 		equal = lista_inicio == lista_global
 		if equal:
@@ -568,7 +570,7 @@ class StoreMWindow(QMainWindow):
 			instaladas.append(app[0]) # FIXME: Check if it is really installed
 			
 		selected_apps = list()
-		self.Listar_Apps(lista_complete)
+		self.do_list_apps(lista_complete)
 		self.contar_apps()
 
 	#		   /Apps nuevas Instaladas			#
@@ -604,7 +606,7 @@ class StoreMWindow(QMainWindow):
 			self.setWindowState(Qt.WindowMaximized)
 
 	def apps_seleccionadas(self):
-		self.Listar_Apps(lista_selected)
+		self.do_list_apps(lista_selected)
 		ui.listWidget.clearSelection()
 
 ################################################
