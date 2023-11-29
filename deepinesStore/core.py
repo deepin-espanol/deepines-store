@@ -7,7 +7,7 @@ def get_ver():
 	version = '[VERSION]'
 	if "VERSION" in version:
 		import subprocess
-		version = subprocess.check_output(["git", "describe"]).strip().decode("utf-8")
+		version = subprocess.check_output(["git", "describe", "--dirty"]).strip().decode("utf-8")
 	return version
 
 
