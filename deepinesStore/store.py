@@ -653,7 +653,7 @@ class Card(QFrame):
 			self.cd.image_app.setPixmap(app_banner)
 		else: # Flatpak then
 			# use app id, if not found, then use the alternative app name
-			alt_app_name = str(self.application[0]).lower().replace(" ", "")
+			alt_app_name = str(self.application[0]).lower().replace(" ", "-") # TODO: Check if replacing it by nothing fetches something...
 			app_banner = QPixmap(self.get_banner_path(self.application[5], alt_app_name))
 			app_overlay = QPixmap(get_res('flatpak'))
 			app_pixmap = QPixmap(app_banner)
