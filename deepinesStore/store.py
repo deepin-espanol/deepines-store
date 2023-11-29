@@ -544,7 +544,7 @@ class StoreMWindow(QMainWindow):
 					self.list_installed.append(self.lista_app_deb[index])
 			
 
-		flatpak_cmd = demoted.run_cmd(demoted.DEF, cmd=["flatpak", "list"])
+		flatpak_cmd = demoted.run_cmd(demoted.DEF, cmd=['flatpak', '--user', 'list'])
 		for line in flatpak_cmd.stdout.readlines():
 			line = line.rstrip("\n").split("\t")
 			# line = line[0] # 0 = name, 1 = flatpakid
