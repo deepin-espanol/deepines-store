@@ -3,7 +3,7 @@ import os
 from subprocess import Popen, PIPE, check_output, CalledProcessError
 import platform
 
-from deepinesStore.core import lang, default_env
+from deepinesStore.core import default_env
 
 
 def get_real_uid():
@@ -35,7 +35,7 @@ class UserDefault:
 		self.gid = self.user.pw_gid
 		self.home = self.user.pw_dir
 		self.env = {**default_env, 'USER': self.name, 'LOGNAME': self.name, 'PWD': os.getcwd(), 'HOME': self.home,
-		'LANG': lang, 'LANGUAGE': lang, 'DBUS_SESSION_BUS_ADDRESS': f'unix:path=/run/user/{uid}/bus'}
+		'DBUS_SESSION_BUS_ADDRESS': f'unix:path=/run/user/{uid}/bus'}
 
 
 def run_cmd(user: UserDefault, cmd):

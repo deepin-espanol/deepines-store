@@ -4,8 +4,7 @@
 import subprocess
 import os
 import json
-import locale
 
-cmd = ["pkexec", "/usr/share/deepines/deepines", "-l", locale.getdefaultlocale()[0], "--env", json.dumps(os.environ.copy())]
+cmd = ["pkexec", "/usr/share/deepines/deepines", "--env", json.dumps(os.environ.copy())]
 
 subprocess.run(cmd, check=True)

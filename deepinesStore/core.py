@@ -87,15 +87,8 @@ if name == 'nt':
 		pass
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-l", type=str, help="Language")
 parser.add_argument("--env", help="Serialized user environment as JSON")
 args = parser.parse_args()
-
-if args.l:
-	lang = args.l
-else:
-	import locale
-	lang = locale.getdefaultlocale()[0]
 
 default_env = env.copy()
 
