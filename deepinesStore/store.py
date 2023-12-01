@@ -636,16 +636,16 @@ class Card(QFrame):
 
 		global instaladas
 		if self.application not in instaladas:
-			estado = 1
+			state = AppState.DEFAULT
 			if self.application in selected_apps:
-				estado = 0
+				state = AppState.SELECTED
 		else:
-			estado = 2
+			state = AppState.INSTALLED
 
 		if self.application not in selected_apps and self.application not in instaladas:
 			self.installEventFilter(self)
 
-		self.change_color_buton(estado)
+		self.change_color_buton(state)
 
 		# Establecemos la imagen
 		if (self.application.type == AppType.DEB_PACKAGE):
