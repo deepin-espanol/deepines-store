@@ -207,9 +207,9 @@ class StoreMWindow(QMainWindow):
 		global lista_global, lista_temp
 		if len(text) != 0 and len(text) > 2:
 			ui.listWidget.clearSelection()
-			for elemento in lista_global: # FIXME: We shouldn't keep doing this as the list only contains apps that are not in the blacklist
-				if elemento.name not in self.lista_excluir and text in str(elemento.name).lower() or text in str(elemento.id).lower(): # FIXME: No need to exclude Flatpak apps, just platforms and extensions!
-					indice = lista_global.index(elemento)
+			for app_item in lista_global:
+				if text in str(app_item.name).lower() or text in str(app_item.description).lower():
+					indice = lista_global.index(app_item)
 					item = lista_global[indice]
 					lista_search.append(item)
 			else:
