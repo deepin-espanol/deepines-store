@@ -1,4 +1,7 @@
+from typing import List
+
 import deepinesStore.demoted_actions as actions
+from deepinesStore.app_info import AppInfo, AppType
 from deepinesStore.core import get_dl
 
 # Categorias de app en flathub
@@ -55,22 +58,17 @@ def add_apps_dict_by_categories():
 		app_data[category] = fetch_apps_by_category(category)
 	return app_data
 
-def apps_flatpak_in_categories():
+def apps_flatpak_in_categories() -> List[AppInfo]:
 	app_data = add_apps_dict_by_categories()
-	lista = list()
-	lista_agregados = list()
+	fp_app_info = list()
+	already_added = list()
 	for category in categories:
-		for app in app_data[category]:
-			if not app['flatpakAppId'] in lista_agregados: 
-				titulo = app['name']
-				descripcion = app['summary']
-				categoria = category
-				estado = 1
-				install = app['flatpakAppId']
-				version = app_id_ver_dict.get(install) or "No version"
-				lista_origen = [titulo, descripcion, version, categoria, estado, install, 1]
-				lista_agregados.append(install)
-				lista.append(lista_origen)
+		for app in app_data[category]: # FIXME: This is not adding some "uncategorized" apps
+			app_id = app['flatpakAppId']
+			if not app_id in already_added: 
+				version = app_id_ver_dict.get(app_id) or "No version"
+				app_info = AppInfo(app['name'], app_id, app['summary'], version, category, AppType.FLATPAK_APP)
+				already_added.append(app_id)
+				fp_app_info.append(app_info)
 	
-	lista.sort()
-	return lista
+	return fp_app_info

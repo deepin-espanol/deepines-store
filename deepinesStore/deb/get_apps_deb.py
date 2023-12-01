@@ -1,6 +1,8 @@
 from lxml import html
+from typing import List
 import re
 
+from deepinesStore.app_info import AppInfo
 from deepinesStore.core import get_deepines_uri, get_dl
 
 
@@ -15,29 +17,28 @@ def get_repo_url():
 	except:
 		return fallback_url
 
-def fetch_list_app_deb(list_ignored):
+
+def fetch_list_app_deb(list_ignored: List[str]) -> List[AppInfo]:
 	repo_url = get_repo_url()
 	request = get_dl(repo_url, timeout=10)
 
 	if request.status_code == 200:
 		html_tree = html.fromstring(request.content.decode("utf-8"))
 		entries = html_tree.xpath('//tr')
-		the_app_list = []
+		deb_app_info = []
+
+		def from_cell(entry, class_name: str):
+			return entry.xpath(f'.//td[@class="{class_name}"]/text()')[0].strip()
 
 		for entry in entries:
-			app_title = entry.xpath('.//td[@class="package"]/text()')[0]
+			app_title = from_cell(entry, 'package')
 			if app_title not in list_ignored:
-				the_app_list.append([
-					app_title,  # Name
-					entry.xpath('.//td[@class="description"]/text()')[0],  # Description
-					entry.xpath('.//td[@class="version"]/text()')[0],  # Version
-					entry.xpath('.//td[@class="section"]/text()')[0],  # Category
-					1,  # State
-					app_title,  # "ID" (package name)
-					0,  # Type (.deb in this case)
-				])
+				app_info = AppInfo(app_title, app_title, from_cell(
+					entry, 'description'), from_cell(entry, 'version'), from_cell(entry, 'section'))
+				deb_app_info.append(app_info)
 
-		return the_app_list
+		return deb_app_info
 	else:
-		print(f"Flatpak app list fetch request has failed with status code {request.status_code}")
+		print(
+			f"App list fetch request has failed with status code {request.status_code}")
 		return []

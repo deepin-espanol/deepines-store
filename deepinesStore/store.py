@@ -10,10 +10,13 @@ from PyQt5.QtWidgets import (QMainWindow, QApplication, QFrame, QLabel,
 							 QDesktopWidget, QHBoxLayout)
 from PyQt5.QtGui import QPixmap, QFont, QColor, QCursor, QPainter
 
+from typing import List
+
 from deepinesStore.core import set_blur
 # Para obtener applicacion random
 from random import choice
 # GUI o modulos locales
+from deepinesStore.app_info import AppInfo, AppType, AppState
 from deepinesStore.maing import Ui_MainWindow
 from deepinesStore.cardg import Ui_Frame
 from deepinesStore.dialog_install import Ui_DialogInstall
@@ -204,8 +207,8 @@ class StoreMWindow(QMainWindow):
 		global lista_global, lista_temp
 		if len(text) != 0 and len(text) > 2:
 			ui.listWidget.clearSelection()
-			for elemento in lista_global:
-				if elemento[0] not in self.lista_excluir and text in str(elemento[0]).lower() or text in str(elemento[1]).lower():
+			for elemento in lista_global: # FIXME: We shouldn't keep doing this as the list only contains apps that are not in the blacklist
+				if elemento.name not in self.lista_excluir and text in str(elemento.name).lower() or text in str(elemento.id).lower(): # FIXME: No need to exclude Flatpak apps, just platforms and extensions!
 					indice = lista_global.index(elemento)
 					item = lista_global[indice]
 					lista_search.append(item)
@@ -299,24 +302,24 @@ class StoreMWindow(QMainWindow):
 		if 'deepines' in filtro:
 			for app in self.lista_deepines:
 				for elemento in lista_app:
-					if elemento[0] == app:
+					if elemento.name == app:
 						lista_filtrada.append(elemento)
 		else:
 			if "otros" not in filtro:
 				for elemento in lista_app:
-					categoria_app = elemento[3].lower().split("/")
+					categoria_app = elemento.category.lower().split("/")
 					for filtro_uno in categoria_app:
 						if filtro_uno in filtro:
 							lista_filtrada.append(elemento)
 			else:
 				for elemento in lista_app:
-					if elemento[3].lower() not in filtros:
+					if elemento.category.lower() not in filtros:
 						lista_filtrada.append(elemento)
 
 		return lista_filtrada
 
 	#		   Aplicaciones Inicio			  #
-	def Apps_inicio(self, lista_app):
+	def Apps_inicio(self, lista_app: List[AppInfo]):
 		lista_key = []
 		contador = True
 		while contador:
@@ -533,26 +536,23 @@ class StoreMWindow(QMainWindow):
 
 	def get_installed_apps(self):
 		self.list_installed = list()
+
 		dpkg_cmd = os.popen("dpkg --get-selections")
-		installed_list_temp = [line.split()[0] for line in dpkg_cmd.read().splitlines() if line.split()[1] == "install"]
+		installed_debs = [line.split()[0] for line in dpkg_cmd.read().splitlines() if line.split()[1] == "install"]
 		dpkg_cmd.close()
 
-		for app in installed_list_temp:
-			for item in self.lista_app_deb:
-				if app == item[0]:
-					index = self.lista_app_deb.index(item)
-					self.list_installed.append(self.lista_app_deb[index])
-			
+		for installed_deb in installed_debs:
+			for app_item in self.lista_app_deb:
+				if installed_deb == app_item.id:
+					self.list_installed.append(app_item)
 
-		flatpak_cmd = demoted.run_cmd(demoted.DEF, cmd=['flatpak', '--user', 'list'])
-		for line in flatpak_cmd.stdout.readlines():
-			line = line.rstrip("\n").split("\t")
-			# line = line[0] # 0 = name, 1 = flatpakid
-			for item in self.lista_app_flatpak:
-				if line[0] == item[0]:
-					index = self.lista_app_flatpak.index(item)
-					self.lista_app_flatpak[index][2] = line[2]
-					self.list_installed.append(self.lista_app_flatpak[index])
+		flatpak_cmd = demoted.run_cmd(demoted.DEF, cmd=['flatpak', '--user', 'list', '--columns=application'])
+		installed_ids = [line.rstrip("\n") for line in flatpak_cmd.stdout.readlines()]
+
+		for installed_id in installed_ids:
+			for app_item in self.lista_app_flatpak:
+				if installed_id == app_item.id:
+					self.list_installed.append(app_item)
 
 		return(self.list_installed)
 
@@ -622,8 +622,8 @@ class Card(QFrame):
 		# Establecemos los atributos de la app
 		# self.cd.btn_select_app.setToolTip(version)
 		self.application = application
-		self.titulo = self.application[0]
-		self.descripcion = self.application[1]
+		self.titulo = self.application.name
+		self.descripcion = self.application.description
 		self.cd.lbl_name_app.setText(self.titulo)
 		self.cd.image_app.setToolTip(
 			"<p wrap='hard'>{}</p>".format(self.descripcion))
@@ -648,13 +648,13 @@ class Card(QFrame):
 		self.change_color_buton(estado)
 
 		# Establecemos la imagen
-		if (self.application[6] == 0): # Deb then
-			app_banner = QPixmap(self.get_banner_path(self.application[5]))
+		if (self.application.type == AppType.DEB_PACKAGE):
+			app_banner = QPixmap(self.get_banner_path(self.application.id))
 			self.cd.image_app.setPixmap(app_banner)
-		else: # Flatpak then
+		if (self.application.type == AppType.FLATPAK_APP):
 			# use app id, if not found, then use the alternative app name
-			alt_app_name = str(self.application[0]).lower().replace(" ", "-") # TODO: Check if replacing it by nothing fetches something...
-			app_banner = QPixmap(self.get_banner_path(self.application[5], alt_app_name))
+			alt_app_name = str(self.application.name).lower().replace(" ", "-") # TODO: Check if replacing it by nothing fetches something...
+			app_banner = QPixmap(self.get_banner_path(self.application.id, alt_app_name))
 			app_overlay = QPixmap(get_res('flatpak'))
 			app_pixmap = QPixmap(app_banner)
 			painter = QPainter(app_pixmap)
@@ -704,7 +704,7 @@ class Card(QFrame):
 			self.cd.btn_select_app.setText(ui.selected_installed_app_text)
 			color = "color: rgb(0, 212, 0);"
 		else:
-			self.cd.btn_select_app.setText("v: {}".format(self.application[2]))
+			self.cd.btn_select_app.setText("v: {}".format(self.application.version))
 			color = "color: rgb(107,107,107);"
 
 		self.cd.btn_select_app.setStyleSheet("border: transparent;\n"
@@ -713,49 +713,50 @@ class Card(QFrame):
 											 "border-bottom-right-radius:5px; border-bottom-left-radius:5px;"
 											 "margin-bottom: 5px;")
 
-	def select_app(self, titulo):
+	def select_app(self, titulo): # FIXME: Not needed parameter?
 		global lista_global, selected_apps, instaladas, lista_selected
 
 		# Si la app no esta instalada
 		if self.application not in instaladas:
 			lista_global_temp = lista_global
-			if self.application[6] == 0: # app deb
+			if (self.application.type == AppType.DEB_PACKAGE):
 				lista_global = self.parentWindow.lista_app_deb
-			else: # app flatpak
+			if (self.application.type == AppType.FLATPAK_APP):
 				lista_global = self.parentWindow.lista_app_flatpak
 			indice = lista_global.index(self.application)
 			# Si la app no esta seleccionada
 			if self.application not in selected_apps:
 				selected_apps.append(self.application)
 				lista_selected.append(self.application)
-				change_state = 0
+				new_state = AppState.SELECTED
 				self.removeEventFilter(self)
 			else:
 				selected_apps.remove(self.application)
 				lista_selected.remove(self.application)
-				change_state = 1
+				new_state = AppState.DEFAULT
 				self.installEventFilter(self)
 				
 
-			lista_global[indice][4] = change_state
+			lista_global[indice].state = new_state
 			lista_global = lista_global_temp
-			self.change_color_buton(change_state)
+			self.change_color_buton(new_state)
 		else:
-			self.change_color_buton(2)
+			self.change_color_buton(AppState.INSTALLED)
 
 		self.texto_version()
 		self.parentWindow.contar_apps()
 
-	def change_color_buton(self, estado: int):
-		if estado == 0:  # App seleccionada RGB(0,255,255)
+	def change_color_buton(self, state: AppState):
+		#if state == AppState.DEFAULT:
+		r, g, b = 45, 45, 45
+		radio = 0
+		border_color = "border-color: transparent;"
+
+		if state == AppState.SELECTED:
 			r, g, b = 0, 255, 255
 			radio = 20
 			border_color = "border-color: #00bbc8;"
-		elif estado == 1:  # App no seleccionada RGB(45,45,45)
-			r, g, b = 45, 45, 45
-			radio = 0
-			border_color = "border-color: transparent;"
-		else:  # app instalada RGB(0,212,0)
+		if state == AppState.INSTALLED:
 			r, g, b = 0, 212, 0
 			radio = 20
 			border_color = "border-color: #009800;"

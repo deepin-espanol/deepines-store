@@ -4,6 +4,7 @@ from PyQt5 import QtWidgets
 from PyQt5.QtCore import QThread
 from PyQt5.QtGui import QTextCursor
 
+from deepinesStore.app_info import AppType
 from deepinesStore.install_thread import External, Code
 
 class Ui_DialogInstall(QtWidgets.QWidget):
@@ -43,11 +44,11 @@ class Ui_DialogInstall(QtWidgets.QWidget):
 		self.plainTextEdit.insertPlainText(
 			preview_installed.format(app_count=count_apps))
 		for item in self.list:
-			if item[6] == 0:
+			if item.type == AppType.DEB_PACKAGE:
 				format = '.deb'
-			else:
+			if item.type == AppType.FLATPAK_APP:
 				format = 'flatpak'
-			self.plainTextEdit.insertPlainText(f"\n{item[0]}  -  {format}")
+			self.plainTextEdit.insertPlainText(f"\n{item.name}  -  {format}")
 
 		self.plainTextEdit.insertPlainText(self.warning_text)
 

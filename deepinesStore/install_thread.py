@@ -3,6 +3,7 @@ from enum import Enum
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot
 
 from deepinesStore.core import default_env
+from deepinesStore.app_info import AppType
 import deepinesStore.demoted_actions as demoted
 
 class Code(Enum):
@@ -37,15 +38,15 @@ class External(QObject):
 
 	@pyqtSlot()
 	def run(self):
-		if any(item[6] == 0 for item in self.app): # There's at least one Debian app!
+		if any(item.type == AppType.DEB_PACKAGE for item in self.app): # There's at least one Debian app!
 			self.apt_update()
 
 		for item in self.app:
 			self.code = Code.NO_ERROR
 			try: # Let's install!
-				app_install_name = item[5]
+				app_install_name = item.id
 				self.start.emit(app_install_name)
-				if item[6] == 0:
+				if item.type == AppType.DEB_PACKAGE:
 					self.install_debian_app(app_install_name)
 				else:
 					self.install_flatpak_app(app_install_name)
