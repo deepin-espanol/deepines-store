@@ -29,8 +29,7 @@ import deepinesStore.demoted_actions as demoted
 
 # Global variables
 global lista_inicio, lista_global, lista_selected, lista_temp
-global selected_apps, instaladas, columnas, tamanio,\
-	  contador_selected
+global selected_apps, instaladas, columnas, tamanio
 
 
 class StoreMWindow(QMainWindow):
@@ -45,7 +44,7 @@ class StoreMWindow(QMainWindow):
 
 		global selected_apps, instaladas,\
 			lista_inicio, lista_global, lista_selected, \
-			contador_selected, selected_type_app
+			selected_type_app
 		repo_file = "/etc/apt/sources.list.d/deepines.list"
 		if os.path.exists(repo_file):
 			self.lista_excluir = self.Get_App_Exclude()
@@ -53,7 +52,6 @@ class StoreMWindow(QMainWindow):
 			# Variables globales
 			selected_apps = list()
 			lista_selected = list()
-			contador_selected = 0
 			# Almacenamos la lista, para cargarla solo al inicio
 			self.lista_app_deb = fetch_list_app_deb(self.lista_excluir)
 			self.total_apps_deb = len(self.lista_app_deb)
