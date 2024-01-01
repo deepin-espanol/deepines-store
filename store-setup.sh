@@ -383,7 +383,7 @@ echo "Generating 'postrm' script..."
 printf "%s" "$POSTRMSCRIPT" >DEBIAN/postrm
 chmod 755 DEBIAN/postrm
 
-YEAR="2023"
+YEAR="2024"
 
 MakeCopyright() {
     cat <<EOF
