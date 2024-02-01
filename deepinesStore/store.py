@@ -191,7 +191,7 @@ class StoreMWindow(QMainWindow):
 			selected_type_app = 0
 			ui.btn_app_deb.setText('Apps Flatpak')
 			ui.btn_app_deb.setStyleSheet(style_flatpak)
-			ui.btn_app_deb.setIcon(QIcon(QPixmap(get_res('flatpak'))))
+			ui.btn_app_deb.setIcon(QIcon(QPixmap(get_res('flatpak_sin_texto'))))
 			lista_global = self.lista_app_deb
 			lista_inicio = self.inicio_apps_deb
 			ui.listWidget.item(1).setHidden(False)

@@ -421,7 +421,7 @@ class Ui_MainWindow(object):
 								 border-color: #fff;
 								 border: 2px solid;
 								 border-radius: 15px;""")
-		self.btn_app_deb.setIcon(QtGui.QIcon(QtGui.QPixmap(get_res('flatpak'))))
+		self.btn_app_deb.setIcon(QtGui.QIcon(QtGui.QPixmap(get_res('flatpak_sin_texto'))))
 		self.btn_app_deb.setMinimumSize(QSize(150, 35))
 
 		self.horizontalLayout_4.addWidget(self.btn_app_deb)
