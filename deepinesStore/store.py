@@ -8,7 +8,7 @@ from PyQt5.QtCore import QTranslator, QLocale, QSize, QPointF, QPoint, QEvent, Q
 from PyQt5.QtWidgets import (QMainWindow, QApplication, QFrame, QLabel,
 							 QSizePolicy, QGraphicsDropShadowEffect, QSpacerItem,
 							 QDesktopWidget, QHBoxLayout)
-from PyQt5.QtGui import QPixmap, QFont, QColor, QCursor, QPainter
+from PyQt5.QtGui import QPixmap, QFont, QColor, QCursor, QPainter, QIcon
 
 from typing import List
 
@@ -60,7 +60,6 @@ class StoreMWindow(QMainWindow):
 			instaladas = self.get_installed_apps()
 
 			selected_type_app = 0 # 0 by debs
-
 			if self.lista_app_deb and self.lista_app_flatpak:
 				# Obtenemos aplicaciones para la lista de apps
 				self.inicio_apps_deb = self.Apps_inicio(self.lista_app_deb)
@@ -71,8 +70,10 @@ class StoreMWindow(QMainWindow):
 				
 			else:
 				self.error(ui.error_no_server_text)
+				ui.btn_app_deb.setEnabled(False)
 		else:
 			self.error(ui.error_no_deepines_repo_text)
+			ui.btn_app_deb.setEnabled(False)
 
 		ui.btn_install.setEnabled(False)
 		ui.btn_install.clicked.connect(self.window_install)
@@ -90,7 +91,6 @@ class StoreMWindow(QMainWindow):
 		ui.widget_1.installEventFilter(self)
 		ui.label.clicked.connect(self.show_about_dialog)
 		ui.btn_app_deb.clicked.connect(self.change_type_app_selected)
-		ui.btn_app_flatpak.clicked.connect(self.change_type_app_selected)
 		shadow = QGraphicsDropShadowEffect(self,
 										   blurRadius=10,
 										   color=QColor(255, 255, 255),
@@ -163,27 +163,35 @@ class StoreMWindow(QMainWindow):
 
 	def change_type_app_selected(self):
 		global selected_type_app, lista_inicio, lista_global
-		style_selected = """
-		background-color: rgb(203, 203, 203);
+		style_flatpak = """
+		background-color: rgb(169, 144, 122);
+		color: #fff;
+		border-color: #fff;
+		border: 2px solid;
+		border-radius: 15px;
 		"""
-		style_unselected = ""
+		style_deb = """
+		background-color: #A80030;
+		color: #fff;
+		border-color: #fff;
+		border: 2px solid;
+		border-radius: 15px;
+		"""
 		if selected_type_app == 0:
 			# Seleccionamos flatpak
 			selected_type_app = 1
-			ui.btn_app_deb.setEnabled(True)
-			ui.btn_app_deb.setStyleSheet(style_unselected)
-			ui.btn_app_flatpak.setEnabled(False)
-			ui.btn_app_flatpak.setStyleSheet(style_selected)
+			ui.btn_app_deb.setText('Apps .deb')
+			ui.btn_app_deb.setStyleSheet(style_deb)
+			ui.btn_app_deb.setIcon(QIcon(QPixmap(get_res('debian'))))
 			lista_global = self.lista_app_flatpak
 			lista_inicio = self.inicio_apps_flatpak
 			ui.listWidget.item(1).setHidden(True)
 		else:
 			# Seleccionamos deb
 			selected_type_app = 0
-			ui.btn_app_deb.setEnabled(False)
-			ui.btn_app_deb.setStyleSheet(style_selected)
-			ui.btn_app_flatpak.setEnabled(True)
-			ui.btn_app_flatpak.setStyleSheet(style_unselected)
+			ui.btn_app_deb.setText('Apps Flatpak')
+			ui.btn_app_deb.setStyleSheet(style_flatpak)
+			ui.btn_app_deb.setIcon(QIcon(QPixmap(get_res('flatpak'))))
 			lista_global = self.lista_app_deb
 			lista_inicio = self.inicio_apps_deb
 			ui.listWidget.item(1).setHidden(False)

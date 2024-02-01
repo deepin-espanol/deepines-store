@@ -405,12 +405,8 @@ class Ui_MainWindow(object):
 			""")
 		self.horizontalLayout_4 = QtWidgets.QHBoxLayout(self.widget_1)
 		self.horizontalLayout_4.setObjectName("horizontalLayout_4")
-		self.horizontalLayout_4.setContentsMargins(0, 5, 0, 5)
+		self.horizontalLayout_4.setContentsMargins(0, 12, 0, 5)
 		self.horizontalLayout_4.setSpacing(1)
-
-		spacerItem = QtWidgets.QSpacerItem(
-			130, 20, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
-		self.horizontalLayout_4.addItem(spacerItem)
 		
 		self.btn_app_deb = QtWidgets.QPushButton(self.widget_1)
 		self.btn_app_deb.setObjectName(u"btn_app_deb")
@@ -419,9 +415,14 @@ class Ui_MainWindow(object):
 		sizePolicy.setVerticalStretch(0)
 		sizePolicy.setHeightForWidth(self.btn_app_deb.sizePolicy().hasHeightForWidth())
 		self.btn_app_deb.setSizePolicy(sizePolicy)
-		self.btn_app_deb.setEnabled(False)
-		self.btn_app_deb.setStyleSheet("background-color: rgb(203, 203, 203);")
-		self.btn_app_deb.setMinimumSize(QSize(200, 30))
+		self.btn_app_deb.setStyleSheet("""
+								 background-color: rgb(169, 144, 122);
+								 color: #fff;
+								 border-color: #fff;
+								 border: 2px solid;
+								 border-radius: 15px;""")
+		self.btn_app_deb.setIcon(QtGui.QIcon(QtGui.QPixmap(get_res('flatpak'))))
+		self.btn_app_deb.setMinimumSize(QSize(150, 35))
 
 		self.horizontalLayout_4.addWidget(self.btn_app_deb)
 
@@ -435,22 +436,6 @@ class Ui_MainWindow(object):
 		font.setPointSize(20)
 		self.label_3.setFont(font)
 		self.horizontalLayout_4.addWidget(self.label_3)
-
-		spacerItem2 = QtWidgets.QSpacerItem(
-			40, 20, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
-		self.horizontalLayout_4.addItem(spacerItem2)
-
-		self.btn_app_flatpak = QtWidgets.QPushButton(self.widget_1)
-		self.btn_app_flatpak.setObjectName(u"btn_app_flatpak")
-		sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
-		sizePolicy.setHorizontalStretch(0)
-		sizePolicy.setVerticalStretch(0)
-		sizePolicy.setHeightForWidth(self.btn_app_flatpak.sizePolicy().hasHeightForWidth())
-		self.btn_app_flatpak.setSizePolicy(sizePolicy)
-		self.btn_app_flatpak.setMinimumSize(QSize(200, 30))
-
-		self.horizontalLayout_4.addWidget(self.btn_app_flatpak)
-
 
 
 		spacerItem2 = QtWidgets.QSpacerItem(
@@ -521,8 +506,7 @@ class Ui_MainWindow(object):
 		self.btn_zoom.setToolTip(self.__tr("Zoom"))
 		self.btn_close.setToolTip(self.__tr("Close"))
 		self.label.setText(self.about_version_text.format(version=STORE_VERSION))
-		self.btn_app_deb.setText(self.__tr("Apps .deb"))
-		self.btn_app_flatpak.setText(self.__tr("Apps flatpak"))
+		self.btn_app_deb.setText(self.__tr("Apps Flatpak"))
 		
 		# StoreWindow
 		self.list_apps_text = self.__tr("Select the apps to install")
