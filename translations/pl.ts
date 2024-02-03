@@ -6,27 +6,17 @@
     <message>
         <location filename="../deepinesStore/about.py" line="236"/>
         <source>Deepines Store</source>
-        <translation type="obsolete">Sklep Deepin</translation>
+        <translation>Sklep Deepin</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/about.py" line="55"/>
+        <location filename="../deepinesStore/about.py" line="237"/>
+        <source>Developed by Deepin en Español</source>
+        <translation>Stworzone przez Deepin en Español</translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/about.py" line="235"/>
         <source>About</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../deepinesStore/about.py" line="56"/>
-        <source>Authors</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../deepinesStore/about.py" line="57"/>
-        <source>Design</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../deepinesStore/about.py" line="58"/>
-        <source>Collaborators</source>
-        <translation type="unfinished"></translation>
+        <translation>O aplikacji</translation>
     </message>
 </context>
 <context>
@@ -298,16 +288,6 @@ Wersja: {version}</translation>
         <translation>Wybierz aplikacje do zainstalowania</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="508"/>
-        <source>Deepines repository is not installed on your system,&lt;br&gt;Deepines Store needs this repository to work.&lt;br&gt;In the following link you will find the instructions to install it.&lt;br&gt;&lt;br&gt;&lt;a href=&apos;#&apos;&gt;deepinenespanol.org/repositorio/ | Copy link&lt;a/&gt;&lt;br&gt;</source>
-        <translation type="obsolete">Repozytorium Deepines nie jest zainstalowane w twoim systemie,&amp;lt;br&amp;gt;Sklep Deepines potrzebuje tego repozytorium do pracy.&amp;lt;br&amp;gt;W poniższym linku znajdziesz instrukcje, jak je zainstalować.&amp;lt;br&amp;gt;&amp;lt;br&amp;gt;&amp;lt;a href=&amp;quot;#&amp;quot;&amp;gt;deepinenespanol.org/repositorio/ | Kopiuj link&amp;lt;/a&amp;gt;&amp;lt;br&amp;gt;</translation>
-    </message>
-    <message>
-        <location filename="../deepinesStore/maing.py" line="502"/>
-        <source>Unable to establish connection with the server, &lt;br&gt;please check your internet connection.&lt;br&gt;If the problem persists, please contact us via Telegram &lt;br&gt;at @deepinenespanol.&lt;br&gt;&lt;br&gt;&lt;a href=&apos;#&apos;&gt;deepinenespanol.org | Copy link&lt;/a&gt;&lt;br&gt;Visit Deepin en Espanol for more information.</source>
-        <translation type="obsolete">Nie można nawiązać połączenia z serwerem, &amp;lt;br&amp;gt;proszę sprawdzić połączenie z internetem.&amp;lt;br&amp;gt;Jeśli problem nie ustąpi, prosimy o kontakt poprzez Telegram &amp;lt;br&amp;gt;na adres @deepinenespanol.&amp;lt;br&amp;gt;&amp;lt;br&amp;gt;&amp;lt;a href=&amp;quot;#&amp;quot;&amp;gt;deepinenespanol.org | Kopiuj link&amp;lt;/a&amp;gt;&amp;lt;br&amp;gt;Odwiedź Deepin en Espanol, aby uzyskać więcej informacji.</translation>
-    </message>
-    <message>
         <location filename="../deepinesStore/maing.py" line="505"/>
         <source>Minimize</source>
         <translation>Minimalizuj</translation>
@@ -335,12 +315,12 @@ Wersja: {version}</translation>
     <message>
         <location filename="../deepinesStore/maing.py" line="523"/>
         <source>Deepines repository is not installed on your system,&lt;br&gt;Deepines Store needs this repository to work.&lt;br&gt;In the following link you will find the instructions to install it:&lt;br&gt;&lt;br&gt;{repoURL}</source>
-        <translation type="unfinished"></translation>
+        <translation>Repozytorium Deepines nie jest zainstalowane w twoim systemie,&lt;br&gt;Sklep Deepines potrzebuje tego repozytorium do pracy.&lt;br&gt;W poniższym linku znajdziesz instrukcje, jak je zainstalować:&lt;br&gt;&lt;br&gt;{repoURL}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="518"/>
         <source>Unable to establish connection with the server, &amp;lt;br&amp;gt;please check your internet connection.&amp;lt;br&amp;gt;If the problem persists, please contact us via Telegram &amp;lt;br&amp;gt;at {atTlURL}.&amp;lt;br&amp;gt;&amp;lt;br&amp;gt;Visit Deepin en Español for more information: {siteURL}</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie można nawiązać połączenia z serwerem, &amp;lt;br&amp;gt;proszę sprawdzić połączenie z internetem.&amp;lt;br&amp;gt;Jeśli problem nie ustąpi, prosimy o kontakt poprzez Telegram &amp;lt;br&amp;gt;na adres {atTlURL}.&amp;lt;br&amp;gt;&amp;lt;br&amp;gt;Odwiedź Deepin en Espanol, aby uzyskać więcej informacji: {siteURL}</translation>
     </message>
 </context>
 </TS>

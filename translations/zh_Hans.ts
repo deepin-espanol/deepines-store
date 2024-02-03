@@ -6,27 +6,17 @@
     <message>
         <location filename="../deepinesStore/about.py" line="236"/>
         <source>Deepines Store</source>
-        <translation type="obsolete">深度商店</translation>
+        <translation>深度商店</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/about.py" line="55"/>
+        <location filename="../deepinesStore/about.py" line="237"/>
+        <source>Developed by Deepin en Español</source>
+        <translation>由深度西班牙社区开发</translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/about.py" line="235"/>
         <source>About</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../deepinesStore/about.py" line="56"/>
-        <source>Authors</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../deepinesStore/about.py" line="57"/>
-        <source>Design</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../deepinesStore/about.py" line="58"/>
-        <source>Collaborators</source>
-        <translation type="unfinished"></translation>
+        <translation>关于</translation>
     </message>
 </context>
 <context>
@@ -298,16 +288,6 @@ Version: {version}</source>
         <translation>选择要安装的应用</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="508"/>
-        <source>Deepines repository is not installed on your system,&lt;br&gt;Deepines Store needs this repository to work.&lt;br&gt;In the following link you will find the instructions to install it.&lt;br&gt;&lt;br&gt;&lt;a href=&apos;#&apos;&gt;deepinenespanol.org/repositorio/ | Copy link&lt;a/&gt;&lt;br&gt;</source>
-        <translation type="obsolete">您的系统上未安装深度仓库，&amp;lt;br&amp;gt;深度商店需要此存储库才能工作。&amp;lt;br&amp;gt;在以下链接中，您将能找到安装说明。&amp;lt;br&amp;gt;&amp;lt;br&amp;gt;&amp;lt;a href=&amp;quot;#&amp;quot;&amp;gt; deepinenespanol.org/repositorio/ |复制链接&amp;lt;/a&amp;gt;&amp;lt;a&amp;gt;&amp;lt;br&amp;gt;&amp;lt;/a&amp;gt;</translation>
-    </message>
-    <message>
-        <location filename="../deepinesStore/maing.py" line="502"/>
-        <source>Unable to establish connection with the server, &lt;br&gt;please check your internet connection.&lt;br&gt;If the problem persists, please contact us via Telegram &lt;br&gt;at @deepinenespanol.&lt;br&gt;&lt;br&gt;&lt;a href=&apos;#&apos;&gt;deepinenespanol.org | Copy link&lt;/a&gt;&lt;br&gt;Visit Deepin en Espanol for more information.</source>
-        <translation type="obsolete">无法与服务器建立连接，&amp;lt;br&amp;gt;请检查您的互联网连接。&amp;lt;br&amp;gt;如果问题仍然存在，请通过 Telegram &amp;lt;br&amp;gt;@deepinenespanol 联系我们。&amp;lt;br&amp;gt;&amp;lt;br&amp;gt;&amp;lt;a href=&amp;quot;#&amp;quot;&amp;gt;deepinenespanol.org |复制链接&amp;lt;/a&amp;gt;&amp;lt;br&amp;gt;访问 Deepin en Espanol 了解更多信息。</translation>
-    </message>
-    <message>
         <location filename="../deepinesStore/maing.py" line="505"/>
         <source>Minimize</source>
         <translation>最小化</translation>
@@ -335,12 +315,12 @@ Version: {version}</source>
     <message>
         <location filename="../deepinesStore/maing.py" line="523"/>
         <source>Deepines repository is not installed on your system,&lt;br&gt;Deepines Store needs this repository to work.&lt;br&gt;In the following link you will find the instructions to install it:&lt;br&gt;&lt;br&gt;{repoURL}</source>
-        <translation type="unfinished"></translation>
+        <translation>您的系统上未安装深度仓库,&lt;br&gt;深度商店需要此存储库才能工作。&lt;br&gt;在以下链接中，您将能找到安装说明：&lt;br&gt;&lt;br&gt;{repoURL}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="518"/>
         <source>Unable to establish connection with the server, &amp;lt;br&amp;gt;please check your internet connection.&amp;lt;br&amp;gt;If the problem persists, please contact us via Telegram &amp;lt;br&amp;gt;at {atTlURL}.&amp;lt;br&amp;gt;&amp;lt;br&amp;gt;Visit Deepin en Español for more information: {siteURL}</source>
-        <translation type="unfinished"></translation>
+        <translation>无法与服务器建立连接，&amp;lt;br&amp;gt;请检查您的互联网连接。&amp;lt;br&amp;gt;如果问题仍然存在，请通过 Telegram &amp;lt;br&amp;gt;{atTlURL} 联系我们。&amp;lt;br&amp;gt;&amp;lt;br&amp;gt;访问 Deepin en Espanol 了解更多信息：{siteURL}</translation>
     </message>
 </context>
 </TS>
