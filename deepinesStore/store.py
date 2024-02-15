@@ -757,16 +757,26 @@ class Card(QFrame):
 		r, g, b = 45, 45, 45
 		radio = 0
 		border_color = "border-color: transparent;"
+		other_style = ""
 
 		if state == AppState.SELECTED:
 			r, g, b = 0, 255, 255
 			radio = 20
 			border_color = "border-color: #00bbc8;"
 		if state == AppState.INSTALLED:
+			self.setMaximumSize(QSize(tamanio+30, int((tamanio+175)*0.72222)))
 			r, g, b = 0, 212, 0
 			radio = 20
 			border_color = "border-color: #009800;"
+			other_style = """
+						#pushButton{
+							color: rgb(255, 255, 255);
+							background-color: rgb(255, 0, 0);
+							margin: 5px 10px;
+						}
+						"""
 			self.cd.btn_select_app.setEnabled(False)
+			self.cd.pushButton.setVisible(True)
 
 		self.setStyleSheet("#Frame{"
 						   "background-color: #2d2d2d;"
@@ -775,8 +785,7 @@ class Card(QFrame):
 						   + border_color +
 						   "border-width: 1px;"
 						   "border-style: solid;"
-						   "}")
-
+						   "}" + other_style)
 		shadow = QGraphicsDropShadowEffect(self,
 										   blurRadius=radio,
 										   color=QColor(r, g, b),

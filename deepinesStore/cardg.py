@@ -2,7 +2,7 @@
 
 
 from PyQt5 import QtGui, QtWidgets
-from PyQt5.QtCore import QMetaObject, QSize, Qt
+from PyQt5.QtCore import QMetaObject, QSize, Qt, QRect
 from deepinesStore.widgets import ClickableLabel
 
 
@@ -42,5 +42,11 @@ class Ui_Frame(object):
 		self.btn_select_app.setAlignment(Qt.AlignCenter)
 		self.btn_select_app.setObjectName("btn_select_app")
 		self.verticalLayout.addWidget(self.btn_select_app)
+		self.pushButton = QtWidgets.QPushButton(Frame)
+		self.pushButton.setObjectName(u"pushButton")
+		self.pushButton.setMinimumSize(QSize(100, 30))
+		self.pushButton.setText(u"Desinstalar")
+		self.pushButton.setVisible(False)
+		self.verticalLayout.addWidget(self.pushButton)
 
 		QMetaObject.connectSlotsByName(Frame)
