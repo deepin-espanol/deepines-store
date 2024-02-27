@@ -635,7 +635,7 @@ class Card(QFrame):
 			"<p wrap='hard'>{}</p>".format(self.descripcion))
 		self.cd.image_app.setWordWrap(True)
 		self.setMinimumSize(QSize(tamanio+30, int((tamanio+115)*0.72222)))
-		self.setMaximumSize(QSize(tamanio+30, int((tamanio+115)*0.72222)))
+		self.setMaximumSize(QSize(tamanio+30, int((tamanio+175)*0.72222)))
 		self.cd.image_app.setMinimumSize(QSize(tamanio, int(tamanio*0.72222)))
 
 		self.texto_version()
@@ -757,14 +757,28 @@ class Card(QFrame):
 		r, g, b = 45, 45, 45
 		radio = 0
 		border_color = "border-color: transparent;"
-		other_style = ""
+		other_style = """
+						#pushButton{
+							color: rgb(255, 255, 255);
+							background-color: rgb(45, 45, 45);
+							margin: 5px 10px;
+						}
+						"""
+		button_text = "Seleccionar"
 
 		if state == AppState.SELECTED:
 			r, g, b = 0, 255, 255
 			radio = 20
 			border_color = "border-color: #00bbc8;"
+			other_style = """
+						#pushButton{
+							color: rgb(0, 0, 0);
+							background-color: rgb(0, 255, 255);
+							margin: 5px 10px;
+						}
+						"""
+			button_text = "Seleccionada"
 		if state == AppState.INSTALLED:
-			self.setMaximumSize(QSize(tamanio+30, int((tamanio+175)*0.72222)))
 			r, g, b = 0, 212, 0
 			radio = 20
 			border_color = "border-color: #009800;"
@@ -775,8 +789,8 @@ class Card(QFrame):
 							margin: 5px 10px;
 						}
 						"""
+			button_text = "Desinstalar"
 			self.cd.btn_select_app.setEnabled(False)
-			self.cd.pushButton.setVisible(True)
 
 		self.setStyleSheet("#Frame{"
 						   "background-color: #2d2d2d;"
@@ -786,6 +800,7 @@ class Card(QFrame):
 						   "border-width: 1px;"
 						   "border-style: solid;"
 						   "}" + other_style)
+		self.cd.pushButton.setText(button_text)
 		shadow = QGraphicsDropShadowEffect(self,
 										   blurRadius=radio,
 										   color=QColor(r, g, b),

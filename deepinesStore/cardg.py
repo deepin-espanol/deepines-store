@@ -45,8 +45,7 @@ class Ui_Frame(object):
 		self.pushButton = QtWidgets.QPushButton(Frame)
 		self.pushButton.setObjectName(u"pushButton")
 		self.pushButton.setMinimumSize(QSize(100, 30))
-		self.pushButton.setText(u"Desinstalar")
-		self.pushButton.setVisible(False)
+		self.pushButton.setText(u"Seleccionar")
 		self.verticalLayout.addWidget(self.pushButton)
 
 		QMetaObject.connectSlotsByName(Frame)
