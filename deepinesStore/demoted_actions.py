@@ -51,6 +51,9 @@ else:
 
 def get_flatpak_info_cmd():
 	p = ""
+	if platform.system() == 'Windows': # FIXME: Use WSL for handling flatpak in Windows
+		return p
+
 	try:
 		p = check_output(['flatpak', '--user', 'remote-ls', 'flathub', '--app', '--columns=application,version'], text=True, env=DEF.env, preexec_fn=set(DEF.uid, DEF.gid))
 	except CalledProcessError:
@@ -70,3 +73,40 @@ def browse(uri: str):
 			return True
 		except webbrowser.Error:
 			return False
+
+
+def check_tg_handler():
+	p = b""
+	try:
+		p = check_output(["xdg-mime", "query", "default", "x-scheme-handler/tg"], env=DEF.env, preexec_fn=set(DEF.uid, DEF.gid))
+	except CalledProcessError as e:
+		if e.returncode != 1:
+			return True # May fail with 2 and still ok!
+	if p.strip():
+		return True
+	else:
+		return False
+
+
+def open_telegram_link(username: str):
+	tg = f'tg://resolve?domain={username}'
+	web = f'https://t.me/{username}'
+
+	if platform.system() == 'Linux':
+		if check_tg_handler(): # FIXME: Really slow
+			browse(tg)
+		else:
+			browse(web)
+	else:
+		if not browse(tg):
+			browse(web)
+
+
+def notify(desc='Working!', app_name="Deepines Store", title="Title", icon='deepines'):
+	icon = icon
+	title = title
+	desc = desc
+	if platform.system() == 'Windows':
+		pass
+	else:
+		run_cmd(DEF, ['notify-send', '-a', app_name, '-i', icon, title, desc])
