@@ -74,8 +74,8 @@ def set_blur(win):
 
 
 def write(b, to):
-	# wb should work with text and binary, keeps newlines.
-	open(to, 'wb').write(b.content)
+	with open(to, 'wb') as ftw:
+		ftw.write(b.content)
 
 
 if name == 'nt':
