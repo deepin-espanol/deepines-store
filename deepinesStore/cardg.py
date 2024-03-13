@@ -2,7 +2,8 @@
 
 
 from PyQt5 import QtGui, QtWidgets
-from PyQt5.QtCore import QMetaObject, QSize, Qt, QRect
+from PyQt5.QtCore import QMetaObject, QSize, Qt
+
 from deepinesStore.widgets import ClickableLabel
 
 
@@ -45,7 +46,14 @@ class Ui_Frame(object):
 		self.pushButton = QtWidgets.QPushButton(Frame)
 		self.pushButton.setObjectName(u"pushButton")
 		self.pushButton.setMinimumSize(QSize(100, 30))
-		self.pushButton.setText(u"Seleccionar")
 		self.verticalLayout.addWidget(self.pushButton)
 
+		self.retranslateUi(Frame)
 		QMetaObject.connectSlotsByName(Frame)
+
+	def __tr(self, txt, disambiguation=None, n=-1):
+		from deepinesStore.core import tr
+		return tr(self, txt, disambiguation, n)
+
+	def retranslateUi(self, Frame):
+		self.pushButton.setText(self.__tr("Select"))
