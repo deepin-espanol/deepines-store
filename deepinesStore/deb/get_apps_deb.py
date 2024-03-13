@@ -1,5 +1,4 @@
 from lxml import html
-from typing import List
 import re
 
 from deepinesStore.app_info import AppInfo
@@ -18,7 +17,7 @@ def get_repo_url():
 		return fallback_url
 
 
-def fetch_list_app_deb(list_ignored: List[str]) -> List[AppInfo]:
+def fetch_list_app_deb(list_ignored: list[str]) -> list[AppInfo]:
 	repo_url = get_repo_url()
 	request = get_dl(repo_url, timeout=10)
 

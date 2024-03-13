@@ -1,5 +1,3 @@
-from typing import List
-
 import deepinesStore.demoted_actions as actions
 from deepinesStore.app_info import AppInfo, AppType
 from deepinesStore.core import get_dl
@@ -58,7 +56,7 @@ def add_apps_dict_by_categories():
 		app_data[category] = fetch_apps_by_category(category)
 	return app_data
 
-def apps_flatpak_in_categories() -> List[AppInfo]:
+def apps_flatpak_in_categories() -> list[AppInfo]:
 	app_data = add_apps_dict_by_categories()
 	fp_app_info = list()
 	already_added = list()
