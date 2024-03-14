@@ -8,6 +8,49 @@ class G:
 		self.name = name
 		self.contact = contact
 
+class NoClickableStyle(w.QProxyStyle):
+	def __init__(self, parent=None, skip_indices=[]):
+		super().__init__(parent)
+		self.skip_indices = skip_indices
+
+	def drawControl(self, element, option, painter, widget=None):
+		if element == w.QStyle.CE_ItemViewItem:
+			index = option.index
+			if index.isValid() and index.row() in self.skip_indices:
+				option.state &= ~w.QStyle.State_Enabled
+				option.state &= ~w.QStyle.State_MouseOver
+		super().drawControl(element, option, painter, widget)
+
+class ClickableList(w.QListWidget):
+	def __init__(self, parent=None):
+		super().__init__(parent)
+		self.setAutoFillBackground(True)
+		self.setFrameShape(w.QFrame.Shape.NoFrame)
+
+	def mousePressEvent(self, event):
+		if event.button() == Qt.LeftButton:
+			super().mousePressEvent(event)
+
+	def mouseMoveEvent(self, event):
+		if event.buttons() == Qt.LeftButton:
+			event.ignore()
+		else:
+			super().mouseMoveEvent(event)
+
+	def set_skip_item_action_indices(self, skip_indices=[]):
+		self.setStyle(NoClickableStyle(self.style(), skip_indices))
+
+	# Accessibility!!
+	def keyPressEvent(self, event):
+		if event.key() in (Qt.Key_Enter, Qt.Key_Return):
+			current_item = self.currentItem()
+			if current_item:
+				current_item.setSelected(True)
+				self.itemClicked.emit(current_item)
+		else:
+			super().keyPressEvent(event)
+
+
 # FIXME: Need to revisit this! AI is not a good coder!
 class CreditsListWidget(w.QListWidget):
 	def __init__(self, parent=None):

@@ -4,7 +4,7 @@ from PyQt5 import QtGui, QtWidgets
 from PyQt5.QtCore import QMetaObject, QRect, QSize, Qt, pyqtSignal
 
 from deepinesStore.core import get_res, tr, get_text_link, STORE_VERSION
-from deepinesStore.widgets import ClickableLabel
+from deepinesStore.widgets import ClickableLabel, ClickableList
 
 
 # https://stackoverflow.com/a/67711660
@@ -226,29 +226,29 @@ class Ui_MainWindow(object):
 		self.horizontalLayout_2.addWidget(self.pushButton)
 		# Segundo item, cuadro busqueda
 		self.verticalLayout.addWidget(self.frame_4)
-		self.listWidget = QtWidgets.QListWidget(self.frame_2)
-		self.listWidget.setStyleSheet(
-			"#listWidget{\n"
+		self.lw_categories = ClickableList(self.frame_2)
+		self.lw_categories.setStyleSheet(
+			"#lw_categories{\n"
 			"  padding-left:10px;\n"
 			"  padding-top:6px;\n"
 			"  padding-bottom:6px;\n"
 			"  border-radius: 15px;\n"
 			"  background-color: rgba(16, 16, 16, 163);\n"
 			"}\n"
-			"#listWidget:item{\n"
+			"#lw_categories:item{\n"
 			# Top Right Bottom Left
 			"  padding: 3px 5px 3px 5px;\n"
 			"}\n"
-			"#listWidget:item:selected{\n"
+			"#lw_categories:item:selected{\n"
 			"  background-color: transparent;\n"
 			"  border: 0px solid transparent;\n"
 			"  color: #419fd9;\n"
 			"}")
-		self.listWidget.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-		self.listWidget.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-		self.listWidget.setAutoScroll(False)
-		self.listWidget.setIconSize(QSize(24, 24))
-		self.listWidget.setObjectName("listWidget")
+		self.lw_categories.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+		self.lw_categories.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+		self.lw_categories.setAutoScroll(False)
+		self.lw_categories.setIconSize(QSize(24, 24))
+		self.lw_categories.setObjectName("lw_categories")
 		item = QtWidgets.QListWidgetItem()
 		icon1 = QtGui.QIcon()
 		icon1.addPixmap(QtGui.QPixmap(svg_star),
@@ -256,13 +256,13 @@ class Ui_MainWindow(object):
 		item.setIcon(icon1)
 		item.setFlags(Qt.ItemIsSelectable |
 					  Qt.ItemIsUserCheckable | Qt.ItemIsEnabled)
-		self.listWidget.addItem(item)
+		self.lw_categories.addItem(item)
 		item = QtWidgets.QListWidgetItem()
 		icon2 = QtGui.QIcon()
 		icon2.addPixmap(QtGui.QPixmap(svg_deepines),
 						QtGui.QIcon.Normal, QtGui.QIcon.Off)
 		item.setIcon(icon2)
-		self.listWidget.addItem(item)
+		self.lw_categories.addItem(item)
 		item = QtWidgets.QListWidgetItem()
 		icon3 = QtGui.QIcon()
 		icon3.addPixmap(QtGui.QPixmap(svg_internet),
@@ -270,7 +270,7 @@ class Ui_MainWindow(object):
 		item.setIcon(icon3)
 		item.setFlags(Qt.ItemIsSelectable |
 					  Qt.ItemIsUserCheckable | Qt.ItemIsEnabled)
-		self.listWidget.addItem(item)
+		self.lw_categories.addItem(item)
 		item = QtWidgets.QListWidgetItem()
 		icon4 = QtGui.QIcon()
 		icon4.addPixmap(QtGui.QPixmap(svg_music),
@@ -278,7 +278,7 @@ class Ui_MainWindow(object):
 		item.setIcon(icon4)
 		item.setFlags(Qt.ItemIsSelectable |
 					  Qt.ItemIsUserCheckable | Qt.ItemIsEnabled)
-		self.listWidget.addItem(item)
+		self.lw_categories.addItem(item)
 		item = QtWidgets.QListWidgetItem()
 		icon5 = QtGui.QIcon()
 		icon5.addPixmap(QtGui.QPixmap(svg_picture),
@@ -286,7 +286,7 @@ class Ui_MainWindow(object):
 		item.setIcon(icon5)
 		item.setFlags(Qt.ItemIsSelectable |
 					  Qt.ItemIsUserCheckable | Qt.ItemIsEnabled)
-		self.listWidget.addItem(item)
+		self.lw_categories.addItem(item)
 		item = QtWidgets.QListWidgetItem()
 		icon6 = QtGui.QIcon()
 		icon6.addPixmap(QtGui.QPixmap(svg_console),
@@ -294,7 +294,7 @@ class Ui_MainWindow(object):
 		item.setIcon(icon6)
 		item.setFlags(Qt.ItemIsSelectable |
 					  Qt.ItemIsUserCheckable | Qt.ItemIsEnabled)
-		self.listWidget.addItem(item)
+		self.lw_categories.addItem(item)
 		item = QtWidgets.QListWidgetItem()
 		icon7 = QtGui.QIcon()
 		icon7.addPixmap(QtGui.QPixmap(svg_board),
@@ -302,7 +302,7 @@ class Ui_MainWindow(object):
 		item.setIcon(icon7)
 		item.setFlags(Qt.ItemIsSelectable |
 					  Qt.ItemIsUserCheckable | Qt.ItemIsEnabled)
-		self.listWidget.addItem(item)
+		self.lw_categories.addItem(item)
 		item = QtWidgets.QListWidgetItem()
 		icon8 = QtGui.QIcon()
 		icon8.addPixmap(QtGui.QPixmap(svg_terminal),
@@ -310,7 +310,7 @@ class Ui_MainWindow(object):
 		item.setIcon(icon8)
 		item.setFlags(Qt.ItemIsSelectable |
 					  Qt.ItemIsUserCheckable | Qt.ItemIsEnabled)
-		self.listWidget.addItem(item)
+		self.lw_categories.addItem(item)
 		item = QtWidgets.QListWidgetItem()
 		icon9 = QtGui.QIcon()
 		icon9.addPixmap(QtGui.QPixmap(svg_computer),
@@ -318,7 +318,7 @@ class Ui_MainWindow(object):
 		item.setIcon(icon9)
 		item.setFlags(Qt.ItemIsSelectable |
 					  Qt.ItemIsUserCheckable | Qt.ItemIsEnabled)
-		self.listWidget.addItem(item)
+		self.lw_categories.addItem(item)
 		item = QtWidgets.QListWidgetItem()
 		icon10 = QtGui.QIcon()
 		icon10.addPixmap(QtGui.QPixmap(svg_pamela),
@@ -326,10 +326,12 @@ class Ui_MainWindow(object):
 		item.setIcon(icon10)
 		item.setFlags(Qt.ItemIsSelectable | 
 					  Qt.ItemIsUserCheckable | Qt.ItemIsEnabled)
-		self.listWidget.addItem(item)
+		self.lw_categories.addItem(item)
 		item = QtWidgets.QListWidgetItem()
 		item.setFlags(Qt.NoItemFlags)
-		self.listWidget.addItem(item)
+		self.lw_categories.set_skip_item_action_indices([10])
+
+		self.lw_categories.addItem(item)
 		item = QtWidgets.QListWidgetItem()
 		icon11 = QtGui.QIcon()
 		icon11.addPixmap(QtGui.QPixmap(svg_pamela),
@@ -337,9 +339,9 @@ class Ui_MainWindow(object):
 		item.setIcon(icon11)
 		item.setFlags(Qt.ItemIsSelectable |
 					  Qt.ItemIsUserCheckable | Qt.ItemIsEnabled)
-		self.listWidget.addItem(item)
+		self.lw_categories.addItem(item)
 		# Tercer item, lista de filtros
-		self.verticalLayout.addWidget(self.listWidget)
+		self.verticalLayout.addWidget(self.lw_categories)
 
 		self.widget_2 = QtWidgets.QWidget(self.frame_2)
 		self.widget_2.setStyleSheet("background-color:transparent;")
@@ -461,7 +463,7 @@ class Ui_MainWindow(object):
 		MainWindow.setCentralWidget(self.centralwidget)
 
 		self.retranslateUi(MainWindow)
-		self.listWidget.setCurrentRow(-1)
+		self.lw_categories.setCurrentRow(-1)
 		QMetaObject.connectSlotsByName(MainWindow)
 
 	def __tr(self, txt, disambiguation=None, n=-1):
@@ -473,33 +475,33 @@ class Ui_MainWindow(object):
 		self.label_3.setText(self.__tr("Deepines Store"))
 		self.lbl_list_apps.setText(self.__tr("TextLabel"))
 		self.btn_install.setText(self.__tr("Install"))
-		__sortingEnabled = self.listWidget.isSortingEnabled()
-		self.listWidget.setSortingEnabled(False)
-		item = self.listWidget.item(0)
+		__sortingEnabled = self.lw_categories.isSortingEnabled()
+		self.lw_categories.setSortingEnabled(False)
+		item = self.lw_categories.item(0)
 		item.setText(self.__tr("Home"))
-		item = self.listWidget.item(1)
+		item = self.lw_categories.item(1)
 		item.setText(self.__tr("Deepines"))
-		item = self.listWidget.item(2)
+		item = self.lw_categories.item(2)
 		item.setText(self.__tr("Internet"))
-		item = self.listWidget.item(3)
+		item = self.lw_categories.item(3)
 		item.setText(self.__tr("Multimedia"))
-		item = self.listWidget.item(4)
+		item = self.lw_categories.item(4)
 		item.setText(self.__tr("Graphics"))
-		item = self.listWidget.item(5)
+		item = self.lw_categories.item(5)
 		item.setText(self.__tr("Games"))
-		item = self.listWidget.item(6)
+		item = self.lw_categories.item(6)
 		item.setText(self.__tr("Office automation"))
-		item = self.listWidget.item(7)
+		item = self.lw_categories.item(7)
 		item.setText(self.__tr("Development"))
-		item = self.listWidget.item(8)
+		item = self.lw_categories.item(8)
 		item.setText(self.__tr("System"))
-		item = self.listWidget.item(9)
+		item = self.lw_categories.item(9)
 		item.setText(self.__tr("Other"))
-		item = self.listWidget.item(10)
+		item = self.lw_categories.item(10)
 		item.setText(self.__tr(""))
-		item = self.listWidget.item(11)
+		item = self.lw_categories.item(11)
 		item.setText(self.__tr("Installed apps"))
-		self.listWidget.setSortingEnabled(__sortingEnabled)
+		self.lw_categories.setSortingEnabled(__sortingEnabled)
 		self.lineEdit.setPlaceholderText(self.__tr("Search"))
 		self.about_version_text = self.__tr("About \nVersion: {version}")
 		self.btn_minimize.setToolTip(self.__tr("Minimize"))

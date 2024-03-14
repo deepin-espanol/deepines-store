@@ -79,7 +79,7 @@ class StoreMWindow(QMainWindow):
 		ui.lbl_list_apps.setEnabled(False)
 		ui.icon_car.clicked.connect(self.apps_seleccionadas)
 		ui.lbl_list_apps.clicked.connect(self.apps_seleccionadas)
-		ui.listWidget.itemClicked.connect(self.listwidgetclicked)
+		ui.lw_categories.itemClicked.connect(self.listwidgetclicked)
 		ui.lineEdit.textChanged.connect(self.search_app)
 		self.about_dialog = AboutDialog(self) #  Intentional preloading.
 		ui.label_2.clicked.connect(self.show_about_dialog)
@@ -139,7 +139,7 @@ class StoreMWindow(QMainWindow):
 		self.label_error.setAlignment(QtCore.AlignCenter)
 		self.label_error.setObjectName("label_error")
 		ui.gridLayout.addWidget(self.label_error, 2, 1, 1, 1)
-		ui.listWidget.setEnabled(False)
+		ui.lw_categories.setEnabled(False)
 		ui.frame_4.setEnabled(False)
 
 	#			 /Control de errores			  #
@@ -183,7 +183,7 @@ class StoreMWindow(QMainWindow):
 			ui.btn_app_deb.setIcon(QIcon(QPixmap(get_res('debian'))))
 			lista_global = self.lista_app_flatpak
 			lista_inicio = self.inicio_apps_flatpak
-			ui.listWidget.item(1).setHidden(True)
+			ui.lw_categories.item(1).setHidden(True)
 		else:
 			# Seleccionamos deb
 			selected_type_app = 0
@@ -192,10 +192,10 @@ class StoreMWindow(QMainWindow):
 			ui.btn_app_deb.setIcon(QIcon(QPixmap(get_res('flatpak_sin_texto'))))
 			lista_global = self.lista_app_deb
 			lista_inicio = self.inicio_apps_deb
-			ui.listWidget.item(1).setHidden(False)
+			ui.lw_categories.item(1).setHidden(False)
 		
 		self.do_list_apps(lista_inicio)
-		item = ui.listWidget.item(0)
+		item = ui.lw_categories.item(0)
 		item.setSelected(True)
 
 	#			  /Cambiar tipo de app			#
@@ -210,7 +210,7 @@ class StoreMWindow(QMainWindow):
 		lista_search = list()
 		global lista_global, lista_temp
 		if len(text) != 0 and len(text) > 2:
-			ui.listWidget.clearSelection()
+			ui.lw_categories.clearSelection()
 			for app_item in lista_global:
 				if text in str(app_item.name).lower() or text in str(app_item.description).lower():
 					indice = lista_global.index(app_item)
@@ -236,45 +236,45 @@ class StoreMWindow(QMainWindow):
 		global lista_global, lista_inicio
 
 		# TODO: Maybe a switch statement would be nice here
-		if item == ui.listWidget.item(0):  # Home
+		if item == ui.lw_categories.item(0):  # Home
 			filtro.append("inicio")
-		if item == ui.listWidget.item(1):  # Deepines
+		if item == ui.lw_categories.item(1):  # Deepines
 			filtro.append("deepines")
-		if item == ui.listWidget.item(2):  # Internet
+		if item == ui.lw_categories.item(2):  # Internet
 			filtro.append("web")
 			filtro.append("net")
 			filtro.append("mail")
 			filtro.append("networking")
 			filtro.append("network")
-		if item == ui.listWidget.item(3):  # Multimedia
+		if item == ui.lw_categories.item(3):  # Multimedia
 			filtro.append("sound")
 			filtro.append("audio")
 			filtro.append("video")
 			filtro.append("audiovideo")
-		if item == ui.listWidget.item(4):  # Graphics
+		if item == ui.lw_categories.item(4):  # Graphics
 			filtro.append("graphics")
 			filtro.append("media")
-		if item == ui.listWidget.item(5):  # Games
+		if item == ui.lw_categories.item(5):  # Games
 			filtro.append("games")
 			filtro.append("game")
-		if item == ui.listWidget.item(6):  # Office automation
+		if item == ui.lw_categories.item(6):  # Office automation
 			filtro.append("editors")
 			filtro.append("office")
 			filtro.append("productivity")
-		if item == ui.listWidget.item(7):  # Development
+		if item == ui.lw_categories.item(7):  # Development
 			filtro.append("devel")
 			filtro.append("shells")
 			filtro.append("development")
-		if item == ui.listWidget.item(8):  # System
+		if item == ui.lw_categories.item(8):  # System
 			filtro.append("admin")
 			filtro.append("python")
 			filtro.append("system")
 			filtro.append("utility")
-		if item == ui.listWidget.item(9):  # Other
+		if item == ui.lw_categories.item(9):  # Other
 			filtro.append("otros")
 			filtro.append("education")
 			filtro.append("science")
-		if item == ui.listWidget.item(11):
+		if item == ui.lw_categories.item(11):
 			filtro.append("installed")			
 
 		if "inicio" not in filtro and "installed" not in filtro:
@@ -341,7 +341,7 @@ class StoreMWindow(QMainWindow):
 		global lista_inicio, lista_global
 		equal = lista_inicio == lista_global
 		if equal:
-			item = ui.listWidget.item(0)
+			item = ui.lw_categories.item(0)
 			item.setSelected(True)
 
 		while ui.gridLayout.count():
@@ -611,7 +611,7 @@ class StoreMWindow(QMainWindow):
 
 	def apps_seleccionadas(self):
 		self.do_list_apps(lista_selected)
-		ui.listWidget.clearSelection()
+		ui.lw_categories.clearSelection()
 
 ################################################
 #		   Card para la aplicacion			#
