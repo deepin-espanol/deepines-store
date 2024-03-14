@@ -1,40 +1,68 @@
 from PyQt5 import QtGui, QtWidgets as w
-from PyQt5.QtCore import pyqtSignal, Qt, QEvent
+from PyQt5.QtCore import pyqtSignal, Qt, QTimer
 
-from deepinesStore.demoted_actions import browse
-
+from deepinesStore.demoted_actions import browse, open_telegram_link
 
 class G:
 	def __init__(self, name, contact=None):
 		self.name = name
 		self.contact = contact
 
-class ContactListWidget(w.QListWidget):
-	def viewportEvent(self, event):
-		if event.type() == QEvent.HoverMove:
-			pos = event.pos()
-			item = self.itemAt(pos)
-			if item:
-				contact = item.data(Qt.UserRole)
-				if contact:
-					self.viewport().setCursor(Qt.PointingHandCursor)
-				else:
-					self.viewport().setCursor(Qt.ArrowCursor)
-			else:
-				self.viewport().setCursor(Qt.ArrowCursor)
-		return super().viewportEvent(event)
-
+# FIXME: Need to revisit this! AI is not a good coder!
+class CreditsListWidget(w.QListWidget):
 	def __init__(self, parent=None):
 		super().__init__(parent)
 		self.itemClicked.connect(self.on_item_click)
+		self.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+		self.setStyleSheet("background-color: transparent;")
+		self.setAutoFillBackground(True)
+		self.setFrameShape(w.QFrame.Shape.NoFrame)
+		self.timer = QTimer(self)
+		self.timer.timeout.connect(self.scroll)
+		self.timer.start(30)  # scroll every 30 ms
+		self.setVerticalScrollMode(w.QAbstractItemView.ScrollPerPixel)
+		self.setMouseTracking(True) # enable mouse tracking
+		self.is_paused = False
+		
+	def mousePressEvent(self, event):
+		if event.buttons() == Qt.LeftButton:
+			self.is_paused = True
+			self.timer.stop()
+		super().mousePressEvent(event)
+
+	def mouseReleaseEvent(self, event):
+		if event.buttons() == Qt.LeftButton:
+			self.is_paused = False
+			self.timer.start()
+		super().mouseReleaseEvent(event)
+
+	def mouseMoveEvent(self, event):
+		pos = self.mapFromGlobal(QtGui.QCursor.pos())
+		'''
+		if self.rect().contains(pos):
+			self.is_paused = True
+			self.timer.stop()
+		else:
+			self.is_paused = False
+			self.timer.start()
+		'''
 
 	def on_item_click(self, item):
 		contact = item.data(Qt.UserRole)
 		if contact:
 			if contact.startswith('@'):
-				browse(f'https://t.me/{contact[1:]}')
+				open_telegram_link(contact[1:])
 			else:
 				browse(f'mailto:{contact}')
+
+	def scroll(self):
+		if self.is_paused:
+			return
+		current_value = self.verticalScrollBar().value()
+		if current_value == self.verticalScrollBar().maximum():
+			self.verticalScrollBar().setValue(0)
+		else:
+			self.verticalScrollBar().setValue(current_value + 1)
 
 class ClickableLabel(w.QLabel):
 	clicked = pyqtSignal()
@@ -48,7 +76,10 @@ class ClickableLabel(w.QLabel):
 
 class LinkLabel(w.QLabel):
 	def on_link_clicked(self, link):
-		browse(link)
+		if link.startswith("https://t.me/"):
+			open_telegram_link(link[13:])
+		else:
+			browse(link)
 
 	def __init__(self, parent=None):
 		super().__init__(parent)
