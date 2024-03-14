@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 from deepinesStore.core import tr, get_app_icon, get_text_link, STORE_VERSION
 from deepinesStore.widgets import G, add_people_to_list, LinkLabel, CreditsListWidget
 
