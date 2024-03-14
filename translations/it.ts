@@ -4,92 +4,47 @@
 <context>
     <name>AboutDialog</name>
     <message>
-        <location filename="../deepinesStore/about.py" line="236"/>
-        <source>Deepines Store</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../deepinesStore/about.py" line="237"/>
-        <source>Developed by Deepin en Español</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../deepinesStore/about.py" line="235"/>
+        <location filename="../deepinesStore/about.py" line="55"/>
         <source>About</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../deepinesStore/about.py" line="238"/>
-        <source>Project Leader: {}</source>
+        <location filename="../deepinesStore/about.py" line="56"/>
+        <source>Authors</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../deepinesStore/about.py" line="239"/>
-        <source>Development: {}</source>
+        <location filename="../deepinesStore/about.py" line="57"/>
+        <source>Design</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../deepinesStore/about.py" line="240"/>
-        <source>UI: {}</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../deepinesStore/about.py" line="241"/>
-        <source>OG UX Writer: {}</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../deepinesStore/about.py" line="242"/>
-        <source>Design: {}</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../deepinesStore/about.py" line="243"/>
-        <source>SysAdmin: {}</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../deepinesStore/about.py" line="244"/>
-        <source>Web: {}</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../deepinesStore/about.py" line="245"/>
-        <source>Servers: {}</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../deepinesStore/about.py" line="246"/>
-        <source>Collaborators: {}</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../deepinesStore/about.py" line="247"/>
-        <source>deepinenespañol.org | Copy link</source>
+        <location filename="../deepinesStore/about.py" line="58"/>
+        <source>Collaborators</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>Ui_DialogInstall</name>
     <message>
-        <location filename="../deepinesStore/dialog_install.py" line="143"/>
+        <location filename="../deepinesStore/dialog_install.py" line="135"/>
         <source>
 Installing {item}
 </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../deepinesStore/dialog_install.py" line="140"/>
+        <location filename="../deepinesStore/dialog_install.py" line="132"/>
         <source>Close</source>
         <translation>Chiudi</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/dialog_install.py" line="139"/>
+        <location filename="../deepinesStore/dialog_install.py" line="131"/>
         <source>Retry</source>
         <translation>Riprova</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/dialog_install.py" line="154"/>
+        <location filename="../deepinesStore/dialog_install.py" line="146"/>
         <source>
 
 The installation system is locked by 
@@ -104,12 +59,12 @@ attendi la fine del processo e dopo premi Riprova.
 Se stai usando Synaptic, accertati che prima sia chiuso.</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/dialog_install.py" line="138"/>
+        <location filename="../deepinesStore/dialog_install.py" line="130"/>
         <source>Install</source>
         <translation>Installa</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/dialog_install.py" line="142"/>
+        <location filename="../deepinesStore/dialog_install.py" line="134"/>
         <source>
 All processes have been completed.
 </source>
@@ -118,7 +73,7 @@ Tutti i processi sono stati completati.
 </translation>
     </message>
     <message>
-        <location filename="../deepinesStore/dialog_install.py" line="141"/>
+        <location filename="../deepinesStore/dialog_install.py" line="133"/>
         <source>
 
 Warning: do not close the window, interrupting the installation may damage your system.
@@ -129,12 +84,12 @@ Attenzione: non chiudere la finestra, interrompere l'installazione in corso potr
 </translation>
     </message>
     <message>
-        <location filename="../deepinesStore/dialog_install.py" line="135"/>
+        <location filename="../deepinesStore/dialog_install.py" line="127"/>
         <source>Installation process - Deepines Store</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../deepinesStore/dialog_install.py" line="158"/>
+        <location filename="../deepinesStore/dialog_install.py" line="150"/>
         <source>
 The database is being updated.
 
@@ -145,7 +100,7 @@ Il database è in fase di aggiornamento.
 </translation>
     </message>
     <message>
-        <location filename="../deepinesStore/dialog_install.py" line="144"/>
+        <location filename="../deepinesStore/dialog_install.py" line="136"/>
         <source>
 The installation of {item} is finished.
 </source>
@@ -154,7 +109,7 @@ L'installazione di {item} si è conclusa.
 </translation>
     </message>
     <message>
-        <location filename="../deepinesStore/dialog_install.py" line="147"/>
+        <location filename="../deepinesStore/dialog_install.py" line="139"/>
         <source>
 
 The network connection has failed and the installation has not been completed.
@@ -169,21 +124,21 @@ Se il problema persiste, invia una segnalazione a t.me/deepinenespanol.
 </translation>
     </message>
     <message>
-        <location filename="../deepinesStore/dialog_install.py" line="136"/>
+        <location filename="../deepinesStore/dialog_install.py" line="128"/>
         <source>{app_count} app has been selected for installation:
 </source>
         <translation>L'applicazione {app_count} è stata selezionata per l'installazione:
 </translation>
     </message>
     <message>
-        <location filename="../deepinesStore/dialog_install.py" line="137"/>
+        <location filename="../deepinesStore/dialog_install.py" line="129"/>
         <source>{app_count} apps have been selected for installation:
 </source>
         <translation>Le applicazioni {app_count} sono state selezionate per l'installazione.
 </translation>
     </message>
     <message>
-        <location filename="../deepinesStore/dialog_install.py" line="145"/>
+        <location filename="../deepinesStore/dialog_install.py" line="137"/>
         <source>
 
 An error has occurred, please try again.
@@ -196,7 +151,7 @@ Se il problema persiste, contatta l'amministratore.
 </translation>
     </message>
     <message>
-        <location filename="../deepinesStore/dialog_install.py" line="150"/>
+        <location filename="../deepinesStore/dialog_install.py" line="142"/>
         <source>
 
 One or more apps could not be installed because
@@ -218,147 +173,157 @@ o nel nostro gruppo Telegram t.me/deepinenespanol.</translation>
     <message>
         <location filename="../deepinesStore/cardg.py" line="70"/>
         <source>Install</source>
-        <translation>Installa</translation>
+        <translation type="obsolete">Installa</translation>
     </message>
     <message>
         <location filename="../deepinesStore/cardg.py" line="69"/>
         <source>Card</source>
-        <translation>Scheda</translation>
+        <translation type="obsolete">Scheda</translation>
     </message>
 </context>
 <context>
     <name>Ui_MainWindow</name>
     <message>
-        <location filename="../deepinesStore/maing.py" line="467"/>
+        <location filename="../deepinesStore/maing.py" line="483"/>
         <source>Home</source>
         <translation>Pagina principale</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="477"/>
+        <location filename="../deepinesStore/maing.py" line="493"/>
         <source>Games</source>
         <translation>Giochi</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="485"/>
+        <location filename="../deepinesStore/maing.py" line="501"/>
         <source>Other</source>
         <translation>Altro</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="463"/>
+        <location filename="../deepinesStore/maing.py" line="479"/>
         <source>Install</source>
         <translation>Installa</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="488"/>
+        <location filename="../deepinesStore/maing.py" line="504"/>
         <source>About 
 Version: {version}</source>
         <translation>Informazioni 
 Versione: {version}</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="481"/>
+        <location filename="../deepinesStore/maing.py" line="497"/>
         <source>Development</source>
         <translation>Sviluppo</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="487"/>
+        <location filename="../deepinesStore/maing.py" line="503"/>
         <source>Search</source>
         <translation>Ricerca</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="471"/>
+        <location filename="../deepinesStore/maing.py" line="487"/>
         <source>Internet</source>
         <translation>Internet</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="483"/>
+        <location filename="../deepinesStore/maing.py" line="499"/>
         <source>System</source>
         <translation>Sistema</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="475"/>
+        <location filename="../deepinesStore/maing.py" line="491"/>
         <source>Graphics</source>
         <translation>Grafica</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="460"/>
+        <location filename="../deepinesStore/maing.py" line="476"/>
         <source>About us</source>
         <translation>Chi siamo</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="473"/>
+        <location filename="../deepinesStore/maing.py" line="489"/>
         <source>Multimedia</source>
         <translation>Multimedia</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="469"/>
+        <location filename="../deepinesStore/maing.py" line="485"/>
         <source>Deepines</source>
         <translation>Deepines</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="479"/>
+        <location filename="../deepinesStore/maing.py" line="495"/>
         <source>Office automation</source>
         <translation>Domotica</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="461"/>
+        <location filename="../deepinesStore/maing.py" line="477"/>
         <source>Deepines Store</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="462"/>
+        <location filename="../deepinesStore/maing.py" line="478"/>
         <source>TextLabel</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="500"/>
+        <location filename="../deepinesStore/maing.py" line="517"/>
         <source>{app_count} apps selected to install, click here to review them</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="497"/>
+        <location filename="../deepinesStore/maing.py" line="515"/>
         <source>Installed</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="498"/>
+        <location filename="../deepinesStore/maing.py" line="516"/>
         <source>{app_count} app selected to install, click here to review it</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="496"/>
+        <location filename="../deepinesStore/maing.py" line="514"/>
         <source>Selected</source>
         <translation>Selezionato</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="495"/>
+        <location filename="../deepinesStore/maing.py" line="513"/>
         <source>Select the apps to install</source>
         <translation>Seleziona le applicazioni da installare</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="508"/>
-        <source>Deepines repository is not installed on your system,&lt;br&gt;Deepines Store needs this repository to work.&lt;br&gt;In the following link you will find the instructions to install it.&lt;br&gt;&lt;br&gt;&lt;a href=&apos;#&apos;&gt;deepinenespanol.org/repositorio/ | Copy link&lt;a/&gt;&lt;br&gt;</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../deepinesStore/maing.py" line="502"/>
-        <source>Unable to establish connection with the server, &lt;br&gt;please check your internet connection.&lt;br&gt;If the problem persists, please contact us via Telegram &lt;br&gt;at @deepinenespanol.&lt;br&gt;&lt;br&gt;&lt;a href=&apos;#&apos;&gt;deepinenespanol.org | Copy link&lt;/a&gt;&lt;br&gt;Visit Deepin en Espanol for more information.</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../deepinesStore/maing.py" line="489"/>
+        <location filename="../deepinesStore/maing.py" line="505"/>
         <source>Minimize</source>
         <translation>Minimizza</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="490"/>
+        <location filename="../deepinesStore/maing.py" line="506"/>
         <source>Zoom</source>
         <translation>Ingrandisci</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="491"/>
+        <location filename="../deepinesStore/maing.py" line="507"/>
         <source>Close</source>
         <translation>Chiudi</translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/maing.py" line="509"/>
+        <source>Apps .deb</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/maing.py" line="510"/>
+        <source>Apps flatpak</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/maing.py" line="523"/>
+        <source>Deepines repository is not installed on your system,&lt;br&gt;Deepines Store needs this repository to work.&lt;br&gt;In the following link you will find the instructions to install it:&lt;br&gt;&lt;br&gt;{repoURL}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/maing.py" line="518"/>
+        <source>Unable to establish connection with the server, &amp;lt;br&amp;gt;please check your internet connection.&amp;lt;br&amp;gt;If the problem persists, please contact us via Telegram &amp;lt;br&amp;gt;at {atTlURL}.&amp;lt;br&amp;gt;&amp;lt;br&amp;gt;Visit Deepin en Español for more information: {siteURL}</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

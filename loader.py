@@ -2,6 +2,9 @@
 # -*- coding: utf-8 -*-
 
 import subprocess
+import os
+import json
 
-command = f'pkexec /usr/share/deepines/deepines'
-subprocess.check_call(command, shell=True)
+cmd = ["pkexec", "/usr/share/deepines/deepines", "--env", json.dumps(os.environ.copy())]
+
+subprocess.run(cmd, check=True)
