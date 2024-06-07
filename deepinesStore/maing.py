@@ -512,8 +512,10 @@ class Ui_MainWindow(object):
 		
 		# StoreWindow
 		self.list_apps_text = self.__tr("Select the apps to install")
+		self.select_app_text = self.__tr("Select")
 		self.selected_to_install_app_text = self.__tr("Selected")
 		self.selected_installed_app_text = self.__tr("Installed")
+		self.uninstall_app_text = self.__tr("Uninstall")
 		self.single_app_text = self.__tr("{app_count} app selected to install, click here to review it")
 		self.multi_apps_text = self.__tr("{app_count} apps selected to install, click here to review them")
 		self.error_no_server_text = self.__tr("Unable to establish connection with the server, <br>"
