@@ -26,7 +26,7 @@ from deepinesStore.widgets import LinkLabel
 import deepinesStore.demoted_actions as demoted
 
 # Global variables
-global lista_inicio, lista_global, lista_temp
+global lista_inicio, lista_global, lista_temp, uninstalled
 global selected_apps, instaladas, columnas, tamanio
 
 
@@ -354,19 +354,23 @@ class StoreMWindow(QMainWindow):
 		# Estas para establecer la ubicacion de la tarjetas en la grilla
 		i = 0
 		self.calcular_columnas()
-		for item in lista:  # Recorremos la lista con los elementos
-			i += 1  # Contador para agregar el espaciador horizontal
-			# Consultamos si ya tenemos tres tarjetas en y
-			if y % columnas == 0 and y != 0:
-				y = 0  # Reiniciamos y
-				x += 1  # Agregamos otra columna
-			y += 1  # agregamos 1 a la coordenada y
+		try:
+			for item in lista:  # Recorremos la lista con los elementos
+				i += 1  # Contador para agregar el espaciador horizontal
+				# Consultamos si ya tenemos tres tarjetas en y
+				if y % columnas == 0 and y != 0:
+					y = 0  # Reiniciamos y
+					x += 1  # Agregamos otra columna
+				y += 1  # agregamos 1 a la coordenada y
 
-			# Creamos una instancia de la clase card
-			carta = Card(item, self)
-			# Agregamos dicha instancia a la grilla
+				# Creamos una instancia de la clase card
+				carta = Card(item, self)
+				# Agregamos dicha instancia a la grilla
+				ui.gridLayout.addWidget(carta, x, y, 1, 1)
+			ui.frame.verticalScrollBar().setSliderPosition(0)
+		except:
+			carta = Card(lista, self)
 			ui.gridLayout.addWidget(carta, x, y, 1, 1)
-		ui.frame.verticalScrollBar().setSliderPosition(0)
 
 		# Espaciador vertical
 		spacerItem9 = QSpacerItem(
@@ -512,6 +516,18 @@ class StoreMWindow(QMainWindow):
 	################################################
 
 	################################################
+	#				  Uninstall				 #
+
+	def window_uninstall(self, application = list()):
+		global uninstalled
+		uninstalled = application
+		self.modal = Ui_DialogInstall(self, application)
+		self.modal.show()
+
+	#				 /Uninstall				 #
+	################################################
+
+	################################################
 	#				     About   				  #
 
 	def show_about_dialog(self):
@@ -548,6 +564,8 @@ class StoreMWindow(QMainWindow):
 			for app_item in self.lista_app_deb:
 				if installed_deb == app_item.id:
 					self.list_installed.append(app_item)
+					indice = self.lista_app_deb.index(app_item)
+					self.lista_app_deb[indice].state = AppState.INSTALLED
 
 		flatpak_cmd = demoted.run_cmd(demoted.DEF, cmd=['flatpak', '--user', 'list', '--columns=application'])
 		installed_ids = [line.rstrip("\n") for line in flatpak_cmd.stdout.readlines()]
@@ -556,6 +574,8 @@ class StoreMWindow(QMainWindow):
 			for app_item in self.lista_app_flatpak:
 				if installed_id == app_item.id:
 					self.list_installed.append(app_item)
+					indice = self.lista_app_flatpak.index(app_item)
+					self.lista_app_flatpak[indice].state = AppState.INSTALLED
 
 		return(self.list_installed)
 
@@ -577,6 +597,24 @@ class StoreMWindow(QMainWindow):
 		self.contar_apps()
 
 	#		   /Apps nuevas Instaladas			#
+	################################################
+
+	################################################
+	#				Uninstalled App				#
+
+	def uninstallation_completed(self):
+		global uninstalled, instaladas
+		if uninstalled.type == AppType.DEB_PACKAGE:
+			self.lista_app_deb.remove(uninstalled)
+		else:
+			self.lista_app_flatpak.remove(uninstalled)
+		instaladas.remove(uninstalled)
+		lista_complete = list()
+		lista_complete.append(uninstalled)
+		self.do_list_apps(uninstalled)
+
+
+	#			   /Uninstalled App				#
 	################################################
 
 	def eventFilter(self, obj, event):
@@ -665,12 +703,21 @@ class Card(QFrame):
 			painter.end()
 			self.cd.image_app.setPixmap(app_pixmap)
 
-		self.cd.lbl_version.clicked.connect(
-			lambda: self.select_app(self.titulo))
-		self.cd.image_app.clicked.connect(lambda: self.select_app(self.titulo))
-		self.cd.lbl_name_app.clicked.connect(
-			lambda: self.select_app(self.titulo))
-		self.cd.btn_select_app.clicked.connect(lambda: self.select_app(self.titulo))
+		if self.application.state != AppState.INSTALLED:
+			self.cd.lbl_version.clicked.connect(
+				lambda: self.select_app())
+			self.cd.image_app.clicked.connect(lambda: self.select_app())
+			self.cd.lbl_name_app.clicked.connect(
+				lambda: self.select_app())
+			self.cd.btn_select_app.clicked.connect(lambda: self.select_app())
+		else:
+			self.cd.lbl_version.clicked.connect(
+				lambda: self.parentWindow.window_uninstall(self.application))
+			self.cd.image_app.clicked.connect(lambda: self.parentWindow.window_uninstall(self.application))
+			self.cd.lbl_name_app.clicked.connect(
+				lambda: self.parentWindow.window_uninstall(self.application))
+			self.cd.btn_select_app.clicked.connect(lambda: self.parentWindow.window_uninstall(self.application))
+
 
 	def eventFilter(self, object, event):
 		if event.type() == QEvent.Enter:
@@ -708,7 +755,7 @@ class Card(QFrame):
 		else:
 			self.cd.btn_select_app.setText(ui.select_app_text)
 
-	def select_app(self, titulo): # FIXME: Not needed parameter?
+	def select_app(self): # FIXME: Not needed parameter?
 		global lista_global, selected_apps, instaladas
 
 		# Si la app no esta instalada
@@ -769,10 +816,6 @@ class Card(QFrame):
 						"margin: 5px 10px;"
 						"}")
 			self.cd.btn_select_app.setText(ui.uninstall_app_text)
-			self.cd.btn_select_app.setEnabled(False)
-			self.cd.image_app.setEnabled(False)
-			self.cd.lbl_name_app.setEnabled(False)
-			self.cd.lbl_version.setEnabled(False)
 
 		self.setStyleSheet("#Frame{"
 						   "background-color: #2d2d2d;"

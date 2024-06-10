@@ -6,6 +6,8 @@ from PyQt5.QtGui import QTextCursor
 
 from deepinesStore.app_info import AppType
 from deepinesStore.install_thread import External, Code
+from deepinesStore.uninstall_thread import ExternalUninstall
+from deepinesStore.core import ProcessType
 
 class Ui_DialogInstall(QtWidgets.QWidget):
 	def __init__(self, main, list):
@@ -17,7 +19,6 @@ class Ui_DialogInstall(QtWidgets.QWidget):
 
 		self.gridLayout = QtWidgets.QGridLayout(self)
 		self.btn_d_install = QtWidgets.QPushButton(self)
-		self.btn_d_install.setText(self.install_text)
 		self.gridLayout.addWidget(self.btn_d_install, 1, 0, 1, 1)
 		self.btn_d = QtWidgets.QPushButton(self)
 		self.btn_d.setText(self.close_text)
@@ -30,27 +31,52 @@ class Ui_DialogInstall(QtWidgets.QWidget):
 		self.plainTextEdit.setObjectName("plainTextEdit")
 		self.gridLayout.addWidget(self.plainTextEdit, 0, 0, 1, 2)
 		self.center()
-
 		self.btn_d.clicked.connect(self.close)
-		self.btn_d_install.clicked.connect(self.p_install)
 
-		count_apps = len(list)
+		try:
+			count_apps = len(list)
+			self.process_type = ProcessType.INSTALL
+			self.btn_d_install.setText(self.install_text)
+		except:
+			self.process_type = ProcessType.UNINSTALL
 
-		if count_apps != 1:
-			preview_installed = self.multi_apps_to_install_text
+		if self.process_type == ProcessType.INSTALL:
+			if count_apps != 1:
+				preview_installed = self.multi_apps_to_install_text
+			else:
+				preview_installed = self.single_app_to_install_text
+
+			self.plainTextEdit.insertPlainText(
+				preview_installed.format(app_count=count_apps))
+			for item in self.list:
+				if item.type == AppType.DEB_PACKAGE:
+					format = '.deb'
+				if item.type == AppType.FLATPAK_APP:
+					format = 'flatpak'
+				self.plainTextEdit.insertPlainText(f"\n{item.name}  -  {format}")
+			self.btn_d_install.clicked.connect(self.p_install)
 		else:
-			preview_installed = self.single_app_to_install_text
-
-		self.plainTextEdit.insertPlainText(
-			preview_installed.format(app_count=count_apps))
-		for item in self.list:
-			if item.type == AppType.DEB_PACKAGE:
-				format = '.deb'
-			if item.type == AppType.FLATPAK_APP:
-				format = 'flatpak'
-			self.plainTextEdit.insertPlainText(f"\n{item.name}  -  {format}")
-
+			self.btn_d_install.setText(self.uninstall_text)
+			self.btn_d_install.clicked.connect(self.p_uninstall)
+			self.plainTextEdit.insertPlainText(self.app_to_uninstall_text.format(item=self.list.name))
 		self.plainTextEdit.insertPlainText(self.warning_text)
+
+	def p_uninstall(self):
+		self.main.setVisible(False)
+		self.btn_d.setEnabled(False)
+		self.btn_d_install.setEnabled(False)
+		self.obj = ExternalUninstall(self.list)
+		self.thread = QThread()
+		self.obj.start.connect(self.p_start)
+		self.obj.moveToThread(self.thread)
+		self.obj.error.connect(self.p_error)
+		self.obj.progress.connect(self.p_progress)
+		self.obj.update.connect(self.p_update)
+		self.obj.finish.connect(self.p_finish)
+		self.obj.complete.connect(self.complete)
+		self.thread.started.connect(self.obj.run)
+		# thread.finished.connect(thread.quit())
+		self.thread.start()
 
 	def p_install(self):
 		self.main.setVisible(False)
@@ -77,19 +103,28 @@ class Ui_DialogInstall(QtWidgets.QWidget):
 	def complete(self):
 		self.plainTextEdit.insertPlainText(self.all_processes_completed_text)
 		self.plainTextEdit.moveCursor(QTextCursor.End)
-		self.main.installation_completed()
+		if self.process_type == ProcessType.INSTALL:
+			self.main.installation_completed()
+		else:
+			self.main.uninstallation_completed()
 		self.activate_win()
 		self.thread.quit()
 
 	def p_start(self, item):
-		self.plainTextEdit.insertPlainText(self.installing_text.format(item=item))
+		if self.process_type == ProcessType.INSTALL:
+			self.plainTextEdit.insertPlainText(self.installing_text.format(item=item))
+		else:
+			self.plainTextEdit.insertPlainText(self.uninstalling_text.format(item=self.list.name))
 
 	def p_progress(self, item):
 		self.plainTextEdit.insertPlainText(f"{item}")
 		self.plainTextEdit.moveCursor(QTextCursor.End)
 
 	def p_finish(self, item):
-		self.plainTextEdit.insertPlainText(self.finish_install_text.format(item=item))
+		if self.process_type == ProcessType.INSTALL:
+			self.plainTextEdit.insertPlainText(self.finish_install_text.format(item=item))
+		else:
+			self.plainTextEdit.insertPlainText(self.finish_uninstall_text.format(item=self.list.name))
 		self.plainTextEdit.moveCursor(QTextCursor.End)
 
 	def p_error(self, code: Code):
@@ -128,13 +163,17 @@ class Ui_DialogInstall(QtWidgets.QWidget):
 		DialogInstall.setWindowTitle(self.__tr("Installation process - Deepines Store"))
 		self.single_app_to_install_text = self.__tr("{app_count} app has been selected for installation:\n")
 		self.multi_apps_to_install_text = self.__tr("{app_count} apps have been selected for installation:\n")
+		self.app_to_uninstall_text = self.__tr("App to uninstall: {item}")
+		self.uninstall_text = self.__tr("Uninstall")
 		self.install_text = self.__tr("Install")
 		self.retry_text = self.__tr("Retry")
 		self.close_text = self.__tr("Close")
-		self.warning_text = self.__tr("\n\nWarning: do not close the window, interrupting the installation may damage your system.\n")
+		self.warning_text = self.__tr("\n\nWarning: do not close the window, interrupting the process may damage your system.\n")
 		self.all_processes_completed_text = self.__tr("\nAll processes have been completed.\n")
 		self.installing_text = self.__tr("\nInstalling {item}\n")
+		self.uninstalling_text = self.__tr("\nUninstalling {item}\n")
 		self.finish_install_text = self.__tr("\nThe installation of {item} is finished.\n")
+		self.finish_uninstall_text = self.__tr("\nThe uninstallation of {item} is finished.\n")
 		self.error_unhandled_text = self.__tr("\n\nAn error has occurred, please try again.\n"
 											   "If the problem persists, contact the administrator.\n")
 		self.error_network_text = self.__tr("\n\nThe network connection has failed and the installation has not been completed.\n"

@@ -1,3 +1,4 @@
+from enum import Enum
 from os import environ as env, name
 import argparse
 import json
@@ -95,3 +96,7 @@ default_env = env.copy()
 if args.env:
     new_env = json.loads(args.env)
     default_env.update(new_env)
+
+class ProcessType(Enum):
+	INSTALL = 0
+	UNINSTALL = 1
