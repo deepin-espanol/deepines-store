@@ -32,7 +32,8 @@ class Ui_DialogInstall(QtWidgets.QWidget):
 		self.gridLayout.addWidget(self.plainTextEdit, 0, 0, 1, 2)
 		self.center()
 		self.btn_d.clicked.connect(self.close)
-
+		# FIXME: Don't install 1 app
+		# maybe get state of first app 
 		try:
 			count_apps = len(list)
 			self.process_type = ProcessType.INSTALL
