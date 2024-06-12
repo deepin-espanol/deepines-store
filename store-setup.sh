@@ -53,6 +53,7 @@ Main() {
 }
 
 Cleanup() { rm -R "$TEMP_DIR" >/dev/null 2>&1; }
+# shellcheck disable=SC2329
 CleanupAndExit() {
     Cleanup
     exit 130
