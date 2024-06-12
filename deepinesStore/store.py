@@ -10,7 +10,7 @@ from PyQt5.QtWidgets import (QMainWindow, QApplication, QFrame, QLabel,
 							 QDesktopWidget, QHBoxLayout)
 from PyQt5.QtGui import QPixmap, QFont, QColor, QCursor, QPainter, QIcon
 
-from deepinesStore.core import set_blur
+from deepinesStore.core import set_blur, ProcessType
 # Para obtener applicacion random
 from random import choice
 # GUI o modulos locales
@@ -506,7 +506,7 @@ class StoreMWindow(QMainWindow):
 
 	def window_install(self):
 		global selected_apps
-		self.modal = Ui_DialogInstall(self, selected_apps)
+		self.modal = Ui_DialogInstall(self, selected_apps, ProcessType.INSTALL)
 		self.modal.show()
 
 	#				 /Instalacion				 #
@@ -515,10 +515,10 @@ class StoreMWindow(QMainWindow):
 	################################################
 	#				  Uninstall				 #
 
-	def window_uninstall(self, application = list()):
+	def window_uninstall(self, application):
 		global uninstalled
 		uninstalled.append(application) # Add application
-		self.modal = Ui_DialogInstall(self, application)
+		self.modal = Ui_DialogInstall(self, application, ProcessType.UNINSTALL)
 		self.modal.show()
 
 	#				 /Uninstall				 #
@@ -588,6 +588,12 @@ class StoreMWindow(QMainWindow):
 		for app in selected_apps:
 			lista_complete.append(app)
 			instaladas.append(app) # FIXME: Check if it is really installed
+			if app.type == AppType.DEB_PACKAGE:
+				index = self.lista_app_deb.index(app)
+				self.lista_app_deb[index].state = AppState.INSTALLED
+			else:
+				index = self.lista_app_flatpak.index(app)
+				self.lista_app_flatpak[index].state = AppState.INSTALLED
 			
 		selected_apps = list()
 		self.do_list_apps(lista_complete)
@@ -600,17 +606,19 @@ class StoreMWindow(QMainWindow):
 	#				Uninstalled App				#
 
 	def uninstallation_completed(self):
-		global uninstalled, instaladas
-		if uninstalled[0].type == AppType.DEB_PACKAGE:
-			self.lista_app_deb.remove(uninstalled[0])
-		else:
-			self.lista_app_flatpak.remove(uninstalled[0])
+		global uninstalled, instaladas, lista_global
 		instaladas.remove(uninstalled[0])
-		#lista_complete = uninstalled
-		#lista_complete.append(uninstalled)
 		uninstalled[0].state = AppState.UNINSTALLED
-		print(f'estado de la app: {uninstalled[0].state}')
+		if uninstalled[0].type == AppType.DEB_PACKAGE:
+			lista_global = self.lista_app_deb
+			index = self.lista_app_deb.index(uninstalled[0])
+			self.lista_app_deb[index].state = AppState.DEFAULT
+		else:
+			lista_global = self.lista_app_flatpak
+			index = self.lista_app_flatpak.index(uninstalled[0])
+			self.lista_app_flatpak[index].state = AppState.DEFAULT
 		self.do_list_apps(uninstalled)
+		uninstalled.remove(uninstalled[0])
 
 
 	#			   /Uninstalled App				#

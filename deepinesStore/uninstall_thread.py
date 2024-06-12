@@ -49,15 +49,11 @@ class ExternalUninstall(QObject):
 		self.complete.emit()
 
 	def uninstall_debian_app(self, app_name: str):
-		apt_uninstall = self.run_cmd(["apt", "-q", "-y", "uninstall", app_name])
+		apt_uninstall = self.run_cmd(["apt", "-q", "-y", "purge", app_name])
 		while not apt_uninstall.poll():
 			line = apt_uninstall.stdout.readline()
 			if line:
 				print(f"L: {line}", end="")
-				if self.check_string(line, self.no_net):
-					self.code = Code.NO_INTERNET
-				if self.check_string(line, self.no_dep):
-					self.code = Code.FAIL_DEPS
 				if self.check_string(line, self.locked):
 					self.code = Code.APT_LOCKED
 				for err in self.errors:  # FIXME: What is this?
