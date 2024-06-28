@@ -10,6 +10,7 @@ class AppState(Enum):
 	SELECTED = 0
 	DEFAULT = 1
 	INSTALLED = 2
+	UNINSTALLED = 3
 
 
 class AppInfo:

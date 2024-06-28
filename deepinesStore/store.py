@@ -12,7 +12,7 @@ from PyQt5.QtWidgets import (QMainWindow, QApplication, QFrame, QLabel,
                              QDesktopWidget, QHBoxLayout, QVBoxLayout, QWidget)
 from PyQt5.QtGui import QPixmap, QFont, QColor, QCursor, QPainter, QIcon, QMovie
 
-from deepinesStore.core import set_blur
+from deepinesStore.core import set_blur, ProcessType
 # Para obtener applicacion random
 from random import choice
 # GUI o modulos locales
@@ -45,13 +45,14 @@ class StoreMWindow(QMainWindow):
 
         global selected_apps, installed,\
             lista_inicio, lista_global, \
-            selected_type_app, list_app_depines, \
+            selected_type_app, uninstalled, list_app_depines, \
             list_app_flatpak
         repo_file = "/etc/apt/sources.list.d/deepines.list"
         if os.path.exists(repo_file):
             self.lista_deepines = list_app_depines
             # Variables globales
             selected_apps = list()
+			uninstalled = list()
             # Almacenamos la lista, para cargarla solo al inicio
             self.lista_app_deb = list_app_deb
             self.total_apps_deb = len(self.lista_app_deb)
@@ -351,28 +352,24 @@ class StoreMWindow(QMainWindow):
             if widget:
                 widget.deleteLater()
 
-        y = 0  # Creamos la coordenada y
-        x = 0  # Creamos la coordenada x
-        # Estas para establecer la ubicacion de la tarjetas en la grilla
-        i = 0
-        self.calcular_columnas()
-        try:
-            for item in lista:  # Recorremos la lista con los elementos
-                i += 1  # Contador para agregar el espaciador horizontal
-                # Consultamos si ya tenemos tres tarjetas en y
-                if y % columnas == 0 and y != 0:
-                    y = 0  # Reiniciamos y
-                    x += 1  # Agregamos otra columna
-                y += 1  # agregamos 1 a la coordenada y
+		y = 0  # Creamos la coordenada y
+		x = 0  # Creamos la coordenada x
+		# Estas para establecer la ubicacion de la tarjetas en la grilla
+		i = 0
+		self.calcular_columnas()
+		for item in lista:  # Recorremos la lista con los elementos
+			i += 1  # Contador para agregar el espaciador horizontal
+			# Consultamos si ya tenemos tres tarjetas en y
+			if y % columnas == 0 and y != 0:
+				y = 0  # Reiniciamos y
+				x += 1  # Agregamos otra columna
+			y += 1  # agregamos 1 a la coordenada y
 
-                # Creamos una instancia de la clase card
-                carta = Card(item, self)
-                # Agregamos dicha instancia a la grilla
-                ui.gridLayout.addWidget(carta, x, y, 1, 1)
-            ui.frame.verticalScrollBar().setSliderPosition(0)
-        except:
-            carta = Card(lista, self)
-            ui.gridLayout.addWidget(carta, x, y, 1, 1)
+			# Creamos una instancia de la clase card
+			carta = Card(item, self)
+			# Agregamos dicha instancia a la grilla
+			ui.gridLayout.addWidget(carta, x, y, 1, 1)
+		ui.frame.verticalScrollBar().setSliderPosition(0)
 
         # Espaciador vertical
         spacerItem9 = QSpacerItem(
@@ -485,10 +482,10 @@ class StoreMWindow(QMainWindow):
     ################################################
     #				  Instalacion				 #
 
-    def window_install(self):
-        global selected_apps
-        self.modal = Ui_DialogInstall(self, selected_apps)
-        self.modal.show()
+	def window_install(self):
+		global selected_apps
+		self.modal = Ui_DialogInstall(self, selected_apps, ProcessType.INSTALL)
+		self.modal.show()
 
     #				 /Instalacion				 #
     ################################################
@@ -496,11 +493,11 @@ class StoreMWindow(QMainWindow):
     ################################################
     #				  Uninstall				 #
 
-    def window_uninstall(self, application = list()):
-        global uninstalled
-        uninstalled = application
-        self.modal = Ui_DialogInstall(self, application)
-        self.modal.show()
+	def window_uninstall(self, application):
+		global uninstalled
+		uninstalled.append(application) # Add application
+		self.modal = Ui_DialogInstall(self, application, ProcessType.UNINSTALL)
+		self.modal.show()
 
     #				 /Uninstall				 #
     ################################################
@@ -531,16 +528,22 @@ class StoreMWindow(QMainWindow):
     ################################################
     #		      New installed apps 			   #
 
-    def installation_completed(self):
-        global selected_apps, installed
-        lista_complete = list()
-        for app in selected_apps:
-            lista_complete.append(app)
-            installed.append(app) # FIXME: Check if it is really installed
-            
-        selected_apps = list()
-        self.do_list_apps(lista_complete)
-        self.contar_apps()
+	def installation_completed(self):
+		global selected_apps, instaladas
+		lista_complete = list()
+		for app in selected_apps:
+			lista_complete.append(app)
+			instaladas.append(app) # FIXME: Check if it is really installed
+			if app.type == AppType.DEB_PACKAGE:
+				index = self.lista_app_deb.index(app)
+				self.lista_app_deb[index].state = AppState.INSTALLED
+			else:
+				index = self.lista_app_flatpak.index(app)
+				self.lista_app_flatpak[index].state = AppState.INSTALLED
+			
+		selected_apps = list()
+		self.do_list_apps(lista_complete)
+		self.contar_apps()
 
     #		      /New installed apps 			   #
     ################################################
@@ -548,16 +551,20 @@ class StoreMWindow(QMainWindow):
     ################################################
     #				Uninstalled App				#
 
-    def uninstallation_completed(self):
-        global uninstalled, installed
-        if uninstalled.type == AppType.DEB_PACKAGE:
-            self.lista_app_deb.remove(uninstalled)
-        else:
-            self.lista_app_flatpak.remove(uninstalled)
-        installed.remove(uninstalled)
-        lista_complete = list()
-        lista_complete.append(uninstalled)
-        self.do_list_apps(uninstalled)
+	def uninstallation_completed(self):
+		global uninstalled, instaladas, lista_global
+		instaladas.remove(uninstalled[0])
+		uninstalled[0].state = AppState.UNINSTALLED
+		if uninstalled[0].type == AppType.DEB_PACKAGE:
+			lista_global = self.lista_app_deb
+			index = self.lista_app_deb.index(uninstalled[0])
+			self.lista_app_deb[index].state = AppState.DEFAULT
+		else:
+			lista_global = self.lista_app_flatpak
+			index = self.lista_app_flatpak.index(uninstalled[0])
+			self.lista_app_flatpak[index].state = AppState.DEFAULT
+		self.do_list_apps(uninstalled)
+		uninstalled.remove(uninstalled[0])
 
 
     #			   /Uninstalled App				#
@@ -621,13 +628,16 @@ class Card(QFrame):
 
         self.txt_btn_select()
 
-        global installed
-        if self.application not in installed:
-            state = AppState.DEFAULT
-            if self.application in selected_apps:
-                state = AppState.SELECTED
-        else:
-            state = AppState.INSTALLED
+		global instaladas, uninstalled
+		if self.application not in instaladas:
+			state = AppState.DEFAULT
+			if self.application in selected_apps:
+				state = AppState.SELECTED
+		else:
+			state = AppState.INSTALLED
+		
+		if self.application in uninstalled:
+			state = AppState.UNINSTALLED
 
         if self.application not in selected_apps and self.application not in installed:
             self.installEventFilter(self)
@@ -732,36 +742,46 @@ class Card(QFrame):
         self.txt_btn_select()
         self.parentWindow.contar_apps()
 
-    def change_color_buton(self, state: AppState):
-        #if state == AppState.DEFAULT:
-        r, g, b = 45, 45, 45
-        radio = 0
-        border_color = "border-color: transparent;"
-        bnt_select_style = ("#btn_select_app{"
-                        "color: rgb(255, 255, 255);"
-                        "background-color: rgb(45, 45, 45);"
-                        "margin: 5px 10px;"
-                        "}")
-
-        if state == AppState.SELECTED:
-            r, g, b = 0, 255, 255
-            radio = 20
-            border_color = "border-color: #00bbc8;"
-            bnt_select_style = ("#btn_select_app{"
-                        "color: rgb(0, 0, 0);"
-                        "background-color: rgb(0, 255, 255);"
-                        "margin: 5px 10px;"
-                        "}")
-        if state == AppState.INSTALLED:
-            r, g, b = 0, 212, 0
-            radio = 20
-            border_color = "border-color: #009800;"
-            bnt_select_style = ("#btn_select_app{"
-                        "color: rgb(255, 255, 255);"
-                        "background-color: rgb(255, 0, 0);"
-                        "margin: 5px 10px;"
-                        "}")
-            self.cd.btn_select_app.setText(ui.uninstall_app_text)
+	def change_color_buton(self, state: AppState):
+		#if state == AppState.DEFAULT:
+		if state == AppState.SELECTED:
+			r, g, b = 0, 255, 255
+			radio = 20
+			border_color = "border-color: #00bbc8;"
+			bnt_select_style = ("#btn_select_app{"
+						"color: rgb(0, 0, 0);"
+						"background-color: rgb(0, 255, 255);"
+						"margin: 5px 10px;"
+						"}")
+		elif state == AppState.INSTALLED:
+			r, g, b = 0, 212, 0
+			radio = 20
+			border_color = "border-color: #009800;"
+			bnt_select_style = ("#btn_select_app{"
+						"color: rgb(255, 255, 255);"
+						"background-color: rgb(255, 0, 0);"
+						"margin: 5px 10px;"
+						"}")
+			self.cd.btn_select_app.setText(ui.uninstall_app_text)
+		elif state == AppState.UNINSTALLED:
+			r, g, b = 238, 81, 56
+			radio = 20
+			border_color = "border-color: #d54000;"
+			bnt_select_style = ("#btn_select_app{"
+						"color: rgb(255, 255, 255);"
+						"background-color: rgb(255, 0, 0);"
+						"margin: 5px 10px;"
+						"}")
+			self.cd.btn_select_app.setText(ui.uninstalled_app_text)
+		else:
+			r, g, b = 45, 45, 45
+			radio = 0
+			border_color = "border-color: transparent;"
+			bnt_select_style = ("#btn_select_app{"
+							"color: rgb(255, 255, 255);"
+							"background-color: rgb(45, 45, 45);"
+							"margin: 5px 10px;"
+							"}")
 
         self.setStyleSheet("#Frame{"
                            "background-color: #2d2d2d;"

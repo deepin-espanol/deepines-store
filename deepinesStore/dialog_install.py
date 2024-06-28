@@ -10,10 +10,11 @@ from deepinesStore.uninstall_thread import ExternalUninstall
 from deepinesStore.core import ProcessType
 
 class Ui_DialogInstall(QtWidgets.QWidget):
-	def __init__(self, main, list):
+	def __init__(self, main, list, process: ProcessType):
 		super(Ui_DialogInstall, self).__init__()
 		self.main = main
 		self.list = list
+		self.process = process
 		self.resize(600, 300)
 		self.retranslateUi(self)
 
@@ -32,15 +33,12 @@ class Ui_DialogInstall(QtWidgets.QWidget):
 		self.gridLayout.addWidget(self.plainTextEdit, 0, 0, 1, 2)
 		self.center()
 		self.btn_d.clicked.connect(self.close)
+		# FIXME: Don't install 1 app
+		# maybe get state of first app 
 
-		try:
+		if self.process == ProcessType.INSTALL:
 			count_apps = len(list)
-			self.process_type = ProcessType.INSTALL
 			self.btn_d_install.setText(self.install_text)
-		except:
-			self.process_type = ProcessType.UNINSTALL
-
-		if self.process_type == ProcessType.INSTALL:
 			if count_apps != 1:
 				preview_installed = self.multi_apps_to_install_text
 			else:
@@ -103,7 +101,7 @@ class Ui_DialogInstall(QtWidgets.QWidget):
 	def complete(self):
 		self.plainTextEdit.insertPlainText(self.all_processes_completed_text)
 		self.plainTextEdit.moveCursor(QTextCursor.End)
-		if self.process_type == ProcessType.INSTALL:
+		if self.process == ProcessType.INSTALL:
 			self.main.installation_completed()
 		else:
 			self.main.uninstallation_completed()
@@ -111,7 +109,7 @@ class Ui_DialogInstall(QtWidgets.QWidget):
 		self.thread.quit()
 
 	def p_start(self, item):
-		if self.process_type == ProcessType.INSTALL:
+		if self.process == ProcessType.INSTALL:
 			self.plainTextEdit.insertPlainText(self.installing_text.format(item=item))
 		else:
 			self.plainTextEdit.insertPlainText(self.uninstalling_text.format(item=self.list.name))
@@ -121,7 +119,7 @@ class Ui_DialogInstall(QtWidgets.QWidget):
 		self.plainTextEdit.moveCursor(QTextCursor.End)
 
 	def p_finish(self, item):
-		if self.process_type == ProcessType.INSTALL:
+		if self.process == ProcessType.INSTALL:
 			self.plainTextEdit.insertPlainText(self.finish_install_text.format(item=item))
 		else:
 			self.plainTextEdit.insertPlainText(self.finish_uninstall_text.format(item=self.list.name))

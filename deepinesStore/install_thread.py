@@ -94,7 +94,7 @@ class External(QObject):
 				break
 
 	def install_flatpak_app(self, app_id: str):
-		flatpak_install = demoted.run_cmd(demoted.DEF, cmd=["flatpak",  "install", "flathub", "-y", app_id])
+		flatpak_install = demoted.run_cmd(demoted.DEF, cmd=["flatpak", "install", "flathub", "-y", app_id])
 		while not flatpak_install.poll():
 			line = flatpak_install.stdout.readline()
 			if line:
