@@ -10,9 +10,8 @@ people = [G("Car", "@Xhafas"), G("Sebastian Trujillo", "@SebTrujillo"), G("Amaro
 G("Freddy", "@Akibaillusion"), G("jhalo", "@jhalo"),
 G("Isaías Gätjens M", "@igatjens"), G("Jose Fenoll", "@fenoll"), G("Hugo Florentino", "@geekmidget"),
 G("Eli", "@RealAct"), G("Diego", "@s_d1112"), G("Filho Arrais", "@filhoarrais"),
-G("Alvaro Samudio", "@G4SP3R"), G("Omi", "@peteromio"), G("Opik", "@Prophaniti"), G("José Siapo", "@jsiapodev"),
-G("Jorge Cabrera", "@seiyukaras"), G("N1coc4colA", "@n1coc4cola"), G("Oscar Ortiz", "@oscararg"), G("Jorge", "@jotakenobi"),
-G("Tomás Warynyca", "@TomasWarynyca"), G("Edwinsiño C", "@Shokatsuo"),
+G("Alvaro Samudio", "@G4SP3R"), G("José Siapo", "@jsiapodev"),
+G("Oscar Ortiz", "@oscararg"),  G("Edwinsiño C", "@Shokatsuo"),
 ]
 
 class AboutDialog(QtWidgets.QDialog):

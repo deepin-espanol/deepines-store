@@ -6,46 +6,6 @@ from PyQt5.QtCore import QMetaObject, QRect, QSize, Qt
 from deepinesStore.core import get_res, tr, get_text_link, STORE_VERSION
 from deepinesStore.widgets import ClickableLabel, ClickableList
 
-
-# https://stackoverflow.com/a/67711660
-size = 19
-border = 0.2
-TitleBarButtonStylesheet = '''
-			QRadioButton {{
-				background-color: transparent;
-				padding: 3px;
-			}}
-			QRadioButton::indicator {{
-				border: {border}px solid {borderColor}; 
-				height: {size}px;
-				width: {size}px;
-				border-radius: {radius}px;
-			}}
-			QRadioButton::indicator:checked, QRadioButton::indicator:unchecked {{
-				background: qradialgradient(
-					cx:.5, cy:.5, radius: {innerRatio},
-					fx:.5, fy:.5,
-					stop:0 {uncheckColor},
-					stop:0.49 {uncheckColor2},
-					stop:0.54 transparent,
-					stop:1 transparent
-					);
-			}}
-			QRadioButton::indicator:hover {{
-				background: rgba(245, 245, 245, 72);
-			}}
-		'''.format(
-	size=size - border * 2,
-	border=border,
-	borderColor='black',
-	radius=size // 2,
-	innerRatio=1 - (border * 2 + 1) / size,
-	uncheckColor='rgba(245, 245, 245, 38)',
-	uncheckColor2='rgba(247, 247, 247, 38)',
-	checkColor='black'
-)
-
-
 class Ui_MainWindow(object):
 
 	def __init__(self, width, height):

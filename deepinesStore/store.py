@@ -2,8 +2,6 @@
 # -*- coding: utf-8 -*-
 import sys
 import os
-import time
-import threading
 # PyQt5 modules
 from PyQt5.Qt import Qt
 from PyQt5.QtCore import QTranslator, QLocale, QSize, QPointF, QPoint, QEvent, Qt as QtCore, pyqtSignal, QThread
@@ -21,15 +19,16 @@ from deepinesStore.maing import Ui_MainWindow
 from deepinesStore.cardg import Ui_Frame
 from deepinesStore.dialog_install import Ui_DialogInstall
 from deepinesStore.about import AboutDialog
-from deepinesStore.core import get_res, get_dl, get_app_icon, write, get_deepines_uri
-from deepinesStore.flatpak.get_apps_flatpak import fetch_list_app_flatpak, apps_flatpak_in_categories
+from deepinesStore.core import get_res, get_app_icon
+from deepinesStore.flatpak.get_apps_flatpak import apps_flatpak_in_categories
 from deepinesStore.deb.get_apps_deb import fetch_list_app_deb
+from deepinesStore import setup
 from deepinesStore.widgets import LinkLabel
-import deepinesStore.demoted_actions as demoted
+
 
 # Global variables
 global lista_inicio, lista_global, lista_temp, uninstalled
-global list_app_exclude, list_app_depines, list_app_deb, list_app_flatpak
+global list_app_exclude, list_app_deepines, list_app_deb, list_app_flatpak
 global selected_apps, installed, columnas, tamanio
 
 
@@ -45,11 +44,11 @@ class StoreMWindow(QMainWindow):
 
         global selected_apps, installed,\
             lista_inicio, lista_global, \
-            selected_type_app, uninstalled, list_app_depines, \
+            selected_type_app, uninstalled, list_app_deepines, \
             list_app_flatpak
         repo_file = "/etc/apt/sources.list.d/deepines.list"
         if os.path.exists(repo_file):
-            self.lista_deepines = list_app_depines
+            self.lista_deepines = list_app_deepines
             # Variables globales
             selected_apps = list()
             uninstalled = list()
@@ -809,15 +808,17 @@ class LoaderThread(QThread):
     finished = pyqtSignal()
 
     def run(self):
-        tasks = [
-            "Loading data...",
-            "Fetching files...",
-            "Initializing components...",
-            "Finalizing setup..."
-        ]
-        for task in tasks:
-            self.progress.emit(task)
-            time.sleep(3)  # Simulate a time-consuming task
+        global list_app_deepines, list_app_deb, \
+        list_app_flatpak, installed
+        self.progress.emit("Fetching files...")
+        list_app_deepines = setup.Get_App_Deepines()
+        list_app_exclude = setup.Get_App_Exclude()
+        self.progress.emit("Initializing components...")
+        list_app_deb = fetch_list_app_deb(list_app_exclude)
+        list_app_flatpak = apps_flatpak_in_categories()
+        self.progress.emit("Finalizing setup...")
+        installed = setup.get_installed_apps(list_app_deb, list_app_flatpak)
+        setup.download_control()
         self.finished.emit()
 
 class LoadingScreen(QMainWindow):
@@ -835,6 +836,10 @@ class LoadingScreen(QMainWindow):
         self.oldPos = self.pos()
 
         layout = QVBoxLayout()
+        self.label_title = QLabel(self)
+        self.label_title.setText('Deepines Store')
+        self.label_title.setAlignment(QtCore.AlignCenter)
+
         self.spinner_label = QLabel(self)
         self.spinner_label.setAlignment(QtCore.AlignCenter)
 
@@ -848,6 +853,7 @@ class LoadingScreen(QMainWindow):
         self.progress_label.setAlignment(QtCore.AlignCenter)
         self.progress_label.setStyleSheet("font-size: 14px;")
 
+        layout.addWidget(self.label_title)
         layout.addWidget(self.spinner_label)
         layout.addWidget(self.progress_label)
 
@@ -870,7 +876,6 @@ class LoadingScreen(QMainWindow):
         self.progress_label.setText(message)
 
     def on_finish(self):
-        print("Finished!")
         self.hide()  # Ocultar la ventana de carga
         self.main_window = StoreMWindow()  # Update this to your main window class
         self.main_window.calcular_anchos()
@@ -891,86 +896,9 @@ class LoadingScreen(QMainWindow):
             self.oldPos = event.globalPos()
             event.accept()
 
-def download_control():
-    ignore_index = get_dl(get_deepines_uri('/store/config/excluidos.txt'))
-    if ignore_index.status_code == 200:
-        write(ignore_index, to=get_res('excluidos', 'config', '.txt'))
-
-    deepines_index = get_dl(get_deepines_uri('/store/config/deepines.txt'))
-    if deepines_index.status_code == 200:
-        write(deepines_index, to=get_res('deepines', 'config', '.txt'))
-    
-    print("Downloading control files...")
-
-#		Lista aplicaciones excluidas		  #
-def Get_App_Exclude():
-    lista = list()
-    ruta_excluidos = get_res('excluidos', ext='.txt', dir='config')
-    excluidos = open(ruta_excluidos, 'r')
-
-    for line in excluidos:
-        line = line.replace('\n', '')
-        lista.append(line)
-
-    return lista
-
-#		Lista aplicaciones deepines		  #
-def Get_App_Deepines():
-    lista = list()
-    ruta_deepines = get_res('deepines', ext='.txt', dir='config')
-    deepines = open(ruta_deepines, 'r')
-
-    for line in deepines:
-        line = line.replace('\n', '')
-        lista.append(line)
-
-    return lista
-
-################################################
-#			    Installed Apps 		 		   #
-
-def get_installed_apps():
-    global list_app_depines, list_app_deb, list_app_flatpak,\
-    installed
-    list_installed = list()
-
-    dpkg_cmd = os.popen("dpkg --get-selections")
-    installed_debs = [line.split()[0] for line in dpkg_cmd.read().splitlines() if line.split()[1] == "install"]
-    dpkg_cmd.close()
-
-    for installed_deb in installed_debs:
-        for app_item in list_app_deb:
-            if installed_deb == app_item.id:
-                list_installed.append(app_item)
-                indice = list_app_deb.index(app_item)
-                list_app_deb[indice].state = AppState.INSTALLED
-
-    flatpak_cmd = demoted.run_cmd(demoted.DEF, cmd=['flatpak', '--user', 'list', '--columns=application'])
-    installed_ids = [line.rstrip("\n") for line in flatpak_cmd.stdout.readlines()]
-
-    for installed_id in installed_ids:
-        for app_item in list_app_flatpak:
-            if installed_id == app_item.id:
-                list_installed.append(app_item)
-                indice = list_app_flatpak.index(app_item)
-                list_app_flatpak[indice].state = AppState.INSTALLED
-
-    return(list_installed)
-
-#			    /Installed Apps		 		   #
-################################################
-
 def run_tasks(loading_screen):
-    global list_app_depines, list_app_deb, list_app_flatpak,\
-    installed
-    list_app_depines = Get_App_Deepines()
-    list_app_exclude = Get_App_Exclude()
-    list_app_deb = fetch_list_app_deb(list_app_exclude)
-    list_app_flatpak = fetch_list_app_flatpak()
-    installed = get_installed_apps()
-    download_control()
-
-    loading_screen.loader_thread.finished.emit()
+    # Add your long-running tasks here
+    pass
 
 def run_gui():
     app = QApplication(sys.argv)
@@ -984,8 +912,8 @@ def run_gui():
     loading_screen.show()
 
     # Running the long-running tasks in a separate thread
-    thread = threading.Thread(target=run_tasks, args=(loading_screen,))
-    thread.start()
+    #thread = threading.Thread(target=run_tasks, args=(loading_screen,))
+    #thread.start()
 
     global width, height, maximized
     maximized = False
