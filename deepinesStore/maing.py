@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from PyQt5 import QtGui, QtWidgets
-from PyQt5.QtCore import QMetaObject, QRect, QSize, Qt, pyqtSignal
+from PyQt5.QtCore import QMetaObject, QRect, QSize, Qt
 
 from deepinesStore.core import get_res, tr, get_text_link, STORE_VERSION
 from deepinesStore.widgets import ClickableLabel, ClickableList
@@ -82,6 +82,9 @@ class Ui_MainWindow(object):
 		svg_pamela = get_res('pamela')
 		svg_search = get_res('magnifying-glass')
 		svg_car = get_res('carDisable')
+		svg_minimizar = get_res('minimizar')
+		svg_maximizar = get_res('maximizar')
+		svg_cerrar = get_res('cerrar')
 
 		MainWindow.setObjectName("MainWindow")
 		MainWindow.setMinimumSize(QSize(self.width_screen, self.height_screen))
@@ -404,6 +407,22 @@ class Ui_MainWindow(object):
 			#label_3{
 				background-color: transparent;
 			}
+			#btn_close{
+                margin-right: 10px;
+            }
+            #btn_zoom{
+                margin-right: 3px;
+                margin-left: 3px;
+            }
+            QPushButton{
+                min-width: 36px;
+                min-height: 36px;
+                border-radius: 10px;
+                background-color: transparent;
+            }
+            QPushButton:hover{
+                background-color: rgba(50, 50, 50, 100);
+            }
 			""")
 		self.horizontalLayout_4 = QtWidgets.QHBoxLayout(self.widget_1)
 		self.horizontalLayout_4.setObjectName("horizontalLayout_4")
@@ -429,7 +448,7 @@ class Ui_MainWindow(object):
 		self.horizontalLayout_4.addWidget(self.btn_app_deb)
 
 		spacerItem1 = QtWidgets.QSpacerItem(
-			40, 20, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+			40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
 		self.horizontalLayout_4.addItem(spacerItem1)
 
 		self.label_3 = QtWidgets.QLabel(self.widget_1)
@@ -437,6 +456,7 @@ class Ui_MainWindow(object):
 		font = QtGui.QFont()
 		font.setPointSize(20)
 		self.label_3.setFont(font)
+		self.label_3.setAlignment(Qt.AlignmentFlag.AlignCenter)
 		self.horizontalLayout_4.addWidget(self.label_3)
 
 
@@ -444,19 +464,31 @@ class Ui_MainWindow(object):
 			40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
 		self.horizontalLayout_4.addItem(spacerItem2)
 
-		self.btn_minimize = QtWidgets.QRadioButton(self.widget_1)
+		self.btn_minimize = QtWidgets.QPushButton(self.widget_1)
 		self.btn_minimize.setObjectName("btn_minimize")
-		self.btn_minimize.setStyleSheet(TitleBarButtonStylesheet)
+		self.btn_minimize.setText("")
+		icon12 = QtGui.QIcon()
+		icon12.addPixmap(QtGui.QPixmap(svg_minimizar), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+		self.btn_minimize.setIcon(icon12)
+		self.btn_minimize.setIconSize(QSize(13, 13))
 		self.horizontalLayout_4.addWidget(self.btn_minimize)
 
-		self.btn_zoom = QtWidgets.QRadioButton(self.widget_1)
+		self.btn_zoom = QtWidgets.QPushButton(self.widget_1)
 		self.btn_zoom.setObjectName("btn_zoom")
-		self.btn_zoom.setStyleSheet(TitleBarButtonStylesheet)
+		self.btn_zoom.setText("")
+		icon13 = QtGui.QIcon()
+		icon13.addPixmap(QtGui.QPixmap(svg_maximizar), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+		self.btn_zoom.setIcon(icon13)
 		self.horizontalLayout_4.addWidget(self.btn_zoom)
 
-		self.btn_close = QtWidgets.QRadioButton(self.widget_1)
+		self.btn_close = QtWidgets.QPushButton(self.widget_1)
 		self.btn_close.setObjectName("btn_close")
-		self.btn_close.setStyleSheet(TitleBarButtonStylesheet)
+		self.btn_close.setText("")
+		icon14 = QtGui.QIcon()
+		icon14.addPixmap(QtGui.QPixmap(svg_cerrar), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+		self.btn_close.setIcon(icon14)
+		self.btn_close.setIconSize(QSize(20, 20))
+
 		self.horizontalLayout_4.addWidget(self.btn_close)
 
 		self.gridLayout_2.addWidget(self.widget_1, 0, 1, 1, 1)
