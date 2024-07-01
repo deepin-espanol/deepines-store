@@ -50,7 +50,7 @@ def get_installed_apps(list_app_deb, list_app_flatpak):
                 indice = list_app_deb.index(app_item)
                 list_app_deb[indice].state = AppState.INSTALLED
 
-    flatpak_cmd = demoted.run_cmd(demoted.DEF, cmd=['flatpak', '--user', 'list', '--columns=application'])
+    flatpak_cmd = demoted.run_cmd(demoted.DEF, cmd=['flatpak', 'list', '--columns=application'])
     installed_ids = [line.rstrip("\n") for line in flatpak_cmd.stdout.readlines()]
 
     for installed_id in installed_ids:

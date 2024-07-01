@@ -89,6 +89,7 @@ class StoreMWindow(QMainWindow):
         ui.widget_1.installEventFilter(self)
         ui.label.clicked.connect(self.show_about_dialog)
         ui.btn_app_deb.clicked.connect(self.change_type_app_selected)
+        ui.btn_app_flatpak.clicked.connect(self.change_type_app_selected)
         shadow = QGraphicsDropShadowEffect(self,
                                            blurRadius=10,
                                            color=QColor(255, 255, 255),
@@ -142,6 +143,7 @@ class StoreMWindow(QMainWindow):
         ui.lw_categories.setEnabled(False)
         ui.frame_4.setEnabled(False)
         ui.btn_app_deb.setEnabled(False)
+        ui.btn_app_flatpak.setEnabled(False)
 
     #			 /Control de errores			  #
     ################################################
@@ -176,25 +178,37 @@ class StoreMWindow(QMainWindow):
         border: 2px solid;
         border-radius: 15px;
         """
+        style_disabled = """
+        color: rgb(0, 0, 0);
+        background-color: rgba(0, 255, 255, 160);
+        border-color: #00ffff;
+        border: 2px solid;
+        border-radius: 15px;
+        """
         if selected_type_app == 0:
             # Seleccionamos flatpak
             selected_type_app = 1
-            ui.btn_app_deb.setText('Apps .deb')
+            ui.btn_app_flatpak.setEnabled(False)
+            ui.btn_app_deb.setEnabled(True)
+            ui.btn_app_flatpak.setStyleSheet(style_disabled)
             ui.btn_app_deb.setStyleSheet(style_deb)
-            ui.btn_app_deb.setIcon(QIcon(QPixmap(get_res('debian'))))
             lista_global = self.lista_app_flatpak
             lista_inicio = self.inicio_apps_flatpak
             ui.lw_categories.item(1).setHidden(True)
         else:
             # Seleccionamos deb
             selected_type_app = 0
-            ui.btn_app_deb.setText('Apps Flatpak')
-            ui.btn_app_deb.setStyleSheet(style_flatpak)
-            ui.btn_app_deb.setIcon(QIcon(QPixmap(get_res('flatpak_sin_texto'))))
+            ui.btn_app_flatpak.setEnabled(True)
+            ui.btn_app_deb.setEnabled(False)
+            ui.btn_app_flatpak.setStyleSheet(style_flatpak)
+            ui.btn_app_deb.setStyleSheet(style_disabled)
             lista_global = self.lista_app_deb
             lista_inicio = self.inicio_apps_deb
             ui.lw_categories.item(1).setHidden(False)
-        
+
+
+        ui.lineEdit.setText("")
+            
         self.do_list_apps(lista_inicio)
         item = ui.lw_categories.item(0)
         item.setSelected(True)
@@ -209,13 +223,18 @@ class StoreMWindow(QMainWindow):
         text = ui.lineEdit.text().lower()
 
         lista_search = list()
-        global lista_global, lista_temp
+        global lista_temp
         if len(text) != 0 and len(text) > 2:
             ui.lw_categories.clearSelection()
-            for app_item in lista_global:
+            for app_item in self.lista_app_deb:
                 if text in str(app_item.name).lower() or text in str(app_item.description).lower():
-                    indice = lista_global.index(app_item)
-                    item = lista_global[indice]
+                    indice = self.lista_app_deb.index(app_item)
+                    item = self.lista_app_deb[indice]
+                    lista_search.append(item)
+            for app_item in self.lista_app_flatpak:
+                if text in str(app_item.name).lower() or text in str(app_item.description).lower():
+                    indice = self.lista_app_flatpak.index(app_item)
+                    item = self.lista_app_flatpak[indice]
                     lista_search.append(item)
             else:
                 lista_temp = lista_search
@@ -827,7 +846,7 @@ class LoadingScreen(QMainWindow):
         self.setWindowTitle("Loading...")
         self.setFixedSize(300, 150)
         self.setWindowFlags(QtCore.FramelessWindowHint)
-        self.setStyleSheet("background-color: white;")
+        self.setStyleSheet("background-color: rgba(30, 30, 30, 200); color: #b5c5d1;")
 
         # Center the window
         self.center()
@@ -839,6 +858,7 @@ class LoadingScreen(QMainWindow):
         self.label_title = QLabel(self)
         self.label_title.setText('Deepines Store')
         self.label_title.setAlignment(QtCore.AlignCenter)
+        self.label_title.setStyleSheet("font-size: 24px;")
 
         self.spinner_label = QLabel(self)
         self.spinner_label.setAlignment(QtCore.AlignCenter)
@@ -851,7 +871,7 @@ class LoadingScreen(QMainWindow):
 
         self.progress_label = QLabel("Starting...", self)
         self.progress_label.setAlignment(QtCore.AlignCenter)
-        self.progress_label.setStyleSheet("font-size: 14px;")
+        self.progress_label.setStyleSheet("font-size: 20px;")
 
         layout.addWidget(self.label_title)
         layout.addWidget(self.spinner_label)

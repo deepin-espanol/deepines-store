@@ -78,6 +78,7 @@ class Ui_MainWindow(object):
 		self.centralwidget.setStyleSheet(
 			"background-color: rgba(30, 30, 30, 200);" "color: #b5c5d1;")
 		self.centralwidget.setObjectName("centralwidget")
+		# Grilla principal
 		self.gridLayout_2 = QtWidgets.QGridLayout(self.centralwidget)
 		self.gridLayout_2.setContentsMargins(0, 0, 0, 0)
 		self.gridLayout_2.setSpacing(0)
@@ -155,40 +156,7 @@ class Ui_MainWindow(object):
 											QtWidgets.QSizePolicy.Fixed)
 		# Primer item, spaciador vertical
 		self.verticalLayout.addItem(spacerItem2)
-		self.frame_4 = QtWidgets.QFrame(self.frame_2)
-		self.frame_4.setMinimumSize(QSize(0, 35))
-		self.frame_4.setMaximumSize(QSize(16777215, 35))
-		self.frame_4.setStyleSheet("border-radius: 15px;\n"
-								   "background-color: rgba(16, 16, 16, 122);\n"
-								   "color: white;")
-		self.frame_4.setFrameShape(QtWidgets.QFrame.StyledPanel)
-		self.frame_4.setFrameShadow(QtWidgets.QFrame.Raised)
-		self.frame_4.setObjectName("frame_4")
-		self.horizontalLayout_2 = QtWidgets.QHBoxLayout(self.frame_4)
-		self.horizontalLayout_2.setObjectName("horizontalLayout_2")
-		self.lineEdit = QtWidgets.QLineEdit(self.frame_4)
-		self.lineEdit.setStyleSheet("background-color: transparent;\n"
-									"color: white;\n"
-									"border-color: transparent;\n"
-									"border: 0px solid;")
-		self.lineEdit.setAlignment(Qt.AlignCenter)
-		self.lineEdit.setObjectName("lineEdit")
-		self.horizontalLayout_2.addWidget(self.lineEdit)
-		self.pushButton = QtWidgets.QPushButton(self.frame_4)
-		self.pushButton.setStyleSheet("margin-left: 0px;\n"
-									  "background-color: transparent;\n"
-									  "border-color: transparent;\n"
-									  "border: 0px solid;")
-		self.pushButton.setText("")
-		icon11 = QtGui.QIcon()
-		icon11.addPixmap(QtGui.QPixmap(svg_search),
-						 QtGui.QIcon.Normal, QtGui.QIcon.Off)
-		self.pushButton.setIcon(icon11)
-		self.pushButton.setIconSize(QSize(13, 13))
-		self.pushButton.setObjectName("pushButton")
-		self.horizontalLayout_2.addWidget(self.pushButton)
-		# Segundo item, cuadro busqueda
-		self.verticalLayout.addWidget(self.frame_4)
+		
 		self.lw_categories = ClickableList(self.frame_2)
 		self.lw_categories.setStyleSheet(
 			"#lw_categories{\n"
@@ -338,7 +306,7 @@ class Ui_MainWindow(object):
 
 		# Quinto item, label version
 		self.verticalLayout.addWidget(self.label)
-		self.gridLayout_2.addWidget(self.frame_2, 0, 0, 3, 1)
+		self.gridLayout_2.addWidget(self.frame_2, 1, 0, 3, 1)
 		self.frame = QtWidgets.QScrollArea(self.centralwidget)
 		self.frame.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
 		self.frame.setWidgetResizable(True)
@@ -369,14 +337,20 @@ class Ui_MainWindow(object):
 			}
 			#btn_close{
                 margin-right: 10px;
+				min-width: 36px;
+                min-height: 36px;
             }
             #btn_zoom{
+				min-width: 36px;
+                min-height: 36px;
                 margin-right: 3px;
                 margin-left: 3px;
             }
-            QPushButton{
-                min-width: 36px;
+			#btn_minimize{
+				min-width: 36px;
                 min-height: 36px;
+			}
+            QPushButton{
                 border-radius: 10px;
                 background-color: transparent;
             }
@@ -384,32 +358,63 @@ class Ui_MainWindow(object):
                 background-color: rgba(50, 50, 50, 100);
             }
 			""")
+		
 		self.horizontalLayout_4 = QtWidgets.QHBoxLayout(self.widget_1)
 		self.horizontalLayout_4.setObjectName("horizontalLayout_4")
-		self.horizontalLayout_4.setContentsMargins(0, 12, 0, 5)
-		self.horizontalLayout_4.setSpacing(1)
-		
-		self.btn_app_deb = QtWidgets.QPushButton(self.widget_1)
-		self.btn_app_deb.setObjectName(u"btn_app_deb")
-		sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
-		sizePolicy.setHorizontalStretch(0)
-		sizePolicy.setVerticalStretch(0)
-		sizePolicy.setHeightForWidth(self.btn_app_deb.sizePolicy().hasHeightForWidth())
-		self.btn_app_deb.setSizePolicy(sizePolicy)
-		self.btn_app_deb.setStyleSheet("""
-								 background-color: rgb(169, 144, 122);
-								 color: #fff;
-								 border-color: #fff;
-								 border: 2px solid;
-								 border-radius: 15px;""")
-		self.btn_app_deb.setIcon(QtGui.QIcon(QtGui.QPixmap(get_res('flatpak_sin_texto'))))
-		self.btn_app_deb.setMinimumSize(QSize(150, 35))
+		self.horizontalLayout_4.setContentsMargins(10, 15, 10, 5)
+		self.horizontalLayout_4.setSpacing(20)
 
-		self.horizontalLayout_4.addWidget(self.btn_app_deb)
-
+		self.frame_4 = QtWidgets.QFrame(self.widget_1)
+		self.frame_4.setMinimumSize(QSize((self.size_frame-20), 35))
+		self.frame_4.setMaximumSize(QSize(16777215, 35))
+		self.frame_4.setStyleSheet("border-radius: 15px;\n"
+								   "background-color: rgba(16, 16, 16, 122);\n"
+								   "color: white;")
+		self.frame_4.setFrameShape(QtWidgets.QFrame.StyledPanel)
+		self.frame_4.setFrameShadow(QtWidgets.QFrame.Raised)
+		self.frame_4.setObjectName("frame_4")
+		self.horizontalLayout_2 = QtWidgets.QHBoxLayout(self.frame_4)
+		self.horizontalLayout_2.setObjectName("horizontalLayout_2")
+		self.lineEdit = QtWidgets.QLineEdit(self.frame_4)
+		self.lineEdit.setStyleSheet("background-color: transparent;\n"
+									"color: white;\n"
+									"border-color: transparent;\n"
+									"border: 0px solid;")
+		self.lineEdit.setAlignment(Qt.AlignCenter)
+		self.lineEdit.setObjectName("lineEdit")
+		self.horizontalLayout_2.addWidget(self.lineEdit)
+		self.pushButton = QtWidgets.QPushButton(self.frame_4)
+		self.pushButton.setStyleSheet("margin-left: 0px;\n"
+									  "background-color: transparent;\n"
+									  "border-color: transparent;\n"
+									  "border: 0px solid;")
+		self.pushButton.setText("")
+		icon11 = QtGui.QIcon()
+		icon11.addPixmap(QtGui.QPixmap(svg_search),
+						 QtGui.QIcon.Normal, QtGui.QIcon.Off)
+		self.pushButton.setIcon(icon11)
+		self.pushButton.setIconSize(QSize(13, 13))
+		self.pushButton.setObjectName("pushButton")
+		self.horizontalLayout_2.addWidget(self.pushButton)
+		# Segundo item, cuadro busqueda
+		self.horizontalLayout_4.addWidget(self.frame_4)
 		spacerItem1 = QtWidgets.QSpacerItem(
 			40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
 		self.horizontalLayout_4.addItem(spacerItem1)
+		
+		self.btn_app_deb = QtWidgets.QPushButton(self.widget_1)
+		self.btn_app_deb.setObjectName(u"btn_app_deb")
+		self.btn_app_deb.setStyleSheet("""
+									color: rgb(0, 0, 0);
+									background-color: rgba(0, 255, 255, 160);
+									border-color: #00ffff;
+									border: 2px solid;
+									border-radius: 15px;""")
+		self.btn_app_deb.setIcon(QtGui.QIcon(QtGui.QPixmap(get_res('debian'))))
+		self.btn_app_deb.setMinimumSize(QSize(150, 35))
+		self.btn_app_deb.setEnabled(False)
+
+		self.horizontalLayout_4.addWidget(self.btn_app_deb)
 
 		self.label_3 = QtWidgets.QLabel(self.widget_1)
 		self.label_3.setObjectName("label_3")
@@ -418,6 +423,19 @@ class Ui_MainWindow(object):
 		self.label_3.setFont(font)
 		self.label_3.setAlignment(Qt.AlignmentFlag.AlignCenter)
 		self.horizontalLayout_4.addWidget(self.label_3)
+
+		self.btn_app_flatpak = QtWidgets.QPushButton(self.widget_1)
+		self.btn_app_flatpak.setObjectName(u"btn_app_flatpak")
+		self.btn_app_flatpak.setStyleSheet("""
+							background-color: rgb(169, 144, 122);
+							color: #fff;
+							border-color: #fff;
+							border: 2px solid;
+							border-radius: 15px;""")
+		self.btn_app_flatpak.setIcon(QtGui.QIcon(QtGui.QPixmap(get_res('flatpak_sin_texto'))))
+		self.btn_app_flatpak.setMinimumSize(QSize(150, 35))
+
+		self.horizontalLayout_4.addWidget(self.btn_app_flatpak)
 
 
 		spacerItem2 = QtWidgets.QSpacerItem(
@@ -451,7 +469,7 @@ class Ui_MainWindow(object):
 
 		self.horizontalLayout_4.addWidget(self.btn_close)
 
-		self.gridLayout_2.addWidget(self.widget_1, 0, 1, 1, 1)
+		self.gridLayout_2.addWidget(self.widget_1, 0, 0, 1, 2)
 		MainWindow.setCentralWidget(self.centralwidget)
 
 		self.retranslateUi(MainWindow)
@@ -500,7 +518,9 @@ class Ui_MainWindow(object):
 		self.btn_zoom.setToolTip(self.__tr("Zoom"))
 		self.btn_close.setToolTip(self.__tr("Close"))
 		self.label.setText(self.about_version_text.format(version=STORE_VERSION))
-		self.btn_app_deb.setText(self.__tr("Apps Flatpak"))
+		self.btn_app_deb.setText(self.__tr("Apps .deb"))
+		self.btn_app_flatpak.setText(self.__tr("Apps Flatpak"))
+		
 		
 		# StoreWindow
 		self.list_apps_text = self.__tr("Select the apps to install")
