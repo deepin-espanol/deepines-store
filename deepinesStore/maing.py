@@ -121,7 +121,7 @@ class Ui_MainWindow(object):
 		self.horizontalLayout_3.addWidget(self.lbl_list_apps)
 		self.btn_install = QtWidgets.QPushButton(self.widget)
 		self.btn_install.setMinimumSize(QSize(80, 0))
-		self.btn_install.setMaximumSize(QSize(100, 16777215))
+		self.btn_install.setMaximumSize(QSize(150, 16777215))
 		self.btn_install.setStyleSheet(
 			"#btn_install{\n"
 			"padding: 2px;\n"

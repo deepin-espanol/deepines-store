@@ -22,6 +22,7 @@ from deepinesStore.about import AboutDialog
 from deepinesStore.core import get_res, get_app_icon
 from deepinesStore.flatpak.get_apps_flatpak import apps_flatpak_in_categories
 from deepinesStore.deb.get_apps_deb import fetch_list_app_deb
+from deepinesStore.install_progress import InstallThread
 from deepinesStore import setup
 from deepinesStore.widgets import LinkLabel
 
@@ -66,6 +67,8 @@ class StoreMWindow(QMainWindow):
                 lista_global = self.lista_app_deb
                 lista_inicio = self.inicio_apps_deb
                 self.primer_inicio = True
+                self.show_apps_selected = False
+                self.install_thread = None
                 
             else:
                 self.error(ui.error_no_server_text)
@@ -74,11 +77,11 @@ class StoreMWindow(QMainWindow):
             
 
         ui.btn_install.setEnabled(False)
-        ui.btn_install.clicked.connect(self.window_install)
+        ui.btn_install.clicked.connect(self.confirm_app_installation)
         ui.lbl_list_apps.setText(ui.list_apps_text)
         ui.lbl_list_apps.setEnabled(False)
-        ui.icon_car.clicked.connect(self.apps_seleccionadas)
-        ui.lbl_list_apps.clicked.connect(self.apps_seleccionadas)
+        ui.icon_car.clicked.connect(self.confirm_app_installation)
+        ui.lbl_list_apps.clicked.connect(self.confirm_app_installation)
         ui.lw_categories.itemClicked.connect(self.listwidgetclicked)
         ui.lineEdit.textChanged.connect(self.search_app)
         self.about_dialog = AboutDialog(self) #  Intentional preloading.
@@ -140,13 +143,17 @@ class StoreMWindow(QMainWindow):
         self.label_error.setAlignment(QtCore.AlignCenter)
         self.label_error.setObjectName("label_error")
         ui.gridLayout.addWidget(self.label_error, 2, 1, 1, 1)
-        ui.lw_categories.setEnabled(False)
-        ui.frame_4.setEnabled(False)
-        ui.btn_app_deb.setEnabled(False)
-        ui.btn_app_flatpak.setEnabled(False)
+        self.status_widgets(False)
 
     #			 /Control de errores			  #
     ################################################
+
+    def status_widgets(self, status = False):
+        ui.lw_categories.setEnabled(status)
+        ui.frame_4.setEnabled(status)
+        ui.btn_app_deb.setEnabled(status)
+        ui.btn_app_flatpak.setEnabled(status)
+        ui.widget.setEnabled(status)
 
     def resizeEvent(self, event):
         if hasattr(self, 'primer_inicio') and self.primer_inicio:
@@ -207,7 +214,7 @@ class StoreMWindow(QMainWindow):
             ui.lw_categories.item(1).setHidden(False)
 
 
-        ui.lineEdit.setText("")
+        self.clear_search_txt()
             
         self.do_list_apps(lista_inicio)
         item = ui.lw_categories.item(0)
@@ -306,7 +313,7 @@ class StoreMWindow(QMainWindow):
             lista_temp = installed
         else:
             lista_temp = lista_inicio
-
+        self.change_color_btn_install()
         self.do_list_apps(lista_temp)
         self.clear_search_txt()
 
@@ -357,6 +364,35 @@ class StoreMWindow(QMainWindow):
         return lista_key
 
     #		   Listar aplicaciones			  #
+
+    def clear_gridLayout(self):
+        while ui.gridLayout.count():
+            item = ui.gridLayout.takeAt(0)
+            if item is not None:
+                widget = item.widget()
+                if widget is not None:
+                    widget.deleteLater()
+                else:
+                    # If the item is another layout, clear it recursively
+                    layout = item.layout()
+                    if layout is not None:
+                        self.clear_sub_layout(layout)
+            else:
+                break
+
+    def clear_sub_layout(self, layout):
+        if layout is not None:
+            while layout.count():
+                item = layout.takeAt(0)
+                if item is not None:
+                    widget = item.widget()
+                    if widget is not None:
+                        widget.deleteLater()
+                    else:
+                        sub_layout = item.layout()
+                        if sub_layout is not None:
+                            self.clear_sub_layout(sub_layout)
+
     def do_list_apps(self, lista):
         global lista_inicio, lista_global
         equal = lista_inicio == lista_global
@@ -364,11 +400,7 @@ class StoreMWindow(QMainWindow):
             item = ui.lw_categories.item(0)
             item.setSelected(True)
 
-        while ui.gridLayout.count():
-            item = ui.gridLayout.takeAt(0)
-            widget = item.widget()
-            if widget:
-                widget.deleteLater()
+        self.clear_gridLayout()
 
         y = 0  # Creamos la coordenada y
         x = 0  # Creamos la coordenada x
@@ -462,7 +494,7 @@ class StoreMWindow(QMainWindow):
             else:
                 preview_to_install = ui.single_app_text
             texto = preview_to_install.format(app_count=cuenta)
-
+        ui.btn_install.setText('Install')
         ui.btn_install.setEnabled(enabled)
         ui.lbl_list_apps.setEnabled(enabled)
         ui.lbl_list_apps.setCursor(QCursor(cursor))
@@ -500,10 +532,155 @@ class StoreMWindow(QMainWindow):
     ################################################
     #				  Instalacion				 #
 
+    def change_color_btn_install(self):
+        if self.show_apps_selected:            
+            ui.btn_install.clicked.disconnect(self.window_install)
+            ui.btn_install.clicked.connect(self.confirm_app_installation)
+            ui.lbl_list_apps.setEnabled(True)
+            ui.icon_car.setEnabled(True)
+            ui.btn_install.setText("Install")
+            ui.btn_install.setStyleSheet(
+                "#btn_install{\n"
+                "padding: 2px;\n"
+                "border-radius: 5px;\n"
+                "background-color: rgb(45, 45, 45);\n"
+                "border: 2px solid rgb(45, 45, 45);\n"
+                "}\n"
+                "#btn_install:hover{\n"
+                "padding: 2px;\n"
+                "color:white;\n"
+                "background-color: rgb(65, 159, 217);\n"
+                "border: 1px solid rgb(142, 231, 255);\n"
+                "border-radius: 5px;\n"
+                "}")
+            self.show_apps_selected = False
+
+    def change_color_btn_start_install(self):
+        ui.btn_install.clicked.disconnect(self.confirm_app_installation)
+        ui.btn_install.clicked.connect(self.window_install)
+        ui.lbl_list_apps.setEnabled(False)
+        ui.icon_car.setEnabled(False)
+        ui.btn_install.setText("Start installation")
+        ui.btn_install.setStyleSheet(
+            "#btn_install{\n"
+            "padding: 2px;\n"
+            "border-radius: 5px;\n"
+            "background-color: rgb(45, 45, 45);\n"
+            "border: 2px solid rgb(151, 255, 0);\n"
+            "}\n"
+            "#btn_install:hover{\n"
+            "padding: 2px;\n"
+            "color:white;\n"
+            "background-color: rgb(65, 217, 153);\n"
+            "border: 1px solid rgb(151, 255, 0);\n"
+            "border-radius: 5px;\n"
+            "}")
+
+    def confirm_app_installation(self):
+        self.change_color_btn_start_install()
+        self.show_apps_selected = True
+        ui.lw_categories.clearSelection()
+        self.do_list_apps(selected_apps)
+
     def window_install(self):
-        global selected_apps
-        self.modal = Ui_DialogInstall(self, selected_apps, ProcessType.INSTALL)
-        self.modal.show()
+        self.clear_gridLayout()
+
+        layout = QVBoxLayout()
+
+        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+        layout.addItem(self.verticalSpacer)
+
+        spinner = get_res('luffy-one-piece', ext='.gif')
+        self.spinner_label = QLabel(self)
+        self.spinner = QMovie(spinner)
+        self.spinner_label.setMovie(self.spinner)
+        self.spinner_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        max_size = 300
+        original_size = self.spinner.scaledSize()
+        aspect_ratio = original_size.width() / original_size.height()
+
+        if original_size.width() > original_size.height():
+            new_width = max_size
+            new_height = new_width / aspect_ratio
+        else:
+            new_height = max_size
+            new_width = new_height * aspect_ratio
+
+        self.spinner.setScaledSize(QSize(int(new_width), int(new_height)))
+        self.spinner.start()
+        layout.addWidget(self.spinner_label)
+
+        self.process_label = QLabel('Instalando...', self)
+        self.process_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.process_label.setStyleSheet("font-size: 22px;")
+        self.process_label.setWordWrap(True)
+        self.process_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.process_label.adjustSize()
+        layout.addWidget(self.process_label)
+
+        self.status_label = QLabel('Listo para instalar', self)
+        self.status_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.status_label.setStyleSheet("font-size: 18px;")
+        self.status_label.setWordWrap(True)
+        self.status_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.status_label.adjustSize()
+        layout.addWidget(self.status_label)
+        
+        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+        layout.addItem(self.verticalSpacer)
+
+        ui.gridLayout.addLayout(layout, 0, 0)
+        ui.btn_install.setText('Installing...')
+        self.status_widgets(False)
+        self.start_installation()
+    
+    def update_status(self, message):
+        print(f"Update status: {message}")
+        if self.status_label:
+            self.status_label.setText(message)
+    
+    def change_process_name(self, name):
+        self.process_label.setText(name)
+
+    def start_installation(self):
+        self.status_label.setText("Iniciando instalación...")
+        if hasattr(self, 'install_thread') and self.install_thread and self.install_thread.isRunning():            
+            self.install_thread.stop()
+            self.install_thread.wait()
+
+        self.install_thread = InstallThread(selected_apps)
+        self.install_thread.update_signal.connect(self.update_status)
+        self.install_thread.name_process_signal.connect(self.change_process_name)
+        self.install_thread.finished_signal.connect(self.installation_finished)
+        self.install_thread.start()
+
+    def change_spinner(self, new_spinner_name):
+        # 1. Detener la animación actual
+        self.spinner.stop()
+
+        # 2. Cargar el nuevo GIF
+        new_spinner_path = get_res(new_spinner_name, ext='.gif')
+        new_spinner = QMovie(new_spinner_path)
+
+        # 3. Establecer el nuevo GIF en el QLabel
+        self.spinner_label.setMovie(new_spinner)
+
+        # 4. Iniciar la nueva animación
+        new_spinner.start()
+
+        # 5. Actualizar la referencia al spinner actual
+        self.spinner = new_spinner
+
+    def installation_finished(self, success):
+        if success:
+            self.installation_completed()
+        else:
+            self.process_label.setText("La instalación falló. Por favor hagase bolita y llore, despues reintentelo")
+
+            self.change_color_btn_install()
+            self.change_spinner('strawhats-one-piece')
+
+        self.status_widgets(True)
 
     #				 /Instalacion				 #
     ################################################
@@ -617,10 +794,6 @@ class StoreMWindow(QMainWindow):
         if maximized:  # Si estaba maximizada, agrandamos
             self.setWindowState(Qt.WindowMaximized)
 
-    def apps_seleccionadas(self):
-        self.do_list_apps(selected_apps)
-        ui.lw_categories.clearSelection()
-
 ################################################
 #		   Card para la aplicacion			#
 
@@ -640,9 +813,12 @@ class Card(QFrame):
             "<p wrap='hard'>{}</p>".format(self.descripcion))
         self.cd.image_app.setWordWrap(True)
         self.setMinimumSize(QSize(tamanio+30, int((tamanio+115)*0.72222)))
-        self.setMaximumSize(QSize(tamanio+30, int((tamanio+175)*0.72222)))
+        self.setMaximumSize(QSize(tamanio+30, int((tamanio+155)*0.72222)))
         self.cd.image_app.setMinimumSize(QSize(tamanio, int(tamanio*0.72222)))
-        self.cd.lbl_version.setText("v: {}".format(self.application.version))
+        if self.application.type == AppType.DEB_PACKAGE:
+            self.cd.lbl_version.setText("v: {}".format(self.application.version))
+        else:
+            self.cd.lbl_version.setVisible(False)
 
         self.txt_btn_select()
 
@@ -844,7 +1020,6 @@ class LoadingScreen(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Loading...")
-        self.setFixedSize(300, 150)
         self.setWindowFlags(QtCore.FramelessWindowHint)
         self.setStyleSheet("background-color: rgba(30, 30, 30, 200); color: #b5c5d1;")
 
@@ -863,7 +1038,7 @@ class LoadingScreen(QMainWindow):
         self.spinner_label = QLabel(self)
         self.spinner_label.setAlignment(QtCore.AlignCenter)
 
-        spinner = get_res('spinner', ext='.gif')
+        spinner = get_res('torao', ext='.gif')
 
         movie = QMovie(spinner)
         self.spinner_label.setMovie(movie)
