@@ -1,6 +1,6 @@
 import os
 import deepinesStore.demoted_actions as demoted
-from deepinesStore.app_info import AppState
+from deepinesStore.app_info import AppState, ProcessType
 from deepinesStore.core import get_res, get_dl, write, get_deepines_uri
 
 def download_control():
@@ -49,6 +49,7 @@ def get_installed_apps(list_app_deb, list_app_flatpak):
                 list_installed.append(app_item)
                 indice = list_app_deb.index(app_item)
                 list_app_deb[indice].state = AppState.INSTALLED
+                list_app_deb[indice].process = ProcessType.UNINSTALL
 
     flatpak_cmd = demoted.run_cmd(demoted.DEF, cmd=['flatpak', 'list', '--columns=application'])
     installed_ids = [line.rstrip("\n") for line in flatpak_cmd.stdout.readlines()]
@@ -59,5 +60,6 @@ def get_installed_apps(list_app_deb, list_app_flatpak):
                 list_installed.append(app_item)
                 indice = list_app_flatpak.index(app_item)
                 list_app_flatpak[indice].state = AppState.INSTALLED
+                list_app_flatpak[indice].process = ProcessType.UNINSTALL
 
     return(list_installed)

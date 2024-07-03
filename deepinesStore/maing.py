@@ -484,7 +484,7 @@ class Ui_MainWindow(object):
 		self.label_2.setToolTip(self.__tr("About us"))
 		self.label_3.setText(self.__tr("Deepines Store"))
 		self.lbl_list_apps.setText(self.__tr("TextLabel"))
-		self.btn_install.setText(self.__tr("Install"))
+		self.btn_install.setText(self.__tr("Review apps"))
 		__sortingEnabled = self.lw_categories.isSortingEnabled()
 		self.lw_categories.setSortingEnabled(False)
 		item = self.lw_categories.item(0)
@@ -529,8 +529,8 @@ class Ui_MainWindow(object):
 		self.selected_installed_app_text = self.__tr("Installed")
 		self.uninstall_app_text = self.__tr("Uninstall")
 		self.uninstalled_app_text = self.__tr("Uninstalled")
-		self.single_app_text = self.__tr("{app_count} app selected to install, click here to review it")
-		self.multi_apps_text = self.__tr("{app_count} apps selected to install, click here to review them")
+		self.single_app_text = self.__tr("{app_count} app selected, click here to review it")
+		self.multi_apps_text = self.__tr("{app_count} apps selected, click here to review them")
 		self.error_no_server_text = self.__tr("Unable to establish connection with the server, <br>"
 											  "please check your internet connection.<br>"
 											  "If the problem persists, please contact us via Telegram <br>"

@@ -10,14 +10,13 @@ from PyQt5.QtWidgets import (QMainWindow, QApplication, QFrame, QLabel,
                              QDesktopWidget, QHBoxLayout, QVBoxLayout, QWidget)
 from PyQt5.QtGui import QPixmap, QFont, QColor, QCursor, QPainter, QIcon, QMovie
 
-from deepinesStore.core import set_blur, ProcessType
+from deepinesStore.core import set_blur
 # Para obtener applicacion random
 from random import choice
 # GUI o modulos locales
-from deepinesStore.app_info import AppInfo, AppType, AppState
+from deepinesStore.app_info import AppInfo, AppType, AppState, ProcessType
 from deepinesStore.maing import Ui_MainWindow
 from deepinesStore.cardg import Ui_Frame
-from deepinesStore.dialog_install import Ui_DialogInstall
 from deepinesStore.about import AboutDialog
 from deepinesStore.core import get_res, get_app_icon
 from deepinesStore.flatpak.get_apps_flatpak import apps_flatpak_in_categories
@@ -538,7 +537,7 @@ class StoreMWindow(QMainWindow):
             ui.btn_install.clicked.connect(self.confirm_app_installation)
             ui.lbl_list_apps.setEnabled(True)
             ui.icon_car.setEnabled(True)
-            ui.btn_install.setText("Install")
+            ui.btn_install.setText("Review apps")
             ui.btn_install.setStyleSheet(
                 "#btn_install{\n"
                 "padding: 2px;\n"
@@ -560,7 +559,7 @@ class StoreMWindow(QMainWindow):
         ui.btn_install.clicked.connect(self.window_install)
         ui.lbl_list_apps.setEnabled(False)
         ui.icon_car.setEnabled(False)
-        ui.btn_install.setText("Start installation")
+        ui.btn_install.setText("Start process")
         ui.btn_install.setStyleSheet(
             "#btn_install{\n"
             "padding: 2px;\n"
@@ -635,7 +634,6 @@ class StoreMWindow(QMainWindow):
         self.start_installation()
     
     def update_status(self, message):
-        print(f"Update status: {message}")
         if self.status_label:
             self.status_label.setText(message)
     
@@ -685,17 +683,6 @@ class StoreMWindow(QMainWindow):
     #				 /Instalacion				 #
     ################################################
 
-    ################################################
-    #				  Uninstall				 #
-
-    def window_uninstall(self, application):
-        global uninstalled
-        uninstalled.append(application) # Add application
-        self.modal = Ui_DialogInstall(self, application, ProcessType.UNINSTALL)
-        self.modal.show()
-
-    #				 /Uninstall				 #
-    ################################################
 
     ################################################
     #				     About   				  #
@@ -724,45 +711,45 @@ class StoreMWindow(QMainWindow):
     #		      New installed apps 			   #
 
     def installation_completed(self):
-        global selected_apps, installed
+        global selected_apps, installed, lista_global, uninstalled
         lista_complete = list()
         for app in selected_apps:
             lista_complete.append(app)
-            installed.append(app) # FIXME: Check if it is really installed
-            if app.type == AppType.DEB_PACKAGE:
-                index = self.lista_app_deb.index(app)
-                self.lista_app_deb[index].state = AppState.INSTALLED
-            else:
-                index = self.lista_app_flatpak.index(app)
-                self.lista_app_flatpak[index].state = AppState.INSTALLED
+            if app.process == ProcessType.INSTALL:
+                installed.append(app) # FIXME: Check if it is really installed
+                if app.type == AppType.DEB_PACKAGE:
+                    index = self.lista_app_deb.index(app)
+                    self.lista_app_deb[index].state = AppState.INSTALLED
+                    self.lista_app_deb[index].process = ProcessType.UNINSTALL
+                else:
+                    index = self.lista_app_flatpak.index(app)
+                    self.lista_app_flatpak[index].state = AppState.INSTALLED
+                    self.lista_app_flatpak[index].process = ProcessType.UNINSTALL
+
+                if app in uninstalled:
+                    uninstalled.remove(app)
+            elif app.process == ProcessType.UNINSTALL:
+                installed.remove(app)
+                uninstalled.append(app)
+                if app.type == AppType.DEB_PACKAGE:
+                    lista_global = self.lista_app_deb
+                    index = self.lista_app_deb.index(app)
+                    self.lista_app_deb[index].state = AppState.UNINSTALLED
+                    self.lista_app_deb[index].process = ProcessType.INSTALL
+                    
+                else:
+                    lista_global = self.lista_app_flatpak
+                    index = self.lista_app_flatpak.index(app)
+                    self.lista_app_flatpak[index].state = AppState.UNINSTALLED
+                    self.lista_app_flatpak[index].process = ProcessType.INSTALL
+
             
         selected_apps = list()
-        self.do_list_apps(lista_complete)
         self.contar_apps()
+        self.change_color_btn_install()
+        self.do_list_apps(lista_complete)
 
     #		      /New installed apps 			   #
-    ################################################
-
-    ################################################
-    #				Uninstalled App				#
-
-    def uninstallation_completed(self):
-        global uninstalled, installed, lista_global
-        installed.remove(uninstalled[0])
-        uninstalled[0].state = AppState.UNINSTALLED
-        if uninstalled[0].type == AppType.DEB_PACKAGE:
-            lista_global = self.lista_app_deb
-            index = self.lista_app_deb.index(uninstalled[0])
-            self.lista_app_deb[index].state = AppState.DEFAULT
-        else:
-            lista_global = self.lista_app_flatpak
-            index = self.lista_app_flatpak.index(uninstalled[0])
-            self.lista_app_flatpak[index].state = AppState.DEFAULT
-        self.do_list_apps(uninstalled)
-        uninstalled.remove(uninstalled[0])
-
-
-    #			   /Uninstalled App				#
     ################################################
 
     def eventFilter(self, obj, event):
@@ -829,12 +816,16 @@ class Card(QFrame):
                 state = AppState.SELECTED
         else:
             state = AppState.INSTALLED
+            if self.application in selected_apps:
+                state = AppState.UNINSTALL
         
-        if self.application in uninstalled:
+        if self.application in uninstalled and self.application in selected_apps:
+            state = AppState.SELECTED
+        elif self.application in uninstalled:
             state = AppState.UNINSTALLED
 
-        if self.application not in selected_apps and self.application not in installed:
-            self.installEventFilter(self)
+        #if self.application not in selected_apps and self.application not in installed:
+        self.installEventFilter(self)
 
         self.change_color_buton(state)
 
@@ -853,33 +844,35 @@ class Card(QFrame):
             painter.end()
             self.cd.image_app.setPixmap(app_pixmap)
 
-        if self.application.state != AppState.INSTALLED:
-            self.cd.lbl_version.clicked.connect(
-                lambda: self.select_app())
-            self.cd.image_app.clicked.connect(lambda: self.select_app())
-            self.cd.lbl_name_app.clicked.connect(
-                lambda: self.select_app())
-            self.cd.btn_select_app.clicked.connect(lambda: self.select_app())
-        else:
-            self.cd.lbl_version.clicked.connect(
-                lambda: self.parentWindow.window_uninstall(self.application))
-            self.cd.image_app.clicked.connect(lambda: self.parentWindow.window_uninstall(self.application))
-            self.cd.lbl_name_app.clicked.connect(
-                lambda: self.parentWindow.window_uninstall(self.application))
-            self.cd.btn_select_app.clicked.connect(lambda: self.parentWindow.window_uninstall(self.application))
-
+        self.cd.lbl_version.clicked.connect(
+            lambda: self.select_app())
+        self.cd.image_app.clicked.connect(lambda: self.select_app())
+        self.cd.lbl_name_app.clicked.connect(
+            lambda: self.select_app())
+        self.cd.btn_select_app.clicked.connect(lambda: self.select_app())
 
     def eventFilter(self, object, event):
         if event.type() == QEvent.Enter:
             radius = 20
-        elif event.type() == QEvent.Leave:
+        elif event.type() == QEvent.Leave and not (self.application in selected_apps or self.application in installed or self.application in uninstalled):
             radius = 0
         else:
             return False
 
+        if self.application.state == AppState.SELECTED:
+            shadow_color = QColor(0, 255, 255)
+        elif self.application.state == AppState.UNINSTALL:
+            shadow_color = QColor(234, 93, 41)
+        elif self.application.state == AppState.INSTALLED:
+            shadow_color = QColor(0, 212, 0)
+        elif self.application.state == AppState.UNINSTALLED:
+            shadow_color = QColor(238, 81, 56)
+        else:
+            shadow_color = QColor(255, 255, 255)
+
         shadow = QGraphicsDropShadowEffect(self,
                                            blurRadius=radius,
-                                           color=QColor(255, 255, 255),
+                                           color=shadow_color,
                                            offset=QPointF(0, 0))
         shadow.setXOffset(0)
         shadow.setYOffset(0)
@@ -898,9 +891,11 @@ class Card(QFrame):
         return path
 
     def txt_btn_select(self):
-        if self.application in selected_apps:
+        if self.application in selected_apps and self.application not in installed:
             self.cd.btn_select_app.setText(ui.selected_to_install_app_text)
-        elif self.titulo in installed:
+        elif self.application in selected_apps and self.application in installed:
+            self.cd.btn_select_app.setText(ui.uninstall_app_text)
+        elif self.application in installed and self.application not in selected_apps:
             self.cd.btn_select_app.setText(ui.selected_installed_app_text)
         else:
             self.cd.btn_select_app.setText(ui.select_app_text)
@@ -908,36 +903,37 @@ class Card(QFrame):
     def select_app(self): # FIXME: Not needed parameter?
         global lista_global, selected_apps, installed
 
-        # Si la app no esta instalada
-        if self.application not in installed:
-            lista_global_temp = lista_global
-            if (self.application.type == AppType.DEB_PACKAGE):
-                lista_global = self.parentWindow.lista_app_deb
-            if (self.application.type == AppType.FLATPAK_APP):
-                lista_global = self.parentWindow.lista_app_flatpak
-            indice = lista_global.index(self.application)
-            # Si la app no esta seleccionada
-            if self.application not in selected_apps:
-                selected_apps.append(self.application)
-                new_state = AppState.SELECTED
-                self.removeEventFilter(self)
-            else:
-                selected_apps.remove(self.application)
-                new_state = AppState.DEFAULT
-                self.installEventFilter(self)
-                
+        lista_global_temp = lista_global
+        if (self.application.type == AppType.DEB_PACKAGE):
+            lista_global = self.parentWindow.lista_app_deb
+        if (self.application.type == AppType.FLATPAK_APP):
+            lista_global = self.parentWindow.lista_app_flatpak
+        indice = lista_global.index(self.application)
 
-            lista_global[indice].state = new_state
-            lista_global = lista_global_temp
-            self.change_color_buton(new_state)
+        if self.application not in selected_apps and self.application not in installed:
+            selected_apps.append(self.application)
+            new_state = AppState.SELECTED
+        elif self.application not in selected_apps and self.application in installed:
+            selected_apps.append(self.application)
+            new_state = AppState.UNINSTALL
         else:
-            self.change_color_buton(AppState.INSTALLED)
+            selected_apps.remove(self.application)
+            if self.application not in installed:
+                new_state = AppState.DEFAULT
+            else:
+                new_state = AppState.INSTALLED
+        self.installEventFilter(self)
+            
+
+        lista_global[indice].state = new_state
+        lista_global = lista_global_temp
+
+        self.change_color_buton(new_state)
 
         self.txt_btn_select()
         self.parentWindow.contar_apps()
 
     def change_color_buton(self, state: AppState):
-        #if state == AppState.DEFAULT:
         if state == AppState.SELECTED:
             r, g, b = 0, 255, 255
             radio = 20
@@ -947,6 +943,16 @@ class Card(QFrame):
                         "background-color: rgb(0, 255, 255);"
                         "margin: 5px 10px;"
                         "}")
+        elif state == AppState.UNINSTALL:
+            r, g, b = 234, 93, 41
+            radio = 20
+            border_color = "border-color: #ea4329;"
+            bnt_select_style = ("#btn_select_app{"
+                        "color: rgb(255, 255, 255);"
+                        "background-color: rgb(255, 54, 0);"
+                        "margin: 5px 10px;"
+                        "}")
+            self.cd.btn_select_app.setText(ui.uninstall_app_text)
         elif state == AppState.INSTALLED:
             r, g, b = 0, 212, 0
             radio = 20
