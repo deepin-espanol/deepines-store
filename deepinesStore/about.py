@@ -23,6 +23,7 @@ class AboutDialog(QtWidgets.QDialog):
 		self.setModal(True)
 		self.setWindowFlag(QtCore.Qt.WindowContextHelpButtonHint, False)
 		self.setAutoFillBackground(True)
+		self.setStyleSheet("background-color: #2b2b2b; color: #fff")
 		self.app_icon_btn = QtWidgets.QPushButton(self)
 		self.app_icon_btn.setEnabled(True)
 		self.app_icon_btn.setIconSize(QtCore.QSize(120, 120))
