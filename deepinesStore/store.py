@@ -27,7 +27,7 @@ from deepinesStore.widgets import LinkLabel
 
 
 # Global variables
-global lista_inicio, lista_global, lista_temp, uninstalled
+global lista_inicio, lista_global, list_app_show_temp, uninstalled
 global list_app_exclude, list_app_deepines, list_app_deb, list_app_flatpak
 global selected_apps, installed, columnas, tamanio
 
@@ -45,7 +45,7 @@ class StoreMWindow(QMainWindow):
         global selected_apps, installed,\
             lista_inicio, lista_global, \
             selected_type_app, uninstalled, list_app_deepines, \
-            list_app_flatpak
+            list_app_flatpak, list_app_show_temp
         repo_file = "/etc/apt/sources.list.d/deepines.list"
         if os.path.exists(repo_file):
             self.lista_deepines = list_app_deepines
@@ -58,13 +58,14 @@ class StoreMWindow(QMainWindow):
             self.lista_app_flatpak = list_app_flatpak
             self.total_apps_flatpak = len(self.lista_app_flatpak)
 
-            selected_type_app = 0 # 0 by debs
+            selected_type_app = AppType.DEB_PACKAGE
             if self.lista_app_deb and self.lista_app_flatpak:
                 # Obtenemos aplicaciones para la lista de apps
                 self.inicio_apps_deb = self.Apps_inicio(self.lista_app_deb)
                 self.inicio_apps_flatpak = self.Apps_inicio(self.lista_app_flatpak)
                 lista_global = self.lista_app_deb
                 lista_inicio = self.inicio_apps_deb
+                list_app_show_temp = lista_inicio
                 self.primer_inicio = True
                 self.show_apps_selected = False
                 self.install_thread = None
@@ -156,13 +157,12 @@ class StoreMWindow(QMainWindow):
 
     def resizeEvent(self, event):
         if hasattr(self, 'primer_inicio') and self.primer_inicio:
-            global lista_temp
-            lista_temp = lista_inicio
             self.primer_inicio = False
         try:
-            self.do_list_apps(lista_temp)
+            self.clear_gridLayout()
+            self.do_list_apps(list_app_show_temp)
         except NameError:
-            pass  # There are no apps, lista_temp is not defined...
+            pass  # There are no apps, list_app_show_temp is not defined...
 
 
     ################################################
@@ -191,31 +191,31 @@ class StoreMWindow(QMainWindow):
         border: 2px solid;
         border-radius: 15px;
         """
-        if selected_type_app == 0:
+        if selected_type_app == AppType.DEB_PACKAGE:
             # Seleccionamos flatpak
-            selected_type_app = 1
+            selected_type_app = AppType.FLATPAK_APP
             ui.btn_app_flatpak.setEnabled(False)
             ui.btn_app_deb.setEnabled(True)
             ui.btn_app_flatpak.setStyleSheet(style_disabled)
             ui.btn_app_deb.setStyleSheet(style_deb)
             lista_global = self.lista_app_flatpak
-            lista_inicio = self.inicio_apps_flatpak
+            list_app_show_temp = self.inicio_apps_flatpak
             ui.lw_categories.item(1).setHidden(True)
         else:
             # Seleccionamos deb
-            selected_type_app = 0
+            selected_type_app = AppType.DEB_PACKAGE
             ui.btn_app_flatpak.setEnabled(True)
             ui.btn_app_deb.setEnabled(False)
             ui.btn_app_flatpak.setStyleSheet(style_flatpak)
             ui.btn_app_deb.setStyleSheet(style_disabled)
             lista_global = self.lista_app_deb
-            lista_inicio = self.inicio_apps_deb
+            list_app_show_temp = self.inicio_apps_deb
             ui.lw_categories.item(1).setHidden(False)
 
 
         self.clear_search_txt()
             
-        self.do_list_apps(lista_inicio)
+        self.do_list_apps(list_app_show_temp)
         item = ui.lw_categories.item(0)
         item.setSelected(True)
 
@@ -229,7 +229,7 @@ class StoreMWindow(QMainWindow):
         text = ui.lineEdit.text().lower()
 
         lista_search = list()
-        global lista_temp
+        global list_app_show_temp
         if len(text) != 0 and len(text) > 2:
             ui.lw_categories.clearSelection()
             for app_item in self.lista_app_deb:
@@ -243,10 +243,9 @@ class StoreMWindow(QMainWindow):
                     item = self.lista_app_flatpak[indice]
                     lista_search.append(item)
             else:
-                lista_temp = lista_search
-        else:
-            lista_temp = lista_inicio
-        self.do_list_apps(lista_temp)
+                list_app_show_temp = lista_search
+        
+        self.do_list_apps(list_app_show_temp)
 
     def clear_search_txt(self):
         ui.lineEdit.setText("")
@@ -259,7 +258,7 @@ class StoreMWindow(QMainWindow):
 
     def listwidgetclicked(self, item):
         filtro = list()  # Limpiamos la lista
-        global lista_global, lista_inicio
+        global lista_global, list_app_show_temp
 
         # TODO: Maybe a switch statement would be nice here
         if item == ui.lw_categories.item(0):  # Home
@@ -306,14 +305,18 @@ class StoreMWindow(QMainWindow):
         if "inicio" not in filtro and "installed" not in filtro:
             # TODO: Cambiar funcionamiento por una separacion de las app
             # TODO: en listas en diccionarios fijos, al cargar la tienda.
-            global lista_temp
-            lista_temp = self.Get_App_Filter(lista_global, filtro)
+            global list_app_show_temp
+            list_app_show_temp = self.Get_App_Filter(lista_global, filtro)
         elif "installed" in filtro:
-            lista_temp = installed
+            list_app_show_temp = installed
         else:
-            lista_temp = lista_inicio
+            if selected_type_app == AppType.DEB_PACKAGE:
+                list_app_show_temp = self.inicio_apps_deb
+            else:
+                list_app_show_temp = self.inicio_apps_flatpak
+
         self.change_color_btn_install()
-        self.do_list_apps(lista_temp)
+        self.do_list_apps(list_app_show_temp)
         self.clear_search_txt()
 
     #			   /Filtro de apps				#
@@ -393,8 +396,8 @@ class StoreMWindow(QMainWindow):
                             self.clear_sub_layout(sub_layout)
 
     def do_list_apps(self, lista):
-        global lista_inicio, lista_global
-        equal = lista_inicio == lista_global
+        global lista_inicio, list_app_show_temp
+        equal = lista_inicio == list_app_show_temp
         if equal:
             item = ui.lw_categories.item(0)
             item.setSelected(True)
@@ -493,7 +496,7 @@ class StoreMWindow(QMainWindow):
             else:
                 preview_to_install = ui.single_app_text
             texto = preview_to_install.format(app_count=cuenta)
-        ui.btn_install.setText('Install')
+        self.change_color_btn_install()
         ui.btn_install.setEnabled(enabled)
         ui.lbl_list_apps.setEnabled(enabled)
         ui.lbl_list_apps.setCursor(QCursor(cursor))
