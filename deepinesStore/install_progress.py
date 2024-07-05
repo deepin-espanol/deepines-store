@@ -38,12 +38,17 @@ class UpdateProgress(apt.progress.base.OpProgress):
             self.update_signal.emit("Actualizando caché...")
 
 class InstallProgressHandler(apt.progress.base.InstallProgress):
-    def __init__(self, update_signal):
+    def __init__(self, update_signal, process_type):
         super().__init__()
         self.update_signal = update_signal
+        self.process_type = process_type
 
     def status_change(self, pkg, percent, status):
-        self.update_signal.emit(f"Instalando: {status} - {percent}%")
+        if self.process_type == ProcessType.INSTALL:
+            process = "Installing"
+        else:
+            process = "Uninstalling"
+        self.update_signal.emit(f"{process}: {status} - {percent}%")
 
 class InstallThread(QThread):
     update_signal = pyqtSignal(str)
@@ -59,6 +64,7 @@ class InstallThread(QThread):
     def run(self):
         try:
             for package in self.package_list:
+                self.package_process = package.process
                 if not self._is_running:
                     break
                 if package.type == AppType.DEB_PACKAGE:
@@ -77,19 +83,19 @@ class InstallThread(QThread):
                     cache.open(progress=UpdateProgress(self.update_signal))
                     package_name = package.id
 
-                    if package.process == ProcessType.INSTALL:
+                    if self.package_process == ProcessType.INSTALL:
                         if not self._install_package(cache, package_name):
                             return  # Stop execution if installation fails
-                    elif package.process == ProcessType.UNINSTALL:
+                    elif self.package_process == ProcessType.UNINSTALL:
                         if not self._uninstall_package(cache, package_name):
                             return  # Stop execution if uninstallation fails
 
                 elif package.type == AppType.FLATPAK_APP:
                     app_id = package.id
-                    if package.process == ProcessType.INSTALL:
+                    if self.package_process == ProcessType.INSTALL:
                         if not self._install_flatpak(app_id):
                             return  # Stop execution if installation fails
-                    elif package.process == ProcessType.UNINSTALL:
+                    elif self.package_process == ProcessType.UNINSTALL:
                         if not self._uninstall_flatpak(app_id):
                             return  # Stop execution if uninstallation fails
             
@@ -131,7 +137,7 @@ class InstallThread(QThread):
             self.update_signal.emit(f"Descargando e instalando {package_name}...")
             try:
                 cache.commit(fetch_progress=ProgressHandler(self.update_signal),
-                            install_progress=InstallProgressHandler(self.update_signal))
+                            install_progress=InstallProgressHandler(self.update_signal, self.package_process))
                 
                 # Verificar si el paquete se instaló correctamente
                 cache.open(progress=UpdateProgress(self.update_signal))
@@ -193,7 +199,7 @@ class InstallThread(QThread):
             self.update_signal.emit(f"Desinstalando {package_name}...")
             try:
                 cache.commit(fetch_progress=ProgressHandler(self.update_signal),
-                            install_progress=InstallProgressHandler(self.update_signal))
+                            install_progress=InstallProgressHandler(self.update_signal, self.package_process))
                 
                 # Verificar si el paquete se desinstaló correctamente
                 cache.open(progress=UpdateProgress(self.update_signal))
