@@ -56,11 +56,11 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
 		svg_maximizar = get_res('maximizar')
 		svg_cerrar = get_res('cerrar')
 		
-		MainWindow = QtWidgets.QWidget(self)
-		MainWindow.setObjectName("MainWindow")
-		MainWindow.setMinimumSize(QSize(self.width_screen, self.height_screen))
-		MainWindow.resize(self.width_screen, self.height_screen)
-		MainWindow.setStyleSheet(
+		self.MainWindow = QtWidgets.QWidget(self)
+		self.MainWindow.setObjectName("MainWindow")
+		self.MainWindow.setMinimumSize(QSize(self.width_screen, self.height_screen))
+		self.MainWindow.resize(self.width_screen, self.height_screen)
+		self.MainWindow.setStyleSheet(
 			"QScrollBar:vertical {\n"
 			"	background: transparent;\n"
 			"	width: 10px;\n"
@@ -87,13 +87,13 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
 			"}")
 
 		# Grilla principal
-		self.gridLayout_2 = QtWidgets.QGridLayout(MainWindow)
+		self.gridLayout_2 = QtWidgets.QGridLayout(self.MainWindow)
 		self.gridLayout_2.setContentsMargins(0, 0, 0, 0)
 		self.gridLayout_2.setSpacing(0)
 		self.gridLayout_2.setObjectName("gridLayout_2")
 
 		# Frame apps seleccionadas
-		self.widget = QtWidgets.QWidget(MainWindow)
+		self.widget = QtWidgets.QWidget(self.MainWindow)
 		self.widget.setMinimumSize(QSize(0, 40))
 		self.widget.setMaximumSize(QSize(16777215, 80))
 		self.widget.setStyleSheet("background-color: rgba(16, 16, 16, 0);")
@@ -150,7 +150,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
 		self.gridLayout_2.addWidget(self.widget, 2, 1, 1, 1)
 
 		# Frame side bar
-		self.frame_2 = QtWidgets.QFrame(MainWindow)
+		self.frame_2 = QtWidgets.QFrame(self.MainWindow)
 		self.frame_2.setMinimumSize(QSize(self.size_frame, 0))
 		self.frame_2.setMaximumSize(QSize(self.size_frame, 16777215))
 		self.frame_2.setStyleSheet("background-color: rgba(16, 16, 16, 0);")
@@ -315,7 +315,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
 		# Quinto item, label version
 		self.verticalLayout.addWidget(self.label)
 		self.gridLayout_2.addWidget(self.frame_2, 1, 0, 3, 1)
-		self.frame = QtWidgets.QScrollArea(MainWindow)
+		self.frame = QtWidgets.QScrollArea(self.MainWindow)
 		self.frame.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
 		self.frame.setWidgetResizable(True)
 		self.frame.setAlignment(Qt.AlignCenter)
@@ -334,7 +334,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
 		self.gridLayout_2.addWidget(self.frame, 1, 1, 1, 1)
 
 		# Title bar
-		self.widget_1 = QtWidgets.QWidget(MainWindow)
+		self.widget_1 = QtWidgets.QWidget(self.MainWindow)
 		self.widget_1.setObjectName("widget_1")
 		self.widget_1.setStyleSheet("""
 			#widget_1{
@@ -478,17 +478,17 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
 		self.horizontalLayout_4.addWidget(self.btn_close)
 
 		self.gridLayout_2.addWidget(self.widget_1, 0, 0, 1, 2)
-		self.setCentralWidget(MainWindow)
+		self.setCentralWidget(self.MainWindow)
 
-		self.retranslateUi(MainWindow)
+		self.retranslateUi(self.MainWindow)
 		self.lw_categories.setCurrentRow(-1)
-		QMetaObject.connectSlotsByName(MainWindow)
+		QMetaObject.connectSlotsByName(self.MainWindow)
 
 	def __tr(self, txt, disambiguation=None, n=-1):
 		return tr(self, txt, disambiguation, n)
 
 	def retranslateUi(self, MainWindow):
-		MainWindow.setWindowTitle(self.__tr("Deepines Store"))
+		self.MainWindow.setWindowTitle(self.__tr("Deepines Store"))
 		self.label_2.setToolTip(self.__tr("About us"))
 		self.label_3.setText(self.__tr("Deepines Store"))
 		self.lbl_list_apps.setText(self.__tr("TextLabel"))
