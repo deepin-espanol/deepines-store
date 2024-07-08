@@ -90,16 +90,10 @@ class StoreMWindow(Ui_MainWindow):
         self.label.clicked.connect(self.show_about_dialog)
         self.btn_app_deb.clicked.connect(self.change_type_app_selected)
         self.btn_app_flatpak.clicked.connect(self.change_type_app_selected)
-        shadow = QGraphicsDropShadowEffect(self,
-                                           blurRadius=10,
-                                           color=QColor(255, 255, 255),
-                                           offset=QPointF(0, 0)
-                                           )
-        shadow.setXOffset(0)
-        shadow.setYOffset(0)
+        shadow = set_shadow(self, QColor(255, 255, 255))
         self.btn_install.setGraphicsEffect(shadow)
 
-        self.center()
+        center_window(self)
 
     ################################################
     #			 Control de errores			   #
@@ -516,14 +510,8 @@ class StoreMWindow(Ui_MainWindow):
                   "border-radius: 5px;\n"
                   "}")
         self.btn_install.setStyleSheet(estilo)
-
-        shadow = QGraphicsDropShadowEffect(self,
-                                           blurRadius=10,
-                                           color=QColor(r, g, b),
-                                           offset=QPointF(0, 0)
-                                           )
-        shadow.setXOffset(0)
-        shadow.setYOffset(0)
+        color=QColor(r, g, b)
+        shadow = set_shadow(self, color)
         self.btn_install.setGraphicsEffect(shadow)
 
         self.lbl_list_apps.setText(texto)
@@ -692,19 +680,6 @@ class StoreMWindow(Ui_MainWindow):
             self.about_dialog.show()
 
     #				     /About   				  #
-    ################################################
-
-    ################################################
-    #				   Centrar					#
-    def center(self):
-        qr = self.frameGeometry()
-        cp = QDesktopWidget().availableGeometry().center()
-        qr.moveCenter(cp)
-        #mover = QPoint(self.x(), 100)
-        self.move(qr.topLeft())
-        #self.move(self.x(), self.y() - mover.y())
-
-    #				  /Centrar					#
     ################################################
 
     ################################################
@@ -882,12 +857,7 @@ class Card(QFrame):
         else:
             shadow_color = QColor(255, 255, 255)
 
-        shadow = QGraphicsDropShadowEffect(self,
-                                           blurRadius=radius,
-                                           color=shadow_color,
-                                           offset=QPointF(0, 0))
-        shadow.setXOffset(0)
-        shadow.setYOffset(0)
+        shadow = set_shadow(self, shadow_color,radius)
         self.setGraphicsEffect(shadow)
         return True
 
@@ -991,7 +961,7 @@ class Card(QFrame):
             border_color = "border-color: transparent;"
             bnt_select_style = ("#btn_select_app{"
                             "color: rgb(255, 255, 255);"
-                            "background-color: rgb(45, 45, 45);"
+                            "background-color: rgb(30, 30, 30);"
                             "margin: 5px 10px;"
                             "}")
 
@@ -1003,18 +973,31 @@ class Card(QFrame):
                            "border-width: 1px;"
                            "border-style: solid;"
                            "}" + bnt_select_style)
-        shadow = QGraphicsDropShadowEffect(self,
-                                           blurRadius=radio,
-                                           color=QColor(r, g, b),
-                                           offset=QPointF(0, 0)
-                                           )
-        shadow.setXOffset(0)
-        shadow.setYOffset(0)
+
+        color = QColor(r, g, b)
+        shadow = set_shadow(self, color, radio)
         self.setGraphicsEffect(shadow)
 
 
 #		   /Card para la aplicacion		   #
 ################################################
+
+def set_shadow(widget, color: QColor, radius=10):
+    shadow = QGraphicsDropShadowEffect(widget,
+                                       color=color,
+                                       blurRadius=radius,
+                                       offset=QPointF(0, 0)
+                                       )
+    shadow.setXOffset(0)
+    shadow.setYOffset(0)
+    return shadow
+
+
+def center_window(widget):
+    qr = widget.frameGeometry()
+    cp = QDesktopWidget().availableGeometry().center()
+    qr.moveCenter(cp)
+    widget.move(qr.topLeft())
 
 class LoaderThread(QThread):
     progress = pyqtSignal(str)
@@ -1047,10 +1030,8 @@ class LoadingScreen(QMainWindow):
             f"border-radius: {self.radius_dtk};\n"
             )
 
-        # Center the window
-        self.center()
+        center_window(self)
 
-        # Enable window dragging
         self.oldPos = self.pos()
 
         layout = QVBoxLayout()
@@ -1088,7 +1069,7 @@ class LoadingScreen(QMainWindow):
 
         container = QWidget()
         container.setLayout(layout)
-        container.setStyleSheet("background-color: rgba(30, 30, 30);")
+        container.setStyleSheet("background-color: rgb(30, 30, 30);")
         self.setCentralWidget(container)
 
         self.loader_thread = LoaderThread()
