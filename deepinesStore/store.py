@@ -589,7 +589,7 @@ class StoreMWindow(Ui_MainWindow):
         self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
         layout.addItem(self.verticalSpacer)
 
-        spinner = get_res('luffy-one-piece', ext='.gif')
+        spinner = get_res('Deepines', ext='.gif')
         self.spinner_label = QLabel(self)
         self.spinner = QMovie(spinner)
         self.spinner_label.setMovie(self.spinner)
@@ -1059,14 +1059,24 @@ class LoadingScreen(QMainWindow):
         self.label_title.setAlignment(QtCore.AlignCenter)
         self.label_title.setStyleSheet("font-size: 24px;")
 
+        spinner = get_res('Deepines', ext='.gif')
         self.spinner_label = QLabel(self)
-        self.spinner_label.setAlignment(QtCore.AlignCenter)
+        self.spinner = QMovie(spinner)
+        self.spinner_label.setMovie(self.spinner)
+        self.spinner_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        max_size = 300
+        original_size = self.spinner.scaledSize()
+        aspect_ratio = original_size.width() / original_size.height()
 
-        spinner = get_res('torao', ext='.gif')
+        if original_size.width() > original_size.height():
+            new_width = max_size
+            new_height = new_width / aspect_ratio
+        else:
+            new_height = max_size
+            new_width = new_height * aspect_ratio
 
-        movie = QMovie(spinner)
-        self.spinner_label.setMovie(movie)
-        movie.start()
+        self.spinner.setScaledSize(QSize(int(new_width), int(new_height)))
+        self.spinner.start()
 
         self.progress_label = QLabel("Starting...", self)
         self.progress_label.setAlignment(QtCore.AlignCenter)
