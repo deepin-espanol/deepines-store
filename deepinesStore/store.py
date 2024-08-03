@@ -1016,7 +1016,7 @@ class LoadingScreen(QMainWindow):
         self.setWindowFlags(QtCore.FramelessWindowHint)
         self.setStyleSheet("background-color: rgba(30, 30, 30, 200); color: #b5c5d1;")
 
-        self.oldPos = self.pos()
+        self.drag_position = None
 
         layout = QVBoxLayout()
         self.label_title = QLabel(self)
@@ -1087,15 +1087,19 @@ class LoadingScreen(QMainWindow):
 
     def mousePressEvent(self, event):
         if event.button() == Qt.LeftButton:
-            self.oldPos = event.globalPos()
-            event.accept()
+            self.drag_position = event.globalPos() - self.frameGeometry().topLeft()
+        event.accept()
+
+    def mouseReleaseEvent(self, event):
+        self.setCursor(Qt.ArrowCursor)
+        self.drag_position = None
 
     def mouseMoveEvent(self, event):
         if event.buttons() == Qt.LeftButton:
-            delta = QPoint(event.globalPos() - self.oldPos)
-            self.move(self.x() + delta.x(), self.y() + delta.y())
-            self.oldPos = event.globalPos()
-            event.accept()
+            if self.drag_position is not None:
+                self.setCursor(Qt.SizeAllCursor)
+                self.move(event.globalPos() - self.drag_position)
+        event.accept()
 
 def run_tasks(loading_screen):
     # Add your long-running tasks here
