@@ -50,54 +50,25 @@ class Ui_MainWindow(object):
 		MainWindow.setObjectName("MainWindow")
 		MainWindow.setMinimumSize(QSize(960, 960))
 		MainWindow.resize(self.width_screen, self.height_screen)
-		MainWindow.setStyleSheet(
-			"QScrollBar:vertical {\n"
-			"	background: transparent;\n"
-			"	width: 10px;\n"
-			"	margin: 0px 0px 0px 0px;\n"
-			"}\n"
-			"QScrollBar::handle:vertical {\n"
-			"	background-color: #545454;\n"
-			"	border-radius: 4px;\n"
-			"	min-height: 5px;\n"
-			"}\n"
-			"QScrollBar::add-line:vertical {\n"
-			"	background: qlineargradient(x1:0, y1:0, x2:1, y2:0,\n"
-			"	stop: 0 rgb(32, 47, 130), stop: 0.5 rgb(32, 47, 130),  stop:1 rgb(32, 47, 130));\n"
-			"	height: 0px;\n"
-			"	subcontrol-position: bottom;\n"
-			"	subcontrol-origin: margin;\n"
-			"}\n"
-			"QScrollBar::sub-line:vertical {\n"
-			"	background: qlineargradient(x1:0, y1:0, x2:1, y2:0,\n"
-			"	stop: 0  rgb(32, 47, 130), stop: 0.5 rgb(32, 47, 130),  stop:1 rgb(32, 47, 130));\n"
-			"	height: 0 px;\n"
-			"	subcontrol-position: top;\n"
-			"	subcontrol-origin: margin;\n"
-			"}")
 		self.centralwidget = QtWidgets.QWidget(MainWindow)
-		self.centralwidget.setStyleSheet(
-			"background-color: rgba(30, 30, 30, 200);" "color: #b5c5d1;")
 		self.centralwidget.setObjectName("centralwidget")
+		self.centralwidget.setStyleSheet("#centralwidget{background-color: rgba(30, 30, 30, 200); color: #b5c5d1; border: 1.5px solid rgba(60, 60, 60, 120);}")
+
 		# Grilla principal
 		self.gridLayout_2 = QtWidgets.QGridLayout(self.centralwidget)
 		self.gridLayout_2.setContentsMargins(0, 0, 0, 0)
 		self.gridLayout_2.setSpacing(0)
-		self.gridLayout_2.setObjectName("gridLayout_2")
 
 		# Frame apps seleccionadas
 		self.widget = QtWidgets.QWidget(self.centralwidget)
 		self.widget.setMinimumSize(QSize(0, 40))
 		self.widget.setMaximumSize(QSize(16777215, 80))
-		self.widget.setStyleSheet("background-color: rgba(16, 16, 16, 0);")
-		self.widget.setObjectName("widget")
+		self.widget.setStyleSheet("background-color: transparent;")
 		self.gridLayout_4 = QtWidgets.QGridLayout(self.widget)
 		self.gridLayout_4.setContentsMargins(0, 0, 0, 0)
-		self.gridLayout_4.setObjectName("gridLayout_4")
 		self.horizontalLayout_3 = QtWidgets.QHBoxLayout()
 		self.horizontalLayout_3.setContentsMargins(10, 10, 10, 10)
 		self.horizontalLayout_3.setSpacing(10)
-		self.horizontalLayout_3.setObjectName("horizontalLayout_3")
 
 		self.icon_car = ClickableLabel(self.widget)
 		self.icon_car.setStyleSheet("margin-left: 0px;\n"
@@ -117,8 +88,7 @@ class Ui_MainWindow(object):
 		font = QtGui.QFont()
 		font.setPointSize(11)
 		self.lbl_list_apps.setFont(font)
-		self.lbl_list_apps.setStyleSheet("background-color: transparent;\n" "")
-		self.lbl_list_apps.setObjectName("lbl_list_apps")
+		self.lbl_list_apps.setStyleSheet("background-color: transparent;")
 		self.horizontalLayout_3.addWidget(self.lbl_list_apps)
 		self.btn_install = QtWidgets.QPushButton(self.widget)
 		self.btn_install.setMinimumSize(QSize(80, 0))
@@ -146,12 +116,7 @@ class Ui_MainWindow(object):
 		self.frame_2 = QtWidgets.QFrame(self.centralwidget)
 		self.frame_2.setMinimumSize(QSize(self.size_frame, 0))
 		self.frame_2.setMaximumSize(QSize(self.size_frame, 16777215))
-		self.frame_2.setStyleSheet("background-color: rgba(16, 16, 16, 0);")
-		self.frame_2.setFrameShape(QtWidgets.QFrame.StyledPanel)
-		self.frame_2.setFrameShadow(QtWidgets.QFrame.Raised)
-		self.frame_2.setObjectName("frame_2")
 		self.verticalLayout = QtWidgets.QVBoxLayout(self.frame_2)
-		self.verticalLayout.setObjectName("verticalLayout")
 		spacerItem2 = QtWidgets.QSpacerItem(20, 2,
 											QtWidgets.QSizePolicy.Minimum,
 											QtWidgets.QSizePolicy.Fixed)
@@ -300,7 +265,7 @@ class Ui_MainWindow(object):
 		font = QtGui.QFont()
 		font.setPointSize(8)
 		self.label.setFont(font)
-		self.label.setStyleSheet("background-color: transparent;\n")
+		self.label.setStyleSheet("background-color: transparent;")
 		self.label.setAlignment(Qt.AlignCenter)
 		self.label.setCursor(QtGui.QCursor(Qt.PointingHandCursor))
 		self.label.setObjectName("label")
@@ -309,18 +274,16 @@ class Ui_MainWindow(object):
 		self.verticalLayout.addWidget(self.label)
 		self.gridLayout_2.addWidget(self.frame_2, 1, 0, 3, 1)
 		self.frame = QtWidgets.QScrollArea(self.centralwidget)
-		self.frame.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
+		self.frame.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
 		self.frame.setWidgetResizable(True)
 		self.frame.setAlignment(Qt.AlignCenter)
-		self.frame.setObjectName("frame")
-		self.frame.setStyleSheet("background-color: rgba(16, 16, 16, 0);")
+		self.frame.setStyleSheet('QScrollArea {background: transparent;}')
 		self.scroll_apps = QtWidgets.QWidget()
 		self.scroll_apps.setGeometry(QRect(0, 0, 774, 459))
 		self.scroll_apps.setObjectName("scroll_apps")
 		self.scroll_apps.setStyleSheet(
-			"#scroll_apps{ padding-left: 30px; padding-right: 30px;}")
+			"#scroll_apps{ padding-left: 30px; padding-right: 30px; background-color: transparent;}")
 		self.gridLayout = QtWidgets.QGridLayout(self.scroll_apps)
-		self.gridLayout.setObjectName("gridLayout")
 		self.gridLayout.setContentsMargins(0, 0, 0, 0)
 		self.gridLayout.setSpacing(2)
 		self.frame.setWidget(self.scroll_apps)
@@ -361,7 +324,6 @@ class Ui_MainWindow(object):
 			""")
 		
 		self.horizontalLayout_4 = QtWidgets.QHBoxLayout(self.widget_1)
-		self.horizontalLayout_4.setObjectName("horizontalLayout_4")
 		self.horizontalLayout_4.setContentsMargins(10, 15, 10, 5)
 		self.horizontalLayout_4.setSpacing(20)
 
@@ -371,8 +333,6 @@ class Ui_MainWindow(object):
 		self.frame_4.setStyleSheet("border-radius: 15px;\n"
 								   "background-color: rgba(16, 16, 16, 122);\n"
 								   "color: white;")
-		self.frame_4.setFrameShape(QtWidgets.QFrame.StyledPanel)
-		self.frame_4.setFrameShadow(QtWidgets.QFrame.Raised)
 		self.frame_4.setObjectName("frame_4")
 		self.horizontalLayout_2 = QtWidgets.QHBoxLayout(self.frame_4)
 		self.horizontalLayout_2.setObjectName("horizontalLayout_2")
