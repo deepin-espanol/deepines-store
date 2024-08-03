@@ -92,9 +92,8 @@ class StoreMWindow(Ui_MainWindow):
         self.btn_app_flatpak.clicked.connect(self.change_type_app_selected)
         shadow = set_shadow(self, QColor(255, 255, 255))
         self.btn_install.setGraphicsEffect(shadow)
-        windows_width = self.MainWindow.width()
-        windows_height = self.MainWindow.height()
-        center_window(self, windows_width, windows_height)
+
+        center_window(self)
 
     ################################################
     #			 Control de errores			   #
@@ -994,12 +993,11 @@ def set_shadow(widget, color: QColor, radius=10):
     return shadow
 
 
-def center_window(widget, width, height):
-    screen = QApplication.primaryScreen()
-    screen_geometry = screen.availableGeometry()
-    x = (screen_geometry.width() - width) // 2
-    y = (screen_geometry.height() - height) // 2
-    widget.move(x, y)
+def center_window(widget):
+    qr = widget.frameGeometry()
+    cp = QDesktopWidget().availableGeometry().center()
+    qr.moveCenter(cp)
+    widget.move(qr.topLeft())
 
 class LoaderThread(QThread):
     progress = pyqtSignal(str)
@@ -1031,7 +1029,9 @@ class LoadingScreen(QMainWindow):
             "color: #b5c5d1;\n"
             f"border-radius: {self.radius_dtk};\n"
             )
-        
+
+        center_window(self)
+
         self.oldPos = self.pos()
 
         layout = QVBoxLayout()
@@ -1043,9 +1043,12 @@ class LoadingScreen(QMainWindow):
         spinner = get_res('Deepines', ext='.gif')
         self.spinner_label = QLabel(self)
         self.spinner = QMovie(spinner)
+        self.spinner_label.setMovie(self.spinner)
+        self.spinner_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         max_size = 300
         original_size = self.spinner.scaledSize()
         aspect_ratio = original_size.width() / original_size.height()
+
         if original_size.width() > original_size.height():
             new_width = max_size
             new_height = new_width / aspect_ratio
@@ -1054,8 +1057,6 @@ class LoadingScreen(QMainWindow):
             new_width = new_height * aspect_ratio
 
         self.spinner.setScaledSize(QSize(int(new_width), int(new_height)))
-        self.spinner_label.setMovie(self.spinner)
-        self.spinner_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.spinner.start()
 
         self.progress_label = QLabel("Starting...", self)
@@ -1070,12 +1071,17 @@ class LoadingScreen(QMainWindow):
         container.setLayout(layout)
         container.setStyleSheet("background-color: rgb(30, 30, 30);")
         self.setCentralWidget(container)
-        # Fix me: the window not center automatically 
-        center_window(self, int(new_width+20), int(new_height+ 100))
+
         self.loader_thread = LoaderThread()
         self.loader_thread.progress.connect(self.update_progress)
         self.loader_thread.finished.connect(self.on_finish)
         self.loader_thread.start()
+
+    def center(self):
+        qr = self.frameGeometry()
+        cp = QDesktopWidget().availableGeometry().center()
+        qr.moveCenter(cp)
+        self.move(qr.topLeft())
 
     def update_progress(self, message):
         self.progress_label.setText(message)
