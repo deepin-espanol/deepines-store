@@ -228,7 +228,7 @@ vagy a Telegram csoportunkban t.me/deepinenespanol címen.</translation>
     </message>
 </context>
 <context>
-    <name>StoreMWindow</name>
+    <name>Ui_MainWindow</name>
     <message>
         <location filename="../deepinesStore/maing.py" line="467"/>
         <source>Home</source>

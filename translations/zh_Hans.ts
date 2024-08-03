@@ -179,7 +179,7 @@ or in our Telegram group t.me/deepinenespanol.</source>
     </message>
 </context>
 <context>
-    <name>StoreMWindow</name>
+    <name>Ui_MainWindow</name>
     <message>
         <location filename="../deepinesStore/maing.py" line="483"/>
         <source>Home</source>
