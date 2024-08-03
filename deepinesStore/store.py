@@ -986,7 +986,18 @@ def set_shadow(widget, color: QColor, radius=10):
 
 
 def center_window(widget):
-	widget.move(QApplication.desktop().screen().rect().center() - widget.rect().center())
+	# Obtener la pantalla donde se encuentra el cursor
+	screen = QDesktopWidget().screenNumber(QApplication.desktop().cursor().pos())
+	screen_rect = QApplication.desktop().screenGeometry(screen)
+
+	# Calcular el centro de la pantalla
+	screen_center = screen_rect.center()
+
+	# Calcular el centro del widget
+	widget_center = widget.rect().center()
+
+	# Mover el widget al centro de la pantalla
+	widget.move(screen_center - widget_center)
 
 class LoaderThread(QThread):
 	progress = pyqtSignal(str)
