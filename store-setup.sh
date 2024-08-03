@@ -463,7 +463,7 @@ Maintainer: $PKG_DEV
 Homepage: $PKG_SRC
 Priority: optional
 Pre-Depends: debconf (>= 0.5)
-Depends: $P3, $P3-lxml, $P3-pyqt5, $P3-requests, flatpak
+Depends: $P3, $P3-lxml, $P3-pyqt5, $P3-requests, $P3-apt, flatpak
 Replaces: deepines-repository (<= 1:4.1), deepines-store:amd64 (<= 1.3.3)
 Description: Deepines repository, key and Store
  Deepines unofficial repository and Store by deepinenespanol.org
