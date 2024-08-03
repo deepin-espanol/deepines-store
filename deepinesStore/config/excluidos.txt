@@ -168,3 +168,7 @@ libappindicator3-1
 v4l2loopback-dkms
 python3-gnupg
 rclone
+fonts-league-spartan
+vnstat
+yad
+libnet-arp-perl
