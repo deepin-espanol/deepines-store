@@ -40,6 +40,7 @@ class Ui_MainWindow(object):
 		svg_terminal = get_res('terminal')
 		svg_computer = get_res('computer')
 		svg_pamela = get_res('pamela')
+		svg_installed = get_res('installed')
 		svg_search = get_res('magnifying-glass')
 		svg_car = get_res('carDisable')
 		svg_minimizar = get_res('minimizar')
@@ -265,7 +266,7 @@ class Ui_MainWindow(object):
 		self.lw_categories.addItem(item)
 		item = QtWidgets.QListWidgetItem()
 		icon11 = QtGui.QIcon()
-		icon11.addPixmap(QtGui.QPixmap(svg_pamela),
+		icon11.addPixmap(QtGui.QPixmap(svg_installed),
 						 QtGui.QIcon.Normal, QtGui.QIcon.Off)
 		item.setIcon(icon11)
 		item.setFlags(Qt.ItemIsSelectable |
