@@ -337,27 +337,27 @@ class Ui_MainWindow(object):
 				background-color: transparent;
 			}
 			#btn_close{
-                margin-right: 10px;
+				margin-right: 10px;
 				min-width: 36px;
-                min-height: 36px;
-            }
-            #btn_zoom{
+				min-height: 36px;
+			}
+			#btn_zoom{
 				min-width: 36px;
-                min-height: 36px;
-                margin-right: 3px;
-                margin-left: 3px;
-            }
+				min-height: 36px;
+				margin-right: 3px;
+				margin-left: 3px;
+			}
 			#btn_minimize{
 				min-width: 36px;
-                min-height: 36px;
+				min-height: 36px;
 			}
-            QPushButton{
-                border-radius: 10px;
-                background-color: transparent;
-            }
-            QPushButton:hover{
-                background-color: rgba(50, 50, 50, 100);
-            }
+			QPushButton{
+				border-radius: 10px;
+				background-color: transparent;
+			}
+			QPushButton:hover{
+				background-color: rgba(50, 50, 50, 100);
+			}
 			""")
 		
 		self.horizontalLayout_4 = QtWidgets.QHBoxLayout(self.widget_1)
