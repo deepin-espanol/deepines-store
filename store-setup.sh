@@ -149,12 +149,14 @@ SOURCES_DIR=/etc/apt/sources.list.d
 REPO="deb http://repositorio.deepines.com/pub/deepines/%d/ stable main"
 
 INSTALLING_DEEPINES="Installing Deepines %d repository and key..."
+INSTALLING_FLATHUB="Adding Flathub repository..."
 INSTALLING_DONE=" done.\n"
 INSTALLING_FAILED=" failed:\n"
 
 case "${LANGUAGE:-$LANG}" in
 es*)
 	INSTALLING_DEEPINES="Instalando repositorio y clave de Deepines %d..."
+	INSTALLING_FLATHUB="Añadiendo repositorio de Flathub..."
 	INSTALLING_DONE=" hecho.\n"
 	INSTALLING_FAILED=" falló:\n"
 	;;
@@ -249,9 +251,21 @@ InstallDeepines() {
 	esac
 }
 
+InstallFlathubRepository() {
+	$Fmt "${INSTALLING_FLATHUB}" && FlathubInstallationResult=$(
+		flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+	) || {
+		$Fmt "$INSTALLING_FAILED"
+		echo "$FlathubInstallationResult"
+		db_go || true
+		exit 1
+	} && $Fmt "$INSTALLING_DONE"
+}
+
 case "$1" in
 configure)
 	InstallDeepines
+	InstallFlathubRepository
 	;;
 esac
 

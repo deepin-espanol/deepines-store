@@ -781,7 +781,7 @@ class Card(QFrame):
         self.setMinimumSize(QSize(tamanio+30, int((tamanio+115)*0.72222)))
         self.setMaximumSize(QSize(tamanio+30, int((tamanio+155)*0.72222)))
         self.cd.image_app.setMinimumSize(QSize(tamanio, int(tamanio*0.72222)))
-        if self.application.type == AppType.DEB_PACKAGE:
+        if self.application.version:
             self.cd.lbl_version.setText("v: {}".format(self.application.version))
         else:
             self.cd.lbl_version.setVisible(False)

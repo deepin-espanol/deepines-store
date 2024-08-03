@@ -64,7 +64,7 @@ def apps_flatpak_in_categories() -> list[AppInfo]:
 		for app in app_data[category]: # FIXME: This is not adding some "uncategorized" apps
 			app_id = app['flatpakAppId']
 			if not app_id in already_added: 
-				version = app_id_ver_dict.get(app_id) or "No version"
+				version = app_id_ver_dict.get(app_id)
 				app_info = AppInfo(app['name'], app_id, app['summary'], version, category, AppType.FLATPAK_APP)
 				already_added.append(app_id)
 				fp_app_info.append(app_info)

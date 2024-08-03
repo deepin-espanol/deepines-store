@@ -1,6 +1,4 @@
-# sudo apt install python3-apt
-# paste in your venv
-# sudo cp -r /usr/lib/python3/dist-packages/apt* ~/.virtualenvs/deepines/lib/python3.11/site-packages/
+# TODO: Localize for 1.4.1
 import apt
 import apt.progress.base
 import subprocess as sp
