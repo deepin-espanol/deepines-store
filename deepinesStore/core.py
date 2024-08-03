@@ -1,4 +1,18 @@
-STORE_VERSION = '[VERSION]'  # TODO: Use Git Hash as fallback.
+from enum import Enum
+from os import environ as env, name
+import argparse
+import json
+
+
+def get_ver():
+	version = '[VERSION]'
+	if "VERSION" in version:
+		import subprocess
+		version = subprocess.check_output(["git", "describe", "--dirty"]).strip().decode("utf-8")
+	return version
+
+
+STORE_VERSION = get_ver()
 BASE_URI = 'https://repositorio.deepines.com'
 
 
@@ -15,37 +29,41 @@ def get_app_icon():
 def get_dl(uri, params=None, **kwargs):
 	from requests import get
 	try:
-		return get(uri, params=params, **kwargs)
+		response = get(uri, params=params, **kwargs)
+		response.raise_for_status()
+		return response
 	except Exception as e:
-		print(f'DL ERROR: {type(e).__name__}, URI: {uri}')
+		from sys import stderr
+		print(f'DL ERROR: {type(e).__name__}, URI: {uri}', file=stderr)
 
 		class DummyResponse:
 			status_code = None
 			content = b''
-			text = ''  # FIXME: Use some kind of fallback for this, a text file maybe?
+			text = ''
+			def json(self): return {}
 		return DummyResponse()
 
 
-def basic_uri_join(base_uri, *args):
-	base_uri = base_uri.strip().rstrip('/')
-	relative_paths = [path.strip().lstrip('/') for path in args]
+def uri_join(base_uri, *args):
+	base_uri = base_uri.rstrip('/')
+	relative_paths = list(map(lambda x: x.lstrip('/'), args))
 	return f"{base_uri}/{'/'.join(relative_paths)}"
 
 
 def get_deepines_uri(rel_uri):
-	return basic_uri_join(BASE_URI, 'pub', 'deepines', rel_uri)
+	return uri_join(BASE_URI, 'pub', 'deepines', rel_uri)
 
+def get_text_link(text, uri=None):
+	if uri is None:
+		if text.startswith("@"):
+			uri = f"https://t.me/{text[1:]}"
+		else:
+			uri = f"https://{text}"
+	return f"<a href='{uri}' style='text-decoration: none; color: #004EE5;'>{text}</a>"
 
 def tr(m, txt, disambiguation=None, n=-1):
 	from PyQt5.QtCore import QCoreApplication
 	return QCoreApplication.translate(m.__class__.__name__, txt, disambiguation, n)
-
-
-def site():
-	# FIXME: It copies the link, need to open browser instead.
-	from PyQt5.QtWidgets import QApplication
-	QApplication.clipboard().setText('https://deepinenespañol.org')
-
 
 def set_blur(win):
 	import platform
@@ -57,5 +75,28 @@ def set_blur(win):
 
 
 def write(b, to):
-	# wb should work with text and binary, keeps newlines.
-	open(to, 'wb').write(b.content)
+	with open(to, 'wb') as ftw:
+		ftw.write(b.content)
+
+
+if name == 'nt':
+	try:
+		from ctypes import windll
+		windll.shell32.SetCurrentProcessExplicitAppUserModelID('Deepines Store')
+	except AttributeError:
+		# Not available?
+		pass
+
+parser = argparse.ArgumentParser()
+parser.add_argument("--env", help="Serialized user environment as JSON")
+args = parser.parse_args()
+
+default_env = env.copy()
+
+if args.env:
+    new_env = json.loads(args.env)
+    default_env.update(new_env)
+
+class ProcessType(Enum):
+	INSTALL = 0
+	UNINSTALL = 1

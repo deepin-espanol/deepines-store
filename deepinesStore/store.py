@@ -2,37 +2,32 @@
 # -*- coding: utf-8 -*-
 import sys
 import os
-import re
 # PyQt5 modules
 from PyQt5.Qt import Qt
 from PyQt5.QtCore import QTranslator, QLocale, QSize, QPointF, QPoint, QEvent, Qt as QtCore, pyqtSignal
 from PyQt5.QtWidgets import (QMainWindow, QApplication, QFrame, QLabel,
 							 QSizePolicy, QGraphicsDropShadowEffect, QSpacerItem,
 							 QDesktopWidget, QHBoxLayout)
-from PyQt5.QtGui import QPixmap, QFont, QColor, QCursor
-# Modulos para el scraping
-from bs4 import BeautifulSoup
-from deepinesStore.core import get_dl, set_blur, get_deepines_uri
+from PyQt5.QtGui import QPixmap, QFont, QColor, QCursor, QPainter, QIcon
+
+from deepinesStore.core import set_blur, ProcessType
 # Para obtener applicacion random
-from random import randint
+from random import choice
 # GUI o modulos locales
+from deepinesStore.app_info import AppInfo, AppType, AppState
 from deepinesStore.maing import Ui_MainWindow
 from deepinesStore.cardg import Ui_Frame
 from deepinesStore.dialog_install import Ui_DialogInstall
 from deepinesStore.about import AboutDialog
 from deepinesStore.core import get_res, get_app_icon
-
-if os.name == 'nt':
-	try:
-		from ctypes import windll
-		windll.shell32.SetCurrentProcessExplicitAppUserModelID('Deepines Store')
-	except AttributeError:
-        # Not available?
-		pass
+from deepinesStore.flatpak.get_apps_flatpak import fetch_list_app_flatpak, apps_flatpak_in_categories
+from deepinesStore.deb.get_apps_deb import fetch_list_app_deb
+from deepinesStore.widgets import LinkLabel
+import deepinesStore.demoted_actions as demoted
 
 # Global variables
-global lista_app, total_apps, lista_inicio, lista_global, lista_selected
-global selected_apps, instaladas, columnas, tamanio, repo, repo_file, contador_selected
+global lista_inicio, lista_global, lista_temp, uninstalled
+global selected_apps, instaladas, columnas, tamanio
 
 
 class StoreMWindow(QMainWindow):
@@ -44,31 +39,38 @@ class StoreMWindow(QMainWindow):
 		ui.setupUi(self)
 		self.setWindowFlags(self.windowFlags() | Qt.FramelessWindowHint)
 		self.setAttribute(Qt.WA_TranslucentBackground, True)
-		self.lista_excluir = self.Get_App_Exclude()
-		self.lista_deepines = self.Get_App_Deepines()
 
-		global lista_app, selected_apps, instaladas,\
-			lista_global, repo, repo_file, lista_selected, contador_selected
+		global selected_apps, instaladas,\
+			lista_inicio, lista_global, \
+			selected_type_app, uninstalled
 		repo_file = "/etc/apt/sources.list.d/deepines.list"
-		repo = self.repo_is_exist()
-		if repo:
-			# Obtenemos la url de la .list
-			self.obtener_url_repo = self.Get_Repo_Url()
+		if os.path.exists(repo_file):
+			self.lista_excluir = self.Get_App_Exclude()
+			self.lista_deepines = self.Get_App_Deepines()
 			# Variables globales
 			selected_apps = list()
-			lista_selected = {}
-			contador_selected = 0
-			instaladas = self.apps_instaladas()
+			uninstalled = list()
 			# Almacenamos la lista, para cargarla solo al inicio
-			lista_app = self.Get_App()
-			if lista_app:
-				# Obtenemos aplicaciones para la lista de apps
-				self.Apps_inicio(lista_app)
+			self.lista_app_deb = fetch_list_app_deb(self.lista_excluir)
+			self.total_apps_deb = len(self.lista_app_deb)
+			self.lista_app_flatpak = apps_flatpak_in_categories()
+			self.total_apps_flatpak = len(self.lista_app_flatpak)
+			instaladas = self.get_installed_apps()
 
+			selected_type_app = 0 # 0 by debs
+			if self.lista_app_deb and self.lista_app_flatpak:
+				# Obtenemos aplicaciones para la lista de apps
+				self.inicio_apps_deb = self.Apps_inicio(self.lista_app_deb)
+				self.inicio_apps_flatpak = self.Apps_inicio(self.lista_app_flatpak)
+				lista_global = self.lista_app_deb
+				lista_inicio = self.inicio_apps_deb
+				self.primer_inicio = True
+				
 			else:
-				self.error(ui.error_no_server_text, "https://deepinenespañol.org")
+				self.error(ui.error_no_server_text)
 		else:
-			self.error(ui.error_no_deepines_repo_text, "https://deepinenespañol.org/repositorio")
+			self.error(ui.error_no_deepines_repo_text)
+			
 
 		ui.btn_install.setEnabled(False)
 		ui.btn_install.clicked.connect(self.window_install)
@@ -76,7 +78,7 @@ class StoreMWindow(QMainWindow):
 		ui.lbl_list_apps.setEnabled(False)
 		ui.icon_car.clicked.connect(self.apps_seleccionadas)
 		ui.lbl_list_apps.clicked.connect(self.apps_seleccionadas)
-		ui.listWidget.itemClicked.connect(self.listwidgetclicked)
+		ui.lw_categories.itemClicked.connect(self.listwidgetclicked)
 		ui.lineEdit.textChanged.connect(self.search_app)
 		self.about_dialog = AboutDialog(self) #  Intentional preloading.
 		ui.label_2.clicked.connect(self.show_about_dialog)
@@ -85,6 +87,7 @@ class StoreMWindow(QMainWindow):
 		ui.btn_minimize.clicked.connect(self.minimize)
 		ui.widget_1.installEventFilter(self)
 		ui.label.clicked.connect(self.show_about_dialog)
+		ui.btn_app_deb.clicked.connect(self.change_type_app_selected)
 		shadow = QGraphicsDropShadowEffect(self,
 										   blurRadius=10,
 										   color=QColor(255, 255, 255),
@@ -97,21 +100,9 @@ class StoreMWindow(QMainWindow):
 		self.center()
 
 	################################################
-	#			   Repo en sistema				#
-
-	def repo_is_exist(self):
-		if os.path.exists(repo_file):
-			return True
-		else:
-			return False
-
-	#			   /Repo en sistema			   #
-	################################################
-
-	################################################
 	#			 Control de errores			   #
 
-	def error(self, text: str, link: str):
+	def error(self, text: str):
 		self.horizontalLayout = QHBoxLayout()
 		self.horizontalLayout.setContentsMargins(0, 40, 0, 0)
 		self.horizontalLayout.setSpacing(0)
@@ -131,7 +122,7 @@ class StoreMWindow(QMainWindow):
 		self.horizontalLayout.addWidget(self.raccoon)
 		ui.gridLayout.addLayout(self.horizontalLayout, 1, 1, 1, 1)
 
-		self.label_error = QLabelClickable(self)
+		self.label_error = LinkLabel(self)
 		sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
 		sizePolicy.setHorizontalStretch(0)
 		sizePolicy.setVerticalStretch(0)
@@ -140,58 +131,96 @@ class StoreMWindow(QMainWindow):
 		self.label_error.setSizePolicy(sizePolicy)
 		font = QFont()
 		font.setPointSize(16)
-		self.text = ("""<html> <style type=text/css>
-		a:link, a:visited, a:active {
-			text-decoration:none;
-			color: rgba(0, 192, 255, 255);
-		}
-		</style>
-			<head/><body><p>"""
-					 + text +
-					 """</p></body></html>""")
 		self.label_error.setFont(font)
 		self.label_error.setScaledContents(True)
-		self.label_error.setText(self.text)
-		self.label_error.setStyleSheet("background-color: transparent;\n"
-									   "color: white;")
+		self.label_error.setText(text)
 		self.label_error.setEnabled(True)
 		self.label_error.setAlignment(QtCore.AlignCenter)
 		self.label_error.setObjectName("label_error")
-		self.label_error.clicked.connect(lambda: QApplication.clipboard().setText(link))
 		ui.gridLayout.addWidget(self.label_error, 2, 1, 1, 1)
-		ui.listWidget.setEnabled(False)
+		ui.lw_categories.setEnabled(False)
 		ui.frame_4.setEnabled(False)
+		ui.btn_app_deb.setEnabled(False)
 
 	#			 /Control de errores			  #
 	################################################
 
 	def resizeEvent(self, event):
+		if hasattr(self, 'primer_inicio') and self.primer_inicio:
+			global lista_temp
+			lista_temp = lista_inicio
+			self.primer_inicio = False
+		try:
+			self.do_list_apps(lista_temp)
+		except NameError:
+			pass  # There are no apps, lista_temp is not defined...
 
-		if repo and lista_app:
-			self.Listar_Apps(lista_global)
+
+	################################################
+	#			  Cambiar tipo de app			#
+
+	def change_type_app_selected(self):
+		global selected_type_app, lista_inicio, lista_global
+		style_flatpak = """
+		background-color: rgb(169, 144, 122);
+		color: #fff;
+		border-color: #fff;
+		border: 2px solid;
+		border-radius: 15px;
+		"""
+		style_deb = """
+		background-color: #A80030;
+		color: #fff;
+		border-color: #fff;
+		border: 2px solid;
+		border-radius: 15px;
+		"""
+		if selected_type_app == 0:
+			# Seleccionamos flatpak
+			selected_type_app = 1
+			ui.btn_app_deb.setText('Apps .deb')
+			ui.btn_app_deb.setStyleSheet(style_deb)
+			ui.btn_app_deb.setIcon(QIcon(QPixmap(get_res('debian'))))
+			lista_global = self.lista_app_flatpak
+			lista_inicio = self.inicio_apps_flatpak
+			ui.lw_categories.item(1).setHidden(True)
+		else:
+			# Seleccionamos deb
+			selected_type_app = 0
+			ui.btn_app_deb.setText('Apps Flatpak')
+			ui.btn_app_deb.setStyleSheet(style_flatpak)
+			ui.btn_app_deb.setIcon(QIcon(QPixmap(get_res('flatpak_sin_texto'))))
+			lista_global = self.lista_app_deb
+			lista_inicio = self.inicio_apps_deb
+			ui.lw_categories.item(1).setHidden(False)
+		
+		self.do_list_apps(lista_inicio)
+		item = ui.lw_categories.item(0)
+		item.setSelected(True)
+
+	#			  /Cambiar tipo de app			#
+	################################################
 
 	################################################
 	#			  Busqueda de apps				#
 
 	def search_app(self):
-		text = ui.lineEdit.text()
+		text = ui.lineEdit.text().lower()
 
-		lista_search = {}
-		contador = 0
-		global lista_global
+		lista_search = list()
+		global lista_global, lista_temp
 		if len(text) != 0 and len(text) > 2:
-			ui.listWidget.clearSelection()
-			for elemento in lista_app:
-				if elemento[0] not in self.lista_excluir and elemento[0].startswith(text) or text in elemento[1]:
-					indice = lista_app.index(elemento)
-					item = lista_app[indice]
-					lista_search[contador] = item
-					contador += 1
+			ui.lw_categories.clearSelection()
+			for app_item in lista_global:
+				if text in str(app_item.name).lower() or text in str(app_item.description).lower():
+					indice = lista_global.index(app_item)
+					item = lista_global[indice]
+					lista_search.append(item)
 			else:
-				lista_global = lista_search
+				lista_temp = lista_search
 		else:
-			lista_global = lista_inicio
-		self.Listar_Apps(lista_global)
+			lista_temp = lista_inicio
+		self.do_list_apps(lista_temp)
 
 	def clear_search_txt(self):
 		ui.lineEdit.setText("")
@@ -204,47 +233,61 @@ class StoreMWindow(QMainWindow):
 
 	def listwidgetclicked(self, item):
 		filtro = list()  # Limpiamos la lista
-		global lista_global
+		global lista_global, lista_inicio
 
 		# TODO: Maybe a switch statement would be nice here
-		if item == ui.listWidget.item(0):  # Home
-			self.Listar_Apps(lista_inicio)
+		if item == ui.lw_categories.item(0):  # Home
 			filtro.append("inicio")
-		if item == ui.listWidget.item(1):  # Deepines
+		if item == ui.lw_categories.item(1):  # Deepines
 			filtro.append("deepines")
-		if item == ui.listWidget.item(2):  # Internet
+		if item == ui.lw_categories.item(2):  # Internet
 			filtro.append("web")
 			filtro.append("net")
 			filtro.append("mail")
 			filtro.append("networking")
 			filtro.append("network")
-		if item == ui.listWidget.item(3):  # Multimedia
+		if item == ui.lw_categories.item(3):  # Multimedia
 			filtro.append("sound")
 			filtro.append("audio")
 			filtro.append("video")
-		if item == ui.listWidget.item(4):  # Graphics
+			filtro.append("audiovideo")
+		if item == ui.lw_categories.item(4):  # Graphics
 			filtro.append("graphics")
 			filtro.append("media")
-		if item == ui.listWidget.item(5):  # Games
+		if item == ui.lw_categories.item(5):  # Games
 			filtro.append("games")
-		if item == ui.listWidget.item(6):  # Office automation
+			filtro.append("game")
+		if item == ui.lw_categories.item(6):  # Office automation
 			filtro.append("editors")
-		if item == ui.listWidget.item(7):  # Development
+			filtro.append("office")
+			filtro.append("productivity")
+		if item == ui.lw_categories.item(7):  # Development
 			filtro.append("devel")
 			filtro.append("shells")
-		if item == ui.listWidget.item(8):  # System
+			filtro.append("development")
+		if item == ui.lw_categories.item(8):  # System
 			filtro.append("admin")
 			filtro.append("python")
-		if item == ui.listWidget.item(9):  # Other
+			filtro.append("system")
+			filtro.append("utility")
+		if item == ui.lw_categories.item(9):  # Other
 			filtro.append("otros")
+			filtro.append("education")
+			filtro.append("science")
+		if item == ui.lw_categories.item(11):
+			filtro.append("installed")			
 
-		if "inicio" not in filtro:
-			global lista_global
-			lista_global = self.Get_App_Filter(lista_app, filtro)
-			self.Listar_Apps(lista_global)
+		if "inicio" not in filtro and "installed" not in filtro:
+			# TODO: Cambiar funcionamiento por una separacion de las app
+			# TODO: en listas en diccionarios fijos, al cargar la tienda.
+			global lista_temp
+			lista_temp = self.Get_App_Filter(lista_global, filtro)
+		elif "installed" in filtro:
+			lista_temp = instaladas
 		else:
-			lista_global = lista_inicio
+			lista_temp = lista_inicio
 
+		self.do_list_apps(lista_temp)
 		self.clear_search_txt()
 
 	#			   /Filtro de apps				#
@@ -253,121 +296,52 @@ class StoreMWindow(QMainWindow):
 	################################################
 	#				Lista de apps				 #
 
-	#		 Obtener URL del repositorio		  #
-	def Get_Repo_Url(self):
-
-		# TODO: Update for Deepines 5 when 23 gets released
-		fallback_url = get_deepines_uri("/4/paquetes.html")
-
-		try:
-			repo_text = open(repo_file).read()
-			url = re.search(
-				"(?P<url>https?://[^\s]+)", repo_text).group("url") + "paquetes.html"
-			return url
-		except:
-			return fallback_url
-
-	#		   Obtener lista de apps			  #
-	def Get_App(self):
-
-		# Asignamos la url
-		repo_url = self.obtener_url_repo
-
-		try:
-			# Realizamos la petición a la web
-			req = get_dl(repo_url, timeout=10)
-
-			# Comprobamos que la petición nos devuelve un Status Code = 200
-			status_code = req.status_code
-			if status_code == 200:
-
-				# Pasamos el contenido HTML de la web a un objeto BeautifulSoup()
-				html = BeautifulSoup(req.text, "html.parser")
-
-				# Obtenemos todos los divs donde están las entradas
-				entradas = html.find_all('tr')
-
-				lista = list()
-				global total_apps
-				total_apps = 0
-				# Recorremos todas las entradas para extraer el título, autor y fecha
-				for i, entrada in enumerate(entradas):
-					# Con el método "getText()" no nos devuelve el HTML
-					titulo = entrada.find('td', {'class': 'package'}).getText()
-					descripcion = entrada.find(
-						'td', {'class': 'description'}).getText()
-					version = entrada.find(
-						'td', {'class': 'version'}).getText()
-					categoria = entrada.find(
-						'td', {'class': 'section'}).getText()
-					estado = 1
-
-					if titulo not in self.lista_excluir:
-						lista_origen = [titulo, descripcion,
-										version, categoria, estado]
-						lista.append(lista_origen)
-
-						total_apps += 1
-
-				return lista
-		except:
-			pass
-
 	#		   Filtrar aplicaciones			 #
 	def Get_App_Filter(self, lista_app, filtro):
-		lista_filtrada = {}
-		contador = 0
-		filtros = ['web', 'net', 'mail', 'sound', 'audio', 'video',
-				   'graphics', 'media', 'games', 'editors', 'devel', 'shell',
-				   'admin', 'python', 'network', 'networking']
+		lista_filtrada = list()
+		filtros = ['web', 'net', 'mail', 'sound', 'audio', 'video', 'audiovideo'
+					'graphics', 'office','media', 'games', 'game', 'editors', 'devel', 'shell',
+					'admin', 'python', 'development','network', 'networking',
+					'productivity', 'system', 'utility']
 		if 'deepines' in filtro:
 			for app in self.lista_deepines:
 				for elemento in lista_app:
-					if elemento[0] == app:
-						lista_filtrada[contador] = elemento
-						contador += 1
+					if elemento.name == app:
+						lista_filtrada.append(elemento)
 		else:
 			if "otros" not in filtro:
 				for elemento in lista_app:
-					categoria_app = elemento[3].lower().split("/")
+					categoria_app = elemento.category.lower().split("/")
 					for filtro_uno in categoria_app:
 						if filtro_uno in filtro:
-							lista_filtrada[contador] = elemento
-							contador += 1
+							lista_filtrada.append(elemento)
 			else:
 				for elemento in lista_app:
-					if elemento[3].lower() not in filtros:
-						lista_filtrada[contador] = elemento
-						contador += 1
+					if elemento.category.lower() not in filtros:
+						lista_filtrada.append(elemento)
 
 		return lista_filtrada
 
 	#		   Aplicaciones Inicio			  #
-	def Apps_inicio(self, lista_app):
-		global total_apps, lista_inicio, lista_global
-		lista_inicio = {}
+	def Apps_inicio(self, lista_app: list[AppInfo]):
 		lista_key = []
 		contador = True
 		while contador:
 			if len(lista_key) == 8:
 				contador = False
 			else:
-				key = randint(0, (total_apps-1))
+				key = choice(lista_app)
 				if key not in lista_key:
 					lista_key.append(key)
 
-		contador = 0
-		for key in lista_key:
-			lista_inicio[contador] = lista_app[key]
-			contador += 1
-
-		lista_global = lista_inicio
+		return lista_key
 
 	#		   Listar aplicaciones			  #
-	def Listar_Apps(self, lista):
+	def do_list_apps(self, lista):
+		global lista_inicio, lista_global
 		equal = lista_inicio == lista_global
 		if equal:
-			item = ui.listWidget.item(0)
+			item = ui.lw_categories.item(0)
 			item.setSelected(True)
 
 		while ui.gridLayout.count():
@@ -381,7 +355,7 @@ class StoreMWindow(QMainWindow):
 		# Estas para establecer la ubicacion de la tarjetas en la grilla
 		i = 0
 		self.calcular_columnas()
-		for key in lista:  # Recorremos la lista con los elementos
+		for item in lista:  # Recorremos la lista con los elementos
 			i += 1  # Contador para agregar el espaciador horizontal
 			# Consultamos si ya tenemos tres tarjetas en y
 			if y % columnas == 0 and y != 0:
@@ -390,8 +364,7 @@ class StoreMWindow(QMainWindow):
 			y += 1  # agregamos 1 a la coordenada y
 
 			# Creamos una instancia de la clase card
-			carta = Card(lista[key][0], lista[key][1],
-						 lista[key][2], lista[key][4], self)
+			carta = Card(item, self)
 			# Agregamos dicha instancia a la grilla
 			ui.gridLayout.addWidget(carta, x, y, 1, 1)
 		ui.frame.verticalScrollBar().setSliderPosition(0)
@@ -533,10 +506,22 @@ class StoreMWindow(QMainWindow):
 
 	def window_install(self):
 		global selected_apps
-		self.modal = Ui_DialogInstall(self, selected_apps)
+		self.modal = Ui_DialogInstall(self, selected_apps, ProcessType.INSTALL)
 		self.modal.show()
 
 	#				 /Instalacion				 #
+	################################################
+
+	################################################
+	#				  Uninstall				 #
+
+	def window_uninstall(self, application):
+		global uninstalled
+		uninstalled.append(application) # Add application
+		self.modal = Ui_DialogInstall(self, application, ProcessType.UNINSTALL)
+		self.modal.show()
+
+	#				 /Uninstall				 #
 	################################################
 
 	################################################
@@ -565,16 +550,31 @@ class StoreMWindow(QMainWindow):
 	################################################
 	#			   Apps Instaladas				#
 
-	def apps_instaladas(self):
-		comando = "dpkg --get-selections | grep -w install"
-		lista = os.popen(comando)
-		instaladas = list()
-		for linea in lista.readlines():
-			linea = ''.join(linea.split())
-			linea = linea.replace("install", "")
-			instaladas.append(linea)
+	def get_installed_apps(self):
+		self.list_installed = list()
 
-		return(instaladas)
+		dpkg_cmd = os.popen("dpkg --get-selections")
+		installed_debs = [line.split()[0] for line in dpkg_cmd.read().splitlines() if line.split()[1] == "install"]
+		dpkg_cmd.close()
+
+		for installed_deb in installed_debs:
+			for app_item in self.lista_app_deb:
+				if installed_deb == app_item.id:
+					self.list_installed.append(app_item)
+					indice = self.lista_app_deb.index(app_item)
+					self.lista_app_deb[indice].state = AppState.INSTALLED
+
+		flatpak_cmd = demoted.run_cmd(demoted.DEF, cmd=['flatpak', '--user', 'list', '--columns=application'])
+		installed_ids = [line.rstrip("\n") for line in flatpak_cmd.stdout.readlines()]
+
+		for installed_id in installed_ids:
+			for app_item in self.lista_app_flatpak:
+				if installed_id == app_item.id:
+					self.list_installed.append(app_item)
+					indice = self.lista_app_flatpak.index(app_item)
+					self.lista_app_flatpak[indice].state = AppState.INSTALLED
+
+		return(self.list_installed)
 
 	#			   /Apps Instaladas				#
 	################################################
@@ -582,24 +582,46 @@ class StoreMWindow(QMainWindow):
 	################################################
 	#			Apps nuevas Instaladas			#
 
-	def instalacion_completada(self):
+	def installation_completed(self):
 		global selected_apps, instaladas
-		lista_complete = {}
-		contador = 0
+		lista_complete = list()
 		for app in selected_apps:
-			for elemento in lista_app:
-				if elemento[0] == app:
-					indice = lista_app.index(elemento)
-					item = lista_app[indice]
-					lista_complete[contador] = item
-					contador += 1
-
-			instaladas.append(app)
+			lista_complete.append(app)
+			instaladas.append(app) # FIXME: Check if it is really installed
+			if app.type == AppType.DEB_PACKAGE:
+				index = self.lista_app_deb.index(app)
+				self.lista_app_deb[index].state = AppState.INSTALLED
+			else:
+				index = self.lista_app_flatpak.index(app)
+				self.lista_app_flatpak[index].state = AppState.INSTALLED
+			
 		selected_apps = list()
-		self.Listar_Apps(lista_complete)
+		self.do_list_apps(lista_complete)
 		self.contar_apps()
 
 	#		   /Apps nuevas Instaladas			#
+	################################################
+
+	################################################
+	#				Uninstalled App				#
+
+	def uninstallation_completed(self):
+		global uninstalled, instaladas, lista_global
+		instaladas.remove(uninstalled[0])
+		uninstalled[0].state = AppState.UNINSTALLED
+		if uninstalled[0].type == AppType.DEB_PACKAGE:
+			lista_global = self.lista_app_deb
+			index = self.lista_app_deb.index(uninstalled[0])
+			self.lista_app_deb[index].state = AppState.DEFAULT
+		else:
+			lista_global = self.lista_app_flatpak
+			index = self.lista_app_flatpak.index(uninstalled[0])
+			self.lista_app_flatpak[index].state = AppState.DEFAULT
+		self.do_list_apps(uninstalled)
+		uninstalled.remove(uninstalled[0])
+
+
+	#			   /Uninstalled App				#
 	################################################
 
 	def eventFilter(self, obj, event):
@@ -632,70 +654,80 @@ class StoreMWindow(QMainWindow):
 			self.setWindowState(Qt.WindowMaximized)
 
 	def apps_seleccionadas(self):
-		self.Listar_Apps(lista_selected)
-		ui.listWidget.clearSelection()
-
-
-class QLabelClickable(QLabel):
-
-	clicked = pyqtSignal()
-
-	def __init__(self, *args):
-		QLabel.__init__(self, *args)
-
-	def mouseReleaseEvent(self, ev):
-		self.clicked.emit()
+		self.do_list_apps(selected_apps)
+		ui.lw_categories.clearSelection()
 
 ################################################
 #		   Card para la aplicacion			#
 
 
 class Card(QFrame):
-	def __init__(self, titulo: str, descripcion: str, version: str, estado: int, parent):
+	def __init__(self, application: list, parent):
 		super(Card, self).__init__()
 		self.parentWindow = parent
 		self.cd = Ui_Frame()
 		self.cd.setupUi(self)
 		# Establecemos los atributos de la app
-		# self.cd.btn_select_app.setToolTip(version)
-		self.titulo = titulo
-		self.version = version
+		self.application = application
+		self.titulo = self.application.name
+		self.descripcion = self.application.description
 		self.cd.lbl_name_app.setText(self.titulo)
 		self.cd.image_app.setToolTip(
-			"<p wrap='hard'>{}</p>".format(descripcion))
+			"<p wrap='hard'>{}</p>".format(self.descripcion))
 		self.cd.image_app.setWordWrap(True)
 		self.setMinimumSize(QSize(tamanio+30, int((tamanio+115)*0.72222)))
-		self.setMaximumSize(QSize(tamanio+30, int((tamanio+115)*0.72222)))
+		self.setMaximumSize(QSize(tamanio+30, int((tamanio+175)*0.72222)))
 		self.cd.image_app.setMinimumSize(QSize(tamanio, int(tamanio*0.72222)))
+		self.cd.lbl_version.setText("v: {}".format(self.application.version))
 
-		self.texto_version()
+		self.txt_btn_select()
 
-		global instaladas
-		if self.titulo not in instaladas:
-			estado = 1
-			if self.titulo in selected_apps:
-				estado = 0
+		global instaladas, uninstalled
+		if self.application not in instaladas:
+			state = AppState.DEFAULT
+			if self.application in selected_apps:
+				state = AppState.SELECTED
 		else:
-			estado = 2
+			state = AppState.INSTALLED
+		
+		if self.application in uninstalled:
+			state = AppState.UNINSTALLED
 
-		if self.titulo not in selected_apps and self.titulo not in instaladas:
+		if self.application not in selected_apps and self.application not in instaladas:
 			self.installEventFilter(self)
 
-		self.change_color_buton(estado)
-		# Consultamos si existe el grafico de la app
-		ruta = get_res(self.titulo, 'resources/apps')
-		if not os.path.exists(ruta):
-			url = get_res('no-img', 'resources/apps')
-		else:
-			url = ruta
+		self.change_color_buton(state)
+
 		# Establecemos la imagen
-		pixmap = QPixmap(url)
-		self.cd.image_app.setPixmap(pixmap)
-		self.cd.btn_select_app.clicked.connect(
-			lambda: self.select_app(self.titulo))
-		self.cd.image_app.clicked.connect(lambda: self.select_app(self.titulo))
-		self.cd.lbl_name_app.clicked.connect(
-			lambda: self.select_app(self.titulo))
+		if (self.application.type == AppType.DEB_PACKAGE):
+			app_banner = QPixmap(self.get_banner_path(self.application.id))
+			self.cd.image_app.setPixmap(app_banner)
+		if (self.application.type == AppType.FLATPAK_APP):
+			# use app id, if not found, then use the alternative app name
+			alt_app_name = str(self.application.name).lower().replace(" ", "-") # TODO: Check if replacing it by nothing fetches something...
+			app_banner = QPixmap(self.get_banner_path(self.application.id, alt_app_name))
+			app_overlay = QPixmap(get_res('flatpak'))
+			app_pixmap = QPixmap(app_banner)
+			painter = QPainter(app_pixmap)
+			painter.drawPixmap(0, 0, app_overlay)
+			painter.end()
+			self.cd.image_app.setPixmap(app_pixmap)
+
+		if self.application.state != AppState.INSTALLED:
+			self.cd.lbl_version.clicked.connect(
+				lambda: self.select_app())
+			self.cd.image_app.clicked.connect(lambda: self.select_app())
+			self.cd.lbl_name_app.clicked.connect(
+				lambda: self.select_app())
+			self.cd.btn_select_app.clicked.connect(lambda: self.select_app())
+		else:
+			self.cd.lbl_version.clicked.connect(
+				lambda: self.parentWindow.window_uninstall(self.application))
+			self.cd.image_app.clicked.connect(lambda: self.parentWindow.window_uninstall(self.application))
+			self.cd.lbl_name_app.clicked.connect(
+				lambda: self.parentWindow.window_uninstall(self.application))
+			self.cd.btn_select_app.clicked.connect(lambda: self.parentWindow.window_uninstall(self.application))
+
 
 	def eventFilter(self, object, event):
 		if event.type() == QEvent.Enter:
@@ -714,82 +746,96 @@ class Card(QFrame):
 		self.setGraphicsEffect(shadow)
 		return True
 
-	def texto_version(self):
-		if self.titulo in selected_apps:
+	def get_banner_path(self, app_name: str, alt_app_name: str = ""):
+		path = get_res(app_name, 'resources/apps')
+
+		if alt_app_name and not os.path.exists(path):
+			return self.get_banner_path(alt_app_name)
+
+		if not os.path.exists(path):
+			path = get_res('no-img', 'resources/apps')
+
+		return path
+
+	def txt_btn_select(self):
+		if self.application in selected_apps:
 			self.cd.btn_select_app.setText(ui.selected_to_install_app_text)
-			color = "color: rgb(0, 255, 255);"
 		elif self.titulo in instaladas:
 			self.cd.btn_select_app.setText(ui.selected_installed_app_text)
-			color = "color: rgb(0, 212, 0);"
 		else:
-			self.cd.btn_select_app.setText("v: {}".format(self.version))
-			color = "color: rgb(107,107,107);"
+			self.cd.btn_select_app.setText(ui.select_app_text)
 
-		self.cd.btn_select_app.setStyleSheet("border: transparent;\n"
-											 "background-color: transparent;"
-											 + color +
-											 "border-bottom-right-radius:5px; border-bottom-left-radius:5px;"
-											 "margin-bottom: 5px;")
-
-	def select_app(self, titulo):
-		global selected_apps, lista_app, instaladas, lista_selected, contador_selected
-
-		for elemento in lista_app:
-			if titulo in elemento:
-				indice = lista_app.index(elemento)
+	def select_app(self): # FIXME: Not needed parameter?
+		global lista_global, selected_apps, instaladas
 
 		# Si la app no esta instalada
-		if titulo not in instaladas:
+		if self.application not in instaladas:
+			lista_global_temp = lista_global
+			if (self.application.type == AppType.DEB_PACKAGE):
+				lista_global = self.parentWindow.lista_app_deb
+			if (self.application.type == AppType.FLATPAK_APP):
+				lista_global = self.parentWindow.lista_app_flatpak
+			indice = lista_global.index(self.application)
 			# Si la app no esta seleccionada
-			if titulo not in selected_apps:
-				selected_apps.append(titulo)
-
-				for elemento in lista_app:
-					if elemento[0] == titulo:
-						indice = lista_app.index(elemento)
-						item = lista_app[indice]
-						lista_selected[contador_selected] = item
-						contador_selected += 1
-
-				lista_app[indice][4] = 0
-				self.change_color_buton(0)
+			if self.application not in selected_apps:
+				selected_apps.append(self.application)
+				new_state = AppState.SELECTED
 				self.removeEventFilter(self)
 			else:
-				selected_apps.remove(titulo)
-
-				count = 0
-				for elemento in lista_selected:
-					titulo_elemento = lista_selected[elemento]
-
-					if titulo_elemento[0] == titulo:
-						eliminar = elemento
-					count += 1
-
-				lista_selected.pop(eliminar)
-
-				lista_app[indice][4] = 1
-				self.change_color_buton(1)
+				selected_apps.remove(self.application)
+				new_state = AppState.DEFAULT
 				self.installEventFilter(self)
-		else:
-			self.change_color_buton(2)
+				
 
-		self.texto_version()
+			lista_global[indice].state = new_state
+			lista_global = lista_global_temp
+			self.change_color_buton(new_state)
+		else:
+			self.change_color_buton(AppState.INSTALLED)
+
+		self.txt_btn_select()
 		self.parentWindow.contar_apps()
 
-	def change_color_buton(self, estado: int):
-		if estado == 0:  # App seleccionada RGB(0,255,255)
+	def change_color_buton(self, state: AppState):
+		#if state == AppState.DEFAULT:
+		if state == AppState.SELECTED:
 			r, g, b = 0, 255, 255
 			radio = 20
 			border_color = "border-color: #00bbc8;"
-		elif estado == 1:  # App no seleccionada RGB(45,45,45)
-			r, g, b = 45, 45, 45
-			radio = 0
-			border_color = "border-color: transparent;"
-		else:  # app instalada RGB(0,212,0)
+			bnt_select_style = ("#btn_select_app{"
+						"color: rgb(0, 0, 0);"
+						"background-color: rgb(0, 255, 255);"
+						"margin: 5px 10px;"
+						"}")
+		elif state == AppState.INSTALLED:
 			r, g, b = 0, 212, 0
 			radio = 20
 			border_color = "border-color: #009800;"
-			self.cd.btn_select_app.setEnabled(False)
+			bnt_select_style = ("#btn_select_app{"
+						"color: rgb(255, 255, 255);"
+						"background-color: rgb(255, 0, 0);"
+						"margin: 5px 10px;"
+						"}")
+			self.cd.btn_select_app.setText(ui.uninstall_app_text)
+		elif state == AppState.UNINSTALLED:
+			r, g, b = 238, 81, 56
+			radio = 20
+			border_color = "border-color: #d54000;"
+			bnt_select_style = ("#btn_select_app{"
+						"color: rgb(255, 255, 255);"
+						"background-color: rgb(255, 0, 0);"
+						"margin: 5px 10px;"
+						"}")
+			self.cd.btn_select_app.setText(ui.uninstalled_app_text)
+		else:
+			r, g, b = 45, 45, 45
+			radio = 0
+			border_color = "border-color: transparent;"
+			bnt_select_style = ("#btn_select_app{"
+							"color: rgb(255, 255, 255);"
+							"background-color: rgb(45, 45, 45);"
+							"margin: 5px 10px;"
+							"}")
 
 		self.setStyleSheet("#Frame{"
 						   "background-color: #2d2d2d;"
@@ -798,8 +844,7 @@ class Card(QFrame):
 						   + border_color +
 						   "border-width: 1px;"
 						   "border-style: solid;"
-						   "}")
-
+						   "}" + bnt_select_style)
 		shadow = QGraphicsDropShadowEffect(self,
 										   blurRadius=radio,
 										   color=QColor(r, g, b),

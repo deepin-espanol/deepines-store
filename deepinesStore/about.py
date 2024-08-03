@@ -1,58 +1,78 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
-from PyQt5.Qt import Qt
-from PyQt5 import QtWidgets, QtGui
-from deepinesStore.core import tr, site, set_blur, get_app_icon
-from deepinesStore.widgets import G, ContactListWidget, add_people_to_list
+from PyQt5 import QtCore, QtGui, QtWidgets
 
-authors = [G("Sebastian", "@SebTrujillo"), G("Amaro", "@xoascf")]
+from deepinesStore.core import tr, get_app_icon, get_text_link, STORE_VERSION
+from deepinesStore.widgets import G, add_people_to_list, LinkLabel, CreditsListWidget
 
-design = [G("Freddy", "@Akibaillusion"), G("jhalo", "@jhalo"), G("André")]
-
-people = [G("Car", "@Xhafas"),
-	G("Isaías", "@igatjens"), G("Jose", "@fenoll"), G("Hugo", "@geekmidget"),
-	G("Eli", "@RealAct"), G("Diego", "@s_d1112"), G("Filho", "@filhoarrais"), G("Bruno", "@bigbruno"),
-	G("Alvaro", "@G4SP3R"), G("Omi", "@peteromio"), G("Opik", "@Prophaniti"), G("Jose", "@jsiapodev"),
-	G("Jorge", "@seiyukaras"), G("N1coc4colA", "@n1coc4cola"), G("Oscar", "@oscararg"), G("Jorge", "@jotakenobi"),
-	G("Tomás", "@TomasWarynyca"), G("Edwinsiño", "@Shokatsuo"),
+people = [G("Car", "@Xhafas"), G("Sebastian Trujillo", "@SebTrujillo"), G("Amaro Martínez", "@xoascf"),
+G("Freddy", "@Akibaillusion"), G("jhalo", "@jhalo"),
+G("Isaías Gätjens M", "@igatjens"), G("Jose Fenoll", "@fenoll"), G("Hugo Florentino", "@geekmidget"),
+G("Eli", "@RealAct"), G("Diego", "@s_d1112"), G("Filho Arrais", "@filhoarrais"),
+G("Alvaro Samudio", "@G4SP3R"), G("Omi", "@peteromio"), G("Opik", "@Prophaniti"), G("José Siapo", "@jsiapodev"),
+G("Jorge Cabrera", "@seiyukaras"), G("N1coc4colA", "@n1coc4cola"), G("Oscar Ortiz", "@oscararg"), G("Jorge", "@jotakenobi"),
+G("Tomás Warynyca", "@TomasWarynyca"), G("Edwinsiño C", "@Shokatsuo"),
 ]
 
 class AboutDialog(QtWidgets.QDialog):
 	def __init__(self, parent=None):
 		super().__init__(parent)
-		self.resize(580, 480)
+		self.resize(380, 460)
 		icon = get_app_icon()
 		self.setWindowIcon(icon)
 		self.setModal(True)
+		self.setWindowFlag(QtCore.Qt.WindowContextHelpButtonHint, False)
+		self.setAutoFillBackground(True)
+		self.app_icon_btn = QtWidgets.QPushButton(self)
+		self.app_icon_btn.setEnabled(True)
+		self.app_icon_btn.setIconSize(QtCore.QSize(120, 120))
+		self.app_icon_btn.setFlat(True)
+		self.app_icon_btn.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
+		self.app_icon_btn.setIcon(icon)
+		self.app_icon_btn.setStyleSheet("background-color: transparent;")
+
+		self.app_icon_btn.installEventFilter(self)
+		self.app_name_lbl = QtWidgets.QLabel(self)
+		self.version_lbl = QtWidgets.QLabel(self)
+		self.version_lbl.setAlignment(QtCore.Qt.AlignCenter)
+		self.web_lbl = LinkLabel(self)
+		self.web_lbl.setAlignment(QtCore.Qt.AlignCenter)
+		self.web_lbl.setTextInteractionFlags(QtCore.Qt.TextBrowserInteraction)
+		font = QtGui.QFont()
+		font.setBold(True)
+		font.setPointSize(10)
+		self.app_name_lbl.setFont(font)
+		self.app_name_lbl.setAlignment(QtCore.Qt.AlignCenter)
+		self.description_lbl = QtWidgets.QLabel(self)
+		font.setBold(False)
+		self.description_lbl.setFont(font)
+		self.description_lbl.setAlignment(QtCore.Qt.AlignCenter)
+
+		list_ppl = CreditsListWidget()
+		self.pplP = add_people_to_list(people, list_ppl)
 		fntLst = QtGui.QFont()
 		fntLst.setPointSize(11)
-		layout = QtWidgets.QHBoxLayout()
-		list_dev = ContactListWidget()
-		list_des = ContactListWidget()
-		list_ppl = ContactListWidget()
-		self.devP = add_people_to_list(authors, list_dev)
-		self.desP = add_people_to_list(design, list_des)
-		self.pplP = add_people_to_list(people, list_ppl)
-		self.devP.setFont(fntLst)
-		self.desP.setFont(fntLst)
-		self.pplP.setFont(fntLst)
-		layout.addWidget(self.devP)
-		layout.addWidget(self.desP)
-		layout.addWidget(self.pplP)
-		self.setLayout(layout)
-		self.setStyleSheet("background-color: rgba(20, 20, 20, 100)")
-		self.setAttribute(Qt.WA_TranslucentBackground)
-		self.retranslateUi(self)
+		list_ppl.setFont(fntLst)
 
-	def showEvent(self, event):
-		set_blur(self)
+		layout = QtWidgets.QVBoxLayout(self)
+		layout.addWidget(self.app_icon_btn)
+		layout.addWidget(self.app_name_lbl)
+		layout.addWidget(self.version_lbl)
+		layout.addWidget(list_ppl)
+		layout.addWidget(self.web_lbl)
+		layout.addWidget(self.description_lbl)
+		self.setLayout(layout)
+
+		self.retranslateUi(self) # TODO: Add translator credits.
+		QtCore.QMetaObject.connectSlotsByName(self)
 
 	def __tr(self, txt, disambiguation=None, n=-1):
 		return tr(self, txt, disambiguation, n)
 
 	def retranslateUi(self, AboutDialog):
 		self.setWindowTitle(self.__tr("About"))
-		self.devP.setTitle(self.__tr("Authors"))
-		self.desP.setTitle(self.__tr("Design"))
-		self.pplP.setTitle(self.__tr("Collaborators"))
+		self.app_name_lbl.setText(AboutDialog.parent().windowTitle())
+		self.version_lbl.setText(self.__tr("Version {version}").format(version=STORE_VERSION))
+		self.web_lbl.setText(get_text_link("deepinenespañol.org"))
+		self.description_lbl.setText(self.__tr("The App Store of Deepin en Español"))
