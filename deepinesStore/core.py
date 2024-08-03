@@ -1,33 +1,7 @@
-import subprocess
 from os import environ as env, name
 import argparse
 import json
 
-def get_dtk_window_radius():
-	try:
-		result = subprocess.run(
-			["gsettings", "get", "com.deepin.xsettings", "dtk-window-radius"],
-			stdout=subprocess.PIPE,
-			stderr=subprocess.PIPE,
-			text=True
-		)
-
-		if result.stderr:
-			print(f"Error: {result.stderr}")
-			return None
-
-		radius_value = result.stdout.strip()
-
-		try:
-			radius_value = int(radius_value)
-		except ValueError:
-			radius_value = 18
-
-		return radius_value
-
-	except Exception as e:
-		radius_value = 18
-		return radius_value
 
 def get_ver():
 	version = '[VERSION]'
@@ -121,3 +95,4 @@ default_env = env.copy()
 if args.env:
 	new_env = json.loads(args.env)
 	default_env.update(new_env)
+	env.update(default_env)

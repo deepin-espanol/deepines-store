@@ -3,22 +3,12 @@
 from PyQt5 import QtGui, QtWidgets
 from PyQt5.QtCore import QMetaObject, QRect, QSize, Qt
 
-from deepinesStore.core import get_dtk_window_radius
 from deepinesStore.core import get_res, tr, get_text_link, STORE_VERSION
 from deepinesStore.widgets import ClickableLabel, ClickableList
 
-class Ui_MainWindow(QtWidgets.QMainWindow):
+class Ui_MainWindow(object):
 
 	def __init__(self, width, height):
-		super().__init__()
-		self.setWindowFlags(Qt.FramelessWindowHint)
-		self.setAttribute(Qt.WA_TranslucentBackground)
-		self.radius_dtk = get_dtk_window_radius()
-		self.setStyleSheet(
-			"background-color: rgb(30, 30, 30);\n"
-			"color: #b5c5d1;\n"
-			f"border-radius: {self.radius_dtk}px;\n"
-			)
 		#print("El ancho del monitor es: {}".format(width))
 
 		self.width_screen = int(width * 0.7)
@@ -38,7 +28,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
 			self.size_frame = 300
 		#print("El frame ({}*0.14) es: {}".format(width, self.size_frame))
 
-	def setupUi(self):
+	def setupUi(self, MainWindow):
 		svg_fondo = get_res('icono')
 		svg_star = get_res('star')
 		svg_deepines = get_res('deepines_filter')
@@ -55,8 +45,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
 		svg_minimizar = get_res('minimizar')
 		svg_maximizar = get_res('maximizar')
 		svg_cerrar = get_res('cerrar')
-		
-		MainWindow = QtWidgets.QWidget(self)
+
 		MainWindow.setObjectName("MainWindow")
 		MainWindow.setMinimumSize(QSize(self.width_screen, self.height_screen))
 		MainWindow.resize(self.width_screen, self.height_screen)
@@ -85,15 +74,18 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
 			"	subcontrol-position: top;\n"
 			"	subcontrol-origin: margin;\n"
 			"}")
-
+		self.centralwidget = QtWidgets.QWidget(MainWindow)
+		self.centralwidget.setStyleSheet(
+			"background-color: rgba(30, 30, 30, 200);" "color: #b5c5d1;")
+		self.centralwidget.setObjectName("centralwidget")
 		# Grilla principal
-		self.gridLayout_2 = QtWidgets.QGridLayout(MainWindow)
+		self.gridLayout_2 = QtWidgets.QGridLayout(self.centralwidget)
 		self.gridLayout_2.setContentsMargins(0, 0, 0, 0)
 		self.gridLayout_2.setSpacing(0)
 		self.gridLayout_2.setObjectName("gridLayout_2")
 
 		# Frame apps seleccionadas
-		self.widget = QtWidgets.QWidget(MainWindow)
+		self.widget = QtWidgets.QWidget(self.centralwidget)
 		self.widget.setMinimumSize(QSize(0, 40))
 		self.widget.setMaximumSize(QSize(16777215, 80))
 		self.widget.setStyleSheet("background-color: rgba(16, 16, 16, 0);")
@@ -150,7 +142,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
 		self.gridLayout_2.addWidget(self.widget, 2, 1, 1, 1)
 
 		# Frame side bar
-		self.frame_2 = QtWidgets.QFrame(MainWindow)
+		self.frame_2 = QtWidgets.QFrame(self.centralwidget)
 		self.frame_2.setMinimumSize(QSize(self.size_frame, 0))
 		self.frame_2.setMaximumSize(QSize(self.size_frame, 16777215))
 		self.frame_2.setStyleSheet("background-color: rgba(16, 16, 16, 0);")
@@ -315,7 +307,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
 		# Quinto item, label version
 		self.verticalLayout.addWidget(self.label)
 		self.gridLayout_2.addWidget(self.frame_2, 1, 0, 3, 1)
-		self.frame = QtWidgets.QScrollArea(MainWindow)
+		self.frame = QtWidgets.QScrollArea(self.centralwidget)
 		self.frame.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
 		self.frame.setWidgetResizable(True)
 		self.frame.setAlignment(Qt.AlignCenter)
@@ -334,7 +326,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
 		self.gridLayout_2.addWidget(self.frame, 1, 1, 1, 1)
 
 		# Title bar
-		self.widget_1 = QtWidgets.QWidget(MainWindow)
+		self.widget_1 = QtWidgets.QWidget(self.centralwidget)
 		self.widget_1.setObjectName("widget_1")
 		self.widget_1.setStyleSheet("""
 			#widget_1{
@@ -478,7 +470,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
 		self.horizontalLayout_4.addWidget(self.btn_close)
 
 		self.gridLayout_2.addWidget(self.widget_1, 0, 0, 1, 2)
-		self.setCentralWidget(MainWindow)
+		MainWindow.setCentralWidget(self.centralwidget)
 
 		self.retranslateUi(MainWindow)
 		self.lw_categories.setCurrentRow(-1)

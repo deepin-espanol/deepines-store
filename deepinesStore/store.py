@@ -10,6 +10,7 @@ from PyQt5.QtWidgets import (QMainWindow, QApplication, QFrame, QLabel,
                              QDesktopWidget, QHBoxLayout, QVBoxLayout, QWidget)
 from PyQt5.QtGui import QPixmap, QFont, QColor, QCursor, QPainter, QIcon, QMovie
 
+from deepinesStore.core import set_blur
 # Para obtener applicacion random
 from random import choice
 # GUI o modulos locales
@@ -17,7 +18,7 @@ from deepinesStore.app_info import AppInfo, AppType, AppState, ProcessType
 from deepinesStore.maing import Ui_MainWindow
 from deepinesStore.cardg import Ui_Frame
 from deepinesStore.about import AboutDialog
-from deepinesStore.core import get_res, get_app_icon, get_dtk_window_radius
+from deepinesStore.core import get_res, get_app_icon
 from deepinesStore.flatpak.get_apps_flatpak import apps_flatpak_in_categories
 from deepinesStore.deb.get_apps_deb import fetch_list_app_deb
 from deepinesStore.install_progress import InstallThread
@@ -31,13 +32,15 @@ global list_app_exclude, list_app_deepines, list_app_deb, list_app_flatpak
 global selected_apps, installed, columnas, tamanio
 
 
-class StoreMWindow(Ui_MainWindow):
-    def __init__(self, width, height):
-        super(StoreMWindow, self).__init__(width, height)
+class StoreMWindow(QMainWindow):
+    def __init__(self):
+        super(StoreMWindow, self).__init__()
         # Inicializamos la gui
         global ui
-        
-        self.setupUi()
+        ui = Ui_MainWindow(width, height)
+        ui.setupUi(self)
+        self.setWindowFlags(self.windowFlags() | Qt.FramelessWindowHint)
+        self.setAttribute(Qt.WA_TranslucentBackground, True)
 
         global selected_apps, installed,\
             lista_inicio, lista_global, \
@@ -68,30 +71,30 @@ class StoreMWindow(Ui_MainWindow):
                 self.install_thread = None
                 
             else:
-                self.error(self.error_no_server_text)
+                self.error(ui.error_no_server_text)
         else:
-            self.error(self.error_no_deepines_repo_text)
+            self.error(ui.error_no_deepines_repo_text)
             
 
-        self.btn_install.setEnabled(False)
-        self.btn_install.clicked.connect(self.confirm_app_installation)
-        self.lbl_list_apps.setText(self.list_apps_text)
-        self.lbl_list_apps.setEnabled(False)
-        self.icon_car.clicked.connect(self.confirm_app_installation)
-        self.lbl_list_apps.clicked.connect(self.confirm_app_installation)
-        self.lw_categories.itemClicked.connect(self.listwidgetclicked)
-        self.lineEdit.textChanged.connect(self.search_app)
+        ui.btn_install.setEnabled(False)
+        ui.btn_install.clicked.connect(self.confirm_app_installation)
+        ui.lbl_list_apps.setText(ui.list_apps_text)
+        ui.lbl_list_apps.setEnabled(False)
+        ui.icon_car.clicked.connect(self.confirm_app_installation)
+        ui.lbl_list_apps.clicked.connect(self.confirm_app_installation)
+        ui.lw_categories.itemClicked.connect(self.listwidgetclicked)
+        ui.lineEdit.textChanged.connect(self.search_app)
         self.about_dialog = AboutDialog(self) #  Intentional preloading.
-        self.label_2.clicked.connect(self.show_about_dialog)
-        self.btn_close.clicked.connect(self.close)
-        self.btn_zoom.clicked.connect(self.maximize)
-        self.btn_minimize.clicked.connect(self.minimize)
-        self.widget_1.installEventFilter(self)
-        self.label.clicked.connect(self.show_about_dialog)
-        self.btn_app_deb.clicked.connect(self.change_type_app_selected)
-        self.btn_app_flatpak.clicked.connect(self.change_type_app_selected)
+        ui.label_2.clicked.connect(self.show_about_dialog)
+        ui.btn_close.clicked.connect(self.close)
+        ui.btn_zoom.clicked.connect(self.maximize)
+        ui.btn_minimize.clicked.connect(self.minimize)
+        ui.widget_1.installEventFilter(self)
+        ui.label.clicked.connect(self.show_about_dialog)
+        ui.btn_app_deb.clicked.connect(self.change_type_app_selected)
+        ui.btn_app_flatpak.clicked.connect(self.change_type_app_selected)
         shadow = set_shadow(self, QColor(255, 255, 255))
-        self.btn_install.setGraphicsEffect(shadow)
+        ui.btn_install.setGraphicsEffect(shadow)
 
         center_window(self)
 
@@ -116,7 +119,7 @@ class StoreMWindow(Ui_MainWindow):
         pixmap = QPixmap(ruta)
         self.raccoon.setPixmap(pixmap)
         self.horizontalLayout.addWidget(self.raccoon)
-        self.gridLayout.addLayout(self.horizontalLayout, 1, 1, 1, 1)
+        ui.gridLayout.addLayout(self.horizontalLayout, 1, 1, 1, 1)
 
         self.label_error = LinkLabel(self)
         sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
@@ -133,18 +136,18 @@ class StoreMWindow(Ui_MainWindow):
         self.label_error.setEnabled(True)
         self.label_error.setAlignment(QtCore.AlignCenter)
         self.label_error.setObjectName("label_error")
-        self.gridLayout.addWidget(self.label_error, 2, 1, 1, 1)
+        ui.gridLayout.addWidget(self.label_error, 2, 1, 1, 1)
         self.status_widgets(False)
 
     #			 /Control de errores			  #
     ################################################
 
     def status_widgets(self, status = False):
-        self.lw_categories.setEnabled(status)
-        self.frame_4.setEnabled(status)
-        self.btn_app_deb.setEnabled(status)
-        self.btn_app_flatpak.setEnabled(status)
-        self.widget.setEnabled(status)
+        ui.lw_categories.setEnabled(status)
+        ui.frame_4.setEnabled(status)
+        ui.btn_app_deb.setEnabled(status)
+        ui.btn_app_flatpak.setEnabled(status)
+        ui.widget.setEnabled(status)
 
     def resizeEvent(self, event):
         if hasattr(self, 'primer_inicio') and self.primer_inicio:
@@ -185,29 +188,29 @@ class StoreMWindow(Ui_MainWindow):
         if selected_type_app == AppType.DEB_PACKAGE:
             # Seleccionamos flatpak
             selected_type_app = AppType.FLATPAK_APP
-            self.btn_app_flatpak.setEnabled(False)
-            self.btn_app_deb.setEnabled(True)
-            self.btn_app_flatpak.setStyleSheet(style_disabled)
-            self.btn_app_deb.setStyleSheet(style_deb)
+            ui.btn_app_flatpak.setEnabled(False)
+            ui.btn_app_deb.setEnabled(True)
+            ui.btn_app_flatpak.setStyleSheet(style_disabled)
+            ui.btn_app_deb.setStyleSheet(style_deb)
             lista_global = self.lista_app_flatpak
             list_app_show_temp = self.inicio_apps_flatpak
-            self.lw_categories.item(1).setHidden(True)
+            ui.lw_categories.item(1).setHidden(True)
         else:
             # Seleccionamos deb
             selected_type_app = AppType.DEB_PACKAGE
-            self.btn_app_flatpak.setEnabled(True)
-            self.btn_app_deb.setEnabled(False)
-            self.btn_app_flatpak.setStyleSheet(style_flatpak)
-            self.btn_app_deb.setStyleSheet(style_disabled)
+            ui.btn_app_flatpak.setEnabled(True)
+            ui.btn_app_deb.setEnabled(False)
+            ui.btn_app_flatpak.setStyleSheet(style_flatpak)
+            ui.btn_app_deb.setStyleSheet(style_disabled)
             lista_global = self.lista_app_deb
             list_app_show_temp = self.inicio_apps_deb
-            self.lw_categories.item(1).setHidden(False)
+            ui.lw_categories.item(1).setHidden(False)
 
 
         self.clear_search_txt()
             
         self.do_list_apps(list_app_show_temp)
-        item = self.lw_categories.item(0)
+        item = ui.lw_categories.item(0)
         item.setSelected(True)
 
     #			  /Cambiar tipo de app			#
@@ -217,12 +220,12 @@ class StoreMWindow(Ui_MainWindow):
     #			  Busqueda de apps				#
 
     def search_app(self):
-        text = self.lineEdit.text().lower()
+        text = ui.lineEdit.text().lower()
 
         lista_search = list()
         global list_app_show_temp
         if len(text) != 0 and len(text) > 2:
-            self.lw_categories.clearSelection()
+            ui.lw_categories.clearSelection()
             for app_item in self.lista_app_deb:
                 if text in str(app_item.name).lower() or text in str(app_item.description).lower():
                     indice = self.lista_app_deb.index(app_item)
@@ -239,7 +242,7 @@ class StoreMWindow(Ui_MainWindow):
         self.do_list_apps(list_app_show_temp)
 
     def clear_search_txt(self):
-        self.lineEdit.setText("")
+        ui.lineEdit.setText("")
 
     #			  /Busqueda de apps			   #
     ################################################
@@ -252,45 +255,45 @@ class StoreMWindow(Ui_MainWindow):
         global lista_global, list_app_show_temp
 
         # TODO: Maybe a switch statement would be nice here
-        if item == self.lw_categories.item(0):  # Home
+        if item == ui.lw_categories.item(0):  # Home
             filtro.append("inicio")
-        if item == self.lw_categories.item(1):  # Deepines
+        if item == ui.lw_categories.item(1):  # Deepines
             filtro.append("deepines")
-        if item == self.lw_categories.item(2):  # Internet
+        if item == ui.lw_categories.item(2):  # Internet
             filtro.append("web")
             filtro.append("net")
             filtro.append("mail")
             filtro.append("networking")
             filtro.append("network")
-        if item == self.lw_categories.item(3):  # Multimedia
+        if item == ui.lw_categories.item(3):  # Multimedia
             filtro.append("sound")
             filtro.append("audio")
             filtro.append("video")
             filtro.append("audiovideo")
-        if item == self.lw_categories.item(4):  # Graphics
+        if item == ui.lw_categories.item(4):  # Graphics
             filtro.append("graphics")
             filtro.append("media")
-        if item == self.lw_categories.item(5):  # Games
+        if item == ui.lw_categories.item(5):  # Games
             filtro.append("games")
             filtro.append("game")
-        if item == self.lw_categories.item(6):  # Office automation
+        if item == ui.lw_categories.item(6):  # Office automation
             filtro.append("editors")
             filtro.append("office")
             filtro.append("productivity")
-        if item == self.lw_categories.item(7):  # Development
+        if item == ui.lw_categories.item(7):  # Development
             filtro.append("devel")
             filtro.append("shells")
             filtro.append("development")
-        if item == self.lw_categories.item(8):  # System
+        if item == ui.lw_categories.item(8):  # System
             filtro.append("admin")
             filtro.append("python")
             filtro.append("system")
             filtro.append("utility")
-        if item == self.lw_categories.item(9):  # Other
+        if item == ui.lw_categories.item(9):  # Other
             filtro.append("otros")
             filtro.append("education")
             filtro.append("science")
-        if item == self.lw_categories.item(11):
+        if item == ui.lw_categories.item(11):
             filtro.append("installed")			
 
         if "inicio" not in filtro and "installed" not in filtro:
@@ -359,8 +362,8 @@ class StoreMWindow(Ui_MainWindow):
     #		   Listar aplicaciones			  #
 
     def clear_gridLayout(self):
-        while self.gridLayout.count():
-            item = self.gridLayout.takeAt(0)
+        while ui.gridLayout.count():
+            item = ui.gridLayout.takeAt(0)
             if item is not None:
                 widget = item.widget()
                 if widget is not None:
@@ -390,7 +393,7 @@ class StoreMWindow(Ui_MainWindow):
         global lista_inicio, list_app_show_temp
         equal = lista_inicio == list_app_show_temp
         if equal:
-            item = self.lw_categories.item(0)
+            item = ui.lw_categories.item(0)
             item.setSelected(True)
 
         self.clear_gridLayout()
@@ -411,20 +414,20 @@ class StoreMWindow(Ui_MainWindow):
             # Creamos una instancia de la clase card
             carta = Card(item, self)
             # Agregamos dicha instancia a la grilla
-            self.gridLayout.addWidget(carta, x, y, 1, 1)
-        self.frame.verticalScrollBar().setSliderPosition(0)
+            ui.gridLayout.addWidget(carta, x, y, 1, 1)
+        ui.frame.verticalScrollBar().setSliderPosition(0)
 
         # Espaciador vertical
         spacerItem9 = QSpacerItem(
             0, 0, QSizePolicy.Minimum, QSizePolicy.Expanding)
-        self.gridLayout.addItem(spacerItem9, (x+1), 1, 1, 1)
+        ui.gridLayout.addItem(spacerItem9, (x+1), 1, 1, 1)
 
         # Si tenemos menos apps que las columnas, agregamos el espaciador
         if i < columnas:
             # Espaciador horizontal
             spacerItem8 = QSpacerItem(
                 0, 0, QSizePolicy.Expanding, QSizePolicy.Minimum)
-            self.gridLayout.addItem(spacerItem8, x, columnas, 1, 10)
+            ui.gridLayout.addItem(spacerItem8, x, columnas, 1, 10)
 
     #				/Lista de apps				#
     ################################################
@@ -439,7 +442,7 @@ class StoreMWindow(Ui_MainWindow):
         elif width > 2500:
             base = 420
 
-        ancho = self.frame.frameGeometry().width()
+        ancho = ui.frame.frameGeometry().width()
         global columnas, tamanio
 
         if ancho < 700:
@@ -469,7 +472,7 @@ class StoreMWindow(Ui_MainWindow):
         global selected_apps
         cuenta = len(selected_apps)
         if cuenta == 0:
-            texto = self.list_apps_text
+            texto = ui.list_apps_text
             borde = "border: 2px solid rgb(45, 45, 45);"
             r, g, b = 255, 255, 255
             cursor = QtCore.ArrowCursor
@@ -483,17 +486,17 @@ class StoreMWindow(Ui_MainWindow):
             pix_car = "carEnable"
 
             if cuenta != 1:
-                preview_to_install = self.multi_apps_text
+                preview_to_install = ui.multi_apps_text
             else:
-                preview_to_install = self.single_app_text
+                preview_to_install = ui.single_app_text
             texto = preview_to_install.format(app_count=cuenta)
         self.change_color_btn_install()
-        self.btn_install.setEnabled(enabled)
-        self.lbl_list_apps.setEnabled(enabled)
-        self.lbl_list_apps.setCursor(QCursor(cursor))
+        ui.btn_install.setEnabled(enabled)
+        ui.lbl_list_apps.setEnabled(enabled)
+        ui.lbl_list_apps.setCursor(QCursor(cursor))
 
         pix_car = QPixmap(get_res(pix_car))
-        self.icon_car.setPixmap(pix_car)
+        ui.icon_car.setPixmap(pix_car)
 
         estilo = ("#btn_install{\n"
                   "color: #fff;\n"
@@ -509,24 +512,25 @@ class StoreMWindow(Ui_MainWindow):
                   "border: 1px solid rgb(142, 231, 255);\n"
                   "border-radius: 5px;\n"
                   "}")
-        self.btn_install.setStyleSheet(estilo)
+        ui.btn_install.setStyleSheet(estilo)
+
         color=QColor(r, g, b)
         shadow = set_shadow(self, color)
-        self.btn_install.setGraphicsEffect(shadow)
+        ui.btn_install.setGraphicsEffect(shadow)
 
-        self.lbl_list_apps.setText(texto)
+        ui.lbl_list_apps.setText(texto)
 
     ################################################
     #				  Instalacion				 #
 
     def change_color_btn_install(self):
         if self.show_apps_selected:            
-            self.btn_install.clicked.disconnect(self.window_install)
-            self.btn_install.clicked.connect(self.confirm_app_installation)
-            self.lbl_list_apps.setEnabled(True)
-            self.icon_car.setEnabled(True)
-            self.btn_install.setText("Review apps")
-            self.btn_install.setStyleSheet(
+            ui.btn_install.clicked.disconnect(self.window_install)
+            ui.btn_install.clicked.connect(self.confirm_app_installation)
+            ui.lbl_list_apps.setEnabled(True)
+            ui.icon_car.setEnabled(True)
+            ui.btn_install.setText("Review apps")
+            ui.btn_install.setStyleSheet(
                 "#btn_install{\n"
                 "padding: 2px;\n"
                 "border-radius: 5px;\n"
@@ -543,12 +547,12 @@ class StoreMWindow(Ui_MainWindow):
             self.show_apps_selected = False
 
     def change_color_btn_start_install(self):
-        self.btn_install.clicked.disconnect(self.confirm_app_installation)
-        self.btn_install.clicked.connect(self.window_install)
-        self.lbl_list_apps.setEnabled(False)
-        self.icon_car.setEnabled(False)
-        self.btn_install.setText("Start process")
-        self.btn_install.setStyleSheet(
+        ui.btn_install.clicked.disconnect(self.confirm_app_installation)
+        ui.btn_install.clicked.connect(self.window_install)
+        ui.lbl_list_apps.setEnabled(False)
+        ui.icon_car.setEnabled(False)
+        ui.btn_install.setText("Start process")
+        ui.btn_install.setStyleSheet(
             "#btn_install{\n"
             "padding: 2px;\n"
             "border-radius: 5px;\n"
@@ -566,7 +570,7 @@ class StoreMWindow(Ui_MainWindow):
     def confirm_app_installation(self):
         self.change_color_btn_start_install()
         self.show_apps_selected = True
-        self.lw_categories.clearSelection()
+        ui.lw_categories.clearSelection()
         self.do_list_apps(selected_apps)
 
     def window_install(self):
@@ -616,8 +620,8 @@ class StoreMWindow(Ui_MainWindow):
         self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
         layout.addItem(self.verticalSpacer)
 
-        self.gridLayout.addLayout(layout, 0, 0)
-        self.btn_install.setText('Installing...')
+        ui.gridLayout.addLayout(layout, 0, 0)
+        ui.btn_install.setText('Installing...')
         self.status_widgets(False)
         self.start_installation()
     
@@ -743,21 +747,11 @@ class StoreMWindow(Ui_MainWindow):
         if maximized:  # Restauramos al tamaño original
             self.setWindowState(Qt.WindowNoState)
             maximized = False
-            self.widget_1.installEventFilter(self)
-            self.setStyleSheet(
-                "background-color: rgb(30, 30, 30);\n"
-                "color: #b5c5d1;\n"
-                f"border-radius: {self.radius_dtk}px;\n"
-			)
+            ui.widget_1.installEventFilter(self)
         else:  # Agrandamos la ventana
             self.setWindowState(Qt.WindowMaximized)
             maximized = True
-            self.widget_1.removeEventFilter(self)
-            self.setStyleSheet(
-                "background-color: rgb(30, 30, 30);\n"
-                "color: #b5c5d1;\n"
-                f"border-radius: {self.radius_dtk}px;\n"
-            )
+            ui.widget_1.removeEventFilter(self)
 
     def minimize(self):
         global maximized
@@ -765,8 +759,6 @@ class StoreMWindow(Ui_MainWindow):
         self.setWindowState(Qt.WindowMinimized)
         if maximized:  # Si estaba maximizada, agrandamos
             self.setWindowState(Qt.WindowMaximized)
-        
-            
 
 ################################################
 #		   Card para la aplicacion			#
@@ -869,20 +861,21 @@ class Card(QFrame):
 
         if not os.path.exists(path):
             path = get_res('no-img', 'resources/apps')
+            print("No se encontró banner para " + app_name)
 
         return path
 
     def txt_btn_select(self):
         if self.application in selected_apps and self.application not in installed:
-            self.cd.btn_select_app.setText(self.parentWindow.selected_to_install_app_text)
+            self.cd.btn_select_app.setText(ui.selected_to_install_app_text)
         elif self.application in selected_apps and self.application in installed:
-            self.cd.btn_select_app.setText(self.parentWindow.uninstall_app_text)
+            self.cd.btn_select_app.setText(ui.uninstall_app_text)
         elif self.application in installed and self.application not in selected_apps:
-            self.cd.btn_select_app.setText(self.parentWindow.selected_installed_app_text)
+            self.cd.btn_select_app.setText(ui.selected_installed_app_text)
         else:
-            self.cd.btn_select_app.setText(self.parentWindow.select_app_text)
+            self.cd.btn_select_app.setText(ui.select_app_text)
 
-    def select_app(self): # FIXME: Not needed parameter?
+    def select_app(self):
         global lista_global, selected_apps, installed
 
         lista_global_temp = lista_global
@@ -934,7 +927,7 @@ class Card(QFrame):
                         "background-color: rgb(255, 54, 0);"
                         "margin: 5px 10px;"
                         "}")
-            self.cd.btn_select_app.setText(self.parentWindow.uninstall_app_text)
+            self.cd.btn_select_app.setText(ui.uninstall_app_text)
         elif state == AppState.INSTALLED:
             r, g, b = 0, 212, 0
             radio = 20
@@ -944,7 +937,7 @@ class Card(QFrame):
                         "background-color: rgb(255, 0, 0);"
                         "margin: 5px 10px;"
                         "}")
-            self.cd.btn_select_app.setText(self.parentWindow.uninstall_app_text)
+            self.cd.btn_select_app.setText(ui.uninstall_app_text)
         elif state == AppState.UNINSTALLED:
             r, g, b = 238, 81, 56
             radio = 20
@@ -954,7 +947,7 @@ class Card(QFrame):
                         "background-color: rgb(255, 0, 0);"
                         "margin: 5px 10px;"
                         "}")
-            self.cd.btn_select_app.setText(self.parentWindow.uninstalled_app_text)
+            self.cd.btn_select_app.setText(ui.uninstalled_app_text)
         else:
             r, g, b = 45, 45, 45
             radio = 0
@@ -994,10 +987,7 @@ def set_shadow(widget, color: QColor, radius=10):
 
 
 def center_window(widget):
-    qr = widget.frameGeometry()
-    cp = QDesktopWidget().availableGeometry().center()
-    qr.moveCenter(cp)
-    widget.move(qr.topLeft())
+    widget.move(QApplication.desktop().screen().rect().center() - widget.rect().center())
 
 class LoaderThread(QThread):
     progress = pyqtSignal(str)
@@ -1022,15 +1012,7 @@ class LoadingScreen(QMainWindow):
         super().__init__()
         self.setWindowTitle("Loading...")
         self.setWindowFlags(QtCore.FramelessWindowHint)
-        self.setAttribute(Qt.WA_TranslucentBackground) 
-        self.radius_dtk = get_dtk_window_radius()
-        self.setStyleSheet(
-            "background-color: rgb(30, 30, 30);\n"
-            "color: #b5c5d1;\n"
-            f"border-radius: {self.radius_dtk};\n"
-            )
-
-        center_window(self)
+        self.setStyleSheet("background-color: rgba(30, 30, 30, 200); color: #b5c5d1;")
 
         self.oldPos = self.pos()
 
@@ -1069,7 +1051,7 @@ class LoadingScreen(QMainWindow):
 
         container = QWidget()
         container.setLayout(layout)
-        container.setStyleSheet("background-color: rgb(30, 30, 30);")
+        #container.setStyleSheet("background-color: rgb(30, 30, 30);")
         self.setCentralWidget(container)
 
         self.loader_thread = LoaderThread()
@@ -1077,22 +1059,17 @@ class LoadingScreen(QMainWindow):
         self.loader_thread.finished.connect(self.on_finish)
         self.loader_thread.start()
 
-    def center(self):
-        qr = self.frameGeometry()
-        cp = QDesktopWidget().availableGeometry().center()
-        qr.moveCenter(cp)
-        self.move(qr.topLeft())
-
     def update_progress(self, message):
         self.progress_label.setText(message)
 
     def on_finish(self):
-        self.main_window = StoreMWindow(width, height)
+        self.hide()  # Ocultar la ventana de carga
+        self.main_window = StoreMWindow()  # Update this to your main window class
         self.main_window.calcular_anchos()
         
         self.main_window.calcular_anchos()
+        set_blur(self.main_window)
         self.main_window.show()
-        self.close()
 
     def mousePressEvent(self, event):
         if event.button() == Qt.LeftButton:
@@ -1118,15 +1095,16 @@ def run_gui():
     translator.load(QLocale(), "", "", get_res('', 'translations', ''), ".qm")
     app.installTranslator(translator)
 
-    global width, height, maximized
-    maximized = False
-    screen_rect = app.desktop().screenGeometry()
-    width, height = screen_rect.width(), screen_rect.height()
-
     loading_screen = LoadingScreen()
     loading_screen.show()
+    center_window(loading_screen)
 
     # Running the long-running tasks in a separate thread
     #thread = threading.Thread(target=run_tasks, args=(loading_screen,))
     #thread.start()
+
+    global width, height, maximized
+    maximized = False
+    screen_rect = app.desktop().screenGeometry()
+    width, height = screen_rect.width(), screen_rect.height()
     sys.exit(app.exec_())
