@@ -485,7 +485,9 @@ class Ui_MainWindow(object):
 		self.label_2.setToolTip(self.__tr("About us"))
 		self.label_3.setText(self.__tr("Deepines Store"))
 		self.lbl_list_apps.setText(self.__tr("TextLabel"))
-		self.btn_install.setText(self.__tr("Review apps"))
+		self.btn_install_review_text = self.__tr("Review apps")
+		self.btn_install_start_text = self.__tr("Start process")
+		self.btn_install.setText(self.btn_install_review_text)
 		__sortingEnabled = self.lw_categories.isSortingEnabled()
 		self.lw_categories.setSortingEnabled(False)
 		item = self.lw_categories.item(0)
@@ -541,3 +543,7 @@ class Ui_MainWindow(object):
 													 "Deepines Store needs this repository to work.<br>"
 													 "In the following link you will find the instructions to install it:<br><br>"
 													 "{repoURL}").format(repoURL=get_text_link("deepinenespañol.org/deepines/"))
+		self.process_install_text = self.__tr("Installing...")
+		self.process_install_failed_text = self.__tr("Installation failed!")
+		self.status_ready_to_install_text = self.__tr("Ready to install")
+		self.status_starting_install_text = self.__tr("Starting installation...")

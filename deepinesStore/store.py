@@ -4,7 +4,7 @@ import sys
 import os
 # PyQt5 modules
 from PyQt5.Qt import Qt
-from PyQt5.QtCore import QTranslator, QLocale, QSize, QPointF, QPoint, QEvent, Qt as QtCore, pyqtSignal, QThread
+from PyQt5.QtCore import QTranslator, QLocale, QSize, QPointF, QPoint, QEvent, Qt as QtCore, pyqtSignal, QThread, QCoreApplication
 from PyQt5.QtWidgets import (QMainWindow, QApplication, QFrame, QLabel,
                              QSizePolicy, QGraphicsDropShadowEffect, QSpacerItem,
                              QDesktopWidget, QHBoxLayout, QVBoxLayout, QWidget)
@@ -529,7 +529,7 @@ class StoreMWindow(QMainWindow):
             ui.btn_install.clicked.connect(self.confirm_app_installation)
             ui.lbl_list_apps.setEnabled(True)
             ui.icon_car.setEnabled(True)
-            ui.btn_install.setText("Review apps")
+            ui.btn_install.setText(ui.btn_install_review_text)
             ui.btn_install.setStyleSheet(
                 "#btn_install{\n"
                 "padding: 2px;\n"
@@ -551,7 +551,7 @@ class StoreMWindow(QMainWindow):
         ui.btn_install.clicked.connect(self.window_install)
         ui.lbl_list_apps.setEnabled(False)
         ui.icon_car.setEnabled(False)
-        ui.btn_install.setText("Start process")
+        ui.btn_install.setText(ui.btn_install_start_text)
         ui.btn_install.setStyleSheet(
             "#btn_install{\n"
             "padding: 2px;\n"
@@ -601,7 +601,7 @@ class StoreMWindow(QMainWindow):
         self.spinner.start()
         layout.addWidget(self.spinner_label)
 
-        self.process_label = QLabel('Instalando...', self)
+        self.process_label = QLabel(ui.process_install_text, self)
         self.process_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.process_label.setStyleSheet("font-size: 22px;")
         self.process_label.setWordWrap(True)
@@ -609,7 +609,7 @@ class StoreMWindow(QMainWindow):
         self.process_label.adjustSize()
         layout.addWidget(self.process_label)
 
-        self.status_label = QLabel('Listo para instalar', self)
+        self.status_label = QLabel(ui.status_ready_to_install_text, self)
         self.status_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.status_label.setStyleSheet("font-size: 18px;")
         self.status_label.setWordWrap(True)
@@ -621,7 +621,7 @@ class StoreMWindow(QMainWindow):
         layout.addItem(self.verticalSpacer)
 
         ui.gridLayout.addLayout(layout, 0, 0)
-        ui.btn_install.setText('Installing...')
+        ui.btn_install.setText(ui.process_install_text)
         self.status_widgets(False)
         self.start_installation()
     
@@ -633,7 +633,7 @@ class StoreMWindow(QMainWindow):
         self.process_label.setText(name)
 
     def start_installation(self):
-        self.status_label.setText("Iniciando instalación...")
+        self.status_label.setText(ui.status_starting_install_text)
         if hasattr(self, 'install_thread') and self.install_thread and self.install_thread.isRunning():            
             self.install_thread.stop()
             self.install_thread.wait()
@@ -665,7 +665,7 @@ class StoreMWindow(QMainWindow):
         if success:
             self.installation_completed()
         else:
-            self.process_label.setText("La instalación falló. Por favor hagase bolita y llore, despues reintentelo")
+            self.process_label.setText(ui.process_install_failed_text)
 
             self.change_color_btn_install()
             self.change_spinner('strawhats-one-piece')
@@ -861,7 +861,6 @@ class Card(QFrame):
 
         if not os.path.exists(path):
             path = get_res('no-img', 'resources/apps')
-            print("No se encontró banner para " + app_name)
 
         return path
 
@@ -993,16 +992,20 @@ class LoaderThread(QThread):
     progress = pyqtSignal(str)
     finished = pyqtSignal()
 
+    def __init__(self, parent):
+        super().__init__()
+        self.parent = parent
+
     def run(self):
         global list_app_deepines, list_app_deb, \
         list_app_flatpak, installed
-        self.progress.emit("Fetching files...")
+        self.progress.emit(self.parent.fetchingString)
         list_app_deepines = setup.Get_App_Deepines()
         list_app_exclude = setup.Get_App_Exclude()
-        self.progress.emit("Initializing components...")
+        self.progress.emit(self.parent.initializingString)
         list_app_deb = fetch_list_app_deb(list_app_exclude)
         list_app_flatpak = apps_flatpak_in_categories()
-        self.progress.emit("Finalizing setup...")
+        self.progress.emit(self.parent.finalizingString)
         installed = setup.get_installed_apps(list_app_deb, list_app_flatpak)
         setup.download_control()
         self.finished.emit()
@@ -1010,7 +1013,6 @@ class LoaderThread(QThread):
 class LoadingScreen(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Loading...")
         self.setWindowFlags(QtCore.FramelessWindowHint)
         self.setStyleSheet("background-color: rgba(30, 30, 30, 200); color: #b5c5d1;")
 
@@ -1018,7 +1020,7 @@ class LoadingScreen(QMainWindow):
 
         layout = QVBoxLayout()
         self.label_title = QLabel(self)
-        self.label_title.setText('Deepines Store')
+        self.label_title.setText(self.windowTitle())
         self.label_title.setAlignment(QtCore.AlignCenter)
         self.label_title.setStyleSheet("font-size: 24px;")
 
@@ -1041,7 +1043,7 @@ class LoadingScreen(QMainWindow):
         self.spinner.setScaledSize(QSize(int(new_width), int(new_height)))
         self.spinner.start()
 
-        self.progress_label = QLabel("Starting...", self)
+        self.progress_label = QLabel(self)
         self.progress_label.setAlignment(QtCore.AlignCenter)
         self.progress_label.setStyleSheet("font-size: 20px;")
 
@@ -1054,10 +1056,22 @@ class LoadingScreen(QMainWindow):
         #container.setStyleSheet("background-color: rgb(30, 30, 30);")
         self.setCentralWidget(container)
 
-        self.loader_thread = LoaderThread()
+        self.retranslateUi()
+
+        self.loader_thread = LoaderThread(self)
         self.loader_thread.progress.connect(self.update_progress)
         self.loader_thread.finished.connect(self.on_finish)
         self.loader_thread.start()
+
+    def retranslateUi(self):
+        _translate = QCoreApplication.translate
+        self.setWindowTitle(_translate("LoadingScreen", "Loading..."))
+        self.label_title.setText(_translate("Ui_MainWindow", "Deepines Store"))
+        self.startingString = _translate("LoadingScreen", "Starting...")
+        self.progress_label.setText(self.startingString)
+        self.fetchingString = _translate("LoadingScreen", "Fetching files...")
+        self.initializingString = _translate("LoadingScreen", "Initializing components...")
+        self.finalizingString = _translate("LoadingScreen", "Finalizing setup...")
 
     def update_progress(self, message):
         self.progress_label.setText(message)
