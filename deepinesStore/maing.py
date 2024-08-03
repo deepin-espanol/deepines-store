@@ -48,7 +48,7 @@ class Ui_MainWindow(object):
 		svg_cerrar = get_res('cerrar')
 
 		MainWindow.setObjectName("MainWindow")
-		MainWindow.setMinimumSize(QSize(self.width_screen, self.height_screen))
+		MainWindow.setMinimumSize(QSize(960, 960))
 		MainWindow.resize(self.width_screen, self.height_screen)
 		MainWindow.setStyleSheet(
 			"QScrollBar:vertical {\n"
