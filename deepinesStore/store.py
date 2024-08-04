@@ -25,10 +25,21 @@ from deepinesStore.install_progress import InstallThread
 from deepinesStore import setup
 from deepinesStore.widgets import LinkLabel
 
-class MouseEventsMixin:
+class EventsMixin:
 	def mousePressEvent(self, event):
 		if event.button() == Qt.LeftButton:
+			self.setProperty("previous_position", self.pos())
 			self.drag_position = event.globalPos() - self.frameGeometry().topLeft()
+		event.accept()
+	
+	def mouseMoveEvent(self, event):
+		if event.buttons() == Qt.LeftButton:
+			if self.drag_position is not None:
+				self.setCursor(Qt.SizeAllCursor)
+				if not self.isMaximized():
+					self.move(event.globalPos() - self.drag_position)
+				else:
+					self.showNormal()
 		event.accept()
 
 	def mouseReleaseEvent(self, event):
@@ -39,7 +50,24 @@ class MouseEventsMixin:
 		if event.buttons() == Qt.LeftButton:
 			if self.drag_position is not None:
 				self.setCursor(Qt.SizeAllCursor)
-				self.move(event.globalPos() - self.drag_position)
+				if not self.isMaximized():
+					self.move(event.globalPos() - self.drag_position)
+				else:
+					self.showNormal()
+		event.accept()
+
+	def keyPressEvent(self, event):
+		if (self.drag_position) and (event.key() == Qt.Key_Escape):
+			previous_position = self.property("previous_position")
+			if previous_position is not None:
+				self.move(previous_position)
+				self.drag_position = None
+			event.accept()
+		else:
+			event.ignore()
+
+	def resizeEvent(self, event):
+		self.drag_position = None
 		event.accept()
 
 # Global variables
@@ -48,7 +76,7 @@ global list_app_exclude, list_app_deepines, list_app_deb, list_app_flatpak
 global selected_apps, installed, columnas, tamanio
 
 
-class StoreMWindow(QMainWindow, MouseEventsMixin):
+class StoreMWindow(QMainWindow, EventsMixin):
 	def __init__(self):
 		super(StoreMWindow, self).__init__()
 		# Inicializamos la gui
@@ -1017,7 +1045,7 @@ class LoaderThread(QThread):
 		setup.download_control()
 		self.finished.emit()
 
-class LoadingScreen(QMainWindow, MouseEventsMixin):
+class LoadingScreen(QMainWindow, EventsMixin):
 	def __init__(self):
 		super().__init__()
 		self.setWindowFlags(QtCore.FramelessWindowHint)
