@@ -26,6 +26,9 @@ from deepinesStore import setup
 from deepinesStore.widgets import LinkLabel
 
 class EventsMixin:
+	def __init__(self):
+		self.drag_position = None
+
 	def mousePressEvent(self, event):
 		if event.button() == Qt.LeftButton:
 			self.setProperty("previous_position", self.pos())
@@ -33,31 +36,20 @@ class EventsMixin:
 		event.accept()
 	
 	def mouseMoveEvent(self, event):
-		if event.buttons() == Qt.LeftButton:
-			if self.drag_position is not None:
-				self.setCursor(Qt.SizeAllCursor)
-				if not self.isMaximized():
-					self.move(event.globalPos() - self.drag_position)
-				else:
-					self.showNormal()
+		if event.buttons() == Qt.LeftButton and self.drag_position is not None:
+			self.setCursor(Qt.SizeAllCursor)
+			if not self.isMaximized():
+				self.move(event.globalPos() - self.drag_position)
+			else:
+				self.showNormal()
 		event.accept()
 
 	def mouseReleaseEvent(self, event):
 		self.setCursor(Qt.ArrowCursor)
 		self.drag_position = None
 
-	def mouseMoveEvent(self, event):
-		if event.buttons() == Qt.LeftButton:
-			if self.drag_position is not None:
-				self.setCursor(Qt.SizeAllCursor)
-				if not self.isMaximized():
-					self.move(event.globalPos() - self.drag_position)
-				else:
-					self.showNormal()
-		event.accept()
-
 	def keyPressEvent(self, event):
-		if (self.drag_position is not None) and (event.key() == Qt.Key_Escape):
+		if self.drag_position is not None and event.key() == Qt.Key_Escape:
 			previous_position = self.property("previous_position")
 			if previous_position is not None:
 				self.move(previous_position)
