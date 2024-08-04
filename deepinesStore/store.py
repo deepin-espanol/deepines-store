@@ -4,11 +4,11 @@ import sys
 import os
 # PyQt5 modules
 from PyQt5.Qt import Qt
-from PyQt5.QtCore import QTranslator, QLocale, QSize, QPointF, QPoint, QEvent, Qt as QtCore, pyqtSignal, QThread, QCoreApplication
+from PyQt5.QtCore import QTranslator, QLocale, QSize, QPointF, QEvent, Qt as QtCore, pyqtSignal, QThread, QCoreApplication
 from PyQt5.QtWidgets import (QMainWindow, QApplication, QFrame, QLabel,
 							 QSizePolicy, QGraphicsDropShadowEffect, QSpacerItem,
 							 QDesktopWidget, QHBoxLayout, QVBoxLayout, QWidget)
-from PyQt5.QtGui import QPixmap, QFont, QColor, QCursor, QPainter, QIcon, QMovie
+from PyQt5.QtGui import QPixmap, QFont, QColor, QCursor, QPainter, QMovie
 
 from deepinesStore.core import set_blur
 # Para obtener applicacion random
@@ -25,6 +25,22 @@ from deepinesStore.install_progress import InstallThread
 from deepinesStore import setup
 from deepinesStore.widgets import LinkLabel
 
+class MouseEventsMixin:
+	def mousePressEvent(self, event):
+		if event.button() == Qt.LeftButton:
+			self.drag_position = event.globalPos() - self.frameGeometry().topLeft()
+		event.accept()
+
+	def mouseReleaseEvent(self, event):
+		self.setCursor(Qt.ArrowCursor)
+		self.drag_position = None
+
+	def mouseMoveEvent(self, event):
+		if event.buttons() == Qt.LeftButton:
+			if self.drag_position is not None:
+				self.setCursor(Qt.SizeAllCursor)
+				self.move(event.globalPos() - self.drag_position)
+		event.accept()
 
 # Global variables
 global lista_inicio, lista_global, list_app_show_temp, uninstalled
@@ -32,7 +48,7 @@ global list_app_exclude, list_app_deepines, list_app_deb, list_app_flatpak
 global selected_apps, installed, columnas, tamanio
 
 
-class StoreMWindow(QMainWindow):
+class StoreMWindow(QMainWindow, MouseEventsMixin):
 	def __init__(self):
 		super(StoreMWindow, self).__init__()
 		# Inicializamos la gui
@@ -731,17 +747,6 @@ class StoreMWindow(QMainWindow):
 	#			  /New installed apps 			   #
 	################################################
 
-	def eventFilter(self, obj, event):
-		if event.type() == QEvent.MouseButtonPress:
-			self.oldPos = event.globalPos()
-		elif event.type() == QEvent.MouseMove:
-			if hasattr(self, 'oldPos'):
-				delta = QPoint(event.globalPos() - self.oldPos)
-				self.move(self.x() + delta.x(), self.y() + delta.y())
-				self.oldPos = event.globalPos()
-
-		return True
-
 	def maximize(self):
 		if self.isMaximized():  # Restauramos al tamaño original
 			self.showNormal()
@@ -1012,7 +1017,7 @@ class LoaderThread(QThread):
 		setup.download_control()
 		self.finished.emit()
 
-class LoadingScreen(QMainWindow):
+class LoadingScreen(QMainWindow, MouseEventsMixin):
 	def __init__(self):
 		super().__init__()
 		self.setWindowFlags(QtCore.FramelessWindowHint)
@@ -1086,22 +1091,6 @@ class LoadingScreen(QMainWindow):
 		self.main_window.calcular_anchos()
 		set_blur(self.main_window)
 		self.main_window.show()
-
-	def mousePressEvent(self, event):
-		if event.button() == Qt.LeftButton:
-			self.drag_position = event.globalPos() - self.frameGeometry().topLeft()
-		event.accept()
-
-	def mouseReleaseEvent(self, event):
-		self.setCursor(Qt.ArrowCursor)
-		self.drag_position = None
-
-	def mouseMoveEvent(self, event):
-		if event.buttons() == Qt.LeftButton:
-			if self.drag_position is not None:
-				self.setCursor(Qt.SizeAllCursor)
-				self.move(event.globalPos() - self.drag_position)
-		event.accept()
 
 def run_tasks(loading_screen):
 	# Add your long-running tasks here
