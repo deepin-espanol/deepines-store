@@ -253,8 +253,9 @@ InstallDeepines() {
 
 InstallFlathubRepository() {
 	$Fmt "${INSTALLING_FLATHUB}" && FlathubInstallationResult=$(
-		flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+		flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 		flatpak update --appstream --assumeyes
+		flatpak install flathub org.gtk.Gtk3theme.deepin org.gtk.Gtk3theme.deepin-dark --assumeyes
 	) || {
 		$Fmt "$INSTALLING_FAILED"
 		echo "$FlathubInstallationResult"
