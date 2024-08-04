@@ -1015,9 +1015,15 @@ def set_shadow(widget, color: QColor, radius=10):
 
 
 def center_window(widget):
+	# Obtener desktop de la instancia QApplication actual
+	app = QApplication.instance()
+	if app is None:
+		return
+	desktop: QDesktopWidget = app.desktop() # type: ignore
+
 	# Obtener la pantalla donde se encuentra el cursor
-	screen = QDesktopWidget().screenNumber(QApplication.desktop().cursor().pos())
-	screen_rect = QApplication.desktop().screenGeometry(screen)
+	screen = QDesktopWidget().screenNumber(desktop.cursor().pos())
+	screen_rect = desktop.screenGeometry(screen)
 
 	# Calcular el centro de la pantalla
 	screen_center = screen_rect.center()
@@ -1117,17 +1123,11 @@ class LoadingScreen(QMainWindow, EventsMixin):
 		self.progress_label.setText(message)
 
 	def on_finish(self):
-		self.hide()  # Ocultar la ventana de carga
-		self.main_window = StoreMWindow()  # Update this to your main window class
-		self.main_window.calcular_anchos()
-		
+		self.main_window = StoreMWindow()
 		self.main_window.calcular_anchos()
 		set_blur(self.main_window)
 		self.main_window.show()
-
-def run_tasks(loading_screen):
-	# Add your long-running tasks here
-	pass
+		self.close()
 
 def run_gui():
 	app = QApplication(sys.argv)
@@ -1140,10 +1140,6 @@ def run_gui():
 	loading_screen = LoadingScreen()
 	loading_screen.show()
 	center_window(loading_screen)
-
-	# Running the long-running tasks in a separate thread
-	#thread = threading.Thread(target=run_tasks, args=(loading_screen,))
-	#thread.start()
 
 	global width, height
 	screen_rect = app.desktop().screenGeometry()
