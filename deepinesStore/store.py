@@ -807,8 +807,6 @@ class Card(QFrame):
 		self.cd.image_app.setMinimumSize(QSize(tamanio, int(tamanio*0.72222)))
 		if self.application.version:
 			self.cd.lbl_version.setText("v: {}".format(self.application.version))
-		else:
-			self.cd.lbl_version.setVisible(False)
 
 		self.txt_btn_select()
 
