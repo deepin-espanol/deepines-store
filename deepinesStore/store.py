@@ -807,8 +807,6 @@ class Card(QFrame):
 		if self.application.version:
 			self.cd.lbl_version.setText("v: {}".format(self.application.version))
 
-		self.txt_btn_select()
-
 		global installed, uninstalled
 		if self.application not in installed:
 			state = AppState.DEFAULT
@@ -827,7 +825,7 @@ class Card(QFrame):
 		#if self.application not in selected_apps and self.application not in installed:
 		self.installEventFilter(self)
 
-		self.change_color_buton(state)
+		self.update_app_card_status(state)
 
 		# Establecemos la imagen
 		if (self.application.type == AppType.DEB_PACKAGE):
@@ -885,16 +883,6 @@ class Card(QFrame):
 
 		return path
 
-	def txt_btn_select(self):
-		if self.application in selected_apps and self.application not in installed:
-			self.cd.btn_select_app.setText(ui.selected_to_install_app_text)
-		elif self.application in selected_apps and self.application in installed:
-			self.cd.btn_select_app.setText(ui.uninstall_app_text)
-		elif self.application in installed and self.application not in selected_apps:
-			self.cd.btn_select_app.setText(ui.selected_installed_app_text)
-		else:
-			self.cd.btn_select_app.setText(ui.select_app_text)
-
 	def select_app(self):
 		global lista_global, selected_apps, installed
 
@@ -918,77 +906,48 @@ class Card(QFrame):
 			else:
 				new_state = AppState.INSTALLED
 		self.installEventFilter(self)
-			
 
 		lista_global[indice].state = new_state
 		lista_global = lista_global_temp
 
-		self.change_color_buton(new_state)
+		self.update_app_card_status(new_state)
 
-		self.txt_btn_select()
 		self.parentWindow.contar_apps()
 
-	def change_color_buton(self, state: AppState):
-		if state == AppState.SELECTED:
-			r, g, b = 0, 255, 255
-			radio = 20
-			border_color = "border-color: #00bbc8;"
-			bnt_select_style = ("#btn_select_app{"
-						"color: rgb(0, 0, 0);"
-						"background-color: rgb(0, 255, 255);"
-						"margin: 5px 10px;"
-						"}")
-		elif state == AppState.UNINSTALL:
-			r, g, b = 234, 93, 41
-			radio = 20
-			border_color = "border-color: #ea4329;"
-			bnt_select_style = ("#btn_select_app{"
-						"color: rgb(255, 255, 255);"
-						"background-color: rgb(255, 54, 0);"
-						"margin: 5px 10px;"
-						"}")
-			self.cd.btn_select_app.setText(ui.uninstall_app_text)
-		elif state == AppState.INSTALLED:
-			r, g, b = 0, 212, 0
-			radio = 20
-			border_color = "border-color: #009800;"
-			bnt_select_style = ("#btn_select_app{"
-						"color: rgb(255, 255, 255);"
-						"background-color: rgb(255, 0, 0);"
-						"margin: 5px 10px;"
-						"}")
-			self.cd.btn_select_app.setText(ui.uninstall_app_text)
-		elif state == AppState.UNINSTALLED:
-			r, g, b = 238, 81, 56
-			radio = 20
-			border_color = "border-color: #d54000;"
-			bnt_select_style = ("#btn_select_app{"
-						"color: rgb(255, 255, 255);"
-						"background-color: rgb(255, 0, 0);"
-						"margin: 5px 10px;"
-						"}")
-			self.cd.btn_select_app.setText(ui.uninstalled_app_text)
-		else:
-			r, g, b = 45, 45, 45
-			radio = 0
-			border_color = "border-color: transparent;"
-			bnt_select_style = ("#btn_select_app{"
-							"color: rgb(255, 255, 255);"
-							"background-color: rgb(30, 30, 30);"
-							"margin: 5px 10px;"
-							"}")
+	def update_app_card_status(self, state: AppState):
+		color_map = {
+			AppState.SELECTED: (0, 255, 255, "#00bbc8", ui.selected_to_install_app_text),
+			AppState.UNINSTALL: (234, 93, 41, "#ea4329", ui.uninstall_app_text),
+			AppState.INSTALLED: (0, 212, 0, "#009800", ui.selected_installed_app_text),
+			AppState.UNINSTALLED: (238, 81, 56, "#d54000", ui.uninstalled_app_text),
+			AppState.DEFAULT: (30, 30, 30, "transparent", ui.select_app_text)
+		}
+
+		r, g, b, border_color, btn_text = color_map.get(state, color_map[AppState.DEFAULT])
+
+		text_color = "#000" if state == AppState.SELECTED else "#fff"
+
+		btn_select_app_style = ("QPushButton#btn_select_app{"
+					"color: " + text_color + ";"
+					"background-color: rgb(" + str(r) + ", " + str(g) + ", " + str(b) + ");"
+					"margin: 5px 10px;"
+					"border-width: 0px;"
+					"border-radius: 10px;"
+					"}")
+
+		self.cd.btn_select_app.setText(btn_text)
 
 		self.setStyleSheet("#Frame{"
 						   "background-color: #2d2d2d;"
 						   "border-radius: 10px;"
 						   "margin: 10px;"
-						   + border_color +
+						   "border-color: " + border_color + ";"
 						   "border-width: 1px;"
 						   "border-style: solid;"
-						   "}" + bnt_select_style)
+						   "}" + btn_select_app_style)
 
 		color = QColor(r, g, b)
-		shadow = set_shadow(self, color, radio)
+		shadow = set_shadow(self, color, 20)
 		self.setGraphicsEffect(shadow)
 
 
