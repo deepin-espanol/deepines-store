@@ -88,7 +88,7 @@ class StoreMWindow(QMainWindow):
 		ui.label_2.clicked.connect(self.show_about_dialog)
 		ui.btn_close.clicked.connect(self.close)
 		ui.btn_zoom.clicked.connect(self.maximize)
-		ui.btn_minimize.clicked.connect(self.minimize)
+		ui.btn_minimize.clicked.connect(self.showMinimized)
 		ui.widget_1.installEventFilter(self)
 		ui.label.clicked.connect(self.show_about_dialog)
 		ui.btn_app_deb.clicked.connect(self.change_type_app_selected)
@@ -743,22 +743,13 @@ class StoreMWindow(QMainWindow):
 		return True
 
 	def maximize(self):
-		global maximized
-		if maximized:  # Restauramos al tamaño original
-			self.setWindowState(Qt.WindowNoState)
-			maximized = False
+		if self.isMaximized():  # Restauramos al tamaño original
+			self.showNormal()
 			ui.widget_1.installEventFilter(self)
 		else:  # Agrandamos la ventana
-			self.setWindowState(Qt.WindowMaximized)
-			maximized = True
+			self.showMaximized()
 			ui.widget_1.removeEventFilter(self)
 
-	def minimize(self):
-		global maximized
-		# No se ve la app, agrandamos
-		self.setWindowState(Qt.WindowMinimized)
-		if maximized:  # Si estaba maximizada, agrandamos
-			self.setWindowState(Qt.WindowMaximized)
 
 ################################################
 #		   Card para la aplicacion			#
@@ -1132,8 +1123,7 @@ def run_gui():
 	#thread = threading.Thread(target=run_tasks, args=(loading_screen,))
 	#thread.start()
 
-	global width, height, maximized
-	maximized = False
+	global width, height
 	screen_rect = app.desktop().screenGeometry()
 	width, height = screen_rect.width(), screen_rect.height()
 	sys.exit(app.exec_())
