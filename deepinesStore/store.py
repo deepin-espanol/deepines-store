@@ -4,7 +4,7 @@ import sys
 import os
 # PyQt5 modules
 from PyQt5.Qt import Qt
-from PyQt5.QtCore import QTranslator, QLocale, QSize, QPointF, QEvent, Qt as QtCore, pyqtSignal, QThread, QCoreApplication
+from PyQt5.QtCore import QTranslator, QLocale, QSize, QPointF, QEvent, QTimer, Qt as QtCore, pyqtSignal, QThread, QCoreApplication
 from PyQt5.QtWidgets import (QMainWindow, QApplication, QFrame, QLabel,
 							 QSizePolicy, QGraphicsDropShadowEffect, QSpacerItem,
 							 QDesktopWidget, QHBoxLayout, QVBoxLayout, QWidget)
@@ -194,13 +194,20 @@ class StoreMWindow(QMainWindow, EventsMixin):
 		ui.widget.setEnabled(status)
 
 	def resizeEvent(self, event):
-		if hasattr(self, 'primer_inicio') and self.primer_inicio:
-			self.primer_inicio = False
-		try:
-			self.clear_gridLayout()
-			self.do_list_apps(list_app_show_temp)
-		except NameError:
-			pass  # There are no apps, list_app_show_temp is not defined...
+		if self.install_thread and self.install_thread.isRunning():
+			event.ignore()
+		else:
+			event.accept()
+			if hasattr(self, 'primer_inicio') and self.primer_inicio:
+				self.primer_inicio = False
+			try:
+				QTimer.singleShot(800, self.refresh_app_grid)
+			except NameError:
+				pass  # There are no apps, list_app_show_temp is not defined...
+
+	def refresh_app_grid(self):
+		self.clear_gridLayout()
+		self.do_list_apps(list_app_show_temp)
 
 
 	################################################
