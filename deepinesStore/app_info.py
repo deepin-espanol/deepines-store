@@ -11,10 +11,14 @@ class AppState(Enum):
 	DEFAULT = 1
 	INSTALLED = 2
 	UNINSTALLED = 3
+	UNINSTALL = 4
 
+class ProcessType(Enum):
+	INSTALL = 0
+	UNINSTALL = 1
 
 class AppInfo:
-	def __init__(self, name: str, id: str, description: str, version = "0", category = "otros", type=AppType.DEB_PACKAGE, state=AppState.DEFAULT):
+	def __init__(self, name: str, id: str, description: str, version = None, category = "other", type=AppType.DEB_PACKAGE, state=AppState.DEFAULT, process=ProcessType.INSTALL):
 		self.name = name
 		self.id = id
 		self.description = description
@@ -22,3 +26,4 @@ class AppInfo:
 		self.category = category
 		self.state = state
 		self.type = type
+		self.process = process

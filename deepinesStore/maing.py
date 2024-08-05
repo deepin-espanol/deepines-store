@@ -6,46 +6,6 @@ from PyQt5.QtCore import QMetaObject, QRect, QSize, Qt
 from deepinesStore.core import get_res, tr, get_text_link, STORE_VERSION
 from deepinesStore.widgets import ClickableLabel, ClickableList
 
-
-# https://stackoverflow.com/a/67711660
-size = 19
-border = 0.2
-TitleBarButtonStylesheet = '''
-			QRadioButton {{
-				background-color: transparent;
-				padding: 3px;
-			}}
-			QRadioButton::indicator {{
-				border: {border}px solid {borderColor}; 
-				height: {size}px;
-				width: {size}px;
-				border-radius: {radius}px;
-			}}
-			QRadioButton::indicator:checked, QRadioButton::indicator:unchecked {{
-				background: qradialgradient(
-					cx:.5, cy:.5, radius: {innerRatio},
-					fx:.5, fy:.5,
-					stop:0 {uncheckColor},
-					stop:0.49 {uncheckColor2},
-					stop:0.54 transparent,
-					stop:1 transparent
-					);
-			}}
-			QRadioButton::indicator:hover {{
-				background: rgba(245, 245, 245, 72);
-			}}
-		'''.format(
-	size=size - border * 2,
-	border=border,
-	borderColor='black',
-	radius=size // 2,
-	innerRatio=1 - (border * 2 + 1) / size,
-	uncheckColor='rgba(245, 245, 245, 38)',
-	uncheckColor2='rgba(247, 247, 247, 38)',
-	checkColor='black'
-)
-
-
 class Ui_MainWindow(object):
 
 	def __init__(self, width, height):
@@ -80,6 +40,7 @@ class Ui_MainWindow(object):
 		svg_terminal = get_res('terminal')
 		svg_computer = get_res('computer')
 		svg_pamela = get_res('pamela')
+		svg_installed = get_res('installed')
 		svg_search = get_res('magnifying-glass')
 		svg_car = get_res('carDisable')
 		svg_minimizar = get_res('minimizar')
@@ -87,55 +48,27 @@ class Ui_MainWindow(object):
 		svg_cerrar = get_res('cerrar')
 
 		MainWindow.setObjectName("MainWindow")
-		MainWindow.setMinimumSize(QSize(self.width_screen, self.height_screen))
+		MainWindow.setMinimumSize(QSize(960, 960))
 		MainWindow.resize(self.width_screen, self.height_screen)
-		MainWindow.setStyleSheet(
-			"QScrollBar:vertical {\n"
-			"	background: transparent;\n"
-			"	width: 10px;\n"
-			"	margin: 0px 0px 0px 0px;\n"
-			"}\n"
-			"QScrollBar::handle:vertical {\n"
-			"	background-color: #545454;\n"
-			"	border-radius: 4px;\n"
-			"	min-height: 5px;\n"
-			"}\n"
-			"QScrollBar::add-line:vertical {\n"
-			"	background: qlineargradient(x1:0, y1:0, x2:1, y2:0,\n"
-			"	stop: 0 rgb(32, 47, 130), stop: 0.5 rgb(32, 47, 130),  stop:1 rgb(32, 47, 130));\n"
-			"	height: 0px;\n"
-			"	subcontrol-position: bottom;\n"
-			"	subcontrol-origin: margin;\n"
-			"}\n"
-			"QScrollBar::sub-line:vertical {\n"
-			"	background: qlineargradient(x1:0, y1:0, x2:1, y2:0,\n"
-			"	stop: 0  rgb(32, 47, 130), stop: 0.5 rgb(32, 47, 130),  stop:1 rgb(32, 47, 130));\n"
-			"	height: 0 px;\n"
-			"	subcontrol-position: top;\n"
-			"	subcontrol-origin: margin;\n"
-			"}")
 		self.centralwidget = QtWidgets.QWidget(MainWindow)
-		self.centralwidget.setStyleSheet(
-			"background-color: rgba(30, 30, 30, 200);" "color: #b5c5d1;")
 		self.centralwidget.setObjectName("centralwidget")
+		self.centralwidget.setStyleSheet("#centralwidget{background-color: rgba(30, 30, 30, 200); color: #b5c5d1; border: 1.5px solid rgba(60, 60, 60, 120);}")
+
+		# Grilla principal
 		self.gridLayout_2 = QtWidgets.QGridLayout(self.centralwidget)
 		self.gridLayout_2.setContentsMargins(0, 0, 0, 0)
 		self.gridLayout_2.setSpacing(0)
-		self.gridLayout_2.setObjectName("gridLayout_2")
 
 		# Frame apps seleccionadas
 		self.widget = QtWidgets.QWidget(self.centralwidget)
 		self.widget.setMinimumSize(QSize(0, 40))
 		self.widget.setMaximumSize(QSize(16777215, 80))
-		self.widget.setStyleSheet("background-color: rgba(16, 16, 16, 0);")
-		self.widget.setObjectName("widget")
+		self.widget.setStyleSheet("background-color: transparent;")
 		self.gridLayout_4 = QtWidgets.QGridLayout(self.widget)
 		self.gridLayout_4.setContentsMargins(0, 0, 0, 0)
-		self.gridLayout_4.setObjectName("gridLayout_4")
 		self.horizontalLayout_3 = QtWidgets.QHBoxLayout()
 		self.horizontalLayout_3.setContentsMargins(10, 10, 10, 10)
 		self.horizontalLayout_3.setSpacing(10)
-		self.horizontalLayout_3.setObjectName("horizontalLayout_3")
 
 		self.icon_car = ClickableLabel(self.widget)
 		self.icon_car.setStyleSheet("margin-left: 0px;\n"
@@ -155,12 +88,11 @@ class Ui_MainWindow(object):
 		font = QtGui.QFont()
 		font.setPointSize(11)
 		self.lbl_list_apps.setFont(font)
-		self.lbl_list_apps.setStyleSheet("background-color: transparent;\n" "")
-		self.lbl_list_apps.setObjectName("lbl_list_apps")
+		self.lbl_list_apps.setStyleSheet("background-color: transparent;")
 		self.horizontalLayout_3.addWidget(self.lbl_list_apps)
 		self.btn_install = QtWidgets.QPushButton(self.widget)
 		self.btn_install.setMinimumSize(QSize(80, 0))
-		self.btn_install.setMaximumSize(QSize(100, 16777215))
+		self.btn_install.setMaximumSize(QSize(150, 16777215))
 		self.btn_install.setStyleSheet(
 			"#btn_install{\n"
 			"padding: 2px;\n"
@@ -184,51 +116,13 @@ class Ui_MainWindow(object):
 		self.frame_2 = QtWidgets.QFrame(self.centralwidget)
 		self.frame_2.setMinimumSize(QSize(self.size_frame, 0))
 		self.frame_2.setMaximumSize(QSize(self.size_frame, 16777215))
-		self.frame_2.setStyleSheet("background-color: rgba(16, 16, 16, 0);")
-		self.frame_2.setFrameShape(QtWidgets.QFrame.StyledPanel)
-		self.frame_2.setFrameShadow(QtWidgets.QFrame.Raised)
-		self.frame_2.setObjectName("frame_2")
 		self.verticalLayout = QtWidgets.QVBoxLayout(self.frame_2)
-		self.verticalLayout.setObjectName("verticalLayout")
 		spacerItem2 = QtWidgets.QSpacerItem(20, 2,
 											QtWidgets.QSizePolicy.Minimum,
 											QtWidgets.QSizePolicy.Fixed)
 		# Primer item, spaciador vertical
 		self.verticalLayout.addItem(spacerItem2)
-		self.frame_4 = QtWidgets.QFrame(self.frame_2)
-		self.frame_4.setMinimumSize(QSize(0, 35))
-		self.frame_4.setMaximumSize(QSize(16777215, 35))
-		self.frame_4.setStyleSheet("border-radius: 15px;\n"
-								   "background-color: rgba(16, 16, 16, 122);\n"
-								   "color: white;")
-		self.frame_4.setFrameShape(QtWidgets.QFrame.StyledPanel)
-		self.frame_4.setFrameShadow(QtWidgets.QFrame.Raised)
-		self.frame_4.setObjectName("frame_4")
-		self.horizontalLayout_2 = QtWidgets.QHBoxLayout(self.frame_4)
-		self.horizontalLayout_2.setObjectName("horizontalLayout_2")
-		self.lineEdit = QtWidgets.QLineEdit(self.frame_4)
-		self.lineEdit.setStyleSheet("background-color: transparent;\n"
-									"color: white;\n"
-									"border-color: transparent;\n"
-									"border: 0px solid;")
-		self.lineEdit.setAlignment(Qt.AlignCenter)
-		self.lineEdit.setObjectName("lineEdit")
-		self.horizontalLayout_2.addWidget(self.lineEdit)
-		self.pushButton = QtWidgets.QPushButton(self.frame_4)
-		self.pushButton.setStyleSheet("margin-left: 0px;\n"
-									  "background-color: transparent;\n"
-									  "border-color: transparent;\n"
-									  "border: 0px solid;")
-		self.pushButton.setText("")
-		icon11 = QtGui.QIcon()
-		icon11.addPixmap(QtGui.QPixmap(svg_search),
-						 QtGui.QIcon.Normal, QtGui.QIcon.Off)
-		self.pushButton.setIcon(icon11)
-		self.pushButton.setIconSize(QSize(13, 13))
-		self.pushButton.setObjectName("pushButton")
-		self.horizontalLayout_2.addWidget(self.pushButton)
-		# Segundo item, cuadro busqueda
-		self.verticalLayout.addWidget(self.frame_4)
+		
 		self.lw_categories = ClickableList(self.frame_2)
 		self.lw_categories.setStyleSheet(
 			"#lw_categories{\n"
@@ -247,102 +141,29 @@ class Ui_MainWindow(object):
 			"  border: 0px solid transparent;\n"
 			"  color: #419fd9;\n"
 			"}")
+		icons = [svg_star, svg_deepines, svg_internet, svg_music, svg_picture, svg_console, svg_board, svg_terminal, svg_computer, svg_pamela]
+		flags = Qt.ItemIsSelectable | Qt.ItemIsEnabled
 		self.lw_categories.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
 		self.lw_categories.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
 		self.lw_categories.setAutoScroll(False)
 		self.lw_categories.setIconSize(QSize(24, 24))
 		self.lw_categories.setObjectName("lw_categories")
-		item = QtWidgets.QListWidgetItem()
-		icon1 = QtGui.QIcon()
-		icon1.addPixmap(QtGui.QPixmap(svg_star),
-						QtGui.QIcon.Normal, QtGui.QIcon.Off)
-		item.setIcon(icon1)
-		item.setFlags(Qt.ItemIsSelectable |
-					  Qt.ItemIsUserCheckable | Qt.ItemIsEnabled)
-		self.lw_categories.addItem(item)
-		item = QtWidgets.QListWidgetItem()
-		icon2 = QtGui.QIcon()
-		icon2.addPixmap(QtGui.QPixmap(svg_deepines),
-						QtGui.QIcon.Normal, QtGui.QIcon.Off)
-		item.setIcon(icon2)
-		self.lw_categories.addItem(item)
-		item = QtWidgets.QListWidgetItem()
-		icon3 = QtGui.QIcon()
-		icon3.addPixmap(QtGui.QPixmap(svg_internet),
-						QtGui.QIcon.Normal, QtGui.QIcon.Off)
-		item.setIcon(icon3)
-		item.setFlags(Qt.ItemIsSelectable |
-					  Qt.ItemIsUserCheckable | Qt.ItemIsEnabled)
-		self.lw_categories.addItem(item)
-		item = QtWidgets.QListWidgetItem()
-		icon4 = QtGui.QIcon()
-		icon4.addPixmap(QtGui.QPixmap(svg_music),
-						QtGui.QIcon.Normal, QtGui.QIcon.Off)
-		item.setIcon(icon4)
-		item.setFlags(Qt.ItemIsSelectable |
-					  Qt.ItemIsUserCheckable | Qt.ItemIsEnabled)
-		self.lw_categories.addItem(item)
-		item = QtWidgets.QListWidgetItem()
-		icon5 = QtGui.QIcon()
-		icon5.addPixmap(QtGui.QPixmap(svg_picture),
-						QtGui.QIcon.Normal, QtGui.QIcon.Off)
-		item.setIcon(icon5)
-		item.setFlags(Qt.ItemIsSelectable |
-					  Qt.ItemIsUserCheckable | Qt.ItemIsEnabled)
-		self.lw_categories.addItem(item)
-		item = QtWidgets.QListWidgetItem()
-		icon6 = QtGui.QIcon()
-		icon6.addPixmap(QtGui.QPixmap(svg_console),
-						QtGui.QIcon.Normal, QtGui.QIcon.Off)
-		item.setIcon(icon6)
-		item.setFlags(Qt.ItemIsSelectable |
-					  Qt.ItemIsUserCheckable | Qt.ItemIsEnabled)
-		self.lw_categories.addItem(item)
-		item = QtWidgets.QListWidgetItem()
-		icon7 = QtGui.QIcon()
-		icon7.addPixmap(QtGui.QPixmap(svg_board),
-						QtGui.QIcon.Normal, QtGui.QIcon.Off)
-		item.setIcon(icon7)
-		item.setFlags(Qt.ItemIsSelectable |
-					  Qt.ItemIsUserCheckable | Qt.ItemIsEnabled)
-		self.lw_categories.addItem(item)
-		item = QtWidgets.QListWidgetItem()
-		icon8 = QtGui.QIcon()
-		icon8.addPixmap(QtGui.QPixmap(svg_terminal),
-						QtGui.QIcon.Normal, QtGui.QIcon.Off)
-		item.setIcon(icon8)
-		item.setFlags(Qt.ItemIsSelectable |
-					  Qt.ItemIsUserCheckable | Qt.ItemIsEnabled)
-		self.lw_categories.addItem(item)
-		item = QtWidgets.QListWidgetItem()
-		icon9 = QtGui.QIcon()
-		icon9.addPixmap(QtGui.QPixmap(svg_computer),
-						QtGui.QIcon.Normal, QtGui.QIcon.Off)
-		item.setIcon(icon9)
-		item.setFlags(Qt.ItemIsSelectable |
-					  Qt.ItemIsUserCheckable | Qt.ItemIsEnabled)
-		self.lw_categories.addItem(item)
-		item = QtWidgets.QListWidgetItem()
-		icon10 = QtGui.QIcon()
-		icon10.addPixmap(QtGui.QPixmap(svg_pamela),
-						 QtGui.QIcon.Normal, QtGui.QIcon.Off)
-		item.setIcon(icon10)
-		item.setFlags(Qt.ItemIsSelectable | 
-					  Qt.ItemIsUserCheckable | Qt.ItemIsEnabled)
-		self.lw_categories.addItem(item)
-		item = QtWidgets.QListWidgetItem()
-		item.setFlags(Qt.NoItemFlags)
-		self.lw_categories.set_skip_item_action_indices([10])
+		self.lw_categories.setAutoFillBackground(False)
 
-		self.lw_categories.addItem(item)
-		item = QtWidgets.QListWidgetItem()
-		icon11 = QtGui.QIcon()
-		icon11.addPixmap(QtGui.QPixmap(svg_pamela),
-						 QtGui.QIcon.Normal, QtGui.QIcon.Off)
-		item.setIcon(icon11)
-		item.setFlags(Qt.ItemIsSelectable |
-					  Qt.ItemIsUserCheckable | Qt.ItemIsEnabled)
-		self.lw_categories.addItem(item)
+		def add_icon_item(self, icon, flags):
+			item = QtWidgets.QListWidgetItem()
+			if icon:
+				item.setIcon(QtGui.QIcon(icon))
+			item.setFlags(flags)
+			self.lw_categories.addItem(item)
+
+		for icon in icons:
+			add_icon_item(self, icon, flags)
+
+		add_icon_item(self, None, Qt.NoItemFlags) # Empty item (separator)
+		self.lw_categories.set_skip_item_action_indices([len(icons)])
+
+		add_icon_item(self, svg_installed, flags)  # Last item (Installed apps)
 		# Tercer item, lista de filtros
 		self.verticalLayout.addWidget(self.lw_categories)
 
@@ -371,27 +192,25 @@ class Ui_MainWindow(object):
 		font = QtGui.QFont()
 		font.setPointSize(8)
 		self.label.setFont(font)
-		self.label.setStyleSheet("background-color: transparent;\n")
+		self.label.setStyleSheet("background-color: transparent;")
 		self.label.setAlignment(Qt.AlignCenter)
 		self.label.setCursor(QtGui.QCursor(Qt.PointingHandCursor))
 		self.label.setObjectName("label")
 
 		# Quinto item, label version
 		self.verticalLayout.addWidget(self.label)
-		self.gridLayout_2.addWidget(self.frame_2, 0, 0, 3, 1)
+		self.gridLayout_2.addWidget(self.frame_2, 1, 0, 3, 1)
 		self.frame = QtWidgets.QScrollArea(self.centralwidget)
-		self.frame.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
+		self.frame.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
 		self.frame.setWidgetResizable(True)
 		self.frame.setAlignment(Qt.AlignCenter)
-		self.frame.setObjectName("frame")
-		self.frame.setStyleSheet("background-color: rgba(16, 16, 16, 0);")
+		self.frame.setStyleSheet('QScrollArea {background: transparent;}')
 		self.scroll_apps = QtWidgets.QWidget()
 		self.scroll_apps.setGeometry(QRect(0, 0, 774, 459))
 		self.scroll_apps.setObjectName("scroll_apps")
 		self.scroll_apps.setStyleSheet(
-			"#scroll_apps{ padding-left: 30px; padding-right: 30px;}")
+			"#scroll_apps{ padding-left: 30px; padding-right: 30px; background-color: transparent;}")
 		self.gridLayout = QtWidgets.QGridLayout(self.scroll_apps)
-		self.gridLayout.setObjectName("gridLayout")
 		self.gridLayout.setContentsMargins(0, 0, 0, 0)
 		self.gridLayout.setSpacing(2)
 		self.frame.setWidget(self.scroll_apps)
@@ -408,48 +227,82 @@ class Ui_MainWindow(object):
 				background-color: transparent;
 			}
 			#btn_close{
-                margin-right: 10px;
-            }
-            #btn_zoom{
-                margin-right: 3px;
-                margin-left: 3px;
-            }
-            QPushButton{
-                min-width: 36px;
-                min-height: 36px;
-                border-radius: 10px;
-                background-color: transparent;
-            }
-            QPushButton:hover{
-                background-color: rgba(50, 50, 50, 100);
-            }
+				margin-right: 10px;
+				min-width: 36px;
+				min-height: 36px;
+			}
+			#btn_zoom{
+				min-width: 36px;
+				min-height: 36px;
+				margin-right: 3px;
+				margin-left: 3px;
+			}
+			#btn_minimize{
+				min-width: 36px;
+				min-height: 36px;
+			}
+			QPushButton{
+				border-radius: 10px;
+				background-color: transparent;
+			}
+			QPushButton:hover{
+				background-color: rgba(50, 50, 50, 100);
+			}
 			""")
-		self.horizontalLayout_4 = QtWidgets.QHBoxLayout(self.widget_1)
-		self.horizontalLayout_4.setObjectName("horizontalLayout_4")
-		self.horizontalLayout_4.setContentsMargins(0, 12, 0, 5)
-		self.horizontalLayout_4.setSpacing(1)
 		
-		self.btn_app_deb = QtWidgets.QPushButton(self.widget_1)
-		self.btn_app_deb.setObjectName(u"btn_app_deb")
-		sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
-		sizePolicy.setHorizontalStretch(0)
-		sizePolicy.setVerticalStretch(0)
-		sizePolicy.setHeightForWidth(self.btn_app_deb.sizePolicy().hasHeightForWidth())
-		self.btn_app_deb.setSizePolicy(sizePolicy)
-		self.btn_app_deb.setStyleSheet("""
-								 background-color: rgb(169, 144, 122);
-								 color: #fff;
-								 border-color: #fff;
-								 border: 2px solid;
-								 border-radius: 15px;""")
-		self.btn_app_deb.setIcon(QtGui.QIcon(QtGui.QPixmap(get_res('flatpak_sin_texto'))))
-		self.btn_app_deb.setMinimumSize(QSize(150, 35))
+		self.horizontalLayout_4 = QtWidgets.QHBoxLayout(self.widget_1)
+		self.horizontalLayout_4.setContentsMargins(10, 15, 10, 5)
+		self.horizontalLayout_4.setSpacing(20)
 
-		self.horizontalLayout_4.addWidget(self.btn_app_deb)
-
+		self.frame_4 = QtWidgets.QFrame(self.widget_1)
+		self.frame_4.setMinimumSize(QSize((self.size_frame-20), 35))
+		self.frame_4.setMaximumSize(QSize(16777215, 35))
+		self.frame_4.setStyleSheet("border-radius: 15px;\n"
+								   "background-color: rgba(16, 16, 16, 122);\n"
+								   "color: white;")
+		self.frame_4.setObjectName("frame_4")
+		self.horizontalLayout_2 = QtWidgets.QHBoxLayout(self.frame_4)
+		self.horizontalLayout_2.setObjectName("horizontalLayout_2")
+		self.lineEdit = QtWidgets.QLineEdit(self.frame_4)
+		self.lineEdit.setStyleSheet("background-color: transparent;\n"
+									"color: white;\n"
+									"border-color: transparent;\n"
+									"border: 0px solid;")
+		self.lineEdit.setAlignment(Qt.AlignCenter)
+		self.lineEdit.setObjectName("lineEdit")
+		self.horizontalLayout_2.addWidget(self.lineEdit)
+		self.pushButton = QtWidgets.QPushButton(self.frame_4)
+		self.pushButton.setStyleSheet("margin-left: 0px;\n"
+									  "background-color: transparent;\n"
+									  "border-color: transparent;\n"
+									  "border: 0px solid;")
+		self.pushButton.setText("")
+		icon11 = QtGui.QIcon()
+		icon11.addPixmap(QtGui.QPixmap(svg_search),
+						 QtGui.QIcon.Normal, QtGui.QIcon.Off)
+		self.pushButton.setIcon(icon11)
+		self.pushButton.setIconSize(QSize(13, 13))
+		self.pushButton.setObjectName("pushButton")
+		self.horizontalLayout_2.addWidget(self.pushButton)
+		# Segundo item, cuadro busqueda
+		self.horizontalLayout_4.addWidget(self.frame_4)
 		spacerItem1 = QtWidgets.QSpacerItem(
 			40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
 		self.horizontalLayout_4.addItem(spacerItem1)
+		
+		self.btn_app_deb = QtWidgets.QPushButton(self.widget_1)
+		self.btn_app_deb.setObjectName(u"btn_app_deb")
+		self.btn_app_deb.setStyleSheet("""
+									color: rgb(0, 0, 0);
+									background-color: rgba(0, 255, 255, 160);
+									border-color: #00ffff;
+									border: 2px solid;
+									border-radius: 15px;""")
+		self.btn_app_deb.setIcon(QtGui.QIcon(QtGui.QPixmap(get_res('debian'))))
+		self.btn_app_deb.setMinimumSize(QSize(150, 35))
+		self.btn_app_deb.setEnabled(False)
+
+		self.horizontalLayout_4.addWidget(self.btn_app_deb)
 
 		self.label_3 = QtWidgets.QLabel(self.widget_1)
 		self.label_3.setObjectName("label_3")
@@ -458,6 +311,19 @@ class Ui_MainWindow(object):
 		self.label_3.setFont(font)
 		self.label_3.setAlignment(Qt.AlignmentFlag.AlignCenter)
 		self.horizontalLayout_4.addWidget(self.label_3)
+
+		self.btn_app_flatpak = QtWidgets.QPushButton(self.widget_1)
+		self.btn_app_flatpak.setObjectName(u"btn_app_flatpak")
+		self.btn_app_flatpak.setStyleSheet("""
+							background-color: rgb(169, 144, 122);
+							color: #fff;
+							border-color: #fff;
+							border: 2px solid;
+							border-radius: 15px;""")
+		self.btn_app_flatpak.setIcon(QtGui.QIcon(QtGui.QPixmap(get_res('flatpak_sin_texto'))))
+		self.btn_app_flatpak.setMinimumSize(QSize(150, 35))
+
+		self.horizontalLayout_4.addWidget(self.btn_app_flatpak)
 
 
 		spacerItem2 = QtWidgets.QSpacerItem(
@@ -491,7 +357,7 @@ class Ui_MainWindow(object):
 
 		self.horizontalLayout_4.addWidget(self.btn_close)
 
-		self.gridLayout_2.addWidget(self.widget_1, 0, 1, 1, 1)
+		self.gridLayout_2.addWidget(self.widget_1, 0, 0, 1, 2)
 		MainWindow.setCentralWidget(self.centralwidget)
 
 		self.retranslateUi(MainWindow)
@@ -505,42 +371,26 @@ class Ui_MainWindow(object):
 		MainWindow.setWindowTitle(self.__tr("Deepines Store"))
 		self.label_2.setToolTip(self.__tr("About us"))
 		self.label_3.setText(self.__tr("Deepines Store"))
-		self.lbl_list_apps.setText(self.__tr("TextLabel"))
-		self.btn_install.setText(self.__tr("Install"))
-		__sortingEnabled = self.lw_categories.isSortingEnabled()
-		self.lw_categories.setSortingEnabled(False)
-		item = self.lw_categories.item(0)
-		item.setText(self.__tr("Home"))
-		item = self.lw_categories.item(1)
-		item.setText(self.__tr("Deepines"))
-		item = self.lw_categories.item(2)
-		item.setText(self.__tr("Internet"))
-		item = self.lw_categories.item(3)
-		item.setText(self.__tr("Multimedia"))
-		item = self.lw_categories.item(4)
-		item.setText(self.__tr("Graphics"))
-		item = self.lw_categories.item(5)
-		item.setText(self.__tr("Games"))
-		item = self.lw_categories.item(6)
-		item.setText(self.__tr("Office automation"))
-		item = self.lw_categories.item(7)
-		item.setText(self.__tr("Development"))
-		item = self.lw_categories.item(8)
-		item.setText(self.__tr("System"))
-		item = self.lw_categories.item(9)
-		item.setText(self.__tr("Other"))
-		item = self.lw_categories.item(10)
-		item.setText(self.__tr(""))
-		item = self.lw_categories.item(11)
-		item.setText(self.__tr("Installed apps"))
-		self.lw_categories.setSortingEnabled(__sortingEnabled)
+		self.btn_install_review_text = self.__tr("Review apps")
+		self.btn_install_start_text = self.__tr("Start process")
+		self.btn_install.setText(self.btn_install_review_text)
+		
+		item_texts = [self.__tr("Home"), self.__tr("Deepines"), self.__tr("Internet"), self.__tr("Multimedia"),
+		self.__tr("Graphics"), self.__tr("Games"), self.__tr("Office automation"), self.__tr("Development"),
+		self.__tr("System"), self.__tr("Other"), self.__tr(""), self.__tr("Installed apps")]
+		for i in range(self.lw_categories.count()):
+			item = self.lw_categories.item(i)
+			item.setText(item_texts[i])
+
 		self.lineEdit.setPlaceholderText(self.__tr("Search"))
 		self.about_version_text = self.__tr("About \nVersion: {version}")
 		self.btn_minimize.setToolTip(self.__tr("Minimize"))
 		self.btn_zoom.setToolTip(self.__tr("Zoom"))
 		self.btn_close.setToolTip(self.__tr("Close"))
 		self.label.setText(self.about_version_text.format(version=STORE_VERSION))
-		self.btn_app_deb.setText(self.__tr("Apps Flatpak"))
+		self.btn_app_deb.setText(self.__tr("Apps .deb"))
+		self.btn_app_flatpak.setText(self.__tr("Apps Flatpak"))
+		
 		
 		# StoreWindow
 		self.list_apps_text = self.__tr("Select the apps to install")
@@ -549,8 +399,8 @@ class Ui_MainWindow(object):
 		self.selected_installed_app_text = self.__tr("Installed")
 		self.uninstall_app_text = self.__tr("Uninstall")
 		self.uninstalled_app_text = self.__tr("Uninstalled")
-		self.single_app_text = self.__tr("{app_count} app selected to install, click here to review it")
-		self.multi_apps_text = self.__tr("{app_count} apps selected to install, click here to review them")
+		self.single_app_text = self.__tr("{app_count} app selected, click here to review it")
+		self.multi_apps_text = self.__tr("{app_count} apps selected, click here to review them")
 		self.error_no_server_text = self.__tr("Unable to establish connection with the server, <br>"
 											  "please check your internet connection.<br>"
 											  "If the problem persists, please contact us via Telegram <br>"
@@ -560,3 +410,7 @@ class Ui_MainWindow(object):
 													 "Deepines Store needs this repository to work.<br>"
 													 "In the following link you will find the instructions to install it:<br><br>"
 													 "{repoURL}").format(repoURL=get_text_link("deepinenespañol.org/deepines/"))
+		self.process_install_text = self.__tr("Installing...")
+		self.process_install_failed_text = self.__tr("Installation failed!")
+		self.status_ready_to_install_text = self.__tr("Ready to install")
+		self.status_starting_install_text = self.__tr("Starting installation...")

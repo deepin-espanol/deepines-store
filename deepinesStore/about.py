@@ -10,9 +10,8 @@ people = [G("Car", "@Xhafas"), G("Sebastian Trujillo", "@SebTrujillo"), G("Amaro
 G("Freddy", "@Akibaillusion"), G("jhalo", "@jhalo"),
 G("Isaías Gätjens M", "@igatjens"), G("Jose Fenoll", "@fenoll"), G("Hugo Florentino", "@geekmidget"),
 G("Eli", "@RealAct"), G("Diego", "@s_d1112"), G("Filho Arrais", "@filhoarrais"),
-G("Alvaro Samudio", "@G4SP3R"), G("Omi", "@peteromio"), G("Opik", "@Prophaniti"), G("José Siapo", "@jsiapodev"),
-G("Jorge Cabrera", "@seiyukaras"), G("N1coc4colA", "@n1coc4cola"), G("Oscar Ortiz", "@oscararg"), G("Jorge", "@jotakenobi"),
-G("Tomás Warynyca", "@TomasWarynyca"), G("Edwinsiño C", "@Shokatsuo"),
+G("Alvaro Samudio", "@G4SP3R"), G("José Siapo", "@jsiapodev"),
+G("Oscar Ortiz", "@oscararg"),  G("Edwinsiño C", "@Shokatsuo"),
 ]
 
 class AboutDialog(QtWidgets.QDialog):
@@ -49,7 +48,8 @@ class AboutDialog(QtWidgets.QDialog):
 		self.description_lbl.setFont(font)
 		self.description_lbl.setAlignment(QtCore.Qt.AlignCenter)
 
-		list_ppl = CreditsListWidget()
+		list_ppl = CreditsListWidget(self)
+		list_ppl.setSpacing(2)
 		self.pplP = add_people_to_list(people, list_ppl)
 		fntLst = QtGui.QFont()
 		fntLst.setPointSize(11)

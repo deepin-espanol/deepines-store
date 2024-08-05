@@ -1,72 +1,69 @@
-import deepinesStore.demoted_actions as actions
 from deepinesStore.app_info import AppInfo, AppType
-from deepinesStore.core import get_dl
+from lxml import etree
+import locale
 
-# Categorias de app en flathub
+# Flathub appstream.xml file location
+appstream_file = "/var/lib/flatpak/appstream/flathub/x86_64/active/appstream.xml"
+
+# Flathub app categories
 categories = [
 		"AudioVideo", "Development", "Education", "Games", "Game", "Productivity",
 		"Graphics", "Network", "Office", "Science", "System", "Utility"
 	]
 
-# Obtenemos  las apps desde el api de flathub
-def fetch_list_app_flatpak():
-	api_url = "https://flathub.org/api/v1/apps"
-	try:
-		request = get_dl(api_url, timeout=20)
-		app_list = list()
-		for app in request.json():
-			name = app['name']
-			description = app['summary']
-			category = "None"
-			state = 1
-			appID = app['flatpakAppId']
-			app_info = [name, description, 'None', category, state, appID]
-			app_list.append(app_info)
-		
-	except Exception as e:
-		print("Error fetching apps:", e)
-		return []
+def get_preferred_text(element, tag, preferred_lang):
+	nsmap = {"xml": "http://www.w3.org/XML/1998/namespace"}
+	# Try to find the element with the full preferred xml:lang attribute
+	full_lang_xpath = f'{tag}[@xml:lang="{preferred_lang}"]'
+	full_lang_elem = element.find(full_lang_xpath, namespaces=nsmap)
+	if full_lang_elem is not None:
+		return full_lang_elem.text
+
+	# If not found, try to find the element with the base language (e.g., 'en' from 'en_US')
+	base_lang = preferred_lang.split('_')[0]
+	base_lang_xpath = f'{tag}[@xml:lang="{base_lang}"]'
+	base_lang_elem = element.find(base_lang_xpath, namespaces=nsmap)
+	if base_lang_elem is not None:
+		return base_lang_elem.text
+
+	# If neither is found, try to find the element without xml:lang attribute (default language)
+	default_lang_elem = element.find(tag)
+	if default_lang_elem is not None and 'xml:lang' not in default_lang_elem.attrib:
+		return default_lang_elem.text
+
+	# If none of the above is found, return None
+	return None
+
+def app_list_flatpak() -> list[AppInfo]:
+	# Get the system language
+	system_lang = locale.getdefaultlocale()[0]
+
+	# Parse the appstream file with lxml
+	tree = etree.parse(appstream_file)
+	root = tree.getroot()
+	app_list = []
+
+	for component in root.findall('component'):
+		if component.get('type') in ['runtime', 'addon']:
+			continue
+
+		app_id = component.find('id').text
+		app_name = get_preferred_text(component, 'name', system_lang)
+		app_summary = get_preferred_text(component, 'summary', system_lang)
+		app_version = None
+		releases = component.find('releases')
+		if releases is not None and releases.findall('release'):
+			app_version = releases.findall('release')[-1].get('version')
+
+		app_category = "other"
+		app_categories = component.find('categories')
+		if app_categories is not None:
+			for category in app_categories.findall('category'):
+				if category.text in categories:
+					app_category = category.text
+					break
+
+		app_info = AppInfo(name=app_name, id=app_id, description=app_summary, version=app_version, category=app_category, type=AppType.FLATPAK_APP)
+		app_list.append(app_info)
+
 	return app_list
-
-
-def fetch_apps_by_category(category):
-	try:
-		api_url = f"https://flathub.org/api/v1/apps/category/{category}"
-		request = get_dl(api_url, timeout=20)
-		return request.json() if request.status_code == 200 else []
-	except Exception as e:
-		print(f"Error fetching apps in category {category}:", e)
-		return []
-
-def two_columns_split(output: str):
-	lines = output.split('\n')
-	result = {}
-	for line in lines:
-		columns = line.split(maxsplit=1)
-		if len(columns) == 2:
-			result[columns[0]] = columns[1].strip()
-
-	return result
-
-app_id_ver_dict = two_columns_split(actions.get_flatpak_info_cmd())
-
-def add_apps_dict_by_categories():
-	app_data = {}
-	for category in categories:
-		app_data[category] = fetch_apps_by_category(category)
-	return app_data
-
-def apps_flatpak_in_categories() -> list[AppInfo]:
-	app_data = add_apps_dict_by_categories()
-	fp_app_info = list()
-	already_added = list()
-	for category in categories:
-		for app in app_data[category]: # FIXME: This is not adding some "uncategorized" apps
-			app_id = app['flatpakAppId']
-			if not app_id in already_added: 
-				version = app_id_ver_dict.get(app_id) or "No version"
-				app_info = AppInfo(app['name'], app_id, app['summary'], version, category, AppType.FLATPAK_APP)
-				already_added.append(app_id)
-				fp_app_info.append(app_info)
-	
-	return fp_app_info

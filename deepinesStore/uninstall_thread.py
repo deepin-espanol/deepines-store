@@ -69,7 +69,7 @@ class ExternalUninstall(QObject):
 				break
 
 	def uninstall_flatpak_app(self, app_id: str):
-		flatpak_uninstall = demoted.run_cmd(demoted.DEF, cmd=["flatpak", "--user", "uninstall", "--delete-data", "-y", app_id])
+		flatpak_uninstall = demoted.run_cmd(demoted.DEF, cmd=["flatpak", "uninstall", "--delete-data", "-y", app_id])
 		while not flatpak_uninstall.poll():
 			line = flatpak_uninstall.stdout.readline()
 			if line:

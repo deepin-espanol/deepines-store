@@ -55,12 +55,11 @@ def get_flatpak_info_cmd():
 		return p
 
 	try:
-		p = check_output(['flatpak', '--user', 'remote-ls', 'flathub', '--app', '--columns=application,version'], text=True, env=DEF.env, preexec_fn=set(DEF.uid, DEF.gid))
+		p = check_output(['flatpak', 'remote-ls', 'flathub', '--app', '--columns=application,version'], text=True, env=DEF.env, preexec_fn=set(DEF.uid, DEF.gid))
 	except CalledProcessError:
 		print("Couldn't get flatpak app info: Error running flatpak command!")
-		# FIXME: Notify the user, or automatize this!!
 		print("You may need to run the following to enable the flathub repository:")
-		print("flatpak --user remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo")
+		print("flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo")
 	return p
 
 def browse(uri: str):

@@ -1,5 +1,6 @@
 from PyQt5 import QtGui, QtWidgets as w
-from PyQt5.QtCore import pyqtSignal, Qt, QTimer
+from PyQt5.QtCore import pyqtSignal, Qt, QTimer, QEasingCurve, QPropertyAnimation
+from PyQt5.QtGui import QLinearGradient, QPainter, QBrush, QColor, QPalette
 
 from deepinesStore.demoted_actions import browse, open_telegram_link
 
@@ -50,10 +51,8 @@ class ClickableList(w.QListWidget):
 		else:
 			super().keyPressEvent(event)
 
-
-# FIXME: Need to revisit this! AI is not a good coder!
 class CreditsListWidget(w.QListWidget):
-	def __init__(self, parent=None):
+	def __init__(self, parent):
 		super().__init__(parent)
 		self.itemClicked.connect(self.on_item_click)
 		self.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
@@ -64,9 +63,34 @@ class CreditsListWidget(w.QListWidget):
 		self.timer.timeout.connect(self.scroll)
 		self.timer.start(30)  # scroll every 30 ms
 		self.setVerticalScrollMode(w.QAbstractItemView.ScrollPerPixel)
-		self.setMouseTracking(True) # enable mouse tracking
+		self.setMouseTracking(True)  # enable mouse tracking
 		self.is_paused = False
-		
+		self.fade_height = 50  # Height of fade effect at top and bottom
+		self.window_color = parent.palette().color(QPalette.ColorRole.Window)
+
+		# Setup animation for smooth scrolling
+		self.scroll_animation = QPropertyAnimation(self.verticalScrollBar(), b"value")
+		self.scroll_animation.setDuration(1000)  # 1 second for smooth scroll
+		self.scroll_animation.setEasingCurve(QEasingCurve.OutQuad)
+
+	def set_skip_item_action_indices(self, skip_indices=[]):
+		self.setStyle(NoClickableStyle(self.style(), skip_indices))
+
+	def paintEvent(self, event):
+		super().paintEvent(event)
+		painter = QPainter(self.viewport())
+		painter.setRenderHint(QPainter.Antialiasing)
+
+		# Create gradient for fading
+		gradient = QLinearGradient(0, 0, 0, self.height())
+		gradient.setColorAt(0, self.window_color)
+		gradient.setColorAt(self.fade_height / self.height(), QColor(0, 0, 0, 0))
+		gradient.setColorAt(1 - self.fade_height / self.height(), QColor(0, 0, 0, 0))
+		gradient.setColorAt(1, self.window_color)
+
+		# Draw gradient overlay
+		painter.fillRect(self.rect(), QBrush(gradient))
+
 	def mousePressEvent(self, event):
 		if event.buttons() == Qt.LeftButton:
 			self.is_paused = True
@@ -74,21 +98,19 @@ class CreditsListWidget(w.QListWidget):
 		super().mousePressEvent(event)
 
 	def mouseReleaseEvent(self, event):
-		if event.buttons() == Qt.LeftButton:
+		if event.button() == Qt.LeftButton:
 			self.is_paused = False
 			self.timer.start()
 		super().mouseReleaseEvent(event)
 
 	def mouseMoveEvent(self, event):
 		pos = self.mapFromGlobal(QtGui.QCursor.pos())
-		'''
 		if self.rect().contains(pos):
 			self.is_paused = True
 			self.timer.stop()
 		else:
 			self.is_paused = False
 			self.timer.start()
-		'''
 
 	def on_item_click(self, item):
 		contact = item.data(Qt.UserRole)
@@ -102,8 +124,11 @@ class CreditsListWidget(w.QListWidget):
 		if self.is_paused:
 			return
 		current_value = self.verticalScrollBar().value()
-		if current_value == self.verticalScrollBar().maximum():
-			self.verticalScrollBar().setValue(0)
+		max_value = self.verticalScrollBar().maximum()
+		if current_value == max_value:
+			self.scroll_animation.setStartValue(max_value)
+			self.scroll_animation.setEndValue(0)
+			self.scroll_animation.start()
 		else:
 			self.verticalScrollBar().setValue(current_value + 1)
 
@@ -129,9 +154,12 @@ class LinkLabel(w.QLabel):
 		self.setTextInteractionFlags(Qt.TextBrowserInteraction)
 		self.linkActivated.connect(self.on_link_clicked)
 
+
 def add_people_to_list(people, list_widget):
-	group_box = w.QGroupBox()
-	layout = w.QVBoxLayout()
+	empty_item = w.QListWidgetItem()
+	list_widget.addItem(empty_item)
+	empty_item.setFlags(Qt.NoItemFlags)
+
 	for person in people:
 		item = w.QListWidgetItem()
 		item.setText(person.name)
@@ -146,7 +174,11 @@ def add_people_to_list(people, list_widget):
 			else:
 				item.setToolTip(f'Email: {person.contact}')
 		list_widget.addItem(item)
-	layout.addWidget(list_widget)
-	group_box.setLayout(layout)
-	return group_box
 
+	empty_item = w.QListWidgetItem()
+	list_widget.addItem(empty_item)
+	empty_item.setFlags(Qt.NoItemFlags)
+
+	list_widget.set_skip_item_action_indices([0, len(people) + 1])
+
+	return list_widget

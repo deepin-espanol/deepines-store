@@ -149,12 +149,14 @@ SOURCES_DIR=/etc/apt/sources.list.d
 REPO="deb http://repositorio.deepines.com/pub/deepines/%d/ stable main"
 
 INSTALLING_DEEPINES="Installing Deepines %d repository and key..."
+INSTALLING_FLATHUB="Adding Flathub repository..."
 INSTALLING_DONE=" done.\n"
 INSTALLING_FAILED=" failed:\n"
 
 case "${LANGUAGE:-$LANG}" in
 es*)
 	INSTALLING_DEEPINES="Instalando repositorio y clave de Deepines %d..."
+	INSTALLING_FLATHUB="Añadiendo repositorio de Flathub..."
 	INSTALLING_DONE=" hecho.\n"
 	INSTALLING_FAILED=" falló:\n"
 	;;
@@ -249,9 +251,23 @@ InstallDeepines() {
 	esac
 }
 
+InstallFlathubRepository() {
+	$Fmt "${INSTALLING_FLATHUB}" && FlathubInstallationResult=$(
+		flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+		flatpak update --appstream --assumeyes
+		flatpak install flathub org.gtk.Gtk3theme.deepin org.gtk.Gtk3theme.deepin-dark --assumeyes
+	) || {
+		$Fmt "$INSTALLING_FAILED"
+		echo "$FlathubInstallationResult"
+		db_go || true
+		exit 1
+	} && $Fmt "$INSTALLING_DONE"
+}
+
 case "$1" in
 configure)
 	InstallDeepines
+	InstallFlathubRepository
 	;;
 esac
 
@@ -463,7 +479,7 @@ Maintainer: $PKG_DEV
 Homepage: $PKG_SRC
 Priority: optional
 Pre-Depends: debconf (>= 0.5)
-Depends: $P3, $P3-lxml, $P3-pyqt5, $P3-requests, flatpak
+Depends: $P3, $P3-lxml, $P3-pyqt5, $P3-requests, $P3-apt, flatpak
 Replaces: deepines-repository (<= 1:4.1), deepines-store:amd64 (<= 1.3.3)
 Description: Deepines repository, key and Store
  Deepines unofficial repository and Store by deepinenespanol.org
