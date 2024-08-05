@@ -23,7 +23,6 @@ class AboutDialog(QtWidgets.QDialog):
 		self.setModal(True)
 		self.setWindowFlag(QtCore.Qt.WindowContextHelpButtonHint, False)
 		self.setAutoFillBackground(True)
-		self.setStyleSheet("background-color: #2b2b2b; color: #fff")
 		self.app_icon_btn = QtWidgets.QPushButton(self)
 		self.app_icon_btn.setEnabled(True)
 		self.app_icon_btn.setIconSize(QtCore.QSize(120, 120))
@@ -49,7 +48,8 @@ class AboutDialog(QtWidgets.QDialog):
 		self.description_lbl.setFont(font)
 		self.description_lbl.setAlignment(QtCore.Qt.AlignCenter)
 
-		list_ppl = CreditsListWidget()
+		list_ppl = CreditsListWidget(self)
+		list_ppl.setSpacing(2)
 		self.pplP = add_people_to_list(people, list_ppl)
 		fntLst = QtGui.QFont()
 		fntLst.setPointSize(11)
