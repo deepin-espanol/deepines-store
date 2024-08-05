@@ -141,102 +141,29 @@ class Ui_MainWindow(object):
 			"  border: 0px solid transparent;\n"
 			"  color: #419fd9;\n"
 			"}")
+		icons = [svg_star, svg_deepines, svg_internet, svg_music, svg_picture, svg_console, svg_board, svg_terminal, svg_computer, svg_pamela]
+		flags = Qt.ItemIsSelectable | Qt.ItemIsEnabled
 		self.lw_categories.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
 		self.lw_categories.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
 		self.lw_categories.setAutoScroll(False)
 		self.lw_categories.setIconSize(QSize(24, 24))
 		self.lw_categories.setObjectName("lw_categories")
-		item = QtWidgets.QListWidgetItem()
-		icon1 = QtGui.QIcon()
-		icon1.addPixmap(QtGui.QPixmap(svg_star),
-						QtGui.QIcon.Normal, QtGui.QIcon.Off)
-		item.setIcon(icon1)
-		item.setFlags(Qt.ItemIsSelectable |
-					  Qt.ItemIsUserCheckable | Qt.ItemIsEnabled)
-		self.lw_categories.addItem(item)
-		item = QtWidgets.QListWidgetItem()
-		icon2 = QtGui.QIcon()
-		icon2.addPixmap(QtGui.QPixmap(svg_deepines),
-						QtGui.QIcon.Normal, QtGui.QIcon.Off)
-		item.setIcon(icon2)
-		self.lw_categories.addItem(item)
-		item = QtWidgets.QListWidgetItem()
-		icon3 = QtGui.QIcon()
-		icon3.addPixmap(QtGui.QPixmap(svg_internet),
-						QtGui.QIcon.Normal, QtGui.QIcon.Off)
-		item.setIcon(icon3)
-		item.setFlags(Qt.ItemIsSelectable |
-					  Qt.ItemIsUserCheckable | Qt.ItemIsEnabled)
-		self.lw_categories.addItem(item)
-		item = QtWidgets.QListWidgetItem()
-		icon4 = QtGui.QIcon()
-		icon4.addPixmap(QtGui.QPixmap(svg_music),
-						QtGui.QIcon.Normal, QtGui.QIcon.Off)
-		item.setIcon(icon4)
-		item.setFlags(Qt.ItemIsSelectable |
-					  Qt.ItemIsUserCheckable | Qt.ItemIsEnabled)
-		self.lw_categories.addItem(item)
-		item = QtWidgets.QListWidgetItem()
-		icon5 = QtGui.QIcon()
-		icon5.addPixmap(QtGui.QPixmap(svg_picture),
-						QtGui.QIcon.Normal, QtGui.QIcon.Off)
-		item.setIcon(icon5)
-		item.setFlags(Qt.ItemIsSelectable |
-					  Qt.ItemIsUserCheckable | Qt.ItemIsEnabled)
-		self.lw_categories.addItem(item)
-		item = QtWidgets.QListWidgetItem()
-		icon6 = QtGui.QIcon()
-		icon6.addPixmap(QtGui.QPixmap(svg_console),
-						QtGui.QIcon.Normal, QtGui.QIcon.Off)
-		item.setIcon(icon6)
-		item.setFlags(Qt.ItemIsSelectable |
-					  Qt.ItemIsUserCheckable | Qt.ItemIsEnabled)
-		self.lw_categories.addItem(item)
-		item = QtWidgets.QListWidgetItem()
-		icon7 = QtGui.QIcon()
-		icon7.addPixmap(QtGui.QPixmap(svg_board),
-						QtGui.QIcon.Normal, QtGui.QIcon.Off)
-		item.setIcon(icon7)
-		item.setFlags(Qt.ItemIsSelectable |
-					  Qt.ItemIsUserCheckable | Qt.ItemIsEnabled)
-		self.lw_categories.addItem(item)
-		item = QtWidgets.QListWidgetItem()
-		icon8 = QtGui.QIcon()
-		icon8.addPixmap(QtGui.QPixmap(svg_terminal),
-						QtGui.QIcon.Normal, QtGui.QIcon.Off)
-		item.setIcon(icon8)
-		item.setFlags(Qt.ItemIsSelectable |
-					  Qt.ItemIsUserCheckable | Qt.ItemIsEnabled)
-		self.lw_categories.addItem(item)
-		item = QtWidgets.QListWidgetItem()
-		icon9 = QtGui.QIcon()
-		icon9.addPixmap(QtGui.QPixmap(svg_computer),
-						QtGui.QIcon.Normal, QtGui.QIcon.Off)
-		item.setIcon(icon9)
-		item.setFlags(Qt.ItemIsSelectable |
-					  Qt.ItemIsUserCheckable | Qt.ItemIsEnabled)
-		self.lw_categories.addItem(item)
-		item = QtWidgets.QListWidgetItem()
-		icon10 = QtGui.QIcon()
-		icon10.addPixmap(QtGui.QPixmap(svg_pamela),
-						 QtGui.QIcon.Normal, QtGui.QIcon.Off)
-		item.setIcon(icon10)
-		item.setFlags(Qt.ItemIsSelectable | 
-					  Qt.ItemIsUserCheckable | Qt.ItemIsEnabled)
-		self.lw_categories.addItem(item)
-		item = QtWidgets.QListWidgetItem()
-		item.setFlags(Qt.NoItemFlags)
-		self.lw_categories.set_skip_item_action_indices([10])
+		self.lw_categories.setAutoFillBackground(False)
 
-		self.lw_categories.addItem(item)
-		item = QtWidgets.QListWidgetItem()
-		icon11 = QtGui.QIcon()
-		icon11.addPixmap(QtGui.QPixmap(svg_installed),
-						 QtGui.QIcon.Normal, QtGui.QIcon.Off)
-		item.setIcon(icon11)
-		item.setFlags(Qt.ItemIsSelectable |
-					  Qt.ItemIsUserCheckable | Qt.ItemIsEnabled)
-		self.lw_categories.addItem(item)
+		def add_icon_item(self, icon, flags):
+			item = QtWidgets.QListWidgetItem()
+			if icon:
+				item.setIcon(QtGui.QIcon(icon))
+			item.setFlags(flags)
+			self.lw_categories.addItem(item)
+
+		for icon in icons:
+			add_icon_item(self, icon, flags)
+
+		add_icon_item(self, None, Qt.NoItemFlags) # Empty item (separator)
+		self.lw_categories.set_skip_item_action_indices([len(icons)])
+
+		add_icon_item(self, svg_installed, flags)  # Last item (Installed apps)
 		# Tercer item, lista de filtros
 		self.verticalLayout.addWidget(self.lw_categories)
 
@@ -444,37 +371,17 @@ class Ui_MainWindow(object):
 		MainWindow.setWindowTitle(self.__tr("Deepines Store"))
 		self.label_2.setToolTip(self.__tr("About us"))
 		self.label_3.setText(self.__tr("Deepines Store"))
-		self.lbl_list_apps.setText(self.__tr("TextLabel"))
 		self.btn_install_review_text = self.__tr("Review apps")
 		self.btn_install_start_text = self.__tr("Start process")
 		self.btn_install.setText(self.btn_install_review_text)
-		__sortingEnabled = self.lw_categories.isSortingEnabled()
-		self.lw_categories.setSortingEnabled(False)
-		item = self.lw_categories.item(0)
-		item.setText(self.__tr("Home"))
-		item = self.lw_categories.item(1)
-		item.setText(self.__tr("Deepines"))
-		item = self.lw_categories.item(2)
-		item.setText(self.__tr("Internet"))
-		item = self.lw_categories.item(3)
-		item.setText(self.__tr("Multimedia"))
-		item = self.lw_categories.item(4)
-		item.setText(self.__tr("Graphics"))
-		item = self.lw_categories.item(5)
-		item.setText(self.__tr("Games"))
-		item = self.lw_categories.item(6)
-		item.setText(self.__tr("Office automation"))
-		item = self.lw_categories.item(7)
-		item.setText(self.__tr("Development"))
-		item = self.lw_categories.item(8)
-		item.setText(self.__tr("System"))
-		item = self.lw_categories.item(9)
-		item.setText(self.__tr("Other"))
-		item = self.lw_categories.item(10)
-		item.setText(self.__tr(""))
-		item = self.lw_categories.item(11)
-		item.setText(self.__tr("Installed apps"))
-		self.lw_categories.setSortingEnabled(__sortingEnabled)
+		
+		item_texts = [self.__tr("Home"), self.__tr("Deepines"), self.__tr("Internet"), self.__tr("Multimedia"),
+		self.__tr("Graphics"), self.__tr("Games"), self.__tr("Office automation"), self.__tr("Development"),
+		self.__tr("System"), self.__tr("Other"), self.__tr(""), self.__tr("Installed apps")]
+		for i in range(self.lw_categories.count()):
+			item = self.lw_categories.item(i)
+			item.setText(item_texts[i])
+
 		self.lineEdit.setPlaceholderText(self.__tr("Search"))
 		self.about_version_text = self.__tr("About \nVersion: {version}")
 		self.btn_minimize.setToolTip(self.__tr("Minimize"))

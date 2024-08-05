@@ -294,64 +294,38 @@ class StoreMWindow(QMainWindow, EventsMixin):
 	#				Filtro de apps				#
 
 	def listwidgetclicked(self, item):
-		filtro = list()  # Limpiamos la lista
+		filter = list()
 		global lista_global, list_app_show_temp
 
-		# TODO: Maybe a switch statement would be nice here
-		if item == ui.lw_categories.item(0):  # Home
-			filtro.append("inicio")
-		if item == ui.lw_categories.item(1):  # Deepines
-			filtro.append("deepines")
-		if item == ui.lw_categories.item(2):  # Internet
-			filtro.append("web")
-			filtro.append("net")
-			filtro.append("mail")
-			filtro.append("networking")
-			filtro.append("network")
-		if item == ui.lw_categories.item(3):  # Multimedia
-			filtro.append("sound")
-			filtro.append("audio")
-			filtro.append("video")
-			filtro.append("audiovideo")
-		if item == ui.lw_categories.item(4):  # Graphics
-			filtro.append("graphics")
-			filtro.append("media")
-		if item == ui.lw_categories.item(5):  # Games
-			filtro.append("games")
-			filtro.append("game")
-		if item == ui.lw_categories.item(6):  # Office automation
-			filtro.append("editors")
-			filtro.append("office")
-			filtro.append("productivity")
-		if item == ui.lw_categories.item(7):  # Development
-			filtro.append("devel")
-			filtro.append("shells")
-			filtro.append("development")
-		if item == ui.lw_categories.item(8):  # System
-			filtro.append("admin")
-			filtro.append("python")
-			filtro.append("system")
-			filtro.append("utility")
-		if item == ui.lw_categories.item(9):  # Other
-			filtro.append("otros")
-			filtro.append("education")
-			filtro.append("science")
-		if item == ui.lw_categories.item(11):
-			filtro.append("installed")			
+		filter_mapping = {
+			0: ["home"],
+			1: ["deepines"],
+			2: ["web", "net", "mail", "networking", "network"],
+			3: ["sound", "audio", "video", "audiovideo"],
+			4: ["graphics", "media"],
+			5: ["games", "game"],
+			6: ["editors", "office", "productivity"],
+			7: ["devel", "shells", "development"],
+			8: ["admin", "python", "system", "utility"],
+			9: ["other", "education", "science"],
 
-		if "inicio" not in filtro and "installed" not in filtro:
-			# TODO: Cambiar funcionamiento por una separacion de las app
-			# TODO: en listas en diccionarios fijos, al cargar la tienda.
+			11: ["installed"]
+		}
+
+		index = ui.lw_categories.currentRow()
+		filter.extend(filter_mapping.get(index, []))
+
+		if "home" not in filter and "installed" not in filter:
+			# TODO: Change the way of filtering apps to a dictionary of lists when loading the store.
 			global list_app_show_temp
-			list_app_show_temp = self.Get_App_Filter(lista_global, filtro)
-		elif "installed" in filtro:
+			list_app_show_temp = self.Get_App_Filter(lista_global, filter)
+		elif "installed" in filter:
 			list_app_show_temp = installed
 		else:
 			if selected_type_app == AppType.DEB_PACKAGE:
 				list_app_show_temp = self.inicio_apps_deb
-			else:
+			if selected_type_app == AppType.FLATPAK_APP:
 				list_app_show_temp = self.inicio_apps_flatpak
-
 		self.change_color_btn_install()
 		self.do_list_apps(list_app_show_temp)
 		self.clear_search_txt()
@@ -375,7 +349,7 @@ class StoreMWindow(QMainWindow, EventsMixin):
 					if elemento.name == app:
 						lista_filtrada.append(elemento)
 		else:
-			if "otros" not in filtro:
+			if "other" not in filtro:
 				for elemento in lista_app:
 					categoria_app = elemento.category.lower().split("/")
 					for filtro_uno in categoria_app:
