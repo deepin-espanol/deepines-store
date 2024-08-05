@@ -43,19 +43,6 @@ def get_dl(uri, params=None, **kwargs):
 		return DummyResponse()
 
 
-def download_file(uri, params=None, **kwargs):
-	response = get_dl(uri, params=params, **kwargs)
-	return response
-
-
-def get_dl_multi(uris, params=None, **kwargs):
-	import concurrent.futures
-	with concurrent.futures.ThreadPoolExecutor() as executor:
-		futures = [executor.submit(download_file, uri, params=params, **kwargs) for uri in uris]
-		responses = [future.result() for future in concurrent.futures.as_completed(futures)]
-	return responses
-
-
 def uri_join(base_uri, *args):
 	base_uri = base_uri.rstrip('/')
 	relative_paths = list(map(lambda x: x.lstrip('/'), args))
