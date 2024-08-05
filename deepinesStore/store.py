@@ -19,7 +19,7 @@ from deepinesStore.maing import Ui_MainWindow
 from deepinesStore.cardg import Ui_Frame
 from deepinesStore.about import AboutDialog
 from deepinesStore.core import get_res, get_app_icon
-from deepinesStore.flatpak.get_apps_flatpak import apps_flatpak_in_categories
+from deepinesStore.flatpak.get_apps_flatpak import app_list_flatpak
 from deepinesStore.deb.get_apps_deb import fetch_list_app_deb
 from deepinesStore.install_progress import InstallThread
 from deepinesStore import setup
@@ -980,7 +980,7 @@ class LoaderThread(QThread):
 		list_app_exclude = setup.Get_App_Exclude()
 		self.progress.emit(self.parent.initializingString)
 		list_app_deb = fetch_list_app_deb(list_app_exclude)
-		list_app_flatpak = apps_flatpak_in_categories()
+		list_app_flatpak = app_list_flatpak()
 		self.progress.emit(self.parent.finalizingString)
 		installed = setup.get_installed_apps(list_app_deb, list_app_flatpak)
 		setup.download_control()
