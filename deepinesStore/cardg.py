@@ -31,9 +31,10 @@ class Ui_Frame(object):
 		font.setPointSize(11)
 		font.setItalic(False)
 		self.lbl_name_app.setFont(font)
-		self.lbl_name_app.setWordWrap(True)
+		self.lbl_name_app.setWordWrap(False)
 		self.lbl_name_app.setObjectName("lbl_name_app")
 		self.verticalLayout.addWidget(self.lbl_name_app)
+		self.lbl_name_app.resizeEvent = self.adjust_font_size
 		self.lbl_version = ClickableLabel(Frame)
 		font = QtGui.QFont()
 		font.setPointSize(9)
@@ -50,6 +51,21 @@ class Ui_Frame(object):
 
 		self.retranslateUi(Frame)
 		QMetaObject.connectSlotsByName(Frame)
+
+	def adjust_font_size(self, event):
+		label = self.lbl_name_app
+		font = label.font()
+		font_metrics = QtGui.QFontMetrics(font)
+		text = label.text()
+		label_width = label.width()
+
+		# Reduce the font size until the text fits within the label's width
+		while font_metrics.width(text) > label_width and font.pointSize() > 1:
+			font.setPointSize(font.pointSize() - 1)
+			font_metrics = QtGui.QFontMetrics(font)
+
+		label.setFont(font)
+		super(ClickableLabel, label).resizeEvent(event)
 
 	def __tr(self, txt, disambiguation=None, n=-1):
 		from deepinesStore.core import tr
