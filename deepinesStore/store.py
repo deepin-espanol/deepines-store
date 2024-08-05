@@ -811,9 +811,13 @@ class Card(QFrame):
 			app_banner = QPixmap(self.get_banner_path(self.application.id))
 			self.cd.image_app.setPixmap(app_banner)
 		if (self.application.type == AppType.FLATPAK_APP):
-			# use app id, if not found, then use the alternative app name
-			alt_app_name = str(self.application.name).lower().replace(" ", "-") # TODO: Check if replacing it by nothing fetches something...
-			app_banner = QPixmap(self.get_banner_path(self.application.id, alt_app_name))
+			# use app id, if not found, then use the alternative app names
+			alt_app_name_1 = str(self.application.name).lower().replace(" ", "-")
+			alt_app_name_2 = str(self.application.name).lower().replace(" ", "")
+			alt_app_name_3 = str(self.application.name).lower().replace(" ", "_")
+			alt_app_name_4 = str(self.application.id).split('.')[-1]
+			app_banner_path = self.get_banner_path(self.application.id, [alt_app_name_1, alt_app_name_2, alt_app_name_3, alt_app_name_4])
+			app_banner = self.fixed_banner_pixmap(app_banner_path)
 			app_overlay = QPixmap(get_res('flatpak'))
 			app_pixmap = QPixmap(app_banner)
 			painter = QPainter(app_pixmap)
@@ -827,6 +831,17 @@ class Card(QFrame):
 		self.cd.lbl_name_app.clicked.connect(
 			lambda: self.select_app())
 		self.cd.btn_select_app.clicked.connect(lambda: self.select_app())
+
+	def fixed_banner_pixmap(self, banner_path):
+		pixmap = QPixmap(banner_path)
+		if banner_path.endswith('.png'):
+			new_pixmap = QPixmap(324, 234)
+			new_pixmap.fill(Qt.transparent)
+			painter = QPainter(new_pixmap)
+			painter.drawPixmap((324 - pixmap.width()) // 2, (234 - pixmap.height()) // 2, pixmap)
+			painter.end()
+			pixmap = new_pixmap
+		return pixmap
 
 	def eventFilter(self, object, event):
 		if event.type() == QEvent.Enter:
@@ -851,12 +866,22 @@ class Card(QFrame):
 		self.setGraphicsEffect(shadow)
 		return True
 
-	def get_banner_path(self, app_name: str, alt_app_name: str = ""):
+	def get_banner_path(self, app_name: str, alt_app_names: list[str] = []):
 		path = get_res(app_name, 'resources/apps')
 
-		if alt_app_name and not os.path.exists(path):
-			return self.get_banner_path(alt_app_name)
+		if alt_app_names:
+			for alt_app_name in alt_app_names:
+				if os.path.exists(get_res(alt_app_name, 'resources/apps')):
+					path = get_res(alt_app_name, 'resources/apps')
+					break
 
+		# check for Flatpak icon
+		if not os.path.exists(path):
+			flatpak_path = f'/var/lib/flatpak/appstream/flathub/x86_64/active/icons/flatpak/128x128/{app_name}.png'
+			if os.path.exists(flatpak_path):
+				path = flatpak_path
+				
+		# if still not found, use the default image
 		if not os.path.exists(path):
 			path = get_res('no-img', 'resources/apps')
 
