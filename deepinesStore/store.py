@@ -77,11 +77,16 @@ class StoreMWindow(QMainWindow, EventsMixin):
 		ui.setupUi(self)
 		self.setWindowFlags(self.windowFlags() | Qt.FramelessWindowHint)
 		self.setAttribute(Qt.WA_TranslucentBackground, True)
+		self.install_thread = None
+		self.refresh_app_grid_timer = QTimer(self)
+		self.refresh_app_grid_timer.setSingleShot(True)
+		self.refresh_app_grid_timer.timeout.connect(self.refresh_app_grid)
 
 		global selected_apps, installed,\
 			lista_inicio, lista_global, \
 			selected_type_app, uninstalled, list_app_deepines, \
 			list_app_flatpak, list_app_show_temp
+		
 		repo_file = "/etc/apt/sources.list.d/deepines.list"
 		if os.path.exists(repo_file):
 			self.lista_deepines = list_app_deepines
@@ -104,8 +109,6 @@ class StoreMWindow(QMainWindow, EventsMixin):
 				list_app_show_temp = lista_inicio
 				self.primer_inicio = True
 				self.show_apps_selected = False
-				self.install_thread = None
-				
 			else:
 				self.error(ui.error_no_server_text)
 		else:
@@ -186,20 +189,22 @@ class StoreMWindow(QMainWindow, EventsMixin):
 		ui.widget.setEnabled(status)
 
 	def resizeEvent(self, event):
+		# is running a process
 		if self.install_thread and self.install_thread.isRunning():
-			event.ignore()
+			return
 		else:
 			event.accept()
 			if hasattr(self, 'primer_inicio') and self.primer_inicio:
 				self.primer_inicio = False
-			try:
-				QTimer.singleShot(800, self.refresh_app_grid)
-			except NameError:
-				pass  # There are no apps, list_app_show_temp is not defined...
+			if 'list_app_show_temp' in globals():
+				self.refresh_app_grid_timer.start(200)
 
 	def refresh_app_grid(self):
-		self.clear_gridLayout()
-		self.do_list_apps(list_app_show_temp)
+		try:
+			self.clear_gridLayout()
+			self.do_list_apps(list_app_show_temp)
+		except NameError:
+			pass  # There are no apps?
 
 
 	################################################
