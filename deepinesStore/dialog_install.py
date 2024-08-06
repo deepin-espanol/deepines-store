@@ -4,10 +4,9 @@ from PyQt5 import QtWidgets
 from PyQt5.QtCore import QThread
 from PyQt5.QtGui import QTextCursor
 
-from deepinesStore.app_info import AppType
+from deepinesStore.app_info import AppType, ProcessType
 from deepinesStore.install_thread import External, Code
 from deepinesStore.uninstall_thread import ExternalUninstall
-from deepinesStore.core import ProcessType
 
 class Ui_DialogInstall(QtWidgets.QWidget):
 	def __init__(self, main, list, process: ProcessType):
