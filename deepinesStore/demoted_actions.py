@@ -49,19 +49,6 @@ else:
 	DEF = UserDefault(UID)
 
 
-def get_flatpak_info_cmd():
-	p = ""
-	if platform.system() == 'Windows': # FIXME: Use WSL for handling flatpak in Windows
-		return p
-
-	try:
-		p = check_output(['flatpak', 'remote-ls', 'flathub', '--app', '--columns=application,version'], text=True, env=DEF.env, preexec_fn=set(DEF.uid, DEF.gid))
-	except CalledProcessError:
-		print("Couldn't get flatpak app info: Error running flatpak command!")
-		print("You may need to run the following to enable the flathub repository:")
-		print("flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo")
-	return p
-
 def browse(uri: str):
 	if platform.system() == 'Linux':
 		run_cmd(DEF, ['xdg-open', uri])
