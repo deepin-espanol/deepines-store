@@ -871,20 +871,21 @@ class Card(QFrame):
 	def get_banner_path(self, app_name: str, alt_app_names: list[str] = []):
 		path = get_res(app_name, 'resources/apps')
 
-		if alt_app_names:
-			for alt_app_name in alt_app_names:
-				if os.path.exists(get_res(alt_app_name, 'resources/apps')):
-					path = get_res(alt_app_name, 'resources/apps')
-					break
+		if not os.path.exists(path):
+			if alt_app_names: # means flatpak app
+				for alt_app_name in alt_app_names:
+					if alt_app_name != app_name:
+						alt_res_path = get_res(alt_app_name, 'resources/apps')
+						if os.path.exists(alt_res_path):
+							return alt_res_path
+				else:
+					flatpak_path = '/var/lib/flatpak/appstream/flathub/x86_64/active/icons/flatpak/{}x{}/' + app_name + '.png'
+					for size in ['128', '64']:
+						flatpak_path = flatpak_path.format(size, size)
+						if os.path.exists(flatpak_path):
+							return flatpak_path
 
-		# check for Flatpak icon
-		if not os.path.exists(path):
-			flatpak_path = f'/var/lib/flatpak/appstream/flathub/x86_64/active/icons/flatpak/128x128/{app_name}.png'
-			if os.path.exists(flatpak_path):
-				path = flatpak_path
-				
-		# if still not found, use the default image
-		if not os.path.exists(path):
+			# if not found, use the default image
 			path = get_res('no-img', 'resources/apps')
 
 		return path
