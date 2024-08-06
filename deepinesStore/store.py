@@ -816,7 +816,9 @@ class Card(QFrame):
 			alt_app_name_2 = str(self.application.name).lower().replace(" ", "")
 			alt_app_name_3 = str(self.application.name).lower().replace(" ", "_")
 			alt_app_name_4 = str(self.application.id).split('.')[-1]
-			app_banner_path = self.get_banner_path(self.application.id, [alt_app_name_1, alt_app_name_2, alt_app_name_3, alt_app_name_4])
+			# make unique
+			alt_app_names = list(set([alt_app_name_1, alt_app_name_2, alt_app_name_3, alt_app_name_4]))
+			app_banner_path = self.get_banner_path(self.application.id, alt_app_names)
 			app_banner = self.fixed_banner_pixmap(app_banner_path)
 			app_overlay = QPixmap(get_res('flatpak'))
 			app_pixmap = QPixmap(app_banner)
