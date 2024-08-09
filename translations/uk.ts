@@ -71,12 +71,12 @@
     <message>
         <location filename="../deepinesStore/about.py" line="76"/>
         <source>Version {version}</source>
-        <translation type="unfinished"></translation>
+        <translation>Версія {version}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/about.py" line="78"/>
         <source>The App Store of Deepin en Español</source>
-        <translation type="unfinished"></translation>
+        <translation>App Store Deepin en Español</translation>
     </message>
 </context>
 <context>
@@ -84,27 +84,27 @@
     <message>
         <location filename="../deepinesStore/store.py" line="1103"/>
         <source>Starting...</source>
-        <translation type="unfinished"></translation>
+        <translation>Розпочнемо...</translation>
     </message>
     <message>
         <location filename="../deepinesStore/store.py" line="1105"/>
         <source>Fetching files...</source>
-        <translation type="unfinished"></translation>
+        <translation>Отримання файлів...</translation>
     </message>
     <message>
         <location filename="../deepinesStore/store.py" line="1106"/>
         <source>Initializing components...</source>
-        <translation type="unfinished"></translation>
+        <translation>Ініціалізація компонентів...</translation>
     </message>
     <message>
         <location filename="../deepinesStore/store.py" line="1107"/>
         <source>Finalizing setup...</source>
-        <translation type="unfinished"></translation>
+        <translation>Завершення налаштування...</translation>
     </message>
     <message>
         <location filename="../deepinesStore/store.py" line="1101"/>
         <source>Loading...</source>
-        <translation type="unfinished"></translation>
+        <translation>Завантаження...</translation>
     </message>
 </context>
 <context>
@@ -203,8 +203,8 @@ If the problem persists, send a report to t.me/deepinenespanol.
 </source>
         <translation>
 
-Стався збій мережевого з'єднання, і встановлення не було завершено.
-Переконайтеся, що ваш комп'ютер підключений до Інтернету, і натисніть кнопку Повторити спробу.
+Стався збій мережевого з&apos;єднання, і встановлення не було завершено.
+Переконайтеся, що ваш комп&apos;ютер підключений до Інтернету, і натисніть кнопку Повторити спробу.
 Якщо проблема не зникне, надішліть звіт на t.me/deepinenespanol.
 </translation>
     </message>
@@ -255,12 +255,12 @@ or in our Telegram group t.me/deepinenespanol.</source>
     <message>
         <location filename="../deepinesStore/dialog_install.py" line="164"/>
         <source>App to uninstall: {item}</source>
-        <translation type="unfinished"></translation>
+        <translation>Видалити застосунок: {item}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/dialog_install.py" line="165"/>
         <source>Uninstall</source>
-        <translation type="unfinished"></translation>
+        <translation>Видалити</translation>
     </message>
     <message>
         <location filename="../deepinesStore/dialog_install.py" line="169"/>
@@ -268,21 +268,28 @@ or in our Telegram group t.me/deepinenespanol.</source>
 
 Warning: do not close the window, interrupting the process may damage your system.
 </source>
-        <translation type="unfinished"></translation>
+        <translation>
+
+Попередження: не закривайте вікно, переривання процесу може пошкодити вашу систему.
+</translation>
     </message>
     <message>
         <location filename="../deepinesStore/dialog_install.py" line="172"/>
         <source>
 Uninstalling {item}
 </source>
-        <translation type="unfinished"></translation>
+        <translation>
+Видалення {item}
+</translation>
     </message>
     <message>
         <location filename="../deepinesStore/dialog_install.py" line="174"/>
         <source>
 The uninstallation of {item} is finished.
 </source>
-        <translation type="unfinished"></translation>
+        <translation>
+Видалення {item} завершено.
+</translation>
     </message>
 </context>
 <context>
@@ -300,7 +307,7 @@ The uninstallation of {item} is finished.
     <message>
         <location filename="../deepinesStore/cardg.py" line="59"/>
         <source>Select</source>
-        <translation type="unfinished"></translation>
+        <translation>Вибрати</translation>
     </message>
 </context>
 <context>
@@ -420,7 +427,7 @@ Version: {version}</source>
     <message>
         <location filename="../deepinesStore/maing.py" line="502"/>
         <source>Unable to establish connection with the server, &lt;br&gt;please check your internet connection.&lt;br&gt;If the problem persists, please contact us via Telegram &lt;br&gt;at @deepinenespanol.&lt;br&gt;&lt;br&gt;&lt;a href=&apos;#&apos;&gt;deepinenespanol.org | Copy link&lt;/a&gt;&lt;br&gt;Visit Deepin en Espanol for more information.</source>
-        <translation type="obsolete">Не вдалося встановити з'єднання з сервером, &lt;br&gt;перевірте підключення до Інтернету.&lt;br&gt; Якщо проблема не зникне, будь ласка, зв'яжіться з нами через Telegram &lt;br&gt;за адресою @deepinenespanol.&lt;br&gt; &lt;br&gt;&lt;a href=&quot;#&quot;&gt;deepinenespanol.org | Копіювати посилання&lt;/a&gt;&lt;br&gt;Відвідайте Deepin en Espanol для отримання додаткової інформації.</translation>
+        <translation type="obsolete">Не вдалося встановити з&apos;єднання з сервером, &lt;br&gt;перевірте підключення до Інтернету.&lt;br&gt; Якщо проблема не зникне, будь ласка, зв&apos;яжіться з нами через Telegram &lt;br&gt;за адресою @deepinenespanol.&lt;br&gt; &lt;br&gt;&lt;a href=&quot;#&quot;&gt;deepinenespanol.org | Копіювати посилання&lt;/a&gt;&lt;br&gt;Відвідайте Deepin en Espanol для отримання додаткової інформації.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="480"/>
@@ -440,82 +447,82 @@ Version: {version}</source>
     <message>
         <location filename="../deepinesStore/maing.py" line="448"/>
         <source>Review apps</source>
-        <translation type="unfinished"></translation>
+        <translation>Переглянути застосунки</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="476"/>
         <source>Installed apps</source>
-        <translation type="unfinished"></translation>
+        <translation>Встановлені застосунки</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="484"/>
         <source>Apps .deb</source>
-        <translation type="unfinished"></translation>
+        <translation>Застосунки .deb</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="485"/>
         <source>Apps Flatpak</source>
-        <translation type="unfinished"></translation>
+        <translation>Застосунки Flatpak</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="490"/>
         <source>Select</source>
-        <translation type="unfinished"></translation>
+        <translation>Вибрати</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="493"/>
         <source>Uninstall</source>
-        <translation type="unfinished"></translation>
+        <translation>Видалити</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="494"/>
         <source>Uninstalled</source>
-        <translation type="unfinished"></translation>
+        <translation>Видалено</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="495"/>
         <source>{app_count} app selected, click here to review it</source>
-        <translation type="unfinished"></translation>
+        <translation>{app_count} застосунок вибрано, натисніть тут, щоби переглянути його</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="496"/>
         <source>{app_count} apps selected, click here to review them</source>
-        <translation type="unfinished"></translation>
+        <translation>{app_count} застосунків вибрано, натисніть тут, щоби переглянути їх</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="497"/>
         <source>Unable to establish connection with the server, &lt;br&gt;please check your internet connection.&lt;br&gt;If the problem persists, please contact us via Telegram &lt;br&gt;at {atTlURL}.&lt;br&gt;&lt;br&gt;Visit Deepin en Español for more information: {siteURL}</source>
-        <translation type="unfinished"></translation>
+        <translation>Не вдається встановити з&apos;єднання з сервером, &lt;br&gt;перевірте своє інтернет-з&apos;єднання. &lt;br&gt;Якщо проблема не зникне, будь ласка, зв&apos;яжіться з нами через Telegram: &lt;br&gt;{atTlURL}.&lt;br&gt;&lt;br&gt; Відвідайте Deepin en Español для отримання додаткової інформації: {siteURL}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="502"/>
         <source>Deepines repository is not installed on your system,&lt;br&gt;Deepines Store needs this repository to work.&lt;br&gt;In the following link you will find the instructions to install it:&lt;br&gt;&lt;br&gt;{repoURL}</source>
-        <translation type="unfinished"></translation>
+        <translation>Репозиторій Deepines не встановлено у вашій системі,&lt;br&gt;Для роботи Deepines Store потрібен цей репозиторій.&lt;br&gt;За наступним посиланням ви знайдете інструкції з його встановлення:&lt;br&gt;&lt;br&gt;{repoURL}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="449"/>
         <source>Start process</source>
-        <translation type="unfinished"></translation>
+        <translation>Початок процесу</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="506"/>
         <source>Installing...</source>
-        <translation type="unfinished"></translation>
+        <translation>Встановлення...</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="507"/>
         <source>Installation failed!</source>
-        <translation type="unfinished"></translation>
+        <translation>Не вдалося встановити!</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="508"/>
         <source>Ready to install</source>
-        <translation type="unfinished"></translation>
+        <translation>Готово до встановлення</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="509"/>
         <source>Starting installation...</source>
-        <translation type="unfinished"></translation>
+        <translation>Початок встановлення...</translation>
     </message>
 </context>
 </TS>
