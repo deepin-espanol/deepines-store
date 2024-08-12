@@ -55,6 +55,10 @@ def app_list_flatpak() -> list[AppInfo]:
 		if releases is not None and releases.findall('release'):
 			app_version = releases.findall('release')[-1].get('version')
 
+		# Get <icon> with attribute type="cached"
+		icon_elem = component.find('icon[@type="cached"]')
+		app_icon = icon_elem.text if icon_elem is not None else None
+
 		app_category = "other"
 		app_categories = component.find('categories')
 		if app_categories is not None:
@@ -63,7 +67,7 @@ def app_list_flatpak() -> list[AppInfo]:
 					app_category = category.text
 					break
 
-		app_info = AppInfo(name=app_name, id=app_id, description=app_summary, version=app_version, category=app_category, type=AppType.FLATPAK_APP)
+		app_info = AppInfo(name=app_name, id=app_id, description=app_summary, version=app_version, category=app_category, type=AppType.FLATPAK_APP, icon=app_icon)
 		app_list.append(app_info)
 
 	return app_list

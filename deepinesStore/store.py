@@ -818,7 +818,7 @@ class Card(QFrame):
 			alt_app_name_4 = str(self.application.id).split('.')[-1]
 			# make unique
 			alt_app_names = list(set([alt_app_name_1, alt_app_name_2, alt_app_name_3, alt_app_name_4]))
-			app_banner_path = self.get_banner_path(self.application.id, alt_app_names)
+			app_banner_path = self.get_banner_path(self.application.id, alt_app_names, self.application.icon)
 			app_banner = self.fixed_banner_pixmap(app_banner_path)
 			app_overlay = QPixmap(get_res('flatpak'))
 			app_pixmap = QPixmap(app_banner)
@@ -868,7 +868,7 @@ class Card(QFrame):
 		self.setGraphicsEffect(shadow)
 		return True
 
-	def get_banner_path(self, app_name: str, alt_app_names: list[str] = []):
+	def get_banner_path(self, app_name: str, alt_app_names: list[str] = [], icon_name = None):
 		path = get_res(app_name, 'resources/apps')
 
 		if not os.path.exists(path):
@@ -879,11 +879,12 @@ class Card(QFrame):
 						if os.path.exists(alt_res_path):
 							return alt_res_path
 				else:
-					flatpak_path = '/var/lib/flatpak/appstream/flathub/x86_64/active/icons/flatpak/{}x{}/' + app_name + '.png'
-					for size in ['128', '64']:
-						flatpak_path = flatpak_path.format(size, size)
-						if os.path.exists(flatpak_path):
-							return flatpak_path
+					if icon_name is not None:
+						flatpak_path = '/var/lib/flatpak/appstream/flathub/x86_64/active/icons/flatpak/{}x{}/' + icon_name
+						for size in ['128', '64']:
+							flatpak_path = flatpak_path.format(size, size)
+							if os.path.exists(flatpak_path):
+								return flatpak_path
 
 			# if not found, use the default image
 			path = get_res('no-img', 'resources/apps')
