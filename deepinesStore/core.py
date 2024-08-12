@@ -52,13 +52,13 @@ def uri_join(base_uri, *args):
 def get_deepines_uri(rel_uri):
 	return uri_join(BASE_URI, 'pub', 'deepines', rel_uri)
 
-def get_text_link(text, uri=None):
+def get_text_link(text, uri=None, additional_style='color: #004EE5;'):
 	if uri is None:
 		if text.startswith("@"):
 			uri = f"https://t.me/{text[1:]}"
 		else:
 			uri = f"https://{text}"
-	return f"<a href='{uri}' style='text-decoration: none; color: #004EE5;'>{text}</a>"
+	return f"<a href='{uri}' style='text-decoration: none; {additional_style}'>{text}</a>"
 
 def tr(m, txt, disambiguation=None, n=-1):
 	from PyQt5.QtCore import QCoreApplication

@@ -1,5 +1,5 @@
 from PyQt5 import QtGui, QtWidgets as w
-from PyQt5.QtCore import pyqtSignal, Qt, QTimer, QEasingCurve, QPropertyAnimation
+from PyQt5.QtCore import pyqtSignal, Qt, QTimer, QEasingCurve, QPropertyAnimation, QEvent, pyqtSlot
 from PyQt5.QtGui import QLinearGradient, QPainter, QBrush, QColor, QPalette
 
 from deepinesStore.demoted_actions import browse, open_telegram_link
@@ -56,8 +56,8 @@ class CreditsListWidget(w.QListWidget):
 		super().__init__(parent)
 		self.itemClicked.connect(self.on_item_click)
 		self.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-		self.setStyleSheet("background-color: transparent;")
-		self.setAutoFillBackground(True)
+		self.setObjectName("lw_credits")
+		self.setAutoFillBackground(False)
 		self.setFrameShape(w.QFrame.Shape.NoFrame)
 		self.timer = QTimer(self)
 		self.timer.timeout.connect(self.scroll)
@@ -66,27 +66,70 @@ class CreditsListWidget(w.QListWidget):
 		self.setMouseTracking(True)  # enable mouse tracking
 		self.is_paused = False
 		self.fade_height = 50  # Height of fade effect at top and bottom
-		self.window_color = parent.palette().color(QPalette.ColorRole.Window)
 
 		# Setup animation for smooth scrolling
 		self.scroll_animation = QPropertyAnimation(self.verticalScrollBar(), b"value")
 		self.scroll_animation.setDuration(1000)  # 1 second for smooth scroll
 		self.scroll_animation.setEasingCurve(QEasingCurve.OutQuad)
 
+		self.app_instance = w.QApplication.instance()
+		self.updateStyleSheet()
+		# if palette changes...
+		self.app_instance.paletteChanged.connect(self.onPaletteChanged)
+
+	def event(self, event):
+		if event.type() == QEvent.Move:
+			self.updateStyleSheet()
+
+		return super().event(event)
+
+	@pyqtSlot()
+	def onPaletteChanged(self):
+		self.updateStyleSheet()
+
+	def updateStyleSheet(self):
+		if hasattr(self, 'app_instance') is False:
+			return
+
+		palette = self.app_instance.palette()
+		hover_color = palette.color(QPalette.ColorGroup.Inactive, QPalette.ColorRole.Highlight)
+		font_scale = self.app_instance.font().pointSize() / 12
+
+		self.setStyleSheet(f"""
+		#lw_credits {{
+			background-color: transparent;
+			border: 0px;
+			font-size: {12 * font_scale}px;
+		}}
+		#lw_credits:item:selected {{
+			background-color: palette(highlight);
+			color: palette(highlightedText);
+			border-radius: 8px;
+		}}
+		#lw_credits:item:hover:!selected {{}}
+		#lw_credits:item:hover:selected {{
+			background-color: {hover_color.name()};
+		}}
+		""")
+
 	def set_skip_item_action_indices(self, skip_indices=[]):
 		self.setStyle(NoClickableStyle(self.style(), skip_indices))
 
 	def paintEvent(self, event):
 		super().paintEvent(event)
+		# Get window color from parent's palette
+		window_color = self.parent().palette().color(QPalette.ColorRole.Window)
+
+		# Draw gradient overlay
 		painter = QPainter(self.viewport())
 		painter.setRenderHint(QPainter.Antialiasing)
 
 		# Create gradient for fading
 		gradient = QLinearGradient(0, 0, 0, self.height())
-		gradient.setColorAt(0, self.window_color)
+		gradient.setColorAt(0, window_color)
 		gradient.setColorAt(self.fade_height / self.height(), QColor(0, 0, 0, 0))
 		gradient.setColorAt(1 - self.fade_height / self.height(), QColor(0, 0, 0, 0))
-		gradient.setColorAt(1, self.window_color)
+		gradient.setColorAt(1, window_color)
 
 		# Draw gradient overlay
 		painter.fillRect(self.rect(), QBrush(gradient))
