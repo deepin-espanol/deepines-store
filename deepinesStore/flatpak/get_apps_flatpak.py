@@ -48,6 +48,10 @@ def app_list_flatpak() -> list[AppInfo]:
 			continue
 
 		app_id = component.find('id').text
+		# Don't include if id has BaseApp
+		if "BaseApp" in app_id:
+			continue
+
 		app_name = get_preferred_text(component, 'name', system_lang)
 		app_summary = get_preferred_text(component, 'summary', system_lang)
 		app_version = None
