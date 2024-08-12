@@ -60,9 +60,21 @@ def app_list_flatpak() -> List[AppInfo]:
 		if releases is not None and releases.findall('release'):
 			app_version = releases.findall('release')[-1].get('version')
 
-		# Get <icon> with attribute type="cached"
-		icon_elem = component.find('icon[@type="cached"]')
-		app_icon = icon_elem.text if icon_elem is not None else None
+		# Get <icon> with attribute type="cached" and type="remote"
+		icon_elems = component.findall('icon')
+		cached_icons = set()
+		remote_icons = set()
+		for elem in icon_elems:
+			icon_type = elem.get('type')
+			icon_url = elem.text
+			if icon_type == 'cached':
+				cached_icons.add(icon_url)
+			elif icon_type == 'remote':
+				remote_icons.add(icon_url)
+		app_icons = {
+			'cached': list(cached_icons),
+			'remote': list(remote_icons)
+		}
 
 		app_category = "other"
 		app_categories = component.find('categories')
@@ -72,7 +84,7 @@ def app_list_flatpak() -> List[AppInfo]:
 					app_category = category.text
 					break
 
-		app_info = AppInfo(name=app_name, id=app_id, description=app_summary, version=app_version, category=app_category, type=AppType.FLATPAK_APP, icon=app_icon)
+		app_info = AppInfo(name=app_name, id=app_id, description=app_summary, version=app_version, category=app_category, type=AppType.FLATPAK_APP, icons=app_icons)
 		app_list.append(app_info)
 
 	return app_list

@@ -57,11 +57,12 @@ class threading_svg(object):
 			self.STATUS = False
 
 	# Comparing the checksums and downloading the different file
-	# Delete the one that is in local and not in the repo
+	# Don't delete for now the one that is in local and not in the repo
 	def compare_check(self):
 		for svg_name in self.LOCAL_CHECK:
 			if svg_name not in self.LIST_SVG_REMOTE:
-				remove(join(self.PATH_SVG, svg_name))
+				#remove(join(self.PATH_SVG, svg_name))
+				pass
 			elif self.LOCAL_CHECK[svg_name] != self.REMOTE_CHECK[svg_name]:
 				self.download_svg(svg_name)
 

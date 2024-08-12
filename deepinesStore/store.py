@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 import sys
 import os
-from typing import List
+from typing import Dict, List
 # PyQt5 modules
 from PyQt5.Qt import Qt
 from PyQt5.QtCore import QTranslator, QLocale, QSize, QPointF, QEvent, QTimer, Qt as QtCore, pyqtSignal, QThread, QCoreApplication
@@ -19,7 +19,7 @@ from deepinesStore.app_info import AppInfo, AppType, AppState, ProcessType
 from deepinesStore.maing import Ui_MainWindow
 from deepinesStore.cardg import Ui_Frame
 from deepinesStore.about import AboutDialog
-from deepinesStore.core import get_res, get_app_icon
+from deepinesStore.core import get_res, get_app_icon, get_dl
 from deepinesStore.flatpak.get_apps_flatpak import app_list_flatpak
 from deepinesStore.deb.get_apps_deb import fetch_list_app_deb
 from deepinesStore.install_progress import InstallThread
@@ -819,7 +819,7 @@ class Card(QFrame):
 			alt_app_name_4 = str(self.application.id).split('.')[-1]
 			# make unique
 			alt_app_names = list(set([alt_app_name_1, alt_app_name_2, alt_app_name_3, alt_app_name_4]))
-			app_banner_path = self.get_banner_path(self.application.id, alt_app_names, self.application.icon)
+			app_banner_path = self.get_banner_path(self.application.id, alt_app_names, self.application.icons)
 			app_banner = self.fixed_banner_pixmap(app_banner_path)
 			app_overlay = QPixmap(get_res('flatpak'))
 			app_pixmap = QPixmap(app_banner)
@@ -869,7 +869,7 @@ class Card(QFrame):
 		self.setGraphicsEffect(shadow)
 		return True
 
-	def get_banner_path(self, app_name: str, alt_app_names: List[str] = [], icon_name = None):
+	def get_banner_path(self, app_name: str, alt_app_names: List[str] = [], icons: Dict[str, str] = {}) -> str:
 		path = get_res(app_name, 'resources/apps')
 
 		if not os.path.exists(path):
@@ -880,12 +880,30 @@ class Card(QFrame):
 						if os.path.exists(alt_res_path):
 							return alt_res_path
 				else:
-					if icon_name is not None:
-						flatpak_path = '/var/lib/flatpak/appstream/flathub/x86_64/active/icons/flatpak/{}x{}/' + icon_name
-						for size in ['128', '64']:
-							flatpak_path = flatpak_path.format(size, size)
-							if os.path.exists(flatpak_path):
-								return flatpak_path
+					# use "cached" value from icons
+					cached_icon_names = icons.get('cached')
+					if cached_icon_names is not None:
+						for cached_icon_name in cached_icon_names:
+							flatpak_path = '/var/lib/flatpak/appstream/flathub/x86_64/active/icons/flatpak/{}x{}/' + cached_icon_name
+							for size in ['128', '64']:
+								flatpak_path = flatpak_path.format(size, size)
+								if os.path.exists(flatpak_path):
+									return flatpak_path
+
+					# try to download from "remote" url
+					remote_icon_urls = icons.get('remote')
+					if remote_icon_urls is not None:
+						for remote_icon_url in remote_icon_urls:
+							remote_icon_path = get_res(app_name, 'resources/apps', ext='.png')
+							try:
+								PNG_BANNER_REMOTE = get_dl(remote_icon_url)
+								status_code = PNG_BANNER_REMOTE.status_code
+								if status_code == 200:
+									with open(remote_icon_path, 'wb') as f:
+										f.write(PNG_BANNER_REMOTE.content)
+									return remote_icon_path
+							except Exception as e:
+								print(f'Error downloading icon: {e}')
 
 			# if not found, use the default image
 			path = get_res('no-img', 'resources/apps')
