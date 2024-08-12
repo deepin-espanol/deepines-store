@@ -880,6 +880,10 @@ class Card(QFrame):
 						if os.path.exists(alt_res_path):
 							return alt_res_path
 				else:
+					png_path = get_res(app_name, 'resources/apps', ext='.png')
+					if os.path.exists(png_path):
+						return png_path
+
 					# use "cached" value from icons
 					cached_icon_names = icons.get('cached')
 					if cached_icon_names is not None:
@@ -896,6 +900,7 @@ class Card(QFrame):
 						for remote_icon_url in remote_icon_urls:
 							remote_icon_path = get_res(app_name, 'resources/apps', ext='.png')
 							try:
+								print(f'Downloading icon from: {remote_icon_url}')
 								PNG_BANNER_REMOTE = get_dl(remote_icon_url)
 								status_code = PNG_BANNER_REMOTE.status_code
 								if status_code == 200:
