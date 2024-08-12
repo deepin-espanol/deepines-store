@@ -24,7 +24,7 @@ class Ui_Frame(object):
 		self.image_app.setStyleSheet("#image_app{margin-top: 10px;}")
 		self.verticalLayout.addWidget(self.image_app)
 		self.lbl_name_app = ClickableLabel(Frame)
-		self.lbl_name_app.setStyleSheet("background-color: transparent;" "margin-top:5px;")
+		self.lbl_name_app.setStyleSheet("background-color: transparent;" "margin-top:5px;" "color: #fff;")
 		self.lbl_name_app.setText("")
 		self.lbl_name_app.setAlignment(Qt.AlignCenter)
 		font = QtGui.QFont()
@@ -36,6 +36,7 @@ class Ui_Frame(object):
 		self.verticalLayout.addWidget(self.lbl_name_app)
 		self.lbl_name_app.resizeEvent = self.adjust_font_size
 		self.lbl_version = ClickableLabel(Frame)
+		self.lbl_version.setStyleSheet("background-color: transparent;" "color: #fff;")
 		font = QtGui.QFont()
 		font.setPointSize(9)
 		font.setItalic(False)

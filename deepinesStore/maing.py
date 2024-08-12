@@ -52,7 +52,7 @@ class Ui_MainWindow(object):
 		MainWindow.resize(self.width_screen, self.height_screen)
 		self.centralwidget = QtWidgets.QWidget(MainWindow)
 		self.centralwidget.setObjectName("centralwidget")
-		self.centralwidget.setStyleSheet("#centralwidget{background-color: rgba(30, 30, 30, 200); color: #b5c5d1; border: 1.5px solid rgba(60, 60, 60, 120);}")
+		self.centralwidget.setStyleSheet("#centralwidget{background-color: rgba(30, 30, 30, 200); border: 1.5px solid rgba(60, 60, 60, 120);}")
 
 		# Grilla principal
 		self.gridLayout_2 = QtWidgets.QGridLayout(self.centralwidget)
@@ -131,6 +131,7 @@ class Ui_MainWindow(object):
 			"  padding-bottom:6px;\n"
 			"  border-radius: 15px;\n"
 			"  background-color: rgba(16, 16, 16, 163);\n"
+			"  color: white;\n"
 			"}\n"
 			"#lw_categories:item{\n"
 			# Top Right Bottom Left
@@ -177,7 +178,7 @@ class Ui_MainWindow(object):
 		self.label_2 = ClickableLabel(self.widget_2)
 		self.label_2.setMinimumSize(QSize(180, 180))
 		self.label_2.setMaximumSize(QSize(180, 180))
-		self.label_2.setStyleSheet("background-color: transparent;")
+		self.label_2.setStyleSheet("background-color: transparent; color: white;")
 		self.label_2.setText("")
 		self.label_2.setCursor(QtGui.QCursor(Qt.PointingHandCursor))
 		self.label_2.setPixmap(QtGui.QPixmap(svg_fondo))
@@ -222,9 +223,11 @@ class Ui_MainWindow(object):
 		self.widget_1.setStyleSheet("""
 			#widget_1{
 				background-color: transparent;
+				color: #b5c5d1;
 			}
 			#label_3{
 				background-color: transparent;
+				color: #b5c5d1;
 			}
 			#btn_close{
 				margin-right: 10px;
