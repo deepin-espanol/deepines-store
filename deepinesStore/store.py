@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import sys
 import os
+from typing import List
 # PyQt5 modules
 from PyQt5.Qt import Qt
 from PyQt5.QtCore import QTranslator, QLocale, QSize, QPointF, QEvent, QTimer, Qt as QtCore, pyqtSignal, QThread, QCoreApplication
@@ -368,7 +369,7 @@ class StoreMWindow(QMainWindow, EventsMixin):
 		return lista_filtrada
 
 	#		   Aplicaciones Inicio			  #
-	def Apps_inicio(self, lista_app: list[AppInfo]):
+	def Apps_inicio(self, lista_app: List[AppInfo]):
 		lista_key = []
 		contador = True
 		while contador:
@@ -868,7 +869,7 @@ class Card(QFrame):
 		self.setGraphicsEffect(shadow)
 		return True
 
-	def get_banner_path(self, app_name: str, alt_app_names: list[str] = [], icon_name = None):
+	def get_banner_path(self, app_name: str, alt_app_names: List[str] = [], icon_name = None):
 		path = get_res(app_name, 'resources/apps')
 
 		if not os.path.exists(path):

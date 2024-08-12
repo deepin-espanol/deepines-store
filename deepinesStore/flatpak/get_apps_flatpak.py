@@ -1,3 +1,4 @@
+from typing import List
 from deepinesStore.app_info import AppInfo, AppType
 from lxml import etree
 import locale
@@ -34,7 +35,7 @@ def get_preferred_text(element, tag, preferred_lang):
 	# If none of the above is found, return None
 	return None
 
-def app_list_flatpak() -> list[AppInfo]:
+def app_list_flatpak() -> List[AppInfo]:
 	# Get the system language
 	system_lang = locale.getdefaultlocale()[0]
 
