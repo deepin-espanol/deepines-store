@@ -52,7 +52,7 @@ class Ui_MainWindow(object):
 		MainWindow.resize(self.width_screen, self.height_screen)
 		self.centralwidget = QtWidgets.QWidget(MainWindow)
 		self.centralwidget.setObjectName("centralwidget")
-		self.centralwidget.setStyleSheet("#centralwidget{background-color: rgba(30, 30, 30, 200); border: 1.5px solid rgba(60, 60, 60, 120);}")
+		self.centralwidget.setStyleSheet("#centralwidget{background-color: rgba(30, 30, 30, 200); border: 1.5px solid rgba(60, 60, 60, 120); border-radius: 4px;}")
 
 		# Grilla principal
 		self.gridLayout_2 = QtWidgets.QGridLayout(self.centralwidget)
