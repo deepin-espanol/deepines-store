@@ -888,6 +888,10 @@ class Card(QFrame):
 					cached_icon_names = icons.get('cached')
 					if cached_icon_names is not None:
 						for cached_icon_name in cached_icon_names:
+							remote_icon_path = get_res(cached_icon_name, 'resources/apps', ext='')
+							if os.path.exists(remote_icon_path):
+								return remote_icon_path
+
 							flatpak_path = '/var/lib/flatpak/appstream/flathub/x86_64/active/icons/flatpak/{}x{}/' + cached_icon_name
 							for size in ['128', '64']:
 								flatpak_path = flatpak_path.format(size, size)

@@ -12,8 +12,16 @@ categories = [
 		"Graphics", "Network", "Office", "Science", "System", "Utility"
 	]
 
+# FIXME: HARDCODED!! Remove when this is figured out!
+hc_desktop = [
+		"app.organicmaps.desktop",
+		"chat.delta.desktop", "chat.schildi.desktop",
+		"com.bitwarden.desktop", "com.jgraph.drawio.desktop",
+		"org.kiwix.desktop", "org.telegram.desktop"]
+
+nsmap = {"xml": "http://www.w3.org/XML/1998/namespace"}
+
 def get_preferred_text(element, tag, preferred_lang):
-	nsmap = {"xml": "http://www.w3.org/XML/1998/namespace"}
 	# Try to find the element with the full preferred xml:lang attribute
 	full_lang_xpath = f'{tag}[@xml:lang="{preferred_lang}"]'
 	full_lang_elem = element.find(full_lang_xpath, namespaces=nsmap)
@@ -28,9 +36,10 @@ def get_preferred_text(element, tag, preferred_lang):
 		return base_lang_elem.text
 
 	# If neither is found, try to find the element without xml:lang attribute (default language)
-	default_lang_elem = element.find(tag)
-	if default_lang_elem is not None and 'xml:lang' not in default_lang_elem.attrib:
-		return default_lang_elem.text
+	default_lang_elems = element.findall(tag)
+	for elem in default_lang_elems:
+		if elem.get(f'{{{nsmap["xml"]}}}lang') is None:
+			return elem.text
 
 	# If none of the above is found, return None
 	return None
@@ -49,6 +58,11 @@ def app_list_flatpak() -> List[AppInfo]:
 			continue
 
 		app_id = component.find('id').text
+		og_app_id = app_id
+		# If ends with .desktop but is not in hc_desktop remove that last part
+		if app_id.endswith(".desktop") and app_id not in hc_desktop:
+			app_id = app_id[:-8]
+
 		# Don't include if id has BaseApp
 		if "BaseApp" in app_id:
 			continue
@@ -63,6 +77,7 @@ def app_list_flatpak() -> List[AppInfo]:
 		# Get <icon> with attribute type="cached" and type="remote"
 		icon_elems = component.findall('icon')
 		cached_icons = set()
+		cached_icons.add(og_app_id + ".png")
 		remote_icons = set()
 		for elem in icon_elems:
 			icon_type = elem.get('type')
