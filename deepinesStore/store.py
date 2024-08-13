@@ -90,7 +90,7 @@ class StoreMWindow(QMainWindow, EventsMixin):
 		
 		repo_file = "/etc/apt/sources.list.d/deepines.list"
 		if os.path.exists(repo_file):
-			self.lista_deepines = list_app_deepines
+			self.deepines_app_list = list_app_deepines
 			# Variables globales
 			selected_apps = list()
 			uninstalled = list()
@@ -343,30 +343,30 @@ class StoreMWindow(QMainWindow, EventsMixin):
 	#				Lista de apps				 #
 
 	#		   Filtrar aplicaciones			 #
-	def Get_App_Filter(self, lista_app, filtro):
-		lista_filtrada = list()
-		filtros = ['web', 'net', 'mail', 'sound', 'audio', 'video', 'audiovideo'
+	def Get_App_Filter(self, list_app: List[AppInfo], category_filter: List[str]):
+		filtered_list = list()
+		app_categories = ['web', 'net', 'mail', 'sound', 'audio', 'video', 'audiovideo',
 					'graphics', 'office','media', 'games', 'game', 'editors', 'devel', 'shell',
 					'admin', 'python', 'development','network', 'networking',
 					'productivity', 'system', 'utility']
-		if 'deepines' in filtro:
-			for app in self.lista_deepines:
-				for elemento in lista_app:
-					if elemento.name == app:
-						lista_filtrada.append(elemento)
+		if 'deepines' in category_filter:
+			for app in self.deepines_app_list:
+				for app_data in list_app:
+					if app_data.name == app:
+						filtered_list.append(app_data)
 		else:
-			if "other" not in filtro:
-				for elemento in lista_app:
-					categoria_app = elemento.category.lower().split("/")
-					for filtro_uno in categoria_app:
-						if filtro_uno in filtro:
-							lista_filtrada.append(elemento)
+			if "other" not in category_filter:
+				for app_data in list_app:
+					category_app = app_data.category.lower().split("/")
+					for filtro_uno in category_app:
+						if filtro_uno in category_filter:
+							filtered_list.append(app_data)
 			else:
-				for elemento in lista_app:
-					if elemento.category.lower() not in filtros:
-						lista_filtrada.append(elemento)
+				for app_data in list_app:
+					if app_data.category.lower() not in app_categories:
+						filtered_list.append(app_data)
 
-		return lista_filtrada
+		return filtered_list
 
 	#		   Aplicaciones Inicio			  #
 	def Apps_inicio(self, lista_app: List[AppInfo]):
