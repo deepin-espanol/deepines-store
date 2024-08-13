@@ -52,6 +52,7 @@ class EventsMixin:
 	def keyPressEvent(self, event):
 		if self.drag_position is not None and event.key() == Qt.Key_Escape:
 			previous_position = self.property("previous_position")
+			self.setCursor(Qt.ArrowCursor)
 			if previous_position is not None:
 				self.move(previous_position)
 				self.drag_position = None
