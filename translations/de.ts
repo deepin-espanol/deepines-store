@@ -21,7 +21,7 @@
     <message>
         <location filename="../deepinesStore/about.py" line="76"/>
         <source>Version {version}</source>
-        <translation type="unfinished"></translation>
+        <translation>Version {version}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/about.py" line="78"/>
