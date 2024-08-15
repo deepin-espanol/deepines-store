@@ -143,41 +143,40 @@ class StoreMWindow(QMainWindow, EventsMixin):
 	#			 Control de errores			   #
 
 	def error(self, text: str):
-		self.horizontalLayout = QHBoxLayout()
-		self.horizontalLayout.setContentsMargins(0, 40, 0, 0)
-		self.horizontalLayout.setSpacing(0)
-		self.horizontalLayout.setObjectName("horizontalLayout")
-
+		self.verticalLayout = QVBoxLayout()
+		self.verticalLayout.setContentsMargins(0, 0, 0, 0)
+		self.verticalLayout.setSpacing(10)
+		self.verticalLayout.setObjectName("verticalLayout")
+	
 		self.raccoon = QLabel(self)
 		self.raccoon.setText("")
 		self.raccoon.setMinimumSize(300, 300)
 		self.raccoon.setMaximumSize(300, 300)
 		self.raccoon.setObjectName("raccoon")
-		self.raccoon.setStyleSheet("#raccoon{"
-								   "background-color: transparent;}")
-
+		self.raccoon.setStyleSheet("#raccoon{ background-color: transparent;}")
+		self.raccoon.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+		self.raccoon.adjustSize()
+		self.raccoon.setAlignment(QtCore.AlignCenter)
+	
 		ruta = get_res('raccoon')
 		pixmap = QPixmap(ruta)
 		self.raccoon.setPixmap(pixmap)
-		self.horizontalLayout.addWidget(self.raccoon)
-		ui.gridLayout.addLayout(self.horizontalLayout, 1, 1, 1, 1)
-
+		self.verticalLayout.addWidget(self.raccoon, alignment=QtCore.AlignHCenter)
+	
 		self.label_error = LinkLabel(self)
-		sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
-		sizePolicy.setHorizontalStretch(0)
-		sizePolicy.setVerticalStretch(0)
-		sizePolicy.setHeightForWidth(
-			self.label_error.sizePolicy().hasHeightForWidth())
-		self.label_error.setSizePolicy(sizePolicy)
 		font = QFont()
 		font.setPointSize(16)
 		self.label_error.setFont(font)
-		self.label_error.setScaledContents(True)
 		self.label_error.setText(text)
 		self.label_error.setEnabled(True)
 		self.label_error.setAlignment(QtCore.AlignCenter)
+		self.label_error.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+		self.label_error.adjustSize()
 		self.label_error.setObjectName("label_error")
-		ui.gridLayout.addWidget(self.label_error, 2, 1, 1, 1)
+		self.label_error.setStyleSheet("#label_error{ color: #fff; background-color: rgba(0, 0, 0, 0);}")
+		self.verticalLayout.addWidget(self.label_error)
+	
+		ui.gridLayout.addLayout(self.verticalLayout, 0, 0, 1, 1)
 		self.status_widgets(False)
 
 	#			 /Control de errores			  #
@@ -627,18 +626,20 @@ class StoreMWindow(QMainWindow, EventsMixin):
 
 		self.process_label = QLabel(ui.process_install_text, self)
 		self.process_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-		self.process_label.setStyleSheet("font-size: 22px;")
 		self.process_label.setWordWrap(True)
 		self.process_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Minimum)
 		self.process_label.adjustSize()
+		self.process_label.setObjectName("process_label")
+		self.process_label.setStyleSheet("#process_label{color: #fff; font-size: 22px;}")
 		layout.addWidget(self.process_label)
 
 		self.status_label = QLabel(ui.status_ready_to_install_text, self)
 		self.status_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-		self.status_label.setStyleSheet("font-size: 18px;")
 		self.status_label.setWordWrap(True)
 		self.status_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Minimum)
 		self.status_label.adjustSize()
+		self.status_label.setObjectName("status_label")
+		self.status_label.setStyleSheet("#status_label{color: #fff; font-size: 18px;}")
 		layout.addWidget(self.status_label)
 		
 		self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)

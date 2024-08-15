@@ -85,10 +85,11 @@ class Ui_MainWindow(object):
 		self.icon_car.setObjectName("icon_car")
 		self.horizontalLayout_3.addWidget(self.icon_car)
 		self.lbl_list_apps = ClickableLabel(self.widget)
+		self.lbl_list_apps.setObjectName("lbl_list_apps")
 		font = QtGui.QFont()
 		font.setPointSize(11)
 		self.lbl_list_apps.setFont(font)
-		self.lbl_list_apps.setStyleSheet("background-color: transparent;")
+		self.lbl_list_apps.setStyleSheet("#lbl_list_apps{color: white;} #lbl_list_apps:hover{color: #419fd9;} #lbl_list_apps:pressed{color: #419fd9;} #lbl_list_apps:disabled{color: #666666;}")
 		self.horizontalLayout_3.addWidget(self.lbl_list_apps)
 		self.btn_install = QtWidgets.QPushButton(self.widget)
 		self.btn_install.setMinimumSize(QSize(80, 0))
@@ -98,11 +99,12 @@ class Ui_MainWindow(object):
 			"padding: 2px;\n"
 			"border-radius: 5px;\n"
 			"background-color: rgb(45, 45, 45);\n"
+			"color: lightgray;\n"
 			"border: 2px solid rgb(45, 45, 45);\n"
 			"}\n"
 			"#btn_install:hover{\n"
 			"padding: 2px;\n"
-			"color:white;\n"
+			"color: white;\n"
 			"background-color: rgb(65, 159, 217);\n"
 			"border: 1px solid rgb(142, 231, 255);\n"
 			"border-radius: 5px;\n"
@@ -169,7 +171,7 @@ class Ui_MainWindow(object):
 		self.verticalLayout.addWidget(self.lw_categories)
 
 		self.widget_2 = QtWidgets.QWidget(self.frame_2)
-		self.widget_2.setStyleSheet("background-color:transparent;")
+		self.widget_2.setStyleSheet("background-color:transparent; color: white;")
 		self.widget_2.setObjectName("widget_2")
 		self.horizontalLayout = QtWidgets.QHBoxLayout(self.widget_2)
 		self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
@@ -193,7 +195,7 @@ class Ui_MainWindow(object):
 		font = QtGui.QFont()
 		font.setPointSize(8)
 		self.label.setFont(font)
-		self.label.setStyleSheet("background-color: transparent;")
+		self.label.setStyleSheet("background-color: transparent; color: white;")
 		self.label.setAlignment(Qt.AlignCenter)
 		self.label.setCursor(QtGui.QCursor(Qt.PointingHandCursor))
 		self.label.setObjectName("label")
