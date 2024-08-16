@@ -281,7 +281,7 @@ class StoreMWindow(QMainWindow, EventsMixin):
 					item = self.lista_app_deb[indice]
 					lista_search.append(item)
 			for app_item in self.lista_app_flatpak:
-				if text in str(app_item.name).lower() or text in str(app_item.description).lower():
+				if text in str(app_item.name).lower() or text in str(app_item.description).lower() or text in str(app_item.id).lower():
 					indice = self.lista_app_flatpak.index(app_item)
 					item = self.lista_app_flatpak[indice]
 					lista_search.append(item)
