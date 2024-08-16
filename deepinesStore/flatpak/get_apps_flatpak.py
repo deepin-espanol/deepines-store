@@ -22,27 +22,22 @@ hc_desktop = [
 nsmap = {"xml": "http://www.w3.org/XML/1998/namespace"}
 
 def get_preferred_text(element, tag, preferred_lang):
-	# Try to find the element with the full preferred xml:lang attribute
-	full_lang_xpath = f'{tag}[@xml:lang="{preferred_lang}"]'
-	full_lang_elem = element.find(full_lang_xpath, namespaces=nsmap)
-	if full_lang_elem is not None:
-		return full_lang_elem.text
-
-	# If not found, try to find the element with the base language (e.g., 'en' from 'en_US')
+	elems = element.findall(tag, namespaces=nsmap)
+	full_lang = preferred_lang
 	base_lang = preferred_lang.split('_')[0]
-	base_lang_xpath = f'{tag}[@xml:lang="{base_lang}"]'
-	base_lang_elem = element.find(base_lang_xpath, namespaces=nsmap)
-	if base_lang_elem is not None:
-		return base_lang_elem.text
 
-	# If neither is found, try to find the element without xml:lang attribute (default language)
-	default_lang_elems = element.findall(tag)
-	for elem in default_lang_elems:
-		if elem.get(f'{{{nsmap["xml"]}}}lang') is None:
+	base_lang_match = default_lang_match = None
+
+	for elem in elems:
+		lang = elem.get(f'{{{nsmap["xml"]}}}lang')
+		if lang == full_lang: # Full match!
 			return elem.text
+		elif lang == base_lang and base_lang_match is None:
+			base_lang_match = elem.text
+		elif lang is None and default_lang_match is None:
+			default_lang_match = elem.text
 
-	# If none of the above is found, return None
-	return None
+	return base_lang_match or default_lang_match
 
 def app_list_flatpak() -> List[AppInfo]:
 	# Get the system language
