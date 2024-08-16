@@ -124,7 +124,7 @@ class Ui_MainWindow(object):
 											QtWidgets.QSizePolicy.Fixed)
 		# Primer item, spaciador vertical
 		self.verticalLayout.addItem(spacerItem2)
-		
+
 		self.lw_categories = ClickableList(self.frame_2)
 		self.lw_categories.setStyleSheet(
 			"#lw_categories{\n"
@@ -254,7 +254,7 @@ class Ui_MainWindow(object):
 				background-color: rgba(50, 50, 50, 100);
 			}
 			""")
-		
+
 		self.horizontalLayout_4 = QtWidgets.QHBoxLayout(self.widget_1)
 		self.horizontalLayout_4.setContentsMargins(10, 15, 10, 5)
 		self.horizontalLayout_4.setSpacing(20)
@@ -294,7 +294,7 @@ class Ui_MainWindow(object):
 		spacerItem1 = QtWidgets.QSpacerItem(
 			40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
 		self.horizontalLayout_4.addItem(spacerItem1)
-		
+
 		self.btn_app_deb = QtWidgets.QPushButton(self.widget_1)
 		self.btn_app_deb.setObjectName(u"btn_app_deb")
 		self.btn_app_deb.setStyleSheet("""
@@ -379,7 +379,7 @@ class Ui_MainWindow(object):
 		self.btn_install_review_text = self.__tr("Review apps")
 		self.btn_install_start_text = self.__tr("Start process")
 		self.btn_install.setText(self.btn_install_review_text)
-		
+
 		item_texts = [self.__tr("Home"), self.__tr("Deepines"), self.__tr("Internet"), self.__tr("Multimedia"),
 		self.__tr("Graphics"), self.__tr("Games"), self.__tr("Office automation"), self.__tr("Development"),
 		self.__tr("System"), self.__tr("Other"), self.__tr(""), self.__tr("Installed apps")]
@@ -395,8 +395,8 @@ class Ui_MainWindow(object):
 		self.label.setText(self.about_version_text.format(version=STORE_VERSION))
 		self.btn_app_deb.setText(self.__tr("Apps .deb"))
 		self.btn_app_flatpak.setText(self.__tr("Apps Flatpak"))
-		
-		
+
+
 		# StoreWindow
 		self.list_apps_text = self.__tr("Select the apps to install")
 		self.select_app_text = self.__tr("Select")

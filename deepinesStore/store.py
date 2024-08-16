@@ -35,7 +35,7 @@ class EventsMixin:
 			self.setProperty("previous_position", self.pos())
 			self.drag_position = event.globalPos() - self.frameGeometry().topLeft()
 		event.accept()
-	
+
 	def mouseMoveEvent(self, event):
 		if event.buttons() == Qt.LeftButton and self.drag_position is not None:
 			self.setCursor(Qt.SizeAllCursor)
@@ -88,7 +88,7 @@ class StoreMWindow(QMainWindow, EventsMixin):
 			lista_inicio, lista_global, \
 			selected_type_app, uninstalled, list_app_deepines, \
 			list_app_flatpak, list_app_show_temp
-		
+
 		repo_file = "/etc/apt/sources.list.d/deepines.list"
 		if os.path.exists(repo_file):
 			self.deepines_app_list = list_app_deepines
@@ -115,7 +115,7 @@ class StoreMWindow(QMainWindow, EventsMixin):
 				self.error(ui.error_no_server_text)
 		else:
 			self.error(ui.error_no_deepines_repo_text)
-			
+
 
 		ui.btn_install.setEnabled(False)
 		ui.btn_install.clicked.connect(self.confirm_app_installation)
@@ -147,7 +147,7 @@ class StoreMWindow(QMainWindow, EventsMixin):
 		self.verticalLayout.setContentsMargins(0, 0, 0, 0)
 		self.verticalLayout.setSpacing(10)
 		self.verticalLayout.setObjectName("verticalLayout")
-	
+
 		self.raccoon = QLabel(self)
 		self.raccoon.setText("")
 		self.raccoon.setMinimumSize(300, 300)
@@ -157,12 +157,12 @@ class StoreMWindow(QMainWindow, EventsMixin):
 		self.raccoon.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
 		self.raccoon.adjustSize()
 		self.raccoon.setAlignment(QtCore.AlignCenter)
-	
+
 		ruta = get_res('raccoon')
 		pixmap = QPixmap(ruta)
 		self.raccoon.setPixmap(pixmap)
 		self.verticalLayout.addWidget(self.raccoon, alignment=QtCore.AlignHCenter)
-	
+
 		self.label_error = LinkLabel(self)
 		font = QFont()
 		font.setPointSize(16)
@@ -175,7 +175,7 @@ class StoreMWindow(QMainWindow, EventsMixin):
 		self.label_error.setObjectName("label_error")
 		self.label_error.setStyleSheet("#label_error{ color: #fff; background-color: rgba(0, 0, 0, 0);}")
 		self.verticalLayout.addWidget(self.label_error)
-	
+
 		ui.gridLayout.addLayout(self.verticalLayout, 0, 0, 1, 1)
 		self.status_widgets(False)
 
@@ -257,7 +257,7 @@ class StoreMWindow(QMainWindow, EventsMixin):
 
 
 		self.clear_search_txt()
-			
+
 		self.do_list_apps(list_app_show_temp)
 		item = ui.lw_categories.item(0)
 		item.setSelected(True)
@@ -287,7 +287,7 @@ class StoreMWindow(QMainWindow, EventsMixin):
 					lista_search.append(item)
 			else:
 				list_app_show_temp = lista_search
-		
+
 		self.do_list_apps(list_app_show_temp)
 
 	def clear_search_txt(self):
@@ -547,7 +547,7 @@ class StoreMWindow(QMainWindow, EventsMixin):
 	#				  Instalacion				 #
 
 	def change_color_btn_install(self):
-		if self.show_apps_selected:			
+		if self.show_apps_selected:
 			ui.btn_install.clicked.disconnect(self.window_install)
 			ui.btn_install.clicked.connect(self.confirm_app_installation)
 			ui.lbl_list_apps.setEnabled(True)
@@ -641,7 +641,7 @@ class StoreMWindow(QMainWindow, EventsMixin):
 		self.status_label.setObjectName("status_label")
 		self.status_label.setStyleSheet("#status_label{color: #fff; font-size: 18px;}")
 		layout.addWidget(self.status_label)
-		
+
 		self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
 		layout.addItem(self.verticalSpacer)
 
@@ -649,17 +649,17 @@ class StoreMWindow(QMainWindow, EventsMixin):
 		ui.btn_install.setText(ui.process_install_text)
 		self.status_widgets(False)
 		self.start_installation()
-	
+
 	def update_status(self, message):
 		if self.status_label:
 			self.status_label.setText(message)
-	
+
 	def change_process_name(self, name):
 		self.process_label.setText(name)
 
 	def start_installation(self):
 		self.status_label.setText(ui.status_starting_install_text)
-		if hasattr(self, 'install_thread') and self.install_thread and self.install_thread.isRunning():			
+		if hasattr(self, 'install_thread') and self.install_thread and self.install_thread.isRunning():
 			self.install_thread.stop()
 			self.install_thread.wait()
 
@@ -740,14 +740,14 @@ class StoreMWindow(QMainWindow, EventsMixin):
 					index = self.lista_app_deb.index(app)
 					self.lista_app_deb[index].state = AppState.UNINSTALLED
 					self.lista_app_deb[index].process = ProcessType.INSTALL
-					
+
 				else:
 					lista_global = self.lista_app_flatpak
 					index = self.lista_app_flatpak.index(app)
 					self.lista_app_flatpak[index].state = AppState.UNINSTALLED
 					self.lista_app_flatpak[index].process = ProcessType.INSTALL
 
-			
+
 		selected_apps = list()
 		self.contar_apps()
 		self.change_color_btn_install()
@@ -798,7 +798,7 @@ class Card(QFrame):
 			state = AppState.INSTALLED
 			if self.application in selected_apps:
 				state = AppState.UNINSTALL
-		
+
 		if self.application in uninstalled and self.application in selected_apps:
 			state = AppState.SELECTED
 		elif self.application in uninstalled:

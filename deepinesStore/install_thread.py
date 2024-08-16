@@ -55,7 +55,7 @@ class External(QObject):
 				return 0
 		else: # End for loop.
 			self.complete.emit()
-	
+
 	def apt_update(self):
 		self.update.emit()
 		update = self.run_cmd(["apt", "update"])

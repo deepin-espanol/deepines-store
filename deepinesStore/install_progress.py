@@ -96,7 +96,7 @@ class InstallThread(QThread):
 					elif self.package_process == ProcessType.UNINSTALL:
 						if not self._uninstall_flatpak(app_id):
 							return  # Stop execution if uninstallation fails
-			
+
 			if self._is_running:
 				self.finished_signal.emit(True)
 
@@ -136,7 +136,7 @@ class InstallThread(QThread):
 			try:
 				cache.commit(fetch_progress=ProgressHandler(self.update_signal),
 							install_progress=InstallProgressHandler(self.update_signal, self.package_process))
-				
+
 				# Verificar si el paquete se instaló correctamente
 				cache.open(progress=UpdateProgress(self.update_signal))
 				if cache[package_name].is_installed:
@@ -193,12 +193,12 @@ class InstallThread(QThread):
 		else:
 			self.update_signal.emit(f"Marcando {package_name} para desinstalación...")
 			pkg.mark_delete()
-			
+
 			self.update_signal.emit(f"Desinstalando {package_name}...")
 			try:
 				cache.commit(fetch_progress=ProgressHandler(self.update_signal),
 							install_progress=InstallProgressHandler(self.update_signal, self.package_process))
-				
+
 				# Verificar si el paquete se desinstaló correctamente
 				cache.open(progress=UpdateProgress(self.update_signal))
 				if not cache[package_name].is_installed:

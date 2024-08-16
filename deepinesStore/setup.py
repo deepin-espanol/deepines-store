@@ -11,7 +11,7 @@ def download_control():
 	deepines_index = get_dl(get_deepines_uri('/store/config/deepines.txt'))
 	if deepines_index.status_code == 200:
 		write(deepines_index, to=get_res('deepines', 'config', '.txt'))
-	
+
 #		Lista aplicaciones excluidas		  #
 def Get_App_Exclude():
 	lista = list()
