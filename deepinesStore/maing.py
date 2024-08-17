@@ -48,7 +48,7 @@ class Ui_MainWindow(object):
 		svg_cerrar = get_res('cerrar')
 
 		MainWindow.setObjectName("MainWindow")
-		MainWindow.setMinimumSize(QSize(960, 960))
+		MainWindow.setMinimumSize(QSize(960, 634))
 		MainWindow.resize(self.width_screen, self.height_screen)
 		self.centralwidget = QtWidgets.QWidget(MainWindow)
 		self.centralwidget.setObjectName("centralwidget")
