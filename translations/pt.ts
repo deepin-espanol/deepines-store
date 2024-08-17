@@ -76,7 +76,7 @@
     <message>
         <location filename="../deepinesStore/about.py" line="68"/>
         <source>The App Store of Deepin en Español</source>
-        <translation>App Store do Deepin em Português</translation>
+        <translation>App Store do Deepin en Español</translation>
     </message>
 </context>
 <context>
