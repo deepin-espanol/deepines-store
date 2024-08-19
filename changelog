@@ -1,3 +1,29 @@
+deepines-store (1.4.0) stable; urgency=low
+
+  * Added support for Flatpak apps from the Flathub repository.
+  * Added support for uninstalling installed apps.
+  * New "Installed apps" category.
+  * Reduced the size of SVG resources.
+  * Fixed About window opening more than once.
+  * Updated banners.
+  * Fixed usage of user language and theme instead of root's.
+  * Fixed UTF-8 decoding for app data scraping.
+
+  [ New translations ]
+  * Simplified Chinese (Calcitem, yangyangdaji).
+  * French (J. Lavoie).
+  * Italian (J. Lavoie, Antonello Pirina).
+  * German (J. Lavoie, Das Jott, Ettore Atalan).
+  * Dutch (Heimen Stoffels).
+  * Polish (Kacper Fiedorowicz, Eryk Michalak).
+  * Bokmål (Allan Nordhøy).
+  * Arabic (Khaled Mahmoud).
+  * Hungarian (Béla Bajza).
+  * Ukrainian (Dan).
+  * Portuguese (Filho Arrais).
+
+ -- Amaro Martínez <xoas@airmail.cc>  Mon, 19 Aug 2024 14:59:00 -0500
+
 deepines-store (1.3.5-2) stable; urgency=high
 
   * Se agregó la creación de la carpeta /usr/share/desktop-directories.
