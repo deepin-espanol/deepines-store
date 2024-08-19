@@ -203,7 +203,6 @@ class StoreMWindow(QMainWindow, EventsMixin):
 	def refresh_app_grid(self):
 		try:
 			self.clear_gridLayout()
-			print(f"list app show temp: {list_app_show_temp}")
 			self.do_list_apps(list_app_show_temp)
 		except NameError:
 			pass  # There are no apps?
