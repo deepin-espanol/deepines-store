@@ -203,6 +203,7 @@ class StoreMWindow(QMainWindow, EventsMixin):
 	def refresh_app_grid(self):
 		try:
 			self.clear_gridLayout()
+			print(f"list app show temp: {list_app_show_temp}")
 			self.do_list_apps(list_app_show_temp)
 		except NameError:
 			pass  # There are no apps?
@@ -212,7 +213,7 @@ class StoreMWindow(QMainWindow, EventsMixin):
 	#			  Cambiar tipo de app			#
 
 	def change_type_app_selected(self):
-		global selected_type_app, lista_inicio, lista_global
+		global selected_type_app, lista_inicio, lista_global, list_app_show_temp
 		style_flatpak = """
 		background-color: rgb(169, 144, 122);
 		color: #fff;
