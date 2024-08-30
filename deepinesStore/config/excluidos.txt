@@ -172,3 +172,5 @@ fonts-league-spartan
 vnstat
 yad
 libnet-arp-perl
+libfmt9
+libbotan
