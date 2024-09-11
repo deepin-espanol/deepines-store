@@ -173,4 +173,4 @@ vnstat
 yad
 libnet-arp-perl
 libfmt9
-libbotan
+libbotan-2-19
