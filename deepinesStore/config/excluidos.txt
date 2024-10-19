@@ -174,3 +174,5 @@ yad
 libnet-arp-perl
 libfmt9
 libbotan-2-19
+libplank-common
+libplank1
