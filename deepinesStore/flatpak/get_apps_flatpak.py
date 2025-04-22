@@ -69,7 +69,7 @@ def app_list_flatpak() -> List[AppInfo]:
 		if app_releases is not None:
 			releases = app_releases.findall('release')
 			if releases:
-				app_version = releases[-1].get('version')
+				app_version = releases[0].get('version')
 
 		# Get <icon> with attribute type="cached" and type="remote"
 		icon_elems = component.findall('icon')
