@@ -477,7 +477,7 @@ Version: {version}</source>
     <message>
         <location filename="../deepinesStore/maing.py" line="409"/>
         <source>Unable to establish connection with the server, &lt;br&gt;please check your internet connection.&lt;br&gt;If the problem persists, please contact us via Telegram &lt;br&gt;at {atTlURL}.&lt;br&gt;&lt;br&gt;Visit Deepin en Español for more information: {siteURL}</source>
-        <translation>சேவையகத்துடன் இணைப்பை நிறுவ முடியவில்லை, &lt;br&gt; தயவுசெய்து உங்கள் இணைய இணைப்பைச் சரிபார்க்கவும். &lt;br&gt; சிக்கல் தொடர்ந்தால், தயவுசெய்து எங்களை டெலிகிராம் வழியாக தொடர்பு கொள்ளவும் &lt;br&gt; {atTlURL}. &lt;br&gt; &lt;br&gt; மேலும் மேலும் தகவல்: {siteURL}</translation>
+        <translation>சேவையகத்துடன் இணைப்பை நிறுவ முடியவில்லை, &lt;br&gt; தயவுசெய்து உங்கள் இணைய இணைப்பைச் சரிபார்க்கவும். &lt;br&gt; சிக்கல் தொடர்ந்தால், தயவுசெய்து எங்களை டெலிகிராம் வழியாகத் தொடர்பு கொள்ளவும் &lt;br&gt; {atTlURL}. &lt;br&gt; &lt;br&gt; மேலும் தகவல்: {siteURL}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="380"/>
