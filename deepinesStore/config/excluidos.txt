@@ -186,3 +186,5 @@ kylin-kmre-image-update-x64
 kylin-kmre-manager
 kylin-kmre-modules-dkms
 kylin-kmre-window
+libkylin-kmre
+libkylin-kmre-emugl
