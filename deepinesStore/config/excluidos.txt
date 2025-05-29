@@ -177,3 +177,12 @@ libbotan-2-19
 libplank-common
 libplank1
 python3-pyqt5.qtwebengine
+kmre-apk-installer
+kmre-extra-translate-es
+kylin-kmre-daemon
+kylin-kmre-display-control
+kylin-kmre-image-data-x64
+kylin-kmre-image-update-x64
+kylin-kmre-manager
+kylin-kmre-modules-dkms
+kylin-kmre-window
