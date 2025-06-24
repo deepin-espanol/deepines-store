@@ -6,22 +6,22 @@
     <message>
         <location filename="Desktop Entry]GenericName" line="0"/>
         <source>App Store</source>
-        <translation type="unfinished"></translation>
+        <translation>App Store</translation>
     </message>
     <message>
         <location filename="Desktop Entry]Name" line="0"/>
         <source>Deepines Store</source>
-        <translation type="unfinished"></translation>
+        <translation>Магазин Deepines</translation>
     </message>
     <message>
         <location filename="Desktop Entry]Comment" line="0"/>
         <source>Download and install applications from Deepines repository</source>
-        <translation type="unfinished"></translation>
+        <translation>Загрузка и установка приложений из репозитория Deepines</translation>
     </message>
     <message>
         <location filename="Desktop Entry]Keywords" line="0"/>
         <source>store;app;apps;applications;install;program;software;</source>
-        <translation type="unfinished"></translation>
+        <translation>store;app;apps;applications;install;program;software;</translation>
     </message>
 </context>
 </TS>
