@@ -188,3 +188,5 @@ kylin-kmre-modules-dkms
 kylin-kmre-window
 libkylin-kmre
 libkylin-kmre-emugl
+python3-iniparse
+android-framework-res
