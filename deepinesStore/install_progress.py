@@ -161,10 +161,6 @@ class InstallThread(QThread):
 				self.update_signal.emit(error_msg)
 				self.finished_signal.emit(False)
 				return False
-			except apt.cache.InstallFailedException as e:
-				error_msg = f"Error durante la instalación: {str(e)}"
-				self.update_signal.emit(error_msg)
-				self.finished_signal.emit(False)
 			except SystemError as e:
 				error_msg = f"Error del sistema durante la instalación: {str(e)}"
 				self.update_signal.emit(error_msg)
