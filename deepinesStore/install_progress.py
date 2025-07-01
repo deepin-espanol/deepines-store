@@ -11,18 +11,18 @@ class ProgressHandler(apt.progress.base.AcquireProgress):
 		self.update_signal = update_signal
 
 	def pulse(self, owner):
-		current = self.current_bytes / 1024 / 1024  # Convertir a MB
-		total = self.total_bytes / 1024 / 1024  # Convertir a MB
+		current = self.current_bytes / 1024 / 1024  # Convert to MB
+		total = self.total_bytes / 1024 / 1024  # Convert to MB
 		if total > 0:
 			percent = int(current / total * 100)
-			self.update_signal.emit(f"Descargando... {percent}% ({current:.2f}/{total:.2f} MB)")
+			self.update_signal.emit(f"Downloading... {percent}% ({current:.2f}/{total:.2f} MB)")
 		return True
 
 	def start(self):
-		self.update_signal.emit("Iniciando descarga...")
+		self.update_signal.emit("Starting download...")
 
 	def stop(self):
-		self.update_signal.emit("Descarga completada")
+		self.update_signal.emit("Download completed")
 
 class UpdateProgress(apt.progress.base.OpProgress):
 	def __init__(self, update_signal):
@@ -31,9 +31,9 @@ class UpdateProgress(apt.progress.base.OpProgress):
 
 	def update(self, percent=None):
 		if percent:
-			self.update_signal.emit(f"Actualizando caché... {percent:.2f}%")
+			self.update_signal.emit(f"Updating cache... {percent:.2f}%")
 		else:
-			self.update_signal.emit("Actualizando caché...")
+			self.update_signal.emit("Updating cache...")
 
 class InstallProgressHandler(apt.progress.base.InstallProgress):
 	def __init__(self, update_signal, process_type):
@@ -68,12 +68,12 @@ class InstallThread(QThread):
 				if package.type == AppType.DEB_PACKAGE:
 					if self.first_update:
 						cache = apt.Cache()
-						self.name_process_signal.emit("Actualizando lista de paquetes...")
-						self.update_signal.emit("Actualizando lista de paquetes...")
+						self.name_process_signal.emit("Updating package list...")
+						self.update_signal.emit("Updating package list...")
 						try:
 							cache.update(fetch_progress=ProgressHandler(self.update_signal))
 						except apt.cache.FetchFailedException as e:
-							error_msg = f"Error durante la actualización del caché: {str(e)}"
+							error_msg = f"Error during cache update: {str(e)}"
 							self.update_signal.emit(error_msg)
 							self.finished_signal.emit(False)
 							return
@@ -111,63 +111,63 @@ class InstallThread(QThread):
 		self.wait()
 
 	def _install_package(self, cache, package_name):
-		self.name_process_signal.emit(f'Instalando: {package_name} desde repositorio Deepines')
-		self.update_signal.emit(f"Buscando paquete {package_name}...")
+		self.name_process_signal.emit(f'Installing: {package_name} from Deepines repository')
+		self.update_signal.emit(f"Searching for package {package_name}...")
 		if package_name not in cache:
-			error_msg = f"Paquete {package_name} no encontrado"
+			error_msg = f"Package {package_name} not found"
 			self.update_signal.emit(error_msg)
 			self.finished_signal.emit(False)
 			return False
 
 		pkg = cache[package_name]
 		if pkg.is_installed:
-			self.update_signal.emit(f"{package_name} ya está instalado.")
+			self.update_signal.emit(f"{package_name} is already installed.")
 		else:
 			try:
-				self.update_signal.emit(f"Marcando {package_name} para instalación...")
+				self.update_signal.emit(f"Marking {package_name} for installation...")
 				pkg.mark_install()
 			except apt.cache.DependencyError as e:
-				error_msg = f"Error de dependencias para {package_name}: {str(e)}"
+				error_msg = f"Dependency error for {package_name}: {str(e)}"
 				self.update_signal.emit(error_msg)
 				self.finished_signal.emit(False)
 				return False
 
-			self.update_signal.emit(f"Descargando e instalando {package_name}...")
+			self.update_signal.emit(f"Downloading and installing {package_name}...")
 			try:
 				cache.commit(fetch_progress=ProgressHandler(self.update_signal),
 							install_progress=InstallProgressHandler(self.update_signal, self.package_process))
 
-				# Verificar si el paquete se instaló correctamente
+				# Check if the package was installed correctly
 				cache.open(progress=UpdateProgress(self.update_signal))
 				if cache[package_name].is_installed:
-					self.update_signal.emit(f"{package_name} se ha instalado correctamente.")
+					self.update_signal.emit(f"{package_name} has been installed successfully.")
 				else:
-					error_msg = f"{package_name} no se pudo instalar correctamente, posiblemente debido a errores de dependencias."
+					error_msg = f"{package_name} could not be installed correctly, possibly due to dependency errors."
 					self.update_signal.emit(error_msg)
 					self.finished_signal.emit(False)
 					return False
 			except apt.cache.LockFailedException as e:
-				error_msg = f"Error de bloqueo durante la instalación: {str(e)}"
+				error_msg = f"Lock error during installation: {str(e)}"
 				self.update_signal.emit(error_msg)
 				self.finished_signal.emit(False)
 				return False
 			except apt.cache.FetchFailedException as e:
-				error_msg = f"Error de descarga durante la instalación: {str(e)}"
+				error_msg = f"Download error during installation: {str(e)}"
 				self.update_signal.emit(error_msg)
 				self.finished_signal.emit(False)
 				return False
 			except apt.cache.FetchCancelledException as e:
-				error_msg = f"Descarga cancelada: {str(e)}"
+				error_msg = f"Download cancelled: {str(e)}"
 				self.update_signal.emit(error_msg)
 				self.finished_signal.emit(False)
 				return False
 			except SystemError as e:
-				error_msg = f"Error del sistema durante la instalación: {str(e)}"
+				error_msg = f"System error during installation: {str(e)}"
 				self.update_signal.emit(error_msg)
 				self.finished_signal.emit(False)
 				return False
 			except Exception as e:
-				error_msg = f"Error inesperado: {str(e)}"
+				error_msg = f"Unexpected error: {str(e)}"
 				self.update_signal.emit(error_msg)
 				self.finished_signal.emit(False)
 				return False
@@ -175,57 +175,57 @@ class InstallThread(QThread):
 		return True
 
 	def _uninstall_package(self, cache, package_name):
-		self.name_process_signal.emit(f'Desinstalando: {package_name}.')
-		self.update_signal.emit(f"Buscando paquete {package_name}...")
+		self.name_process_signal.emit(f'Uninstalling: {package_name}.')
+		self.update_signal.emit(f"Searching for package {package_name}...")
 		if package_name not in cache:
-			error_msg = f"Paquete {package_name} no encontrado"
+			error_msg = f"Package {package_name} not found"
 			self.update_signal.emit(error_msg)
 			self.finished_signal.emit(False)
 			return False
 
 		pkg = cache[package_name]
 		if not pkg.is_installed:
-			self.update_signal.emit(f"{package_name} no está instalado.")
+			self.update_signal.emit(f"{package_name} is not installed.")
 		else:
-			self.update_signal.emit(f"Marcando {package_name} para desinstalación...")
+			self.update_signal.emit(f"Marking {package_name} for removal...")
 			pkg.mark_delete()
 
-			self.update_signal.emit(f"Desinstalando {package_name}...")
+			self.update_signal.emit(f"Uninstalling {package_name}...")
 			try:
 				cache.commit(fetch_progress=ProgressHandler(self.update_signal),
 							install_progress=InstallProgressHandler(self.update_signal, self.package_process))
 
-				# Verificar si el paquete se desinstaló correctamente
+				# Check if the package was uninstalled correctly
 				cache.open(progress=UpdateProgress(self.update_signal))
 				if not cache[package_name].is_installed:
-					self.update_signal.emit(f"{package_name} se ha desinstalado correctamente.")
+					self.update_signal.emit(f"{package_name} has been uninstalled successfully.")
 				else:
-					error_msg = f"{package_name} no se pudo desinstalar correctamente."
+					error_msg = f"{package_name} could not be uninstalled correctly."
 					self.update_signal.emit(error_msg)
 					self.finished_signal.emit(False)
 					return False
 			except apt.cache.LockFailedException as e:
-				error_msg = f"Error de bloqueo durante la desinstalación: {str(e)}"
+				error_msg = f"Lock error during uninstallation: {str(e)}"
 				self.update_signal.emit(error_msg)
 				self.finished_signal.emit(False)
 				return False
 			except apt.cache.FetchFailedException as e:
-				error_msg = f"Error de descarga durante la desinstalación: {str(e)}"
+				error_msg = f"Download error during uninstallation: {str(e)}"
 				self.update_signal.emit(error_msg)
 				self.finished_signal.emit(False)
 				return False
 			except apt.cache.InstallFailedException as e:
-				error_msg = f"Error durante la desinstalación: {str(e)}"
+				error_msg = f"Error during uninstallation: {str(e)}"
 				self.update_signal.emit(error_msg)
 				self.finished_signal.emit(False)
 				return False
 			except SystemError as e:
-				error_msg = f"Error del sistema durante la desinstalación: {str(e)}"
+				error_msg = f"System error during uninstallation: {str(e)}"
 				self.update_signal.emit(error_msg)
 				self.finished_signal.emit(False)
 				return False
 			except Exception as e:
-				error_msg = f"Error inesperado: {str(e)}"
+				error_msg = f"Unexpected error: {str(e)}"
 				self.update_signal.emit(error_msg)
 				self.finished_signal.emit(False)
 				return False
@@ -233,8 +233,8 @@ class InstallThread(QThread):
 		return True
 
 	def _install_flatpak(self, app_id):
-		self.name_process_signal.emit(f"Instalando {app_id} desde Flathub...")
-		self.update_signal.emit(f"Instalando {app_id} desde Flathub...")
+		self.name_process_signal.emit(f"Installing {app_id} from Flathub...")
+		self.update_signal.emit(f"Installing {app_id} from Flathub...")
 
 		process = sp.Popen(['flatpak', 'install', '-y', 'flathub', app_id], stdout=sp.PIPE, stderr=sp.PIPE, text=True)
 
@@ -253,9 +253,9 @@ class InstallThread(QThread):
 			self.update_signal.emit(stderr.strip())
 
 		if process.returncode == 0:
-			self.update_signal.emit(f"{app_id} se ha instalado correctamente.")
+			self.update_signal.emit(f"{app_id} has been installed successfully.")
 		else:
-			error_msg = f"Error instalando {app_id}: {stderr}"
+			error_msg = f"Error installing {app_id}: {stderr}"
 			self.update_signal.emit(error_msg)
 			self.finished_signal.emit(False)
 			return False
@@ -263,8 +263,8 @@ class InstallThread(QThread):
 		return True
 
 	def _uninstall_flatpak(self, app_id):
-		self.name_process_signal.emit(f"Desinstalando {app_id} desde Flathub...")
-		self.update_signal.emit(f"Desinstalando {app_id} desde Flathub...")
+		self.name_process_signal.emit(f"Uninstalling {app_id} from Flathub...")
+		self.update_signal.emit(f"Uninstalling {app_id} from Flathub...")
 
 		process = sp.Popen(['flatpak', 'uninstall', '-y', app_id], stdout=sp.PIPE, stderr=sp.PIPE, text=True)
 
@@ -283,9 +283,9 @@ class InstallThread(QThread):
 			self.update_signal.emit(stderr.strip())
 
 		if process.returncode == 0:
-			self.update_signal.emit(f"{app_id} se ha desinstalado correctamente.")
+			self.update_signal.emit(f"{app_id} has been uninstalled successfully.")
 		else:
-			error_msg = f"Error desinstalando {app_id}: {stderr}"
+			error_msg = f"Error uninstalling {app_id}: {stderr}"
 			self.update_signal.emit(error_msg)
 			self.finished_signal.emit(False)
 			return False
