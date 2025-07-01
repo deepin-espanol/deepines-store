@@ -1,18 +1,25 @@
 #!/usr/bin/env python3
 
-from os.path import join, abspath, dirname
+from os.path import join, abspath, dirname, exists
 from os import listdir, remove
 from hashlib import md5
-from deepinesStore.core import get_dl, write, get_deepines_uri
+from deepinesStore.core import get_dl, get_deepines_uri
+from deepinesStore.demoted_actions import config_dir, create_folder, write_file
 import threading
 
 
 class threading_svg(object):
 
 	def __init__(self):
+		self.path_config_apps = join(config_dir, 'apps')
+		if not exists(self.path_config_apps):
+			create_folder(self.path_config_apps)
+
+		# Initialize paths and dictionaries
 		self.LOCAL_PATH = abspath(join(dirname(__file__)))
 		self.PATH_SVG = join(self.LOCAL_PATH, 'resources/apps')
-		self.PATH_TEMP = join(self.LOCAL_PATH, 'remote_svg.txt')
+		self.PATH_TEMP = join(config_dir, 'remote_svg.txt')
+
 		self.LOCAL_CHECK = dict()
 		self.REMOTE_CHECK = dict()
 		self.LIST_SVG_REMOTE = list()
@@ -32,13 +39,16 @@ class threading_svg(object):
 
 	# Getting the local list of SVGs and its checksums
 	def get_local_checksum(self):
-		for FILE in listdir(self.PATH_SVG):
+		def compute_md5(file_path):
 			hash_md5 = md5()
-			full_path_svg = join(self.PATH_SVG, FILE)
-			with open(full_path_svg, "rb") as f:
+			with open(file_path, "rb") as f:
 				for chunk in iter(lambda: f.read(4096), b""):
 					hash_md5.update(chunk)
-			self.LOCAL_CHECK[FILE] = hash_md5.hexdigest()
+			return hash_md5.hexdigest()
+
+		for directory in [self.PATH_SVG, self.path_config_apps]:
+			for file in [f for f in listdir(directory) if f.endswith('.svg')]:
+				self.LOCAL_CHECK[file] = compute_md5(join(directory, file))
 
 	# Getting the remote list of SVGs and its checksums
 	def get_remote_checksum(self):
@@ -46,7 +56,7 @@ class threading_svg(object):
 
 		status_code = SVG_REMOTE.status_code
 		if status_code == 200:
-			write(SVG_REMOTE, to=self.PATH_TEMP)
+			write_file(SVG_REMOTE, to=self.PATH_TEMP)
 			with open(self.PATH_TEMP, 'r') as f:
 				for line in f:
 					line = line.replace('\n', '')
@@ -57,12 +67,12 @@ class threading_svg(object):
 			self.STATUS = False
 
 	# Comparing the checksums and downloading the different file
-	# Don't delete for now the one that is in local and not in the repo
 	def compare_check(self):
 		for svg_name in self.LOCAL_CHECK:
 			if svg_name not in self.LIST_SVG_REMOTE:
-				#remove(join(self.PATH_SVG, svg_name))
-				pass
+				svg_name = join(self.path_config_apps, svg_name)
+				if exists(svg_name):
+					remove(svg_name)
 			elif self.LOCAL_CHECK[svg_name] != self.REMOTE_CHECK[svg_name]:
 				self.download_svg(svg_name)
 
@@ -75,4 +85,4 @@ class threading_svg(object):
 	def download_svg(self, name):
 		dl_svg = get_dl(get_deepines_uri(f'/store/svg/{name}'))
 		if dl_svg.status_code == 200:
-			write(dl_svg, to=join(self.PATH_SVG, name))
+			write_file(dl_svg, to=join(self.path_config_apps, name))

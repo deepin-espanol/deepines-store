@@ -1,40 +1,43 @@
 import os
 import deepinesStore.demoted_actions as demoted
 from deepinesStore.app_info import AppState, ProcessType
-from deepinesStore.core import get_res, get_dl, write, get_deepines_uri
+from deepinesStore.core import get_res, get_dl, get_deepines_uri
+from deepinesStore.demoted_actions import write_file, create_config_dir, config_dir
+
+PATH_EXCLUIDOS = os.path.join(config_dir, 'excluidos.txt')
+PATH_DEEPINES = os.path.join(config_dir, 'deepines.txt')
+
 
 def download_control():
+	create_config_dir()
+
 	ignore_index = get_dl(get_deepines_uri('/store/config/excluidos.txt'))
 	if ignore_index.status_code == 200:
-		write(ignore_index, to=get_res('excluidos', 'config', '.txt'))
+		write_file(ignore_index, to=PATH_EXCLUIDOS)
 
 	deepines_index = get_dl(get_deepines_uri('/store/config/deepines.txt'))
 	if deepines_index.status_code == 200:
-		write(deepines_index, to=get_res('deepines', 'config', '.txt'))
+		write_file(deepines_index, to=PATH_DEEPINES)
+
+def get_list_from_file(file_path):
+	lista = list()
+	try:
+		with open(file_path, 'r') as file:
+			for line in file:
+				line = line.strip()  # Remove newline characters
+				if line:  # Only add non-empty lines
+					lista.append(line)
+	except FileNotFoundError:
+		print(f"File {file_path} not found.")
+	return lista
 
 #		Lista aplicaciones excluidas		  #
 def Get_App_Exclude():
-	lista = list()
-	ruta_excluidos = get_res('excluidos', ext='.txt', dir='config')
-	excluidos = open(ruta_excluidos, 'r')
-
-	for line in excluidos:
-		line = line.replace('\n', '')
-		lista.append(line)
-
-	return lista
+	return get_list_from_file(PATH_EXCLUIDOS)
 
 #		Lista aplicaciones deepines		  #
 def Get_App_Deepines():
-	lista = list()
-	ruta_deepines = get_res('deepines', ext='.txt', dir='config')
-	deepines = open(ruta_deepines, 'r')
-
-	for line in deepines:
-		line = line.replace('\n', '')
-		lista.append(line)
-
-	return lista
+	return get_list_from_file(PATH_DEEPINES)
 
 def get_installed_apps(list_app_deb, list_app_flatpak):
 	list_installed = list()

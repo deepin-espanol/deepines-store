@@ -2,6 +2,7 @@
 import os
 from subprocess import Popen, PIPE, check_output, CalledProcessError
 import platform
+from pathlib import Path
 
 from deepinesStore.core import default_env
 
@@ -42,11 +43,18 @@ def run_cmd(user: UserDefault, cmd):
 	return Popen(cmd, env=user.env, preexec_fn=set(user.uid, user.gid), stderr=PIPE, stdout=PIPE, encoding='utf8', universal_newlines=True)
 
 
+def get_user_home_path() -> Path:
+	return Path.home()
+
+
 if platform.system() == 'Windows':
 	pass
 else:
 	UID = int(get_real_uid())
 	DEF = UserDefault(UID)
+	# This is the "real" home, not the one from the user running the command
+	# (which is probably root)
+	HOME = Path(DEF.home)
 
 
 def browse(uri: str):
@@ -72,6 +80,36 @@ def check_tg_handler():
 		return True
 	else:
 		return False
+
+
+def create_folder(path: Path):
+	if platform.system() == 'Linux':
+		run_cmd(DEF, ['mkdir', '-p', str(path)])
+	else:
+		path.mkdir(parents=True, exist_ok=True)
+
+
+def write_file(b, to):
+	if platform.system() == 'Linux':
+		p = Popen(['tee', str(to)], env=DEF.env, preexec_fn=set(DEF.uid, DEF.gid), stdin=PIPE, stdout=PIPE, stderr=PIPE)
+		p.communicate(input=b.content)
+	else:
+		with open(to, 'wb') as ftw:
+			ftw.write(b.content)
+
+
+def get_user_home():
+	if platform.system() == 'Linux':
+		return DEF.env['HOME']
+	else:
+		return str(get_user_home_path())
+
+
+config_dir = Path(get_user_home()) / '.config' / 'deepines-store'
+
+def create_config_dir():
+	create_folder(config_dir)
+	return config_dir
 
 
 def open_telegram_link(username: str):

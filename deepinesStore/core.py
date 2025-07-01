@@ -72,12 +72,6 @@ def set_blur(win):
 		from os import system
 		system('xprop -f _KDE_NET_WM_BLUR_BEHIND_REGION 32c -set _KDE_NET_WM_BLUR_BEHIND_REGION 0 -id {}'.format(int(win.winId())))
 
-
-def write(b, to):
-	with open(to, 'wb') as ftw:
-		ftw.write(b.content)
-
-
 if name == 'nt':
 	try:
 		from ctypes import windll
