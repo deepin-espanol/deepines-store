@@ -84,14 +84,14 @@ if [ -f "${CNFMOD}" ]; then
 fi
 
 SEPARATOR="=============================================================="
-COMPATIBLE_VERSIONS="Deepines Store is only compatible with Deepin 20 and Deepin 23"
+COMPATIBLE_VERSIONS="Deepines Store is only compatible with Deepin 20, Deepin 23 and Deepin 25"
 WE_RECOMMEND="  We recommend installing a recent version of Deepin. If you
   are using Deepin 20, check that the configuration of the
   repositories does not contain errors."
 
 case "${LANGUAGE:-$LANG}" in
 es*)
-	COMPATIBLE_VERSIONS="Tienda Deepines sólo es compatible con Deepin 20 y Deepin 23"
+	COMPATIBLE_VERSIONS="Tienda Deepines sólo es compatible con Deepin 20, Deepin 23 y Deepin 25"
 	WE_RECOMMEND=" Recomendamos instalar una versión reciente de Deepin. Si está
  usando Deepin 20, compruebe que la configuración de 
  los repositorios no contiene errores."
@@ -114,7 +114,7 @@ CheckSupportedOS() {
 	if [ "$DIST_ID" = "Deepin" ]; then
 		case $REL_NUM in
 		20 | 20.*) ;;
-		"23 Nightly" | 23 | 23.*) ;;
+		"23 Nightly" | 23 | 23.* | 25) ;;
 		*) UnsupportedOS ;;
 		esac
 	else
@@ -247,7 +247,7 @@ InstallDeepines() {
 	REL_NUM=$(lsb_release -rs)
 	case $REL_NUM in
 	20 | 20.*) InstallDeepinesRepository 4 ;;
-	"23 Nightly" | 23 | 23.*) InstallDeepinesRepository 5 ;;
+	"23 Nightly" | 23 | 23.* | 25) InstallDeepinesRepository 5 ;;
 	esac
 }
 
@@ -347,7 +347,7 @@ cd "$WORK_DIR" || exit 1
 
 echo "Copying scripts..."
 mkdir -p usr/share/deepines/deepinesStore
-rsync -aqr --exclude='translations' --exclude="remote_svg.txt" \
+rsync -aqr --exclude='translations' --exclude="config" --exclude="remote_svg.txt" \
     --exclude="*.pyc" --exclude='__pycache__' --exclude='svg_checksum' \
     "$SH_DIR/deepinesStore" usr/share/deepines
 cp -a "$SH_DIR/deepines.py" usr/share/deepines/deepines
@@ -479,7 +479,7 @@ Maintainer: $PKG_DEV
 Homepage: $PKG_SRC
 Priority: optional
 Pre-Depends: debconf (>= 0.5)
-Depends: $P3, $P3-lxml, $P3-pyqt5, $P3-requests, $P3-apt, flatpak
+Depends: $P3, $P3-lxml, $P3-pyqt5, $P3-requests, $P3-apt, flatpak, x11-utils
 Replaces: deepines-repository (<= 1:4.1), deepines-store:amd64 (<= 1.3.3)
 Description: Deepines repository, key and Store
  Deepines unofficial repository and Store by deepinenespanol.org
