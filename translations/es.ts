@@ -80,31 +80,237 @@
     </message>
 </context>
 <context>
+    <name>InstallProgressHandler</name>
+    <message>
+        <location filename="../deepinesStore/install_progress.py" line="55"/>
+        <source>Installing</source>
+        <translation>Instalando</translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/install_progress.py" line="57"/>
+        <source>Uninstalling</source>
+        <translation>Desinstalando</translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/install_progress.py" line="58"/>
+        <source>{process}: {status} - {percent}%</source>
+        <translation>{process}: {status} - {percent}%</translation>
+    </message>
+</context>
+<context>
+    <name>InstallThread</name>
+    <message>
+        <location filename="../deepinesStore/install_progress.py" line="84"/>
+        <source>Updating package list...</source>
+        <translation>Actualizando la lista de paquetes...</translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/install_progress.py" line="88"/>
+        <source>Error during cache update: {error}</source>
+        <translation>Error durante la actualización de la caché: {error}</translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/install_progress.py" line="117"/>
+        <source>Error: {error}
+{traceback}</source>
+        <translation>Error: {error}
+{traceback}</translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/install_progress.py" line="126"/>
+        <source>Installing: {package} from Deepines repository</source>
+        <translation>Instalando: {package} desde el repositorio Deepines</translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/install_progress.py" line="191"/>
+        <source>Searching for package {package}...</source>
+        <translation>Buscando el paquete {package}...</translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/install_progress.py" line="193"/>
+        <source>Package {package} not found</source>
+        <translation>Paquete {package} no encontrado</translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/install_progress.py" line="136"/>
+        <source>{package} is already installed.</source>
+        <translation>{package} ya está instalado.</translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/install_progress.py" line="139"/>
+        <source>Marking {package} for installation...</source>
+        <translation>Marcando {package} para instalación...</translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/install_progress.py" line="142"/>
+        <source>Dependency error for {package}: {error}</source>
+        <translation>Error de dependencia para {package}: {error}</translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/install_progress.py" line="147"/>
+        <source>Downloading and installing {package}...</source>
+        <translation>Descargando e instalando {package}...</translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/install_progress.py" line="155"/>
+        <source>{package} has been installed successfully.</source>
+        <translation>{package} se ha instalado correctamente.</translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/install_progress.py" line="157"/>
+        <source>{package} could not be installed correctly, possibly due to dependency errors.</source>
+        <translation>{package} no se pudo instalar correctamente, posiblemente por errores de dependencias.</translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/install_progress.py" line="162"/>
+        <source>Lock error during installation: {error}</source>
+        <translation>Error de bloqueo durante la instalación: {error}</translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/install_progress.py" line="167"/>
+        <source>Download error during installation: {error}</source>
+        <translation>Error de descarga durante la instalación: {error}</translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/install_progress.py" line="172"/>
+        <source>Download cancelled: {error}</source>
+        <translation>Descarga cancelada: {error}</translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/install_progress.py" line="177"/>
+        <source>System error during installation: {error}</source>
+        <translation>Error del sistema durante la instalación: {error}</translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/install_progress.py" line="240"/>
+        <source>Unexpected error: {error}</source>
+        <translation>Error inesperado: {error}</translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/install_progress.py" line="190"/>
+        <source>Uninstalling: {package}.</source>
+        <translation>Desinstalando: {package}.</translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/install_progress.py" line="200"/>
+        <source>{package} is not installed.</source>
+        <translation>{package} no está instalado.</translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/install_progress.py" line="202"/>
+        <source>Marking {package} for removal...</source>
+        <translation>Marcando {package} para eliminar...</translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/install_progress.py" line="205"/>
+        <source>Uninstalling {package}...</source>
+        <translation>Desinstalando {package}...</translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/install_progress.py" line="213"/>
+        <source>{package} has been uninstalled successfully.</source>
+        <translation>{package} se ha desinstalado correctamente.</translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/install_progress.py" line="215"/>
+        <source>{package} could not be uninstalled correctly.</source>
+        <translation>{package} no se pudo desinstalar correctamente.</translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/install_progress.py" line="220"/>
+        <source>Lock error during uninstallation: {error}</source>
+        <translation>Error de bloqueo durante la desinstalación: {error}</translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/install_progress.py" line="225"/>
+        <source>Download error during uninstallation: {error}</source>
+        <translation>Error de descarga durante la desinstalación: {error}</translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/install_progress.py" line="230"/>
+        <source>Error during uninstallation: {error}</source>
+        <translation>Error durante la desinstalación: {error}</translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/install_progress.py" line="235"/>
+        <source>System error during uninstallation: {error}</source>
+        <translation>Error del sistema durante la desinstalación: {error}</translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/install_progress.py" line="248"/>
+        <source>Installing {app} from Flathub...</source>
+        <translation>Instalando {app} desde Flathub...</translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/install_progress.py" line="263"/>
+        <source>{app} has been installed successfully.</source>
+        <translation>{app} se ha instalado correctamente.</translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/install_progress.py" line="266"/>
+        <source>Error installing {app}: {error}</source>
+        <translation>Error al instalar {app}: {error}</translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/install_progress.py" line="274"/>
+        <source>Uninstalling {app} from Flathub...</source>
+        <translation>Desinstalando {app} desde Flathub...</translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/install_progress.py" line="289"/>
+        <source>{app} has been uninstalled successfully.</source>
+        <translation>{app} se ha desinstalado correctamente.</translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/install_progress.py" line="292"/>
+        <source>Error uninstalling {app}: {error}</source>
+        <translation>Error al desinstalar {app}: {error}</translation>
+    </message>
+</context>
+<context>
     <name>LoadingScreen</name>
     <message>
-        <location filename="../deepinesStore/store.py" line="1105"/>
+        <location filename="../deepinesStore/store.py" line="1119"/>
         <source>Starting...</source>
         <translation>Iniciando...</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="1107"/>
+        <location filename="../deepinesStore/store.py" line="1121"/>
         <source>Fetching files...</source>
         <translation>Descargando archivos...</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="1108"/>
+        <location filename="../deepinesStore/store.py" line="1122"/>
         <source>Initializing components...</source>
         <translation>Iniciando componentes...</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="1109"/>
+        <location filename="../deepinesStore/store.py" line="1123"/>
         <source>Finalizing setup...</source>
         <translation>Finalizando la preparación...</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="1103"/>
+        <location filename="../deepinesStore/store.py" line="1117"/>
         <source>Loading...</source>
         <translation>Cargando...</translation>
+    </message>
+</context>
+<context>
+    <name>ProgressHandler</name>
+    <message>
+        <location filename="../deepinesStore/install_progress.py" line="21"/>
+        <source>Downloading... {percent}% ({current:.2f}/{total:.2f} MB)</source>
+        <translation>Descargando... {percent}% ({current:.2f}/{total:.2f} MB)</translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/install_progress.py" line="25"/>
+        <source>Starting download...</source>
+        <translation>Iniciando descarga...</translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/install_progress.py" line="28"/>
+        <source>Download completed</source>
+        <translation>Descarga completada</translation>
     </message>
 </context>
 <context>
@@ -375,7 +581,7 @@ Versión: {version}</translation>
         <translation>Ofimática</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="1104"/>
+        <location filename="../deepinesStore/store.py" line="1118"/>
         <source>Deepines Store</source>
         <translation>Tienda Deepines</translation>
     </message>
@@ -503,6 +709,19 @@ Versión: {version}</translation>
         <location filename="../deepinesStore/maing.py" line="421"/>
         <source>Starting installation...</source>
         <translation>Iniciando instalación...</translation>
+    </message>
+</context>
+<context>
+    <name>UpdateProgress</name>
+    <message>
+        <location filename="../deepinesStore/install_progress.py" line="40"/>
+        <source>Updating cache... {percent:.2f}%</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/install_progress.py" line="42"/>
+        <source>Updating cache...</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>
