@@ -113,8 +113,7 @@ CheckSupportedOS() {
 	REL_NUM=$(lsb_release -rs)
 	if [ "$DIST_ID" = "Deepin" ]; then
 		case $REL_NUM in
-		20 | 20.*) ;;
-		"23 Nightly" | 23 | 23.* | 25) ;;
+		20 | 20.* | "23 Nightly" | 23 | 23.* | 25 | 25.*) ;;
 		*) UnsupportedOS ;;
 		esac
 	else
@@ -247,7 +246,8 @@ InstallDeepines() {
 	REL_NUM=$(lsb_release -rs)
 	case $REL_NUM in
 	20 | 20.*) InstallDeepinesRepository 4 ;;
-	"23 Nightly" | 23 | 23.* | 25) InstallDeepinesRepository 5 ;;
+	"23 Nightly" | 23 | 23.*) InstallDeepinesRepository 5 ;;
+	25 | 25.*) InstallDeepinesRepository 6 ;;
 	esac
 }
 
