@@ -12,8 +12,8 @@ from PyQt5.QtWidgets import (QMainWindow, QApplication, QFrame, QLabel,
 from PyQt5.QtGui import QPixmap, QFont, QColor, QCursor, QPainter, QMovie
 
 from deepinesStore.core import set_blur
-# Para obtener applicacion random
-from random import choice
+# Para obtener aplicaciones random
+from random import sample
 # GUI o modulos locales
 from deepinesStore.app_info import AppInfo, AppType, AppState, ProcessType
 from deepinesStore.maing import Ui_MainWindow
@@ -371,17 +371,8 @@ class StoreMWindow(QMainWindow, EventsMixin):
 
 	#		   Aplicaciones Inicio			  #
 	def Apps_inicio(self, lista_app: List[AppInfo]):
-		lista_key = []
-		contador = True
-		while contador:
-			if len(lista_key) == 8:
-				contador = False
-			else:
-				key = choice(lista_app)
-				if key not in lista_key:
-					lista_key.append(key)
-
-		return lista_key
+		num_to_select = min(len(lista_app), 8)
+		return sample(lista_app, num_to_select)
 
 	#		   Listar aplicaciones			  #
 
