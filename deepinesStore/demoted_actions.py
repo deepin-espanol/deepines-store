@@ -112,6 +112,17 @@ def create_config_dir():
 	return config_dir
 
 
+def get_resource(res_name, dir='', ext='.svg'):
+	from os.path import join, abspath, dirname
+	write_only_path = abspath(join(dirname(__file__), 'resources', dir, res_name + ext))
+	user_config_path = abspath(join(config_dir, dir, res_name + ext))
+	if Path(user_config_path).exists():
+		return user_config_path
+	elif Path(write_only_path).exists():
+		return write_only_path
+	else:
+		return None
+
 def open_telegram_link(username: str):
 	tg = f'tg://resolve?domain={username}'
 	web = f'https://t.me/{username}'

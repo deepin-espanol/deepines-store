@@ -11,16 +11,16 @@ import threading
 class threading_svg(object):
 
 	def __init__(self):
-		self.path_config_apps = join(config_dir, 'apps')
-		if not exists(self.path_config_apps):
-			create_folder(self.path_config_apps)
+		# Create the config directory if it does not exist
+		self.CONFIG_APPS_PATH = join(config_dir, 'apps')
+		if not exists(self.CONFIG_APPS_PATH):
+			create_folder(self.CONFIG_APPS_PATH)
 
-		# Initialize paths and dictionaries
-		self.LOCAL_PATH = abspath(join(dirname(__file__)))
-		self.PATH_SVG = join(self.LOCAL_PATH, 'resources/apps')
-		self.PATH_TEMP = join(config_dir, 'remote_svg.txt')
+		self.RO_APPS_PATH = abspath(join(dirname(__file__), 'resources', 'apps'))
+		self.TEMP_PATH = join(config_dir, 'remote_svg.txt')
 
-		self.LOCAL_CHECK = dict()
+		self.RO_APPS_CHECK = dict()
+		self.CONFIG_APPS_CHECK = dict()
 		self.REMOTE_CHECK = dict()
 		self.LIST_SVG_REMOTE = list()
 		self.STATUS = True
@@ -35,20 +35,26 @@ class threading_svg(object):
 			self.get_local_checksum()
 			self.compare_check()
 			self.check_exists()
-			remove(self.PATH_TEMP)
+			remove(self.TEMP_PATH)
+
+	def compute_md5(self, file_path):
+		hash_md5 = md5()
+		with open(file_path, "rb") as f:
+			for chunk in iter(lambda: f.read(4096), b""):
+				hash_md5.update(chunk)
+		return hash_md5.hexdigest()
 
 	# Getting the local list of SVGs and its checksums
 	def get_local_checksum(self):
-		def compute_md5(file_path):
-			hash_md5 = md5()
-			with open(file_path, "rb") as f:
-				for chunk in iter(lambda: f.read(4096), b""):
-					hash_md5.update(chunk)
-			return hash_md5.hexdigest()
+		for svg_name in listdir(self.RO_APPS_PATH):
+			if svg_name.endswith('.svg'):
+				svg_path = join(self.RO_APPS_PATH, svg_name)
+				self.RO_APPS_CHECK[svg_name] = self.compute_md5(svg_path)
 
-		for directory in [self.PATH_SVG, self.path_config_apps]:
-			for file in [f for f in listdir(directory) if f.endswith('.svg')]:
-				self.LOCAL_CHECK[file] = compute_md5(join(directory, file))
+		for svg_name in listdir(self.CONFIG_APPS_PATH):
+			if svg_name.endswith('.svg'):
+				svg_path = join(self.CONFIG_APPS_PATH, svg_name)
+				self.CONFIG_APPS_CHECK[svg_name] = self.compute_md5(svg_path)
 
 	# Getting the remote list of SVGs and its checksums
 	def get_remote_checksum(self):
@@ -56,8 +62,8 @@ class threading_svg(object):
 
 		status_code = SVG_REMOTE.status_code
 		if status_code == 200:
-			write_file(SVG_REMOTE, to=self.PATH_TEMP)
-			with open(self.PATH_TEMP, 'r') as f:
+			write_file(SVG_REMOTE, to=self.TEMP_PATH)
+			with open(self.TEMP_PATH, 'r') as f:
 				for line in f:
 					line = line.replace('\n', '')
 					(check, space, name) = line.split(' ')
@@ -68,21 +74,42 @@ class threading_svg(object):
 
 	# Comparing the checksums and downloading the different file
 	def compare_check(self):
-		for svg_name in self.LOCAL_CHECK:
-			if svg_name not in self.LIST_SVG_REMOTE:
-				svg_name = join(self.path_config_apps, svg_name)
-				if exists(svg_name):
-					remove(svg_name)
-			elif self.LOCAL_CHECK[svg_name] != self.REMOTE_CHECK[svg_name]:
+		for svg_name in self.REMOTE_CHECK:
+			remote_checksum = self.REMOTE_CHECK[svg_name]
+			ro_checksum = self.RO_APPS_CHECK.get(svg_name)
+			config_checksum = self.CONFIG_APPS_CHECK.get(svg_name)
+
+			# If both exist, and RO_APPS is correct, but CONFIG_APPS is not, remove CONFIG_APPS version
+			if ro_checksum == remote_checksum and config_checksum and config_checksum != remote_checksum:
+				config_path = join(self.CONFIG_APPS_PATH, svg_name)
+				if exists(config_path):
+					remove(config_path)
+			# If both are correct, remove the CONFIG_APPS version
+			elif ro_checksum == remote_checksum and config_checksum == remote_checksum:
+				config_path = join(self.CONFIG_APPS_PATH, svg_name)
+				if exists(config_path):
+					remove(config_path) # I mean... why are you even here? Maybe a new package was released...
+			# If neither local copy matches remote, download
+			elif (ro_checksum != remote_checksum) and (config_checksum != remote_checksum):
 				self.download_svg(svg_name)
 
-	# Check if it exists, so download the file
+		# Remove any local SVGs from config that are not in the remote list
+		for svg_name in list(self.CONFIG_APPS_CHECK.keys()):
+			if svg_name not in self.REMOTE_CHECK:
+				config_path = join(self.CONFIG_APPS_PATH, svg_name)
+				# The file should exist as we are iterating keys from that dir,
+				# but the check is kept for safety.
+				if exists(config_path):
+					remove(config_path)
+
+	# Check if it exists in the remote list and download if not exists
+	# in the local list
 	def check_exists(self):
 		for svg_name in self.REMOTE_CHECK:
-			if svg_name not in self.LOCAL_CHECK:
+			if svg_name not in self.RO_APPS_CHECK and svg_name not in self.CONFIG_APPS_CHECK:
 				self.download_svg(svg_name)
 
 	def download_svg(self, name):
 		dl_svg = get_dl(get_deepines_uri(f'/store/svg/{name}'))
 		if dl_svg.status_code == 200:
-			write_file(dl_svg, to=join(self.path_config_apps, name))
+			write_file(dl_svg, to=join(self.CONFIG_APPS_PATH, name))

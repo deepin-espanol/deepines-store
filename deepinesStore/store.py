@@ -25,7 +25,7 @@ from deepinesStore.deb.get_apps_deb import fetch_list_app_deb
 from deepinesStore.install_progress import InstallThread
 from deepinesStore import setup
 from deepinesStore.widgets import LinkLabel
-from deepinesStore.demoted_actions import write_file, config_dir
+from deepinesStore.demoted_actions import write_file, config_dir, get_resource
 
 class EventsMixin:
 	def __init__(self):
@@ -771,6 +771,8 @@ class StoreMWindow(QMainWindow, EventsMixin):
 
 
 class Card(QFrame):
+	no_banner = None
+
 	def __init__(self, application: list, parent):
 		super(Card, self).__init__()
 		self.parentWindow = parent
@@ -780,6 +782,10 @@ class Card(QFrame):
 		self.application = application
 		self.titulo = self.application.name
 		self.descripcion = self.application.description
+
+		if Card.no_banner is None:
+			Card.no_banner = get_res('no-img', 'resources/apps')
+
 		self.cd.lbl_name_app.setText(self.titulo)
 		self.cd.image_app.setToolTip(
 			"<p wrap='hard'>{}</p>".format(self.descripcion))
@@ -872,68 +878,47 @@ class Card(QFrame):
 		self.setGraphicsEffect(shadow)
 		return True
 
-	def get_banner_path(self, app_name: str, alt_app_names: List[str] = [], icons: Dict[str, str] = {}) -> str:
-		path = get_res(app_name, 'resources/apps')
-		path_config_apps = os.path.join(config_dir, 'apps')
+	def get_banner_path(self, app_name: str, alt_app_names: List[str] = None, icons: Dict[str, str] = {}) -> str:
+		path = get_resource(app_name, 'apps')
+		if path:
+			return path
 
-		path_in_config = os.path.join(path_config_apps, f'{app_name}.svg')
-		if os.path.exists(path_in_config):
-			return path_in_config
+		if not alt_app_names:
+			return Card.no_banner
 
-		if not os.path.exists(path):
-			if alt_app_names: # means flatpak app
-				for alt_app_name in alt_app_names:
-					path_in_config = os.path.join(path_config_apps, f'{app_name}.svg')
-					if os.path.exists(path_in_config):
-						return path_in_config
-					if alt_app_name != app_name:
-						alt_res_path = get_res(alt_app_name, 'resources/apps')
-						if os.path.exists(alt_res_path):
-							return alt_res_path
-				else: # check for .png banner
-					path_in_config = os.path.join(path_config_apps, f'{app_name}.png')
-					if os.path.exists(path_in_config):
-						return path_in_config
-					png_path = get_res(app_name, 'resources/apps', ext='.png')
-					if os.path.exists(png_path):
-						return png_path
+		for alt_app_name in alt_app_names:
+			if alt_app_name != app_name:
+				alt_res_path = get_resource(alt_app_name, 'apps')
+				if alt_res_path:
+					return alt_res_path
 
-					# use "cached" value from icons
-					cached_icon_names = icons.get('cached')
-					if cached_icon_names is not None:
-						for cached_icon_name in cached_icon_names:
-							path_in_config = os.path.join(path_config_apps, cached_icon_name)
-							if os.path.exists(path_in_config):
-								return path_in_config
-							remote_icon_path = get_res(cached_icon_name, 'resources/apps', ext='')
-							if os.path.exists(remote_icon_path):
-								return remote_icon_path
+		png_path = get_resource(app_name, 'apps', ext='.png')
+		if png_path:
+			return png_path
 
-							flatpak_path = '/var/lib/flatpak/appstream/flathub/x86_64/active/icons/flatpak/{}x{}/' + cached_icon_name
-							for size in ['128', '64']:
-								flatpak_path = flatpak_path.format(size, size)
-								if os.path.exists(flatpak_path):
-									return flatpak_path
+		cached_icon_names = icons.get('cached') or []
+		for cached_icon_name in cached_icon_names:
+			remote_icon_path = get_resource(cached_icon_name, 'apps', ext='')
+			if remote_icon_path:
+				return remote_icon_path
+			for size in ['128', '64']:
+				flatpak_path = f'/var/lib/flatpak/appstream/flathub/x86_64/active/icons/flatpak/{size}x{size}/{cached_icon_name}'
+				if os.path.exists(flatpak_path):
+					return flatpak_path
 
-					# try to download from "remote" url
-					remote_icon_urls = icons.get('remote')
-					if remote_icon_urls is not None:
-						for remote_icon_url in remote_icon_urls:
-							remote_icon_path = os.path.join(path_config_apps, f'{app_name}.png')
-							try:
-								print(f'Downloading icon from: {remote_icon_url}')
-								PNG_BANNER_REMOTE = get_dl(remote_icon_url)
-								status_code = PNG_BANNER_REMOTE.status_code
-								if status_code == 200:
-									write_file(PNG_BANNER_REMOTE, to=remote_icon_path)
-									return remote_icon_path
-							except Exception as e:
-								print(f'Error downloading icon: {e}')
+		remote_icon_urls = icons.get('remote') or []
+		for remote_icon_url in remote_icon_urls:
+			remote_icon_path = os.path.join(config_dir, 'apps', f'{app_name}.png')
+			try:
+				print(f'Downloading icon from: {remote_icon_url}')
+				PNG_BANNER_REMOTE = get_dl(remote_icon_url)
+				if PNG_BANNER_REMOTE.status_code == 200:
+					write_file(PNG_BANNER_REMOTE, to=remote_icon_path)
+					return remote_icon_path
+			except Exception as e:
+				print(f'Error downloading icon: {e}')
 
-			# if not found, use the default image
-			path = get_res('no-img', 'resources/apps')
-
-		return path
+		return Card.no_banner
 
 	def select_app(self):
 		global lista_global, selected_apps, installed
