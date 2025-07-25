@@ -84,17 +84,17 @@
     <message>
         <location filename="../deepinesStore/install_progress.py" line="55"/>
         <source>Installing</source>
-        <translation type="unfinished"></translation>
+        <translation>Встановлення</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="57"/>
         <source>Uninstalling</source>
-        <translation type="unfinished"></translation>
+        <translation>Видалення</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="58"/>
         <source>{process}: {status} - {percent}%</source>
-        <translation type="unfinished"></translation>
+        <translation>{process}: {status} - {percent}%</translation>
     </message>
 </context>
 <context>
@@ -102,168 +102,169 @@
     <message>
         <location filename="../deepinesStore/install_progress.py" line="84"/>
         <source>Updating package list...</source>
-        <translation type="unfinished"></translation>
+        <translation>Оновлення списку пакетів...</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="88"/>
         <source>Error during cache update: {error}</source>
-        <translation type="unfinished"></translation>
+        <translation>Помилка під час оновлення кешу: {error}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="117"/>
         <source>Error: {error}
 {traceback}</source>
-        <translation type="unfinished"></translation>
+        <translation>Помилка: {error}
+{traceback}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="126"/>
         <source>Installing: {package} from Deepines repository</source>
-        <translation type="unfinished"></translation>
+        <translation>Встановлення: {package} з репозиторію Deepines</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="191"/>
         <source>Searching for package {package}...</source>
-        <translation type="unfinished"></translation>
+        <translation>Пошук пакету {package}...</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="193"/>
         <source>Package {package} not found</source>
-        <translation type="unfinished"></translation>
+        <translation>Пакет {package} не знайдено</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="136"/>
         <source>{package} is already installed.</source>
-        <translation type="unfinished"></translation>
+        <translation>{package} вже встановлено.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="139"/>
         <source>Marking {package} for installation...</source>
-        <translation type="unfinished"></translation>
+        <translation>Позначення {package} для встановлення...</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="142"/>
         <source>Dependency error for {package}: {error}</source>
-        <translation type="unfinished"></translation>
+        <translation>Помилка залежності для {package}: {error}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="147"/>
         <source>Downloading and installing {package}...</source>
-        <translation type="unfinished"></translation>
+        <translation>Завантаження та встановлення {package}...</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="155"/>
         <source>{package} has been installed successfully.</source>
-        <translation type="unfinished"></translation>
+        <translation>{package} успішно встановлено.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="157"/>
         <source>{package} could not be installed correctly, possibly due to dependency errors.</source>
-        <translation type="unfinished"></translation>
+        <translation>{package} не вдалося встановити належним чином, можливо, через помилки залежностей.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="162"/>
         <source>Lock error during installation: {error}</source>
-        <translation type="unfinished"></translation>
+        <translation>Помилка блокування під час встановлення: {error}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="167"/>
         <source>Download error during installation: {error}</source>
-        <translation type="unfinished"></translation>
+        <translation>Помилка завантаження під час встановлення: {error}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="172"/>
         <source>Download cancelled: {error}</source>
-        <translation type="unfinished"></translation>
+        <translation>Завантаження скасовано: {error}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="177"/>
         <source>System error during installation: {error}</source>
-        <translation type="unfinished"></translation>
+        <translation>Системна помилка під час встановлення: {error}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="240"/>
         <source>Unexpected error: {error}</source>
-        <translation type="unfinished"></translation>
+        <translation>Неочікувана помилка: {error}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="190"/>
         <source>Uninstalling: {package}.</source>
-        <translation type="unfinished"></translation>
+        <translation>Видалення: {package}.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="200"/>
         <source>{package} is not installed.</source>
-        <translation type="unfinished"></translation>
+        <translation>{package} не встановлено.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="202"/>
         <source>Marking {package} for removal...</source>
-        <translation type="unfinished"></translation>
+        <translation>Позначення {package} для видалення...</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="205"/>
         <source>Uninstalling {package}...</source>
-        <translation type="unfinished"></translation>
+        <translation>Видалення {package}...</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="213"/>
         <source>{package} has been uninstalled successfully.</source>
-        <translation type="unfinished"></translation>
+        <translation>{package} успішно видалено.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="215"/>
         <source>{package} could not be uninstalled correctly.</source>
-        <translation type="unfinished"></translation>
+        <translation>{package} не вдалося правильно видалити.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="220"/>
         <source>Lock error during uninstallation: {error}</source>
-        <translation type="unfinished"></translation>
+        <translation>Помилка блокування під час видалення: {error}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="225"/>
         <source>Download error during uninstallation: {error}</source>
-        <translation type="unfinished"></translation>
+        <translation>Помилка завантаження під час видалення: {error}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="230"/>
         <source>Error during uninstallation: {error}</source>
-        <translation type="unfinished"></translation>
+        <translation>Помилка під час видалення: {error}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="235"/>
         <source>System error during uninstallation: {error}</source>
-        <translation type="unfinished"></translation>
+        <translation>Системна помилка під час видалення: {error}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="248"/>
         <source>Installing {app} from Flathub...</source>
-        <translation type="unfinished"></translation>
+        <translation>Встановлення {app} з Flathub...</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="263"/>
         <source>{app} has been installed successfully.</source>
-        <translation type="unfinished"></translation>
+        <translation>{app} було успішно встановлено.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="266"/>
         <source>Error installing {app}: {error}</source>
-        <translation type="unfinished"></translation>
+        <translation>Помилка встановлення {app}: {error}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="274"/>
         <source>Uninstalling {app} from Flathub...</source>
-        <translation type="unfinished"></translation>
+        <translation>Видалення {app} з Flathub...</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="289"/>
         <source>{app} has been uninstalled successfully.</source>
-        <translation type="unfinished"></translation>
+        <translation>{app} успішно видалено.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="292"/>
         <source>Error uninstalling {app}: {error}</source>
-        <translation type="unfinished"></translation>
+        <translation>Помилка видалення {app}: {error}</translation>
     </message>
 </context>
 <context>
@@ -299,17 +300,17 @@
     <message>
         <location filename="../deepinesStore/install_progress.py" line="21"/>
         <source>Downloading... {percent}% ({current:.2f}/{total:.2f} MB)</source>
-        <translation type="unfinished"></translation>
+        <translation>Завантаження... {percent}% ({current:.2f}/{total:.2f} MB)</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="25"/>
         <source>Starting download...</source>
-        <translation type="unfinished"></translation>
+        <translation>Початок завантаження...</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="28"/>
         <source>Download completed</source>
-        <translation type="unfinished"></translation>
+        <translation>Завантаження завершено</translation>
     </message>
 </context>
 <context>
@@ -408,8 +409,8 @@ If the problem persists, send a report to t.me/deepinenespanol.
 </source>
         <translation>
 
-Стався збій мережевого з'єднання, і встановлення не було завершено.
-Переконайтеся, що ваш комп'ютер підключений до Інтернету, і натисніть кнопку Повторити спробу.
+Стався збій мережевого з&apos;єднання, і встановлення не було завершено.
+Переконайтеся, що ваш комп&apos;ютер підключений до Інтернету, і натисніть кнопку Повторити спробу.
 Якщо проблема не зникне, надішліть звіт на t.me/deepinenespanol.
 </translation>
     </message>
@@ -632,7 +633,7 @@ Version: {version}</source>
     <message>
         <location filename="../deepinesStore/maing.py" line="502"/>
         <source>Unable to establish connection with the server, &lt;br&gt;please check your internet connection.&lt;br&gt;If the problem persists, please contact us via Telegram &lt;br&gt;at @deepinenespanol.&lt;br&gt;&lt;br&gt;&lt;a href=&apos;#&apos;&gt;deepinenespanol.org | Copy link&lt;/a&gt;&lt;br&gt;Visit Deepin en Espanol for more information.</source>
-        <translation type="obsolete">Не вдалося встановити з'єднання з сервером, &lt;br&gt;перевірте підключення до Інтернету.&lt;br&gt; Якщо проблема не зникне, будь ласка, зв'яжіться з нами через Telegram &lt;br&gt;за адресою @deepinenespanol.&lt;br&gt; &lt;br&gt;&lt;a href=&quot;#&quot;&gt;deepinenespanol.org | Копіювати посилання&lt;/a&gt;&lt;br&gt;Відвідайте Deepin en Espanol для отримання додаткової інформації.</translation>
+        <translation type="obsolete">Не вдалося встановити з&apos;єднання з сервером, &lt;br&gt;перевірте підключення до Інтернету.&lt;br&gt; Якщо проблема не зникне, будь ласка, зв&apos;яжіться з нами через Telegram &lt;br&gt;за адресою @deepinenespanol.&lt;br&gt; &lt;br&gt;&lt;a href=&quot;#&quot;&gt;deepinenespanol.org | Копіювати посилання&lt;/a&gt;&lt;br&gt;Відвідайте Deepin en Espanol для отримання додаткової інформації.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="392"/>
@@ -697,7 +698,7 @@ Version: {version}</source>
     <message>
         <location filename="../deepinesStore/maing.py" line="409"/>
         <source>Unable to establish connection with the server, &lt;br&gt;please check your internet connection.&lt;br&gt;If the problem persists, please contact us via Telegram &lt;br&gt;at {atTlURL}.&lt;br&gt;&lt;br&gt;Visit Deepin en Español for more information: {siteURL}</source>
-        <translation>Не вдається встановити з'єднання з сервером, &lt;br&gt;перевірте своє інтернет-з'єднання. &lt;br&gt;Якщо проблема не зникне, будь ласка, зв'яжіться з нами через Telegram: &lt;br&gt;{atTlURL}.&lt;br&gt;&lt;br&gt; Відвідайте Deepin en Español для отримання додаткової інформації: {siteURL}</translation>
+        <translation>Не вдається встановити з&apos;єднання з сервером, &lt;br&gt;перевірте своє інтернет-з&apos;єднання. &lt;br&gt;Якщо проблема не зникне, будь ласка, зв&apos;яжіться з нами через Telegram: &lt;br&gt;{atTlURL}.&lt;br&gt;&lt;br&gt; Відвідайте Deepin en Español для отримання додаткової інформації: {siteURL}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="414"/>
@@ -735,12 +736,12 @@ Version: {version}</source>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="40"/>
         <source>Updating cache... {percent:.2f}%</source>
-        <translation type="unfinished"></translation>
+        <translation>Оновлення кешу... {percent:.2f}%</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="42"/>
         <source>Updating cache...</source>
-        <translation type="unfinished"></translation>
+        <translation>Оновлення кешу...</translation>
     </message>
 </context>
 </TS>
