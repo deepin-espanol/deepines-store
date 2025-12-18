@@ -284,23 +284,34 @@ if [ -f "${CNFMOD}" ]; then
 	. "${CNFMOD}"
 fi
 
-DeleteFiles() {
-	FILE1="/etc/apt/trusted.gpg.d/deepines.asc"
-	FILE2="/etc/apt/sources.list.d/deepines.list"
-	FILE3="/usr/share/doc/deepines-store/"
-	FILE4="/usr/share/deepines/deepinesStore/"
-	for F in "${FILE1}" "${FILE2}" "${FILE3}" "${FILE4}"; do
-		if [ -f "${F}" ]; then
-			rm -f "${F}"
-		elif [ -d "${F}" ]; then
-			rm -rf "${F}"
-		fi
+DeleteRepository() {
+	APT_KEY="/etc/apt/trusted.gpg.d/deepines.asc"
+	APT_LIST="/etc/apt/sources.list.d/deepines.list"
+	rm -f "${APT_KEY}" "${APT_LIST}"
+}
+
+PurgeAppData() {
+	# Remove files: banners or settings...
+	for d in /home/*/.config/deepines-store; do
+		[ -e "$d" ] || continue
+		echo "Removing $d"
+		rm -rf "$d"
+	done
+	# If parent is empty, remove it too...
+	for d in /home/*/.config/deepines-store; do
+		[ -d "$d" ] || continue
+		rmdir --ignore-fail-on-non-empty "$d" >/dev/null 2>&1
 	done
 }
 
 case "$1" in
-remove | purge | abort-upgrade)
-	DeleteFiles
+remove | abort-upgrade)
+	DeleteRepository
+	db_purge
+	;;
+purge)
+	DeleteRepository
+	PurgeAppData
 	db_purge
 	;;
 abort-install)
