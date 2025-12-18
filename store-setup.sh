@@ -291,13 +291,12 @@ DeleteRepository() {
 }
 
 PurgeAppData() {
-	# Remove files: banners or settings...
-	for d in /home/*/.config/deepines-store; do
-		[ -e "$d" ] || continue
-		echo "Removing $d"
-		rm -rf "$d"
-		# If the directory still exists and is empty, try to remove it too.
-		rmdir --ignore-fail-on-non-empty "$d" >/dev/null 2>&1
+	# Remove user-downloaded banners...
+	for homedir in /home/*; do
+		cfg="$homedir/.config/deepines-store"
+		[ -d "$cfg" ] || continue
+		echo "Removing $cfg"
+		rm -rf "$cfg"
 	done
 }
 
