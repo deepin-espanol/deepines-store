@@ -2,9 +2,25 @@ from typing import List
 from deepinesStore.app_info import AppInfo, AppType
 from lxml import etree
 import locale
+import glob
+import os
 
-# Flathub appstream.xml file location
-appstream_file = "/var/lib/flatpak/appstream/flathub/x86_64/active/appstream.xml"
+
+# Try to locate the Flathub appstream.xml file for any architecture
+def find_appstream_file():
+	patterns = [
+		'/var/lib/flatpak/appstream/flathub/*/active/appstream.xml',
+		'/var/lib/flatpak/appstream/flathub/*/active/appstream/appstream.xml'
+	]
+	for pattern in patterns:
+		matches = glob.glob(pattern)
+		if matches:
+			return matches[0]
+	# fallback to legacy hardcoded path if present
+	fallback = '/var/lib/flatpak/appstream/flathub/x86_64/active/appstream.xml'
+	if os.path.exists(fallback):
+		return fallback
+	raise FileNotFoundError('Flathub appstream.xml not found')
 
 # Flathub app categories
 categories = [
@@ -43,7 +59,8 @@ def app_list_flatpak() -> List[AppInfo]:
 	# Get the system language
 	system_lang = locale.getdefaultlocale()[0]
 
-	# Parse the appstream file with lxml
+	# Parse the appstream file with lxml (auto-detect architecture)
+	appstream_file = find_appstream_file()
 	tree = etree.parse(appstream_file)
 	root = tree.getroot()
 	app_list = []

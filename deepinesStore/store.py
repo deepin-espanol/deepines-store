@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import sys
 import os
+import glob
 from typing import Dict, List
 # PyQt5 modules
 from PyQt5.Qt import Qt
@@ -893,9 +894,10 @@ class Card(QFrame):
 			if remote_icon_path:
 				return remote_icon_path
 			for size in ['128', '64']:
-				flatpak_path = f'/var/lib/flatpak/appstream/flathub/x86_64/active/icons/flatpak/{size}x{size}/{cached_icon_name}'
-				if os.path.exists(flatpak_path):
-					return flatpak_path
+				pattern = f'/var/lib/flatpak/appstream/flathub/*/active/icons/flatpak/{size}x{size}/{cached_icon_name}'
+				matches = glob.glob(pattern)
+				if matches:
+					return matches[0]
 
 		remote_icon_urls = icons.get('remote') or []
 		for remote_icon_url in remote_icon_urls:
