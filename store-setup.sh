@@ -296,10 +296,7 @@ PurgeAppData() {
 		[ -e "$d" ] || continue
 		echo "Removing $d"
 		rm -rf "$d"
-	done
-	# If parent is empty, remove it too...
-	for d in /home/*/.config/deepines-store; do
-		[ -d "$d" ] || continue
+		# If the directory still exists and is empty, try to remove it too.
 		rmdir --ignore-fail-on-non-empty "$d" >/dev/null 2>&1
 	done
 }
