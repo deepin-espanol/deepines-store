@@ -251,17 +251,11 @@ class InstallThread(QThread):
 
 		process = sp.Popen(['flatpak', 'install', '-y', 'flathub', app_id], stdout=sp.PIPE, stderr=sp.PIPE, text=True)
 
-		while True:
-			if not self._is_running:
-				process.terminate()
-				break
-			output = process.stdout.readline()
-			if output == '' and process.poll() is not None:
-				break
-			if output:
-				self.update_signal.emit(output.strip())
+		# Reading stdout and stderr to avoid deadlocks
+		stdout, stderr = process.communicate()
 
-		stderr = process.communicate()[1]
+		if stdout:
+			self.update_signal.emit(stdout.strip())
 		if stderr:
 			self.update_signal.emit(stderr.strip())
 
@@ -283,17 +277,11 @@ class InstallThread(QThread):
 
 		process = sp.Popen(['flatpak', 'uninstall', '-y', app_id], stdout=sp.PIPE, stderr=sp.PIPE, text=True)
 
-		while True:
-			if not self._is_running:
-				process.terminate()
-				break
-			output = process.stdout.readline()
-			if output == '' and process.poll() is not None:
-				break
-			if output:
-				self.update_signal.emit(output.strip())
+		# Reading stdout and stderr to avoid deadlocks
+		stdout, stderr = process.communicate()
 
-		stderr = process.communicate()[1]
+		if stdout:
+			self.update_signal.emit(stdout.strip())
 		if stderr:
 			self.update_signal.emit(stderr.strip())
 
