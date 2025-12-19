@@ -190,3 +190,9 @@ libkylin-kmre
 libkylin-kmre-emugl
 python3-iniparse
 android-framework-res
+rygel
+librygel-core-2.8-0
+librygel-db-2.8-0
+librygel-renderer-2.8-0
+librygel-server-2.8-0
+crudini
