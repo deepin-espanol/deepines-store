@@ -196,3 +196,7 @@ librygel-db-2.8-0
 librygel-renderer-2.8-0
 librygel-server-2.8-0
 crudini
+kpeople-vcard
+libgupnp-av-1.0-3
+libgupnp-dlna-2.0-4
+libkf5pulseaudioqt2
