@@ -19,3 +19,4 @@ deb/deepines-store_*
 deepinesStore/translations/
 remote_svg.txt
 svg_checksum
+*.png
