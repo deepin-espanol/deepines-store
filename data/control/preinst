@@ -1,0 +1,54 @@
+#!/bin/sh
+
+set -e
+
+CNFMOD="/usr/share/debconf/confmodule"
+if [ -f "${CNFMOD}" ]; then
+	. "${CNFMOD}"
+fi
+
+SEPARATOR="=============================================================="
+COMPATIBLE_VERSIONS="Deepines Store is only compatible with Deepin 20, Deepin 23, and Deepin 25"
+WE_RECOMMEND="  We recommend installing a recent version of Deepin. If you
+  are using Deepin 20, check that the configuration of the
+  repositories does not contain errors."
+
+case "${LANGUAGE:-$LANG}" in
+es*)
+	COMPATIBLE_VERSIONS="Tienda Deepines sólo es compatible con Deepin 20, Deepin 23 y Deepin 25"
+	WE_RECOMMEND=" Recomendamos instalar una versión reciente de Deepin. Si está
+ usando Deepin 20, compruebe que la configuración de 
+ los repositorios no contiene errores."
+	;;
+esac
+
+UnsupportedOS() {
+	echo >&2 "$SEPARATOR"
+	echo >&2 "$COMPATIBLE_VERSIONS"
+	echo >&2
+	echo >&2 "$WE_RECOMMEND"
+	echo >&2 "$SEPARATOR"
+	db_go || true
+	exit 1
+}
+
+CheckSupportedOS() {
+	DIST_ID=$(lsb_release -is)
+	REL_NUM=$(lsb_release -rs)
+	if [ "$DIST_ID" = "Deepin" ]; then
+		case $REL_NUM in
+		20 | 20.* | "23 Nightly" | 23 | 23.* | 25 | 25.*) ;;
+		*) UnsupportedOS ;;
+		esac
+	else
+		UnsupportedOS
+	fi
+}
+
+case "$1" in
+install | upgrade)
+	CheckSupportedOS
+	;;
+esac
+
+exit 0

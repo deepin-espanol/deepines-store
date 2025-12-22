@@ -1,0 +1,41 @@
+#!/bin/sh
+
+set -e
+
+CNFMOD="/usr/share/debconf/confmodule"
+if [ -f "${CNFMOD}" ]; then
+	. "${CNFMOD}"
+fi
+
+DeleteRepository() {
+	APT_KEY="/etc/apt/trusted.gpg.d/deepines.asc"
+	APT_LIST="/etc/apt/sources.list.d/deepines.list"
+	rm -f "${APT_KEY}" "${APT_LIST}"
+}
+
+PurgeAppData() {
+	# Remove user-downloaded banners...
+	for homedir in /home/*; do
+		cfg="$homedir/.config/deepines-store"
+		[ -d "$cfg" ] || continue
+		echo "Removing $cfg"
+		rm -rf "$cfg"
+	done
+}
+
+case "$1" in
+remove | abort-upgrade)
+	DeleteRepository
+	db_purge
+	;;
+purge)
+	DeleteRepository
+	PurgeAppData
+	db_purge
+	;;
+abort-install)
+	db_purge
+	;;
+esac
+
+exit 0
