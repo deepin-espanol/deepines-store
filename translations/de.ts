@@ -39,7 +39,7 @@
     <message>
         <location filename="../deepinesStore/install_progress.py" line="57"/>
         <source>Uninstalling</source>
-        <translation type="unfinished"></translation>
+        <translation>Wird deinstalliert</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="58"/>
@@ -52,43 +52,44 @@
     <message>
         <location filename="../deepinesStore/install_progress.py" line="84"/>
         <source>Updating package list...</source>
-        <translation type="unfinished"></translation>
+        <translation>Paketliste wird aktualisiert...</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="88"/>
         <source>Error during cache update: {error}</source>
-        <translation type="unfinished"></translation>
+        <translation>Fehler beim updaten des Cache: {error}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="117"/>
         <source>Error: {error}
 {traceback}</source>
-        <translation type="unfinished"></translation>
+        <translation>Fehler: {error}
+{traceback}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="126"/>
         <source>Installing: {package} from Deepines repository</source>
-        <translation type="unfinished"></translation>
+        <translation>Wird installiert: {package} aus dem Deepin Repository</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="191"/>
         <source>Searching for package {package}...</source>
-        <translation type="unfinished"></translation>
+        <translation>Suche nach Paket {package}...</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="193"/>
         <source>Package {package} not found</source>
-        <translation type="unfinished"></translation>
+        <translation>Paket {package} nich gefunden</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="136"/>
         <source>{package} is already installed.</source>
-        <translation type="unfinished"></translation>
+        <translation>{package} ist bereits installiert.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="139"/>
         <source>Marking {package} for installation...</source>
-        <translation type="unfinished"></translation>
+        <translation>Markiere {package} zum installieren...</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="142"/>
