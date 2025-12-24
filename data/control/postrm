@@ -7,10 +7,24 @@ if [ -f "${CNFMOD}" ]; then
 	. "${CNFMOD}"
 fi
 
+REMOVING="Removing %s...\n"
+
+case "${LANGUAGE:-$LANG}" in
+es*)
+	REMOVING="Borrando %s...\n"
+	;;
+esac
+
 DeleteRepository() {
 	APT_KEY="/etc/apt/trusted.gpg.d/deepines.asc"
 	APT_LIST="/etc/apt/sources.list.d/deepines.list"
 	rm -f "${APT_KEY}" "${APT_LIST}"
+}
+
+RemoveResidual() {
+	# When the store is running as root, it probably will leave some __pycache__...
+	rm -rf /usr/share/deepines/deepinesStore
+	rmdir --ignore-fail-on-non-empty -- "/usr/share/deepines" >/dev/null 2>&1
 }
 
 PurgeAppData() {
@@ -18,7 +32,8 @@ PurgeAppData() {
 	for homedir in /home/*; do
 		cfg="$homedir/.config/deepines-store"
 		[ -d "$cfg" ] || continue
-		echo "Removing $cfg"
+		# shellcheck disable=SC2059
+		printf "$REMOVING" "$cfg"
 		rm -rf "$cfg"
 	done
 }
@@ -26,10 +41,12 @@ PurgeAppData() {
 case "$1" in
 remove | abort-upgrade)
 	DeleteRepository
+	RemoveResidual
 	db_purge
 	;;
 purge)
 	DeleteRepository
+	RemoveResidual
 	PurgeAppData
 	db_purge
 	;;
