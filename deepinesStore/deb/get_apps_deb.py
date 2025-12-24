@@ -7,14 +7,16 @@ from deepinesStore.core import get_deepines_uri, get_dl
 
 
 def get_repo_url():
-	fallback_url = get_deepines_uri("/5/paquetes.html")
+	fallback_url = get_deepines_uri("/6/paquetes.html")
 	repo_file = "/etc/apt/sources.list.d/deepines.list"
 	try:
 		repo_text = open(repo_file).read()
 		url = re.search(
-			"(?P<url>https?://[^\s]+)", repo_text).group("url") + "paquetes.html"
+			r"(?P<url>https?://[^\s]+)", repo_text).group("url") + "paquetes.html"
+		print( f"Using repository URL from {repo_file}: {url}" )
 		return url
 	except:
+		print(f"Failed to read repository URL from {repo_file}, using fallback URL: {fallback_url}")
 		return fallback_url
 
 
