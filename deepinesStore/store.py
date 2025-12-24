@@ -1027,6 +1027,7 @@ class LoaderThread(QThread):
 		global list_app_deepines, list_app_deb, \
 		list_app_flatpak, installed
 		self.progress.emit(self.parent.fetchingString)
+		setup.download_control()
 		list_app_deepines = setup.Get_App_Deepines()
 		list_app_exclude = setup.Get_App_Exclude()
 		self.progress.emit(self.parent.initializingString)
@@ -1034,7 +1035,6 @@ class LoaderThread(QThread):
 		list_app_flatpak = app_list_flatpak()
 		self.progress.emit(self.parent.finalizingString)
 		installed = setup.get_installed_apps(list_app_deb, list_app_flatpak)
-		setup.download_control()
 		self.finished.emit()
 
 class LoadingScreen(QMainWindow, EventsMixin):
