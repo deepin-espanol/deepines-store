@@ -2,18 +2,17 @@
 import os
 from subprocess import Popen, PIPE, check_output, CalledProcessError
 import platform
+import threading
 from pathlib import Path
-
-from deepinesStore.core import default_env
 
 
 def get_real_uid():
 	uid = os.geteuid()
 	if uid == 0:
-		if 'SUDO_UID' in default_env:
-			return default_env["SUDO_UID"]
-		elif 'PKEXEC_UID' in default_env:
-			return default_env["PKEXEC_UID"]
+		if 'SUDO_UID' in os.environ:
+			return os.environ["SUDO_UID"]
+		elif 'PKEXEC_UID' in os.environ:
+			return os.environ["PKEXEC_UID"]
 		else:
 			return uid
 	else:
@@ -35,7 +34,7 @@ class UserDefault:
 		self.name = self.user.pw_name
 		self.gid = self.user.pw_gid
 		self.home = self.user.pw_dir
-		self.env = {**default_env, 'USER': self.name, 'LOGNAME': self.name, 'PWD': os.getcwd(), 'HOME': self.home,
+		self.env = {**os.environ, 'USER': self.name, 'LOGNAME': self.name, 'PWD': os.getcwd(), 'HOME': self.home,
 		'DBUS_SESSION_BUS_ADDRESS': f'unix:path=/run/user/{uid}/bus'}
 
 
@@ -137,11 +136,32 @@ def open_telegram_link(username: str):
 			browse(web)
 
 
-def notify(desc='Working!', app_name="Deepines Store", title="Title", icon='deepines'):
-	icon = icon
-	title = title
-	desc = desc
+def notify(desc='Working!', app_name="Deepines Store", title="Title", icon='deepines', actions=None, timeout=0, handler=None):
 	if platform.system() == 'Windows':
 		pass
 	else:
-		run_cmd(DEF, ['notify-send', '-a', app_name, '-i', icon, title, desc])
+		if actions:
+			# Start a background listener for the action signal
+			def listen():
+				cmd = ['dbus-monitor', "interface='org.freedesktop.Notifications',member='ActionInvoked'"]
+				proc = run_cmd(DEF, cmd)
+				for line in proc.stdout:
+					line = line.strip()
+					for action_key, _ in actions:
+						if action_key in line:
+							if handler:
+								handler(action_key)
+							return
+			thread = threading.Thread(target=listen)
+			thread.daemon = True
+			thread.start()
+			# Send the notification via D-Bus
+			actions_list = []
+			for key, label in actions:
+				actions_list.extend([key, label])
+			actions_str = str(actions_list)
+			hints_str = "{'urgency': <byte 1>}"
+			cmd = ['gdbus', 'call', '--session', '--dest', 'org.freedesktop.Notifications', '--object-path', '/org/freedesktop/Notifications', '--method', 'org.freedesktop.Notifications.Notify', app_name, '0', icon, title, desc, actions_str, hints_str, str(timeout)]
+			run_cmd(DEF, cmd)
+		else:
+			run_cmd(DEF, ['notify-send', '-a', app_name, '-i', icon, title, desc])

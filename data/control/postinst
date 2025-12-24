@@ -19,12 +19,27 @@ INSTALLING_FLATHUB="Adding Flathub repository..."
 INSTALLING_DONE=" done.\n"
 INSTALLING_FAILED=" failed:\n"
 
+FLATHUB_NOT_FOUND="flatpak not found, skipping Flathub setup.\n"
+FLATHUB_CONTINUE="Continuing without Flathub.\n"
+
 case "${LANGUAGE:-$LANG}" in
 es*)
 	INSTALLING_DEEPINES="Instalando repositorio y clave de Deepines %d..."
 	INSTALLING_FLATHUB="Añadiendo repositorio de Flathub..."
 	INSTALLING_DONE=" hecho.\n"
 	INSTALLING_FAILED=" falló:\n"
+
+	FLATHUB_NOT_FOUND="flatpak no encontrado, omitiendo configuración de Flathub.\n"
+	FLATHUB_CONTINUE="Continuando sin Flathub.\n"
+	;;
+pt*)
+	INSTALLING_DEEPINES="Instalando repositório e chave do Deepines %d..."
+	INSTALLING_FLATHUB="Adicionando repositório do Flathub..."
+	INSTALLING_DONE=" concluído.\n"
+	INSTALLING_FAILED=" falhou:\n"
+
+	FLATHUB_NOT_FOUND="flatpak não encontrado, ignorando configuração do Flathub.\n"
+	FLATHUB_CONTINUE="Continuando sem o Flathub.\n"
 	;;
 esac
 
@@ -119,16 +134,46 @@ InstallDeepines() {
 }
 
 InstallFlathubRepository() {
-	$Fmt "${INSTALLING_FLATHUB}" && FlathubInstallationResult=$(
+	# Prefer the Python helper if available
+	if command -v python3 >/dev/null 2>&1 && [ -f "/usr/share/deepines/deepinesStore/install_flathub.py" ]; then
+		# Run helper; don't fail the installer if it returns non-zero
+		python3 /usr/share/deepines/deepinesStore/install_flathub.py || true
+		return 0
+	fi
+
+	$Fmt "${INSTALLING_FLATHUB}"
+
+	# Fallback to the original shell implementation if Python helper isn't available
+	# If flatpak isn't available, skip Flathub setup
+	if ! command -v flatpak >/dev/null 2>&1; then
+		$Fmt "$INSTALLING_FAILED"
+		$Fmt "$FLATHUB_NOT_FOUND"
+		return 0
+	fi
+
+	# Capture all flatpak output into a temp file so we preserve stderr/stdout
+	TMP_OUT=$(mktemp 2>/dev/null || printf '/tmp/deepines_flathub.%s' "$$")
+
+	# Temporarily disable errexit so failures inside this block don't abort the installer
+	set +e
+	{
 		flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 		flatpak update --appstream --assumeyes
 		flatpak install flathub org.gtk.Gtk3theme.deepin org.gtk.Gtk3theme.deepin-dark --assumeyes
-	) || {
+	} >"$TMP_OUT" 2>&1
+	set -e
+
+	FlathubInstallationResult=$(cat "$TMP_OUT" 2>/dev/null || true)
+	rm -f "$TMP_OUT" 2>/dev/null || true
+
+	# If the remote exists we consider it successful; otherwise show the captured output and continue
+	if flatpak remote-list 2>/dev/null | grep -q '^flathub\b'; then
+		$Fmt "$INSTALLING_DONE"
+	else
 		$Fmt "$INSTALLING_FAILED"
-		echo "$FlathubInstallationResult"
-		db_go || true
-		exit 1
-	} && $Fmt "$INSTALLING_DONE"
+		printf '%s\n' "$FlathubInstallationResult"
+		$Fmt "$FLATHUB_CONTINUE"
+	fi
 }
 
 case "$1" in
