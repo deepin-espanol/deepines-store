@@ -22,9 +22,11 @@ DeleteRepository() {
 }
 
 RemoveResidual() {
+	DEEPINES_DIR="/usr/share/deepines"
 	# When the store is running as root, it probably will leave some __pycache__...
-	rm -rf /usr/share/deepines/deepinesStore
-	rmdir --ignore-fail-on-non-empty -- "/usr/share/deepines" >/dev/null 2>&1
+	[ -d "${DEEPINES_DIR}" ] || return
+	rm -rf "${DEEPINES_DIR}/deepinesStore"
+	rmdir "${DEEPINES_DIR}" || true # Ignore if not empty or does not exist
 }
 
 PurgeAppData() {
