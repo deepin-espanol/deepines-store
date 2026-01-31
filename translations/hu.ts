@@ -181,7 +181,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../deepinesStore/install_progress.py" line="240"/>
+        <location filename="../deepinesStore/install_progress.py" line="235"/>
         <source>Unexpected error: {error}</source>
         <translation type="unfinished"></translation>
     </message>
@@ -227,41 +227,36 @@
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="230"/>
-        <source>Error during uninstallation: {error}</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../deepinesStore/install_progress.py" line="235"/>
         <source>System error during uninstallation: {error}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../deepinesStore/install_progress.py" line="248"/>
+        <location filename="../deepinesStore/install_progress.py" line="243"/>
         <source>Installing {app} from Flathub...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../deepinesStore/install_progress.py" line="263"/>
+        <location filename="../deepinesStore/install_progress.py" line="264"/>
         <source>{app} has been installed successfully.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../deepinesStore/install_progress.py" line="266"/>
+        <location filename="../deepinesStore/install_progress.py" line="267"/>
         <source>Error installing {app}: {error}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../deepinesStore/install_progress.py" line="274"/>
+        <location filename="../deepinesStore/install_progress.py" line="275"/>
         <source>Uninstalling {app} from Flathub...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../deepinesStore/install_progress.py" line="289"/>
+        <location filename="../deepinesStore/install_progress.py" line="296"/>
         <source>{app} has been uninstalled successfully.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../deepinesStore/install_progress.py" line="292"/>
+        <location filename="../deepinesStore/install_progress.py" line="299"/>
         <source>Error uninstalling {app}: {error}</source>
         <translation type="unfinished"></translation>
     </message>
@@ -269,27 +264,27 @@
 <context>
     <name>LoadingScreen</name>
     <message>
-        <location filename="../deepinesStore/store.py" line="1119"/>
+        <location filename="../deepinesStore/store.py" line="1097"/>
         <source>Starting...</source>
         <translation>Indítás...</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="1121"/>
+        <location filename="../deepinesStore/store.py" line="1099"/>
         <source>Fetching files...</source>
         <translation>Fájlok lekérése...</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="1122"/>
+        <location filename="../deepinesStore/store.py" line="1100"/>
         <source>Initializing components...</source>
         <translation>Összetevők inicializálása...</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="1123"/>
+        <location filename="../deepinesStore/store.py" line="1101"/>
         <source>Finalizing setup...</source>
         <translation>A beállítás befejezése...</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="1117"/>
+        <location filename="../deepinesStore/store.py" line="1095"/>
         <source>Loading...</source>
         <translation>Betöltés...</translation>
     </message>
@@ -589,7 +584,7 @@ Vezió: {version}</translation>
         <translation>Iroda automatizálás</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="1118"/>
+        <location filename="../deepinesStore/store.py" line="1096"/>
         <source>Deepines Store</source>
         <translation>Deepines Áruház</translation>
     </message>

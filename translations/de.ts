@@ -132,7 +132,7 @@
         <translation>Systemfehler bei der Installation: {error}</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/install_progress.py" line="240"/>
+        <location filename="../deepinesStore/install_progress.py" line="235"/>
         <source>Unexpected error: {error}</source>
         <translation>Unerwarteter Fehler: {error}</translation>
     </message>
@@ -179,40 +179,40 @@
     <message>
         <location filename="../deepinesStore/install_progress.py" line="230"/>
         <source>Error during uninstallation: {error}</source>
-        <translation>Fehler bei der Deinstallation: {error}</translation>
+        <translation type="obsolete">Fehler bei der Deinstallation: {error}</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/install_progress.py" line="235"/>
+        <location filename="../deepinesStore/install_progress.py" line="230"/>
         <source>System error during uninstallation: {error}</source>
         <translation>Systemfehler während der Deinstallation: {error}</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/install_progress.py" line="248"/>
+        <location filename="../deepinesStore/install_progress.py" line="243"/>
         <source>Installing {app} from Flathub...</source>
         <translation>Installiere {app} von Flathub...</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/install_progress.py" line="263"/>
+        <location filename="../deepinesStore/install_progress.py" line="264"/>
         <source>{app} has been installed successfully.</source>
         <translation>{app} wurde erfolgreich installiert.</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/install_progress.py" line="266"/>
+        <location filename="../deepinesStore/install_progress.py" line="267"/>
         <source>Error installing {app}: {error}</source>
         <translation>Fehler beim Installieren von {app}: {error}</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/install_progress.py" line="274"/>
+        <location filename="../deepinesStore/install_progress.py" line="275"/>
         <source>Uninstalling {app} from Flathub...</source>
         <translation>Deinstalliere {app} von Flathub...</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/install_progress.py" line="289"/>
+        <location filename="../deepinesStore/install_progress.py" line="296"/>
         <source>{app} has been uninstalled successfully.</source>
         <translation>{app} wurde erfolgreich deinstalliert.</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/install_progress.py" line="292"/>
+        <location filename="../deepinesStore/install_progress.py" line="299"/>
         <source>Error uninstalling {app}: {error}</source>
         <translation>Fehler beim Deinstallieren von {app}: {error}</translation>
     </message>
@@ -220,27 +220,27 @@
 <context>
     <name>LoadingScreen</name>
     <message>
-        <location filename="../deepinesStore/store.py" line="1119"/>
+        <location filename="../deepinesStore/store.py" line="1097"/>
         <source>Starting...</source>
         <translation>Startend…</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="1121"/>
+        <location filename="../deepinesStore/store.py" line="1099"/>
         <source>Fetching files...</source>
         <translation>Dateien holend…</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="1122"/>
+        <location filename="../deepinesStore/store.py" line="1100"/>
         <source>Initializing components...</source>
         <translation>Komponenten initiaisierend…</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="1123"/>
+        <location filename="../deepinesStore/store.py" line="1101"/>
         <source>Finalizing setup...</source>
         <translation>Einrichtung abschließen…</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="1117"/>
+        <location filename="../deepinesStore/store.py" line="1095"/>
         <source>Loading...</source>
         <translation>Lädt…</translation>
     </message>
@@ -541,7 +541,7 @@ Version: {version}</translation>
         <translation>Büro</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="1118"/>
+        <location filename="../deepinesStore/store.py" line="1096"/>
         <source>Deepines Store</source>
         <translation></translation>
     </message>

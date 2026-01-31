@@ -182,7 +182,7 @@
         <translation>Systeemfout tijdens installatie: {error}</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/install_progress.py" line="240"/>
+        <location filename="../deepinesStore/install_progress.py" line="235"/>
         <source>Unexpected error: {error}</source>
         <translation>Onverwachte foutmelding: {error}</translation>
     </message>
@@ -229,40 +229,40 @@
     <message>
         <location filename="../deepinesStore/install_progress.py" line="230"/>
         <source>Error during uninstallation: {error}</source>
-        <translation>Fout tijdens verwijderen: {error}</translation>
+        <translation type="obsolete">Fout tijdens verwijderen: {error}</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/install_progress.py" line="235"/>
+        <location filename="../deepinesStore/install_progress.py" line="230"/>
         <source>System error during uninstallation: {error}</source>
         <translation>Systeemfout tijdens verwijderen: {error}</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/install_progress.py" line="248"/>
+        <location filename="../deepinesStore/install_progress.py" line="243"/>
         <source>Installing {app} from Flathub...</source>
         <translation>Bezig met installeren van ‘{app}’ van Flathub…</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/install_progress.py" line="263"/>
+        <location filename="../deepinesStore/install_progress.py" line="264"/>
         <source>{app} has been installed successfully.</source>
         <translation>‘{app}’ is geïnstalleerd.</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/install_progress.py" line="266"/>
+        <location filename="../deepinesStore/install_progress.py" line="267"/>
         <source>Error installing {app}: {error}</source>
         <translation>‘{app}’ kan niet worden geïnstalleerd: {{error}}</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/install_progress.py" line="274"/>
+        <location filename="../deepinesStore/install_progress.py" line="275"/>
         <source>Uninstalling {app} from Flathub...</source>
         <translation>Bezig met verwijderen van ‘{app}’ van Flathub…</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/install_progress.py" line="289"/>
+        <location filename="../deepinesStore/install_progress.py" line="296"/>
         <source>{app} has been uninstalled successfully.</source>
         <translation>‘{app}’ is verwijderd.</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/install_progress.py" line="292"/>
+        <location filename="../deepinesStore/install_progress.py" line="299"/>
         <source>Error uninstalling {app}: {error}</source>
         <translation>‘{app}’ kan niet worden verwijderd: {error}</translation>
     </message>
@@ -270,27 +270,27 @@
 <context>
     <name>LoadingScreen</name>
     <message>
-        <location filename="../deepinesStore/store.py" line="1119"/>
+        <location filename="../deepinesStore/store.py" line="1097"/>
         <source>Starting...</source>
         <translation>Bezig met starten…</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="1121"/>
+        <location filename="../deepinesStore/store.py" line="1099"/>
         <source>Fetching files...</source>
         <translation>Bezig met ophalen van bestanden…</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="1122"/>
+        <location filename="../deepinesStore/store.py" line="1100"/>
         <source>Initializing components...</source>
         <translation>Bezig met laden van onderdelen…</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="1123"/>
+        <location filename="../deepinesStore/store.py" line="1101"/>
         <source>Finalizing setup...</source>
         <translation>Bezig met afronden…</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="1117"/>
+        <location filename="../deepinesStore/store.py" line="1095"/>
         <source>Loading...</source>
         <translation>Bezig met laden…</translation>
     </message>
@@ -425,7 +425,7 @@ Als het probleem aanhoudt, maak er dan melding van op t.me/deepinenespanol.
         <location filename="../deepinesStore/dialog_install.py" line="162"/>
         <source>{app_count} apps have been selected for installation:
 </source>
-        <translation>Er zullen {app_count} programma&apos;s worden geïnstalleerd:
+        <translation>Er zullen {app_count} programma's worden geïnstalleerd:
 </translation>
     </message>
     <message>
@@ -452,7 +452,7 @@ You can look for help in our forum at deepinenespanol.org/comunidad
 or in our Telegram group t.me/deepinenespanol.</source>
         <translation>
 
-Een of meerdere programma&apos;s kunnen niet worden geïnstalleerd omdat
+Een of meerdere programma's kunnen niet worden geïnstalleerd omdat
 zij afhankelijk zijn van andere pakketten die ook niet kunnen worden geïnstalleerd.
 
 Vraag hulp op ons forum: deepinenespanol.org/comunidad
@@ -591,7 +591,7 @@ Versie: {version}</translation>
         <translation>Kantoorautomatisering</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="1118"/>
+        <location filename="../deepinesStore/store.py" line="1096"/>
         <source>Deepines Store</source>
         <translation>Deepines-winkel</translation>
     </message>
@@ -603,7 +603,7 @@ Versie: {version}</translation>
     <message>
         <location filename="../deepinesStore/maing.py" line="517"/>
         <source>{app_count} apps selected to install, click here to review them</source>
-        <translation type="obsolete">Er zullen {app_count} programma&apos;s worden geïnstalleerd. Klik hier voor details.</translation>
+        <translation type="obsolete">Er zullen {app_count} programma's worden geïnstalleerd. Klik hier voor details.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="404"/>
@@ -623,7 +623,7 @@ Versie: {version}</translation>
     <message>
         <location filename="../deepinesStore/maing.py" line="401"/>
         <source>Select the apps to install</source>
-        <translation>Selecteer de te installeren programma&apos;s</translation>
+        <translation>Selecteer de te installeren programma's</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="508"/>
@@ -663,12 +663,12 @@ Versie: {version}</translation>
     <message>
         <location filename="../deepinesStore/maing.py" line="379"/>
         <source>Review apps</source>
-        <translation>Programma&apos;s beoordelen</translation>
+        <translation>Programma's beoordelen</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="385"/>
         <source>Installed apps</source>
-        <translation>Geïnstalleerde programma&apos;s</translation>
+        <translation>Geïnstalleerde programma's</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="397"/>
@@ -698,7 +698,7 @@ Versie: {version}</translation>
     <message>
         <location filename="../deepinesStore/maing.py" line="408"/>
         <source>{app_count} apps selected, click here to review them</source>
-        <translation>{app-count} programma&apos;s geselecteerd - klik om te tonen</translation>
+        <translation>{app-count} programma's geselecteerd - klik om te tonen</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="409"/>

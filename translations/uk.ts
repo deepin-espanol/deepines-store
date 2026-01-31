@@ -182,7 +182,7 @@
         <translation>Системна помилка під час встановлення: {error}</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/install_progress.py" line="240"/>
+        <location filename="../deepinesStore/install_progress.py" line="235"/>
         <source>Unexpected error: {error}</source>
         <translation>Неочікувана помилка: {error}</translation>
     </message>
@@ -229,40 +229,40 @@
     <message>
         <location filename="../deepinesStore/install_progress.py" line="230"/>
         <source>Error during uninstallation: {error}</source>
-        <translation>Помилка під час видалення: {error}</translation>
+        <translation type="obsolete">Помилка під час видалення: {error}</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/install_progress.py" line="235"/>
+        <location filename="../deepinesStore/install_progress.py" line="230"/>
         <source>System error during uninstallation: {error}</source>
         <translation>Системна помилка під час видалення: {error}</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/install_progress.py" line="248"/>
+        <location filename="../deepinesStore/install_progress.py" line="243"/>
         <source>Installing {app} from Flathub...</source>
         <translation>Встановлення {app} з Flathub...</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/install_progress.py" line="263"/>
+        <location filename="../deepinesStore/install_progress.py" line="264"/>
         <source>{app} has been installed successfully.</source>
         <translation>{app} було успішно встановлено.</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/install_progress.py" line="266"/>
+        <location filename="../deepinesStore/install_progress.py" line="267"/>
         <source>Error installing {app}: {error}</source>
         <translation>Помилка встановлення {app}: {error}</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/install_progress.py" line="274"/>
+        <location filename="../deepinesStore/install_progress.py" line="275"/>
         <source>Uninstalling {app} from Flathub...</source>
         <translation>Видалення {app} з Flathub...</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/install_progress.py" line="289"/>
+        <location filename="../deepinesStore/install_progress.py" line="296"/>
         <source>{app} has been uninstalled successfully.</source>
         <translation>{app} успішно видалено.</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/install_progress.py" line="292"/>
+        <location filename="../deepinesStore/install_progress.py" line="299"/>
         <source>Error uninstalling {app}: {error}</source>
         <translation>Помилка видалення {app}: {error}</translation>
     </message>
@@ -270,27 +270,27 @@
 <context>
     <name>LoadingScreen</name>
     <message>
-        <location filename="../deepinesStore/store.py" line="1119"/>
+        <location filename="../deepinesStore/store.py" line="1097"/>
         <source>Starting...</source>
         <translation>Розпочнемо...</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="1121"/>
+        <location filename="../deepinesStore/store.py" line="1099"/>
         <source>Fetching files...</source>
         <translation>Отримання файлів...</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="1122"/>
+        <location filename="../deepinesStore/store.py" line="1100"/>
         <source>Initializing components...</source>
         <translation>Ініціалізація компонентів...</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="1123"/>
+        <location filename="../deepinesStore/store.py" line="1101"/>
         <source>Finalizing setup...</source>
         <translation>Завершення налаштування...</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="1117"/>
+        <location filename="../deepinesStore/store.py" line="1095"/>
         <source>Loading...</source>
         <translation>Завантаження...</translation>
     </message>
@@ -409,8 +409,8 @@ If the problem persists, send a report to t.me/deepinenespanol.
 </source>
         <translation>
 
-Стався збій мережевого з&apos;єднання, і встановлення не було завершено.
-Переконайтеся, що ваш комп&apos;ютер підключений до Інтернету, і натисніть кнопку Повторити спробу.
+Стався збій мережевого з'єднання, і встановлення не було завершено.
+Переконайтеся, що ваш комп'ютер підключений до Інтернету, і натисніть кнопку Повторити спробу.
 Якщо проблема не зникне, надішліть звіт на t.me/deepinenespanol.
 </translation>
     </message>
@@ -591,7 +591,7 @@ Version: {version}</source>
         <translation>Автоматизація офісу</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="1118"/>
+        <location filename="../deepinesStore/store.py" line="1096"/>
         <source>Deepines Store</source>
         <translation>Deepines Store</translation>
     </message>
@@ -633,7 +633,7 @@ Version: {version}</source>
     <message>
         <location filename="../deepinesStore/maing.py" line="502"/>
         <source>Unable to establish connection with the server, &lt;br&gt;please check your internet connection.&lt;br&gt;If the problem persists, please contact us via Telegram &lt;br&gt;at @deepinenespanol.&lt;br&gt;&lt;br&gt;&lt;a href=&apos;#&apos;&gt;deepinenespanol.org | Copy link&lt;/a&gt;&lt;br&gt;Visit Deepin en Espanol for more information.</source>
-        <translation type="obsolete">Не вдалося встановити з&apos;єднання з сервером, &lt;br&gt;перевірте підключення до Інтернету.&lt;br&gt; Якщо проблема не зникне, будь ласка, зв&apos;яжіться з нами через Telegram &lt;br&gt;за адресою @deepinenespanol.&lt;br&gt; &lt;br&gt;&lt;a href=&quot;#&quot;&gt;deepinenespanol.org | Копіювати посилання&lt;/a&gt;&lt;br&gt;Відвідайте Deepin en Espanol для отримання додаткової інформації.</translation>
+        <translation type="obsolete">Не вдалося встановити з'єднання з сервером, &lt;br&gt;перевірте підключення до Інтернету.&lt;br&gt; Якщо проблема не зникне, будь ласка, зв'яжіться з нами через Telegram &lt;br&gt;за адресою @deepinenespanol.&lt;br&gt; &lt;br&gt;&lt;a href=&quot;#&quot;&gt;deepinenespanol.org | Копіювати посилання&lt;/a&gt;&lt;br&gt;Відвідайте Deepin en Espanol для отримання додаткової інформації.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="392"/>
@@ -698,7 +698,7 @@ Version: {version}</source>
     <message>
         <location filename="../deepinesStore/maing.py" line="409"/>
         <source>Unable to establish connection with the server, &lt;br&gt;please check your internet connection.&lt;br&gt;If the problem persists, please contact us via Telegram &lt;br&gt;at {atTlURL}.&lt;br&gt;&lt;br&gt;Visit Deepin en Español for more information: {siteURL}</source>
-        <translation>Не вдається встановити з&apos;єднання з сервером, &lt;br&gt;перевірте своє інтернет-з&apos;єднання. &lt;br&gt;Якщо проблема не зникне, будь ласка, зв&apos;яжіться з нами через Telegram: &lt;br&gt;{atTlURL}.&lt;br&gt;&lt;br&gt; Відвідайте Deepin en Español для отримання додаткової інформації: {siteURL}</translation>
+        <translation>Не вдається встановити з'єднання з сервером, &lt;br&gt;перевірте своє інтернет-з'єднання. &lt;br&gt;Якщо проблема не зникне, будь ласка, зв'яжіться з нами через Telegram: &lt;br&gt;{atTlURL}.&lt;br&gt;&lt;br&gt; Відвідайте Deepin en Español для отримання додаткової інформації: {siteURL}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="414"/>
