@@ -226,11 +226,6 @@ class InstallThread(QThread):
 				self.update_signal.emit(error_msg)
 				self.finished_signal.emit(False)
 				return False
-			except apt.cache.InstallFailedException as e:
-				error_msg = self.__tr("Error during uninstallation: {error}").format(error=str(e))
-				self.update_signal.emit(error_msg)
-				self.finished_signal.emit(False)
-				return False
 			except SystemError as e:
 				error_msg = self.__tr("System error during uninstallation: {error}").format(error=str(e))
 				self.update_signal.emit(error_msg)
