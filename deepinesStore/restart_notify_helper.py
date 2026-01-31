@@ -27,7 +27,7 @@ e = threading.Event()
 
 def handler(action):
 	if action == 'restart':
-		run_cmd(DEF, ['dbus-send', '--session', '--print-reply', '--dest=com.deepin.dde.shutdownFront', '/com/deepin/dde/shutdownFront', 'com.deepin.dde.shutdownFront.Logout'])
+		run_cmd(DEF, ['dbus-send', '--session', '--print-reply', '--dest=com.deepin.dde.shutdownFront', '/com/deepin/dde/shutdownFront', 'com.deepin.dde.shutdownFront.Restart'])
 	e.set()
 
 notify(desc=DESC, title=TITLE, actions=[('later', LATER), ('restart', RESTART)], handler=handler)

@@ -13,10 +13,10 @@ INSTALLING_FAILED = " failed:\n"
 FLATHUB_NOT_FOUND = "flatpak not found, skipping Flathub setup.\n"
 FLATHUB_CONTINUE = "Continuing without Flathub.\n"
 
-RECOMMENDATION = "It is recommended to restart your session for .desktop entries to appear in the launcher."
-RESTART_TITLE = "Restart Required"
+RECOMMENDATION = "It is recommended to reboot your computer for .desktop entries to appear in the launcher."
+RESTART_TITLE = "Reboot Required"
 LATER_LABEL = "Later"
-LOGOUT_LABEL = "Log out"
+RESTART_LABEL = "Reboot"
 _lang = (os.environ.get("LANGUAGE") or os.environ.get("LANG") or "").lower()
 if _lang.startswith("es"):
 	INSTALLING_FLATHUB = "Añadiendo repositorio de Flathub..."
@@ -25,10 +25,10 @@ if _lang.startswith("es"):
 	FLATHUB_NOT_FOUND = "flatpak no encontrado, omitiendo configuración de Flathub.\n"
 	FLATHUB_CONTINUE = "Continuando sin Flathub.\n"
 	
-	RECOMMENDATION = "Se recomienda reiniciar la sesión para que los accesos .desktop se muestren en el lanzador."
+	RECOMMENDATION = "Se recomienda reiniciar el equipo para que los accesos .desktop se muestren en el lanzador."
 	RESTART_TITLE = "Reinicio requerido"
 	LATER_LABEL = "Más tarde"
-	LOGOUT_LABEL = "Cerrar sesión"
+	RESTART_LABEL = "Reiniciar"
 elif _lang.startswith("pt"):
 	INSTALLING_FLATHUB = "Adicionando repositório do Flathub..."
 	INSTALLING_DONE = " concluído.\n"
@@ -36,10 +36,10 @@ elif _lang.startswith("pt"):
 	FLATHUB_NOT_FOUND = "flatpak não encontrado, ignorando configuração do Flathub.\n"
 	FLATHUB_CONTINUE = "Continuando sem o Flathub.\n"
 
-	RECOMMENDATION = "Recomenda-se reiniciar a sessão para que os atalhos .desktop apareçam no iniciador."
+	RECOMMENDATION = "Recomenda-se reiniciar o computador para que os atalhos .desktop apareçam no iniciador."
 	RESTART_TITLE = "Reinício necessário"
 	LATER_LABEL = "Mais tarde"
-	LOGOUT_LABEL = "Encerrar sessão"
+	RESTART_LABEL = "Reiniciar"
 
 def main() -> int:
 	print(INSTALLING_FLATHUB, end="", flush=True)
@@ -142,7 +142,7 @@ def main() -> int:
 			env['DEEPINES_NOTIFY_DESC'] = RECOMMENDATION
 			env['DEEPINES_NOTIFY_TITLE'] = RESTART_TITLE
 			env['DEEPINES_NOTIFY_LATER'] = LATER_LABEL
-			env['DEEPINES_NOTIFY_RESTART'] = LOGOUT_LABEL
+			env['DEEPINES_NOTIFY_RESTART'] = RESTART_LABEL
 
 			# Compute the parent-of-grandparent (two levels up) if available.
 			# The helper will wait for this PID to exit before showing the
@@ -171,7 +171,7 @@ def main() -> int:
 			except Exception:
 				pass # shit...
 
-			helper = os.path.join(project_dir, 'logout_notify_helper.py')
+			helper = os.path.join(project_dir, 'restart_notify_helper.py')
 			p = subprocess.Popen([
 				sys.executable,
 				"-S",
