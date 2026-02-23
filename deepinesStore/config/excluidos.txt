@@ -200,3 +200,5 @@ kpeople-vcard
 libgupnp-av-1.0-3
 libgupnp-dlna-2.0-4
 libkf5pulseaudioqt2
+libqt6pas6
+goverlay
