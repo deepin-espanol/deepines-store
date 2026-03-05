@@ -11,17 +11,17 @@
     <message>
         <location filename="../deepinesStore/about.py" line="65"/>
         <source>About</source>
-        <translation type="unfinished"></translation>
+        <translation>A propos</translation>
     </message>
     <message>
         <location filename="../deepinesStore/about.py" line="67"/>
         <source>Version {version}</source>
-        <translation type="unfinished"></translation>
+        <translation>Version {version}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/about.py" line="68"/>
         <source>The App Store of Deepin en Español</source>
-        <translation type="unfinished"></translation>
+        <translation>L&apos; App Store de Deepin en espagnol</translation>
     </message>
 </context>
 <context>
@@ -29,17 +29,17 @@
     <message>
         <location filename="../deepinesStore/install_progress.py" line="55"/>
         <source>Installing</source>
-        <translation type="unfinished"></translation>
+        <translation>Installation</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="57"/>
         <source>Uninstalling</source>
-        <translation type="unfinished"></translation>
+        <translation>Désinstallation</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="58"/>
         <source>{process}: {status} - {percent}%</source>
-        <translation type="unfinished"></translation>
+        <translation>{process}&#xa0;: {status} - {percent}%</translation>
     </message>
 </context>
 <context>
@@ -47,168 +47,169 @@
     <message>
         <location filename="../deepinesStore/install_progress.py" line="84"/>
         <source>Updating package list...</source>
-        <translation type="unfinished"></translation>
+        <translation>Mise à jour de la liste des paquets...</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="88"/>
         <source>Error during cache update: {error}</source>
-        <translation type="unfinished"></translation>
+        <translation>Erreur pendant la mise à jour du cache&#xa0;: {error}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="117"/>
         <source>Error: {error}
 {traceback}</source>
-        <translation type="unfinished"></translation>
+        <translation>Erreur&#xa0;: {error}
+{traceback}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="126"/>
         <source>Installing: {package} from Deepines repository</source>
-        <translation type="unfinished"></translation>
+        <translation>Installation&#xa0;: {package} depuis le répertoire Deepines</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="191"/>
         <source>Searching for package {package}...</source>
-        <translation type="unfinished"></translation>
+        <translation>Recherche de paquet {package}...</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="193"/>
         <source>Package {package} not found</source>
-        <translation type="unfinished"></translation>
+        <translation>Paquet {package} non trouvé</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="136"/>
         <source>{package} is already installed.</source>
-        <translation type="unfinished"></translation>
+        <translation>{package} est déjà installé.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="139"/>
         <source>Marking {package} for installation...</source>
-        <translation type="unfinished"></translation>
+        <translation>Marquage {package} pour installation...</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="142"/>
         <source>Dependency error for {package}: {error}</source>
-        <translation type="unfinished"></translation>
+        <translation>Erreur de dépendance pour {package}&#xa0;: {error}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="147"/>
         <source>Downloading and installing {package}...</source>
-        <translation type="unfinished"></translation>
+        <translation>Téléchargement et installation {package}...</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="155"/>
         <source>{package} has been installed successfully.</source>
-        <translation type="unfinished"></translation>
+        <translation>{package} a été installé correctement.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="157"/>
         <source>{package} could not be installed correctly, possibly due to dependency errors.</source>
-        <translation type="unfinished"></translation>
+        <translation>{package} n&apos;a pas pus être installé correctement, peut être a cause d&apos;une erreur de dépendance.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="162"/>
         <source>Lock error during installation: {error}</source>
-        <translation type="unfinished"></translation>
+        <translation>Erreur de verrouillage lors de l’installation&#xa0;: {error}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="167"/>
         <source>Download error during installation: {error}</source>
-        <translation type="unfinished"></translation>
+        <translation>Erreur de téléchargement lors de l&apos;installation&#xa0;: {error}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="172"/>
         <source>Download cancelled: {error}</source>
-        <translation type="unfinished"></translation>
+        <translation>Téléchargement annulé&#xa0;: {error}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="177"/>
         <source>System error during installation: {error}</source>
-        <translation type="unfinished"></translation>
+        <translation>Erreur du système lors de l&apos;installation&#xa0;: {error}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="240"/>
         <source>Unexpected error: {error}</source>
-        <translation type="unfinished"></translation>
+        <translation>Erreur inattendue&#xa0;: {error}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="190"/>
         <source>Uninstalling: {package}.</source>
-        <translation type="unfinished"></translation>
+        <translation>Désinstallation&#xa0;: {package}.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="200"/>
         <source>{package} is not installed.</source>
-        <translation type="unfinished"></translation>
+        <translation>{package} n&apos;est pas installé.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="202"/>
         <source>Marking {package} for removal...</source>
-        <translation type="unfinished"></translation>
+        <translation>Marquage de {package} pour la suppression...</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="205"/>
         <source>Uninstalling {package}...</source>
-        <translation type="unfinished"></translation>
+        <translation>Désinstallation de {package}...</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="213"/>
         <source>{package} has been uninstalled successfully.</source>
-        <translation type="unfinished"></translation>
+        <translation>{package} a été désinstallé correctement.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="215"/>
         <source>{package} could not be uninstalled correctly.</source>
-        <translation type="unfinished"></translation>
+        <translation>{package} n&apos;a pas pus être désinstallé correctement.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="220"/>
         <source>Lock error during uninstallation: {error}</source>
-        <translation type="unfinished"></translation>
+        <translation>Erreur de verrouillage lors de la désinstallation&#xa0;: {error}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="225"/>
         <source>Download error during uninstallation: {error}</source>
-        <translation type="unfinished"></translation>
+        <translation>Erreur de téléchargement lors de la désinstallation&#xa0;: {error}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="230"/>
         <source>Error during uninstallation: {error}</source>
-        <translation type="unfinished"></translation>
+        <translation>Erreur lors de la désinstallation&#xa0;: {error}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="235"/>
         <source>System error during uninstallation: {error}</source>
-        <translation type="unfinished"></translation>
+        <translation>Erreur du système lors de la désinstallation&#xa0;: {error}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="248"/>
         <source>Installing {app} from Flathub...</source>
-        <translation type="unfinished"></translation>
+        <translation>Installation de {app} depuis Flathub...</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="263"/>
         <source>{app} has been installed successfully.</source>
-        <translation type="unfinished"></translation>
+        <translation>{app} a été installé correctement.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="266"/>
         <source>Error installing {app}: {error}</source>
-        <translation type="unfinished"></translation>
+        <translation>Erreur lors de l&apos;installation de {app}&#xa0;: {error}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="274"/>
         <source>Uninstalling {app} from Flathub...</source>
-        <translation type="unfinished"></translation>
+        <translation>Désinstallation de {app} depuis Flathub...</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="289"/>
         <source>{app} has been uninstalled successfully.</source>
-        <translation type="unfinished"></translation>
+        <translation>{app} a été correctement désinstallé.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="292"/>
         <source>Error uninstalling {app}: {error}</source>
-        <translation type="unfinished"></translation>
+        <translation>Erreur lors de la désinstallation de {app}&#xa0;: {error}</translation>
     </message>
 </context>
 <context>
@@ -216,27 +217,27 @@
     <message>
         <location filename="../deepinesStore/store.py" line="1119"/>
         <source>Starting...</source>
-        <translation type="unfinished"></translation>
+        <translation>Démarrage...</translation>
     </message>
     <message>
         <location filename="../deepinesStore/store.py" line="1121"/>
         <source>Fetching files...</source>
-        <translation type="unfinished"></translation>
+        <translation>Récupération des fichiers...</translation>
     </message>
     <message>
         <location filename="../deepinesStore/store.py" line="1122"/>
         <source>Initializing components...</source>
-        <translation type="unfinished"></translation>
+        <translation>Initialisation des composants...</translation>
     </message>
     <message>
         <location filename="../deepinesStore/store.py" line="1123"/>
         <source>Finalizing setup...</source>
-        <translation type="unfinished"></translation>
+        <translation>Finalisation de la configuration...</translation>
     </message>
     <message>
         <location filename="../deepinesStore/store.py" line="1117"/>
         <source>Loading...</source>
-        <translation type="unfinished"></translation>
+        <translation>Chargement...</translation>
     </message>
 </context>
 <context>
@@ -244,17 +245,17 @@
     <message>
         <location filename="../deepinesStore/install_progress.py" line="21"/>
         <source>Downloading... {percent}% ({current:.2f}/{total:.2f} MB)</source>
-        <translation type="unfinished"></translation>
+        <translation>Téléchargement... {percent}% ({current:.2f}/{total:.2f} MB)</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="25"/>
         <source>Starting download...</source>
-        <translation type="unfinished"></translation>
+        <translation>Démarrage du téléchargement...</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="28"/>
         <source>Download completed</source>
-        <translation type="unfinished"></translation>
+        <translation>Téléchargement complété</translation>
     </message>
 </context>
 <context>
@@ -288,10 +289,10 @@ wait until it finishes and click Retry.
 If you use Synaptic, make sure it is closed.</source>
         <translation>
 
-Le système d'installation est verrouillé par
-un autre processus d'installation ou de mise à niveau,
-attendez qu'il se termine et cliquez sur Réessayer.
-Si vous utilisez Synaptic, assurez-vous qu'il est fermé.</translation>
+Le système d&apos;installation est verrouillé par
+un autre processus d&apos;installation ou de mise à niveau,
+attendez qu&apos;il se termine et cliquez sur Réessayer.
+Si vous utilisez Synaptic, assurez-vous qu&apos;il est fermé.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/dialog_install.py" line="165"/>
@@ -315,13 +316,13 @@ Warning: do not close the window, interrupting the installation may damage your 
 </source>
         <translation type="obsolete">
 
-Attention : ne fermez pas la fenêtre, l'interruption de l'installation peut endommager votre système.
+Attention&#xa0;: ne fermez pas la fenêtre, l&apos;interruption de l&apos;installation peut endommager votre système.
 </translation>
     </message>
     <message>
         <location filename="../deepinesStore/dialog_install.py" line="160"/>
         <source>Installation process - Deepines Store</source>
-        <translation>Processus d'installation – Deepines Store</translation>
+        <translation>Processus d&apos;installation – Deepines Store</translation>
     </message>
     <message>
         <location filename="../deepinesStore/dialog_install.py" line="187"/>
@@ -340,7 +341,7 @@ La base de données est en cours de mise à jour.
 The installation of {item} is finished.
 </source>
         <translation>
-L'installation de {item} est terminée.
+L&apos;installation de {item} est terminée.
 </translation>
     </message>
     <message>
@@ -353,7 +354,7 @@ If the problem persists, send a report to t.me/deepinenespanol.
 </source>
         <translation>
 
-La connexion réseau a échoué et l'installation n'est pas terminée.
+La connexion réseau a échoué et l&apos;installation n&apos;est pas terminée.
 Vérifiez que votre ordinateur est connecté à Internet et cliquez sur Réessayer.
 Si le problème persiste, envoyez un rapport à t.me/deepinenespanol.
 </translation>
@@ -362,14 +363,14 @@ Si le problème persiste, envoyez un rapport à t.me/deepinenespanol.
         <location filename="../deepinesStore/dialog_install.py" line="161"/>
         <source>{app_count} app has been selected for installation:
 </source>
-        <translation>L'application {app_count} a été sélectionnée pour l'installation :
+        <translation>L&apos;application {app_count} a été sélectionnée pour l&apos;installation&#xa0;:
 </translation>
     </message>
     <message>
         <location filename="../deepinesStore/dialog_install.py" line="162"/>
         <source>{app_count} apps have been selected for installation:
 </source>
-        <translation>{app_count} ont été sélectionnées pour l'installation :
+        <translation>{app_count} ont été sélectionnées pour l&apos;installation&#xa0;:
 </translation>
     </message>
     <message>
@@ -381,8 +382,8 @@ If the problem persists, contact the administrator.
 </source>
         <translation>
 
-Une erreur s'est produite, veuillez réessayer.
-Si le problème persiste, contactez l'administrateur.
+Une erreur s&apos;est produite, veuillez réessayer.
+Si le problème persiste, contactez l&apos;administrateur.
 </translation>
     </message>
     <message>
@@ -396,21 +397,21 @@ You can look for help in our forum at deepinenespanol.org/comunidad
 or in our Telegram group t.me/deepinenespanol.</source>
         <translation>
 
-Une ou plusieurs applications n'ont pas pu être installées car
-elles dépendent d'autres paquets qui ne peuvent pas être installés.
+Une ou plusieurs applications n&apos;ont pas pu être installées car
+elles dépendent d&apos;autres paquets qui ne peuvent pas être installés.
 
-Vous pouvez chercher de l'aide sur notre forum à deepinenespanol.org/comunidad
+Vous pouvez chercher de l&apos;aide sur notre forum à deepinenespanol.org/comunidad
 ou dans notre groupe Telegram t.me/deepinenespanol.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/dialog_install.py" line="163"/>
         <source>App to uninstall: {item}</source>
-        <translation type="unfinished"></translation>
+        <translation>Application a désinstaller&#xa0;: {item}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/dialog_install.py" line="164"/>
         <source>Uninstall</source>
-        <translation type="unfinished"></translation>
+        <translation>Désinstaller</translation>
     </message>
     <message>
         <location filename="../deepinesStore/dialog_install.py" line="168"/>
@@ -418,21 +419,28 @@ ou dans notre groupe Telegram t.me/deepinenespanol.</translation>
 
 Warning: do not close the window, interrupting the process may damage your system.
 </source>
-        <translation type="unfinished"></translation>
+        <translation>
+
+Attention&#xa0;: ne fermez pas la fenêtre, interrompre la procédure peut endommager votre système.
+</translation>
     </message>
     <message>
         <location filename="../deepinesStore/dialog_install.py" line="171"/>
         <source>
 Uninstalling {item}
 </source>
-        <translation type="unfinished"></translation>
+        <translation>
+Désinstallation de {item}
+</translation>
     </message>
     <message>
         <location filename="../deepinesStore/dialog_install.py" line="173"/>
         <source>
 The uninstallation of {item} is finished.
 </source>
-        <translation type="unfinished"></translation>
+        <translation>
+La désinstallation de {item} est finie.
+</translation>
     </message>
 </context>
 <context>
@@ -450,7 +458,7 @@ The uninstallation of {item} is finished.
     <message>
         <location filename="../deepinesStore/cardg.py" line="76"/>
         <source>Select</source>
-        <translation type="unfinished"></translation>
+        <translation>Selectionner</translation>
     </message>
 </context>
 <context>
@@ -480,7 +488,7 @@ The uninstallation of {item} is finished.
         <source>About 
 Version: {version}</source>
         <translation>À propos 
-Version : {version}</translation>
+Version&#xa0;: {version}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="384"/>
@@ -550,7 +558,7 @@ Version : {version}</translation>
     <message>
         <location filename="../deepinesStore/maing.py" line="516"/>
         <source>{app_count} app selected to install, click here to review it</source>
-        <translation type="obsolete">L'application {app_count} a été sélectionnée pour être installée, cliquez ici pour l'évaluer</translation>
+        <translation type="obsolete">L&apos;application {app_count} a été sélectionnée pour être installée, cliquez ici pour l&apos;évaluer</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="403"/>
@@ -565,12 +573,12 @@ Version : {version}</translation>
     <message>
         <location filename="../deepinesStore/maing.py" line="508"/>
         <source>Deepines repository is not installed on your system,&lt;br&gt;Deepines Store needs this repository to work.&lt;br&gt;In the following link you will find the instructions to install it.&lt;br&gt;&lt;br&gt;&lt;a href=&apos;#&apos;&gt;deepinenespanol.org/repositorio/ | Copy link&lt;a/&gt;&lt;br&gt;</source>
-        <translation type="obsolete">Le référentiel Deepines n'est pas installé sur votre système,&amp;lt;br&amp;gt;Deepines Store a besoin de ce référentiel pour fonctionner.&amp;lt;br&amp;gt;Dans le lien suivant, vous trouverez les instructions pour l'installer.&amp;lt;br&amp;gt;&amp;lt;br&amp;gt;&amp;lt;a href=&amp;quot;#&amp;quot;&amp;gt;deepinenespanol.org/repositorio/ | Copier le lien&amp;lt;/a&amp;gt;&amp;lt;a&amp;gt;&amp;lt;br&amp;gt; ;&amp;lt;/a&amp;gt;</translation>
+        <translation type="obsolete">Le référentiel Deepines n&apos;est pas installé sur votre système,&amp;lt;br&amp;gt;Deepines Store a besoin de ce référentiel pour fonctionner.&amp;lt;br&amp;gt;Dans le lien suivant, vous trouverez les instructions pour l&apos;installer.&amp;lt;br&amp;gt;&amp;lt;br&amp;gt;&amp;lt;a href=&amp;quot;#&amp;quot;&amp;gt;deepinenespanol.org/repositorio/ | Copier le lien&amp;lt;/a&amp;gt;&amp;lt;a&amp;gt;&amp;lt;br&amp;gt; ;&amp;lt;/a&amp;gt;</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="502"/>
         <source>Unable to establish connection with the server, &lt;br&gt;please check your internet connection.&lt;br&gt;If the problem persists, please contact us via Telegram &lt;br&gt;at @deepinenespanol.&lt;br&gt;&lt;br&gt;&lt;a href=&apos;#&apos;&gt;deepinenespanol.org | Copy link&lt;/a&gt;&lt;br&gt;Visit Deepin en Espanol for more information.</source>
-        <translation type="obsolete">Impossible d'établir la connexion avec le serveur, &amp;lt;br&amp;gt;veuillez vérifier votre connexion Internet.&amp;lt;br&amp;gt;Si le problème persiste, veuillez nous contacter via Telegram &amp;lt;br&amp;gt;at @deepinenespanol.&amp;lt;br&amp;gt;&amp;lt;br&amp;gt;&amp;lt;a href=&amp;quot;#&amp;quot;&amp;gt;deepinenespanol.org | Copy link&amp;lt;/a&amp;gt;&amp;lt;br&amp;gt;Visitez Deepin en español pour plus d'informations.</translation>
+        <translation type="obsolete">Impossible d&apos;établir la connexion avec le serveur, &amp;lt;br&amp;gt;veuillez vérifier votre connexion Internet.&amp;lt;br&amp;gt;Si le problème persiste, veuillez nous contacter via Telegram &amp;lt;br&amp;gt;at @deepinenespanol.&amp;lt;br&amp;gt;&amp;lt;br&amp;gt;&amp;lt;a href=&amp;quot;#&amp;quot;&amp;gt;deepinenespanol.org | Copy link&amp;lt;/a&amp;gt;&amp;lt;br&amp;gt;Visitez Deepin en español pour plus d&apos;informations.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="392"/>
@@ -590,82 +598,82 @@ Version : {version}</translation>
     <message>
         <location filename="../deepinesStore/maing.py" line="396"/>
         <source>Apps .deb</source>
-        <translation type="unfinished"></translation>
+        <translation>Applications en .deb</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="414"/>
         <source>Deepines repository is not installed on your system,&lt;br&gt;Deepines Store needs this repository to work.&lt;br&gt;In the following link you will find the instructions to install it:&lt;br&gt;&lt;br&gt;{repoURL}</source>
-        <translation type="unfinished"></translation>
+        <translation>Le répertoire Deepines n&apos;est pas installé sur votre système, &lt;br&gt; Le Deepines Store a besoin de ce répertoire pour fonctionner. &lt;br&gt; En suivant ce lien vous allez trouver les instructions pour l&apos;installer&#xa0;: &lt;br&gt;&lt;br&gt; {repoURL}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="379"/>
         <source>Review apps</source>
-        <translation type="unfinished"></translation>
+        <translation>Examiner les applications</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="385"/>
         <source>Installed apps</source>
-        <translation type="unfinished"></translation>
+        <translation>Applications installées</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="397"/>
         <source>Apps Flatpak</source>
-        <translation type="unfinished"></translation>
+        <translation>Applications Flatpak</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="402"/>
         <source>Select</source>
-        <translation type="unfinished"></translation>
+        <translation>Sélectionner</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="405"/>
         <source>Uninstall</source>
-        <translation type="unfinished"></translation>
+        <translation>Désinstaller</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="406"/>
         <source>Uninstalled</source>
-        <translation type="unfinished"></translation>
+        <translation>Désinstallé</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="407"/>
         <source>{app_count} app selected, click here to review it</source>
-        <translation type="unfinished"></translation>
+        <translation>{app_count} application sélectionnée, cliquez ici pour l&apos;examiner</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="408"/>
         <source>{app_count} apps selected, click here to review them</source>
-        <translation type="unfinished"></translation>
+        <translation>{app_count} applications sélectionnées, cliquez ici pour les examiner</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="409"/>
         <source>Unable to establish connection with the server, &lt;br&gt;please check your internet connection.&lt;br&gt;If the problem persists, please contact us via Telegram &lt;br&gt;at {atTlURL}.&lt;br&gt;&lt;br&gt;Visit Deepin en Español for more information: {siteURL}</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossible d&apos;établir une connection avec le serveur, &lt;br&gt; s&apos;il vous plait vérifiez votre connection internet. &lt;br&gt; Si le problème persiste, veuillez nous contacter sur Telegram &lt;br&gt; Depuis {atTlURL}. &lt;br&gt;&lt;br&gt; Visitez Deepin en espagnol pour plus d&apos;informations&#xa0;: {siteURL}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="380"/>
         <source>Start process</source>
-        <translation type="unfinished"></translation>
+        <translation>Commencer le processus</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="418"/>
         <source>Installing...</source>
-        <translation type="unfinished"></translation>
+        <translation>Installation...</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="419"/>
         <source>Installation failed!</source>
-        <translation type="unfinished"></translation>
+        <translation>L&apos;installation a raté&#x202f;!</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="420"/>
         <source>Ready to install</source>
-        <translation type="unfinished"></translation>
+        <translation>Prêt a installer</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="421"/>
         <source>Starting installation...</source>
-        <translation type="unfinished"></translation>
+        <translation>Démarrage de l&apos;installation...</translation>
     </message>
 </context>
 <context>
@@ -673,12 +681,12 @@ Version : {version}</translation>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="40"/>
         <source>Updating cache... {percent:.2f}%</source>
-        <translation type="unfinished"></translation>
+        <translation>Mise à jour du cache... {percent:.2f}%</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="42"/>
         <source>Updating cache...</source>
-        <translation type="unfinished"></translation>
+        <translation>Mise à jour du cache...</translation>
     </message>
 </context>
 </TS>
