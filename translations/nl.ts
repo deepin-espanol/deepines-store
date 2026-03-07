@@ -4,69 +4,9 @@
 <context>
     <name>AboutDialog</name>
     <message>
-        <location filename="../deepinesStore/about.py" line="236"/>
-        <source>Deepines Store</source>
-        <translation type="obsolete">Deepines-winkel</translation>
-    </message>
-    <message>
-        <location filename="../deepinesStore/about.py" line="237"/>
-        <source>Developed by Deepin en Español</source>
-        <translation type="obsolete">Ontwikkeld door Deepin en Español</translation>
-    </message>
-    <message>
         <location filename="../deepinesStore/about.py" line="65"/>
         <source>About</source>
         <translation>Over</translation>
-    </message>
-    <message>
-        <location filename="../deepinesStore/about.py" line="238"/>
-        <source>Project Leader: {}</source>
-        <translation type="obsolete">Projectleider: {}</translation>
-    </message>
-    <message>
-        <location filename="../deepinesStore/about.py" line="239"/>
-        <source>Development: {}</source>
-        <translation type="obsolete">Ontwikkeling: {}</translation>
-    </message>
-    <message>
-        <location filename="../deepinesStore/about.py" line="240"/>
-        <source>UI: {}</source>
-        <translation type="obsolete">Vormgeving: {}</translation>
-    </message>
-    <message>
-        <location filename="../deepinesStore/about.py" line="241"/>
-        <source>OG UX Writer: {}</source>
-        <translation type="obsolete">Oorspronkelijke vormgeving: {}</translation>
-    </message>
-    <message>
-        <location filename="../deepinesStore/about.py" line="242"/>
-        <source>Design: {}</source>
-        <translation type="obsolete">Ontwerp: {}</translation>
-    </message>
-    <message>
-        <location filename="../deepinesStore/about.py" line="243"/>
-        <source>SysAdmin: {}</source>
-        <translation type="obsolete">Systeembeheerder: {}</translation>
-    </message>
-    <message>
-        <location filename="../deepinesStore/about.py" line="244"/>
-        <source>Web: {}</source>
-        <translation type="obsolete">Web: {}</translation>
-    </message>
-    <message>
-        <location filename="../deepinesStore/about.py" line="245"/>
-        <source>Servers: {}</source>
-        <translation type="obsolete">Servers: {}</translation>
-    </message>
-    <message>
-        <location filename="../deepinesStore/about.py" line="246"/>
-        <source>Collaborators: {}</source>
-        <translation type="obsolete">Bijdragers: {}</translation>
-    </message>
-    <message>
-        <location filename="../deepinesStore/about.py" line="247"/>
-        <source>deepinenespañol.org | Copy link</source>
-        <translation type="obsolete">deepinenespañol.org | Link kopiëren</translation>
     </message>
     <message>
         <location filename="../deepinesStore/about.py" line="67"/>
@@ -82,17 +22,17 @@
 <context>
     <name>InstallProgressHandler</name>
     <message>
-        <location filename="../deepinesStore/install_progress.py" line="55"/>
+        <location filename="../deepinesStore/install_progress.py" line="56"/>
         <source>Installing</source>
         <translation>Bezig met installeren…</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/install_progress.py" line="57"/>
+        <location filename="../deepinesStore/install_progress.py" line="58"/>
         <source>Uninstalling</source>
         <translation>Bezig met verwijderen…</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/install_progress.py" line="58"/>
+        <location filename="../deepinesStore/install_progress.py" line="59"/>
         <source>{process}: {status} - {percent}%</source>
         <translation>{process}: {status} - {percent}%</translation>
     </message>
@@ -100,169 +40,164 @@
 <context>
     <name>InstallThread</name>
     <message>
-        <location filename="../deepinesStore/install_progress.py" line="84"/>
+        <location filename="../deepinesStore/install_progress.py" line="85"/>
         <source>Updating package list...</source>
         <translation>Bezig met bijwerken van pakketlijst…</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/install_progress.py" line="88"/>
+        <location filename="../deepinesStore/install_progress.py" line="89"/>
         <source>Error during cache update: {error}</source>
         <translation>De cache kan niet worden bijgewerkt: {error}</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/install_progress.py" line="117"/>
+        <location filename="../deepinesStore/install_progress.py" line="118"/>
         <source>Error: {error}
 {traceback}</source>
         <translation>Foutmelding: {error}
 {traceback}</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/install_progress.py" line="126"/>
+        <location filename="../deepinesStore/install_progress.py" line="127"/>
         <source>Installing: {package} from Deepines repository</source>
         <translation>Bezig met installeren van {package} uit de Deepines-pakketbron…</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/install_progress.py" line="191"/>
+        <location filename="../deepinesStore/install_progress.py" line="192"/>
         <source>Searching for package {package}...</source>
         <translation>Bezig met zoeken naar “{package}”…</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/install_progress.py" line="193"/>
+        <location filename="../deepinesStore/install_progress.py" line="194"/>
         <source>Package {package} not found</source>
         <translation>“{package}” kan niet worden gevonden</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/install_progress.py" line="136"/>
+        <location filename="../deepinesStore/install_progress.py" line="137"/>
         <source>{package} is already installed.</source>
         <translation>‘{package}’ is al geïnstalleerd.</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/install_progress.py" line="139"/>
+        <location filename="../deepinesStore/install_progress.py" line="140"/>
         <source>Marking {package} for installation...</source>
         <translation>Bezig met voorbereiden van ‘{package}’…</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/install_progress.py" line="142"/>
+        <location filename="../deepinesStore/install_progress.py" line="143"/>
         <source>Dependency error for {package}: {error}</source>
         <translation>Afhankelijkheidsfout voor ‘{package}’: {error}</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/install_progress.py" line="147"/>
+        <location filename="../deepinesStore/install_progress.py" line="148"/>
         <source>Downloading and installing {package}...</source>
         <translation>Bezig met downloaden en installeren van ‘{package}’…</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/install_progress.py" line="155"/>
+        <location filename="../deepinesStore/install_progress.py" line="156"/>
         <source>{package} has been installed successfully.</source>
         <translation>‘{package}’ is geïnstalleerd.</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/install_progress.py" line="157"/>
+        <location filename="../deepinesStore/install_progress.py" line="158"/>
         <source>{package} could not be installed correctly, possibly due to dependency errors.</source>
         <translation>‘{package}’ kan niet worden geïnstalleerd wegens mogelijke afhankelijkheidsfouten.</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/install_progress.py" line="162"/>
+        <location filename="../deepinesStore/install_progress.py" line="163"/>
         <source>Lock error during installation: {error}</source>
         <translation>Vergrendelingsfout tijdens installatie: {error}</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/install_progress.py" line="167"/>
+        <location filename="../deepinesStore/install_progress.py" line="168"/>
         <source>Download error during installation: {error}</source>
         <translation>Downloaden mislukt: {error}</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/install_progress.py" line="172"/>
+        <location filename="../deepinesStore/install_progress.py" line="173"/>
         <source>Download cancelled: {error}</source>
         <translation>Downloaden afgebroken: {error}</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/install_progress.py" line="177"/>
+        <location filename="../deepinesStore/install_progress.py" line="178"/>
         <source>System error during installation: {error}</source>
         <translation>Systeemfout tijdens installatie: {error}</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/install_progress.py" line="235"/>
+        <location filename="../deepinesStore/install_progress.py" line="236"/>
         <source>Unexpected error: {error}</source>
         <translation>Onverwachte foutmelding: {error}</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/install_progress.py" line="190"/>
+        <location filename="../deepinesStore/install_progress.py" line="191"/>
         <source>Uninstalling: {package}.</source>
         <translation>Aan het verwijderen: ‘{package}’.</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/install_progress.py" line="200"/>
+        <location filename="../deepinesStore/install_progress.py" line="201"/>
         <source>{package} is not installed.</source>
         <translation>‘{package}’ is niet geïnstalleerd.</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/install_progress.py" line="202"/>
+        <location filename="../deepinesStore/install_progress.py" line="203"/>
         <source>Marking {package} for removal...</source>
         <translation>Bezig met markeren van ‘{package}’ voor verwijdering…</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/install_progress.py" line="205"/>
+        <location filename="../deepinesStore/install_progress.py" line="206"/>
         <source>Uninstalling {package}...</source>
         <translation>Bezig met verwijderen van ‘{package}’…</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/install_progress.py" line="213"/>
+        <location filename="../deepinesStore/install_progress.py" line="214"/>
         <source>{package} has been uninstalled successfully.</source>
         <translation>‘{package}’ is verwijderd.</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/install_progress.py" line="215"/>
+        <location filename="../deepinesStore/install_progress.py" line="216"/>
         <source>{package} could not be uninstalled correctly.</source>
         <translation>‘{package}’ kan niet worden verwijderd.</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/install_progress.py" line="220"/>
+        <location filename="../deepinesStore/install_progress.py" line="221"/>
         <source>Lock error during uninstallation: {error}</source>
         <translation>Vergrendelingsfout tijdens verwijderen: {error}</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/install_progress.py" line="225"/>
+        <location filename="../deepinesStore/install_progress.py" line="226"/>
         <source>Download error during uninstallation: {error}</source>
         <translation>Downloadfout tijdens verwijderen: {error}</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/install_progress.py" line="230"/>
-        <source>Error during uninstallation: {error}</source>
-        <translation type="obsolete">Fout tijdens verwijderen: {error}</translation>
-    </message>
-    <message>
-        <location filename="../deepinesStore/install_progress.py" line="230"/>
+        <location filename="../deepinesStore/install_progress.py" line="231"/>
         <source>System error during uninstallation: {error}</source>
         <translation>Systeemfout tijdens verwijderen: {error}</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/install_progress.py" line="243"/>
+        <location filename="../deepinesStore/install_progress.py" line="244"/>
         <source>Installing {app} from Flathub...</source>
         <translation>Bezig met installeren van ‘{app}’ van Flathub…</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/install_progress.py" line="264"/>
+        <location filename="../deepinesStore/install_progress.py" line="275"/>
         <source>{app} has been installed successfully.</source>
         <translation>‘{app}’ is geïnstalleerd.</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/install_progress.py" line="267"/>
+        <location filename="../deepinesStore/install_progress.py" line="278"/>
         <source>Error installing {app}: {error}</source>
         <translation>‘{app}’ kan niet worden geïnstalleerd: {{error}}</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/install_progress.py" line="275"/>
+        <location filename="../deepinesStore/install_progress.py" line="286"/>
         <source>Uninstalling {app} from Flathub...</source>
         <translation>Bezig met verwijderen van ‘{app}’ van Flathub…</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/install_progress.py" line="296"/>
+        <location filename="../deepinesStore/install_progress.py" line="316"/>
         <source>{app} has been uninstalled successfully.</source>
         <translation>‘{app}’ is verwijderd.</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/install_progress.py" line="299"/>
+        <location filename="../deepinesStore/install_progress.py" line="319"/>
         <source>Error uninstalling {app}: {error}</source>
         <translation>‘{app}’ kan niet worden verwijderd: {error}</translation>
     </message>
@@ -298,218 +233,23 @@
 <context>
     <name>ProgressHandler</name>
     <message>
-        <location filename="../deepinesStore/install_progress.py" line="21"/>
+        <location filename="../deepinesStore/install_progress.py" line="22"/>
         <source>Downloading... {percent}% ({current:.2f}/{total:.2f} MB)</source>
         <translation>Bezig met downloaden… {percent}% ({current:.2f}/{total:.2f} MB)</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/install_progress.py" line="25"/>
+        <location filename="../deepinesStore/install_progress.py" line="26"/>
         <source>Starting download...</source>
         <translation>Bezig met starten van download…</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/install_progress.py" line="28"/>
+        <location filename="../deepinesStore/install_progress.py" line="29"/>
         <source>Download completed</source>
         <translation>Downloaden voltooid</translation>
     </message>
 </context>
 <context>
-    <name>Ui_DialogInstall</name>
-    <message>
-        <location filename="../deepinesStore/dialog_install.py" line="170"/>
-        <source>
-Installing {item}
-</source>
-        <translation>
-Bezig met installeren van {item}…
-</translation>
-    </message>
-    <message>
-        <location filename="../deepinesStore/dialog_install.py" line="167"/>
-        <source>Close</source>
-        <translation>Sluiten</translation>
-    </message>
-    <message>
-        <location filename="../deepinesStore/dialog_install.py" line="166"/>
-        <source>Retry</source>
-        <translation>Opnieuw</translation>
-    </message>
-    <message>
-        <location filename="../deepinesStore/dialog_install.py" line="183"/>
-        <source>
-
-The installation system is locked by 
-another installation or upgrade process, 
-wait until it finishes and click Retry. 
-If you use Synaptic, make sure it is closed.</source>
-        <translation>
-
-De installatie is vergrendeld door een
-andere installatie of bijwerkproces.
-Wacht tot dit is afgerond en klik dan op
-‘Opnieuw’. Zorg ook dat Synaptic is afgesloten.</translation>
-    </message>
-    <message>
-        <location filename="../deepinesStore/dialog_install.py" line="165"/>
-        <source>Install</source>
-        <translation>Installeren</translation>
-    </message>
-    <message>
-        <location filename="../deepinesStore/dialog_install.py" line="169"/>
-        <source>
-All processes have been completed.
-</source>
-        <translation>
-Alle processen zijn afgerond.
-</translation>
-    </message>
-    <message>
-        <location filename="../deepinesStore/dialog_install.py" line="133"/>
-        <source>
-
-Warning: do not close the window, interrupting the installation may damage your system.
-</source>
-        <translation type="obsolete">
-
-Waarschuwing: sluit dit venster niet! Door de installatie te onderbreken kan je je systeem beschadigen.
-</translation>
-    </message>
-    <message>
-        <location filename="../deepinesStore/dialog_install.py" line="160"/>
-        <source>Installation process - Deepines Store</source>
-        <translation>Installatieproces - Deepines-winkel</translation>
-    </message>
-    <message>
-        <location filename="../deepinesStore/dialog_install.py" line="187"/>
-        <source>
-The database is being updated.
-
-</source>
-        <translation>
-De databank wordt bijgewerkt…
-
-</translation>
-    </message>
-    <message>
-        <location filename="../deepinesStore/dialog_install.py" line="172"/>
-        <source>
-The installation of {item} is finished.
-</source>
-        <translation>
-{item} is geïnstalleerd.
-</translation>
-    </message>
-    <message>
-        <location filename="../deepinesStore/dialog_install.py" line="176"/>
-        <source>
-
-The network connection has failed and the installation has not been completed.
-Check that your computer is connected to the Internet and click Retry.
-If the problem persists, send a report to t.me/deepinenespanol.
-</source>
-        <translation>
-
-De installatie is afgebroken omdat er geen internetverbinding is.
-Controleer of je verbonden bent en probeer het opnieuw.
-Als het probleem aanhoudt, maak er dan melding van op t.me/deepinenespanol.
-</translation>
-    </message>
-    <message>
-        <location filename="../deepinesStore/dialog_install.py" line="161"/>
-        <source>{app_count} app has been selected for installation:
-</source>
-        <translation>Er zal {app_count} programma worden geïnstalleerd:
-</translation>
-    </message>
-    <message>
-        <location filename="../deepinesStore/dialog_install.py" line="162"/>
-        <source>{app_count} apps have been selected for installation:
-</source>
-        <translation>Er zullen {app_count} programma's worden geïnstalleerd:
-</translation>
-    </message>
-    <message>
-        <location filename="../deepinesStore/dialog_install.py" line="174"/>
-        <source>
-
-An error has occurred, please try again.
-If the problem persists, contact the administrator.
-</source>
-        <translation>
-
-Er is een fout opgetreden - probeer het opnieuw.
-Als het probleem zich blijft voordoen, neem dan contact op met de beheerder.
-</translation>
-    </message>
-    <message>
-        <location filename="../deepinesStore/dialog_install.py" line="179"/>
-        <source>
-
-One or more apps could not be installed because
-they depend on other packages that cannot be installed.
-
-You can look for help in our forum at deepinenespanol.org/comunidad
-or in our Telegram group t.me/deepinenespanol.</source>
-        <translation>
-
-Een of meerdere programma's kunnen niet worden geïnstalleerd omdat
-zij afhankelijk zijn van andere pakketten die ook niet kunnen worden geïnstalleerd.
-
-Vraag hulp op ons forum: deepinenespanol.org/comunidad
-Of in onze Telegram-groep: t.me/deepinenespanol</translation>
-    </message>
-    <message>
-        <location filename="../deepinesStore/dialog_install.py" line="163"/>
-        <source>App to uninstall: {item}</source>
-        <translation>Te verwijderen programma: {item}</translation>
-    </message>
-    <message>
-        <location filename="../deepinesStore/dialog_install.py" line="164"/>
-        <source>Uninstall</source>
-        <translation>Verwijderen</translation>
-    </message>
-    <message>
-        <location filename="../deepinesStore/dialog_install.py" line="168"/>
-        <source>
-
-Warning: do not close the window, interrupting the process may damage your system.
-</source>
-        <translation>
-
-Waarschuwing: sluit dit venster niet om schade aan het systeem te voorkomen.
-</translation>
-    </message>
-    <message>
-        <location filename="../deepinesStore/dialog_install.py" line="171"/>
-        <source>
-Uninstalling {item}
-</source>
-        <translation>
-Bezig met verwijderen van {item}…
-</translation>
-    </message>
-    <message>
-        <location filename="../deepinesStore/dialog_install.py" line="173"/>
-        <source>
-The uninstallation of {item} is finished.
-</source>
-        <translation>
-{item} is verwijderd.
-</translation>
-    </message>
-</context>
-<context>
     <name>Ui_Frame</name>
-    <message>
-        <location filename="../deepinesStore/cardg.py" line="70"/>
-        <source>Install</source>
-        <translation type="obsolete">Installeren</translation>
-    </message>
-    <message>
-        <location filename="../deepinesStore/cardg.py" line="69"/>
-        <source>Card</source>
-        <translation type="obsolete">Kaart</translation>
-    </message>
     <message>
         <location filename="../deepinesStore/cardg.py" line="76"/>
         <source>Select</source>
@@ -532,11 +272,6 @@ The uninstallation of {item} is finished.
         <location filename="../deepinesStore/maing.py" line="385"/>
         <source>Other</source>
         <translation>Overig</translation>
-    </message>
-    <message>
-        <location filename="../deepinesStore/maing.py" line="479"/>
-        <source>Install</source>
-        <translation type="obsolete">Installeren</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="391"/>
@@ -596,24 +331,9 @@ Versie: {version}</translation>
         <translation>Deepines-winkel</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="447"/>
-        <source>TextLabel</source>
-        <translation type="obsolete">Tekstlabel</translation>
-    </message>
-    <message>
-        <location filename="../deepinesStore/maing.py" line="517"/>
-        <source>{app_count} apps selected to install, click here to review them</source>
-        <translation type="obsolete">Er zullen {app_count} programma's worden geïnstalleerd. Klik hier voor details.</translation>
-    </message>
-    <message>
         <location filename="../deepinesStore/maing.py" line="404"/>
         <source>Installed</source>
         <translation>Geïnstalleerd</translation>
-    </message>
-    <message>
-        <location filename="../deepinesStore/maing.py" line="516"/>
-        <source>{app_count} app selected to install, click here to review it</source>
-        <translation type="obsolete">Er zal {app_count} programma worden geïnstalleerd. Klik hier voor details.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="403"/>
@@ -624,16 +344,6 @@ Versie: {version}</translation>
         <location filename="../deepinesStore/maing.py" line="401"/>
         <source>Select the apps to install</source>
         <translation>Selecteer de te installeren programma's</translation>
-    </message>
-    <message>
-        <location filename="../deepinesStore/maing.py" line="508"/>
-        <source>Deepines repository is not installed on your system,&lt;br&gt;Deepines Store needs this repository to work.&lt;br&gt;In the following link you will find the instructions to install it.&lt;br&gt;&lt;br&gt;&lt;a href=&apos;#&apos;&gt;deepinenespanol.org/repositorio/ | Copy link&lt;a/&gt;&lt;br&gt;</source>
-        <translation type="obsolete">De Deepines-pakketbron is niet aanwezig op je computer.&amp;lt;br&amp;gt;De Deepines-winkel werkt alleen met deze pakketbron.&amp;lt;br&amp;gt;Klik op onderstaande link om de installatie-instructies te bekijken.&amp;lt;br&amp;gt;&amp;lt;br&amp;gt;&amp;lt;a href=&amp;quot;#&amp;quot;&amp;gt;deepinenespanol.org/repositorio/ | Link kopiëren&amp;lt;/a&amp;gt;&amp;lt;a&amp;gt;&amp;lt;br&amp;gt;&amp;lt;/a&amp;gt;</translation>
-    </message>
-    <message>
-        <location filename="../deepinesStore/maing.py" line="502"/>
-        <source>Unable to establish connection with the server, &lt;br&gt;please check your internet connection.&lt;br&gt;If the problem persists, please contact us via Telegram &lt;br&gt;at @deepinenespanol.&lt;br&gt;&lt;br&gt;&lt;a href=&apos;#&apos;&gt;deepinenespanol.org | Copy link&lt;/a&gt;&lt;br&gt;Visit Deepin en Espanol for more information.</source>
-        <translation type="obsolete">Er kan geen verbinding worden gemaakt met de server. &amp;lt;br&amp;gt;Controleer je internetverbinding.&amp;lt;br&amp;gt;Als het probleem zich blijft voordoen, neem dan contact met ons op via Telegram: &amp;lt;br&amp;gt;@deepinenespanol&amp;lt;br&amp;gt;&amp;lt;br&amp;gt;&amp;lt;a href=&amp;quot;#&amp;quot;&amp;gt;deepinenespanol.org | Link kopiëren&amp;lt;/a&amp;gt;&amp;lt;br&amp;gt;Ga voor meer informatie naar Deepin en Espanol.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="392"/>
@@ -734,12 +444,12 @@ Versie: {version}</translation>
 <context>
     <name>UpdateProgress</name>
     <message>
-        <location filename="../deepinesStore/install_progress.py" line="40"/>
+        <location filename="../deepinesStore/install_progress.py" line="41"/>
         <source>Updating cache... {percent:.2f}%</source>
         <translation>Bezig met bijwerken van cache… {percent:.2f}%</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/install_progress.py" line="42"/>
+        <location filename="../deepinesStore/install_progress.py" line="43"/>
         <source>Updating cache...</source>
         <translation>Bezig met bijwerken van cache…</translation>
     </message>
