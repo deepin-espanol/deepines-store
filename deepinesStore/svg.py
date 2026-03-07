@@ -2,6 +2,7 @@
 
 from os.path import join, abspath, dirname, exists
 from os import listdir, remove
+from pathlib import Path
 from hashlib import md5
 from deepinesStore.core import get_dl, get_deepines_uri
 from deepinesStore.demoted_actions import config_dir, create_folder, write_file
@@ -12,12 +13,12 @@ class threading_svg(object):
 
 	def __init__(self):
 		# Create the config directory if it does not exist
-		self.CONFIG_APPS_PATH = join(config_dir, 'apps')
-		if not exists(self.CONFIG_APPS_PATH):
+		self.CONFIG_APPS_PATH = config_dir / 'apps'
+		if not self.CONFIG_APPS_PATH.exists():
 			create_folder(self.CONFIG_APPS_PATH)
 
 		self.RO_APPS_PATH = abspath(join(dirname(__file__), 'resources', 'apps'))
-		self.TEMP_PATH = join(config_dir, 'remote_svg.txt')
+		self.TEMP_PATH = config_dir / 'remote_svg.txt'
 
 		self.RO_APPS_CHECK = dict()
 		self.CONFIG_APPS_CHECK = dict()

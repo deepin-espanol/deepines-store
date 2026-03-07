@@ -20,7 +20,8 @@ def find_appstream_file():
 	fallback = '/var/lib/flatpak/appstream/flathub/x86_64/active/appstream.xml'
 	if os.path.exists(fallback):
 		return fallback
-	raise FileNotFoundError('Flathub appstream.xml not found')
+	# Return None instead of raising so caller can decide how to proceed
+	return None
 
 # Flathub app categories
 categories = [
@@ -59,10 +60,17 @@ def app_list_flatpak() -> List[AppInfo]:
 	# Get the system language
 	system_lang = locale.getdefaultlocale()[0]
 
-	# Parse the appstream file with lxml (auto-detect architecture)
+	# Parse the appstream file with lxml (auto-detect architecture).
+	# If no appstream file is found, return an empty list so the
+	# application can continue without enforcing Flatpak availability.
 	appstream_file = find_appstream_file()
-	tree = etree.parse(appstream_file)
-	root = tree.getroot()
+	if not appstream_file:
+		return []
+	try:
+		tree = etree.parse(appstream_file)
+		root = tree.getroot()
+	except Exception:
+		return []
 	app_list = []
 
 	for component in root.findall('component'):

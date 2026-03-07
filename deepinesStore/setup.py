@@ -54,8 +54,17 @@ def get_installed_apps(list_app_deb, list_app_flatpak):
 				list_app_deb[indice].state = AppState.INSTALLED
 				list_app_deb[indice].process = ProcessType.UNINSTALL
 
-	flatpak_cmd = demoted.run_cmd(demoted.DEF, cmd=['flatpak', 'list', '--columns=application'])
-	installed_ids = [line.rstrip("\n") for line in flatpak_cmd.stdout.readlines()]
+	# Only attempt to query Flatpak if we have Flatpak apps and the
+	# demoted environment (DEF) is defined. This avoids errors on
+	# platforms where `DEF` isn't available (e.g., Windows) or when
+	# AppStream/Flatpak data is missing.
+	installed_ids = []
+	if list_app_flatpak and hasattr(demoted, 'DEF'):
+		try:
+			flatpak_proc = demoted.run_cmd(demoted.DEF, cmd=['flatpak', 'list', '--columns=application'])
+			installed_ids = [line.rstrip("\n") for line in flatpak_proc.stdout.readlines()]
+		except Exception:
+			installed_ids = []
 
 	for installed_id in installed_ids:
 		for app_item in list_app_flatpak:
