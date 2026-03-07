@@ -1,6 +1,7 @@
 import apt
 import apt.progress.base
 import subprocess as sp
+import os
 from PyQt5.QtCore import QThread, pyqtSignal
 from deepinesStore.app_info import AppType, ProcessType
 from deepinesStore.core import tr
@@ -244,7 +245,17 @@ class InstallThread(QThread):
 		self.name_process_signal.emit(installing_msg)
 		self.update_signal.emit(installing_msg)
 
-		process = sp.Popen(['flatpak', 'install', '-y', 'flathub', app_id], stdout=sp.PIPE, stderr=sp.PIPE, text=True)
+		# Prefer system-wide install if system Flathub appstream exists
+		use_system = os.path.exists('/var/lib/flatpak/appstream/flathub')
+		if use_system:
+			# If already running as root, run flatpak --system directly, otherwise elevate with pkexec
+			if os.geteuid() == 0:
+				cmd = ['flatpak', 'install', '--system', '-y', 'flathub', app_id]
+			else:
+				cmd = ['/usr/bin/pkexec', '/usr/bin/flatpak', 'install', '--system', '-y', 'flathub', app_id]
+		else:
+			cmd = ['flatpak', 'install', '-y', 'flathub', app_id]
+		process = sp.Popen(cmd, stdout=sp.PIPE, stderr=sp.PIPE, text=True)
 
 		while True:
 			if not self._is_running:
@@ -276,7 +287,16 @@ class InstallThread(QThread):
 		self.name_process_signal.emit(uninstalling_msg)
 		self.update_signal.emit(uninstalling_msg)
 
-		process = sp.Popen(['flatpak', 'uninstall', '-y', app_id], stdout=sp.PIPE, stderr=sp.PIPE, text=True)
+		# Prefer system-wide uninstall when system Flathub appstream exists
+		use_system = os.path.exists('/var/lib/flatpak/appstream/flathub')
+		if use_system:
+			if os.geteuid() == 0:
+				cmd = ['flatpak', 'uninstall', '--system', '-y', app_id]
+			else:
+				cmd = ['/usr/bin/pkexec', '/usr/bin/flatpak', 'uninstall', '--system', '-y', app_id]
+		else:
+			cmd = ['flatpak', 'uninstall', '-y', app_id]
+		process = sp.Popen(cmd, stdout=sp.PIPE, stderr=sp.PIPE, text=True)
 
 		while True:
 			if not self._is_running:
