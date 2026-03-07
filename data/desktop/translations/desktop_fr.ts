@@ -21,7 +21,7 @@
     <message>
         <location filename="Desktop Entry]Keywords" line="0"/>
         <source>store;app;apps;applications;install;program;software;</source>
-        <translation>magasin;store;appli;applis;installer;app;apps;applications;install;program;software;</translation>
+        <translation>magasin&#x202f;;store&#x202f;;appli&#x202f;;applis&#x202f;;installer&#x202f;;app&#x202f;;apps&#x202f;;applications&#x202f;;install&#x202f;;program&#x202f;;software&#x202f;;</translation>
     </message>
 </context>
 </TS>
