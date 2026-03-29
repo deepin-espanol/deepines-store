@@ -1,5 +1,4 @@
 conkys-widgets
-deepin-lenguage-patch-es
 frases-celebres
 firefox-stable-latest
 laboon-access
@@ -13,3 +12,4 @@ marea-icon-theme
 deemix
 deepines-win-usb-installer
 deepines-security-patch
+webapps-creator-ui
