@@ -1,22 +1,62 @@
-__pycache__
-venv
-virtualenv
-.venv
-.virtualenv
-*.pyc
+# ─── Python ───────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+.Python
+
+# Entornos virtuales
+venv/
+virtualenv/
+.venv/
+.virtualenv/
+env/
+ENV/
+
+# Distribución / empaquetado
+build/
+dist/
+*.egg-info/
+*.egg
+MANIFEST
+
+# ─── Base de datos ────────────────────────────────────────────────────────────
 db.sqlite3
-.idea
-.vscode
-build
-dist
-.tar.gz
+*.sqlite3
+
+# ─── Editores e IDEs ──────────────────────────────────────────────────────────
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# ─── macOS ────────────────────────────────────────────────────────────────────
+.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+
+# ─── Artefactos de empaquetado .deb ───────────────────────────────────────────
+deb/temp/
+deb/deepines-store_*/
 *.deb
-.asc
+*.tar.gz
+*.tar.xz
+*.asc
+
+# ─── Salida del build ─────────────────────────────────────────────────────────
 output/
-deb/
-deb/temp
-deb/deepines-store_*
+
+# ─── Traducciones generadas ───────────────────────────────────────────────────
 deepinesStore/translations/
+
+# ─── Caché de SVG / íconos ────────────────────────────────────────────────────
 remote_svg.txt
 svg_checksum
 *.png
+
+# ─── Logs ─────────────────────────────────────────────────────────────────────
+*.log
+logs/
