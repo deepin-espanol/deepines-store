@@ -402,8 +402,10 @@ class Ui_MainWindow(object):
 
 		# StoreWindow
 		self.list_apps_text = self.__tr("Select the apps to install")
-		self.select_app_text = self.__tr("Select")
-		self.selected_to_install_app_text = self.__tr("Selected")
+		self.select_app_text = self.__tr("Install")
+		self.selected_to_install_app_text = self.__tr("To install")
+		self.selected_to_uninstall_app_text = self.__tr("To uninstall")
+		self.selected_to_update_app_text = self.__tr("To update")
 		self.selected_installed_app_text = self.__tr("Installed")
 		self.uninstall_app_text = self.__tr("Uninstall")
 		self.uninstalled_app_text = self.__tr("Uninstalled")
@@ -412,8 +414,8 @@ class Ui_MainWindow(object):
 		self.checking_updates_text = self.__tr("Checking for updates...")
 		self.check_updates_btn_text = self.__tr("Check for updates")
 		self.no_apps_found_text = self.__tr("No apps found")
-		self.single_app_text = self.__tr("{app_count} app selected, click here to review it")
-		self.multi_apps_text = self.__tr("{app_count} apps selected, click here to review them")
+		self.single_app_text = self.__tr("{install_count} to install, {uninstall_count} to uninstall, {update_count} to update")
+		self.multi_apps_text = self.__tr("{install_count} to install, {uninstall_count} to uninstall, {update_count} to update")
 		self.error_no_server_text = self.__tr("Unable to establish connection with the server, <br>"
 											  "please check your internet connection.<br>"
 											  "If the problem persists, please contact us via Telegram <br>"

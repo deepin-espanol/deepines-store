@@ -538,7 +538,11 @@ class StoreMWindow(QMainWindow, EventsMixin):
 				preview_to_install = ui.multi_apps_text
 			else:
 				preview_to_install = ui.single_app_text
-			texto = preview_to_install.format(app_count=cuenta)
+			
+			install_count = sum(1 for app in selected_apps if app.process == ProcessType.INSTALL)
+			uninstall_count = sum(1 for app in selected_apps if app.process == ProcessType.UNINSTALL)
+			update_count = sum(1 for app in selected_apps if app.process == ProcessType.UPDATE)
+			texto = preview_to_install.format(install_count=install_count, uninstall_count=uninstall_count, update_count=update_count)
 		self.change_color_btn_install()
 		ui.btn_install.setEnabled(enabled)
 		ui.lbl_list_apps.setEnabled(enabled)
@@ -787,26 +791,26 @@ class Card(QFrame):
 				self.cd.lbl_version.setText("v: {}".format(self.application.version))
 
 		global installed, uninstalled
-		if self.application.state == AppState.UPDATABLE:
-			state = AppState.UPDATABLE
-			if self.application in selected_apps:
+		
+		if self.application in selected_apps:
+			if self.application.process == ProcessType.UPDATE:
 				state = AppState.SELECTED
-		elif self.application not in installed:
-			state = AppState.DEFAULT
-			if self.application in selected_apps:
+			elif self.application.process == ProcessType.UNINSTALL:
+				state = AppState.UNINSTALL
+			else:
 				state = AppState.SELECTED
 		else:
-			state = AppState.INSTALLED
-			if self.application in selected_apps:
-				state = AppState.UNINSTALL
+			if self.application in uninstalled:
+				state = AppState.UNINSTALLED
+			elif self.application.available_version:
+				state = AppState.UPDATABLE
+			elif self.application in installed:
+				state = AppState.INSTALLED
+			else:
+				state = AppState.DEFAULT
 
-		if self.application in uninstalled and self.application in selected_apps:
-			state = AppState.SELECTED
-		elif self.application in uninstalled:
-			state = AppState.UNINSTALLED
-
-		#if self.application not in selected_apps and self.application not in installed:
 		self.installEventFilter(self)
+		self.cd.btn_select_app.installEventFilter(self)
 
 		self.update_app_card_status(state)
 
@@ -851,6 +855,15 @@ class Card(QFrame):
 		return pixmap
 
 	def eventFilter(self, object, event):
+		if object == self.cd.btn_select_app:
+			if event.type() == QEvent.Enter:
+				if self.application.state == AppState.INSTALLED:
+					self.cd.btn_select_app.setText(ui.uninstall_app_text)
+			elif event.type() == QEvent.Leave:
+				if self.application.state == AppState.INSTALLED:
+					self.cd.btn_select_app.setText(ui.selected_installed_app_text)
+			return False
+
 		if event.type() == QEvent.Enter:
 			radius = 20
 		elif event.type() == QEvent.Leave and not (self.application in selected_apps or self.application in installed or self.application in uninstalled or self.application.state == AppState.UPDATABLE):
@@ -859,7 +872,10 @@ class Card(QFrame):
 			return False
 
 		if self.application.state == AppState.SELECTED:
-			shadow_color = QColor(0, 255, 255)
+			if self.application.process == ProcessType.UPDATE:
+				shadow_color = QColor(255, 152, 0)
+			else:
+				shadow_color = QColor(0, 255, 255)
 		elif self.application.state == AppState.UNINSTALL:
 			shadow_color = QColor(234, 93, 41)
 		elif self.application.state == AppState.INSTALLED:
@@ -867,7 +883,7 @@ class Card(QFrame):
 		elif self.application.state == AppState.UNINSTALLED:
 			shadow_color = QColor(238, 81, 56)
 		elif self.application.state == AppState.UPDATABLE:
-			shadow_color = QColor(255, 152, 0)
+			shadow_color = QColor(0, 212, 0)
 		else:
 			shadow_color = QColor(255, 255, 255)
 
@@ -939,12 +955,15 @@ class Card(QFrame):
 			new_state = AppState.UNINSTALL
 		else:
 			selected_apps.remove(self.application)
-			if self.application.process == ProcessType.UPDATE:
+			if self.application.available_version:
 				new_state = AppState.UPDATABLE
+				lista_global[indice].process = ProcessType.UPDATE
 			elif self.application not in installed:
 				new_state = AppState.DEFAULT
+				lista_global[indice].process = ProcessType.INSTALL
 			else:
 				new_state = AppState.INSTALLED
+				lista_global[indice].process = ProcessType.UNINSTALL
 		self.installEventFilter(self)
 
 		lista_global[indice].state = new_state
@@ -967,6 +986,7 @@ class Card(QFrame):
 		if self.application not in selected_apps and self.application.state == AppState.UPDATABLE:
 			selected_apps.append(self.application)
 			new_state = AppState.UNINSTALL
+			lista_global[indice].process = ProcessType.UNINSTALL
 		else:
 			return
 
@@ -979,18 +999,28 @@ class Card(QFrame):
 	def update_app_card_status(self, state: AppState):
 		color_map = {
 			AppState.SELECTED: (0, 255, 255, "#00bbc8", ui.selected_to_install_app_text),
-			AppState.UNINSTALL: (234, 93, 41, "#ea4329", ui.uninstall_app_text),
+			AppState.UNINSTALL: (234, 93, 41, "#ea4329", ui.selected_to_uninstall_app_text),
 			AppState.INSTALLED: (0, 212, 0, "#009800", ui.selected_installed_app_text),
 			AppState.UNINSTALLED: (238, 81, 56, "#d54000", ui.uninstalled_app_text),
-			AppState.UPDATABLE: (255, 152, 0, "#ff9800", ui.update_available_app_text),
+			AppState.UPDATABLE: (0, 212, 0, "#009800", ui.update_available_app_text),
 			AppState.DEFAULT: (30, 30, 30, "transparent", ui.select_app_text)
 		}
 
 		r, g, b, border_color, btn_text = color_map.get(state, color_map[AppState.DEFAULT])
 
+		btn_r, btn_g, btn_b = r, g, b
+
 		text_color = "#000" if state == AppState.SELECTED else "#fff"
 
+		if state == AppState.SELECTED and self.application.process == ProcessType.UPDATE:
+			btn_text = ui.selected_to_update_app_text
+			btn_r, btn_g, btn_b = 255, 152, 0
+			r, g, b = 255, 152, 0
+			border_color = "#ff9800"
+			text_color = "#fff"
+
 		if state == AppState.UPDATABLE:
+			btn_r, btn_g, btn_b = 255, 152, 0
 			self.cd.btn_secondary_action.setText(ui.uninstall_app_text)
 			self.cd.btn_secondary_action.show()
 			btn_secondary_style = ("QPushButton#btn_secondary_action{"
@@ -1006,13 +1036,19 @@ class Card(QFrame):
 			btn_secondary_style = ""
 			margin_primary = "margin: 5px 10px;"
 
+		hover_style = ""
+		if state == AppState.INSTALLED:
+			hover_style = ("QPushButton#btn_select_app:hover{"
+						"background-color: rgb(234, 93, 41);"
+						"}")
+
 		btn_select_app_style = ("QPushButton#btn_select_app{"
 					"color: " + text_color + ";"
-					"background-color: rgb(" + str(r) + ", " + str(g) + ", " + str(b) + ");"
+					"background-color: rgb(" + str(btn_r) + ", " + str(btn_g) + ", " + str(btn_b) + ");"
 					+ margin_primary +
 					"border-width: 0px;"
 					"border-radius: 10px;"
-					"}")
+					"}" + hover_style)
 
 		self.cd.btn_select_app.setText(btn_text)
 
