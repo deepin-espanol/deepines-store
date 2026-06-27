@@ -28,6 +28,7 @@ class CheckUpdatesThread(QThread):
 		import multiprocessing
 		queue = multiprocessing.Queue()
 		p = multiprocessing.Process(target=_fetch_apt_updates, args=(queue,))
+		p.daemon = True
 		p.start()
 		p.join()
 
