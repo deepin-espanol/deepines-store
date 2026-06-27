@@ -58,6 +58,10 @@ class EventsMixin:
 			self.setCursor(Qt.ArrowCursor)
 			if previous_position is not None:
 				self.move(previous_position)
+				self.drag_position = None
+			event.accept()
+		else:
+			event.ignore()
 
 	def resizeEvent(self, event):
 		self.drag_position = None
