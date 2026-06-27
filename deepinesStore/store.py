@@ -1072,13 +1072,11 @@ class LoaderThread(QThread):
 		list_app_updatable = setup.get_updatable_apps(list_app_deb, list_app_flatpak)
 		self.finished.emit()
 
-class LoadingScreen(QMainWindow, EventsMixin):
+class LoadingScreen(QMainWindow):
 	def __init__(self):
 		super().__init__()
 		self.setWindowFlags(Qt.SplashScreen | QtCore.FramelessWindowHint)
 		self.setStyleSheet("background-color: rgba(30, 30, 30, 200); color: #b5c5d1;")
-
-		self.drag_position = None
 
 		layout = QVBoxLayout()
 		self.label_title = QLabel(self)
@@ -1115,7 +1113,6 @@ class LoadingScreen(QMainWindow, EventsMixin):
 
 		container = QWidget()
 		container.setLayout(layout)
-		#container.setStyleSheet("background-color: rgb(30, 30, 30);")
 		self.setCentralWidget(container)
 
 		self.retranslateUi()
