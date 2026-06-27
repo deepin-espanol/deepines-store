@@ -585,6 +585,7 @@ class StoreMWindow(QMainWindow, EventsMixin):
 			ui.btn_install.setText(ui.btn_install_review_text)
 			ui.btn_install.setStyleSheet(
 				"#btn_install{\n"
+				"color: white;\n"
 				"padding: 2px;\n"
 				"border-radius: 5px;\n"
 				"background-color: rgb(45, 45, 45);\n"
@@ -607,6 +608,7 @@ class StoreMWindow(QMainWindow, EventsMixin):
 		ui.btn_install.setText(ui.btn_install_start_text)
 		ui.btn_install.setStyleSheet(
 			"#btn_install{\n"
+			"color: white;\n"
 			"padding: 2px;\n"
 			"border-radius: 5px;\n"
 			"background-color: rgb(45, 45, 45);\n"
