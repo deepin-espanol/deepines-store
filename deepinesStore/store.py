@@ -1040,7 +1040,7 @@ class LoaderThread(QThread):
 class LoadingScreen(QMainWindow, EventsMixin):
 	def __init__(self):
 		super().__init__()
-		self.setWindowFlags(QtCore.FramelessWindowHint)
+		self.setWindowFlags(Qt.SplashScreen | QtCore.FramelessWindowHint)
 		self.setStyleSheet("background-color: rgba(30, 30, 30, 200); color: #b5c5d1;")
 
 		self.drag_position = None
