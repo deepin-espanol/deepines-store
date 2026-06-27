@@ -9,8 +9,8 @@ from PyQt5.Qt import Qt
 from PyQt5.QtCore import QTranslator, QLocale, QSize, QPointF, QEvent, QTimer, Qt as QtCore, pyqtSignal, QThread, QCoreApplication
 from PyQt5.QtWidgets import (QMainWindow, QApplication, QFrame, QLabel,
 							 QSizePolicy, QGraphicsDropShadowEffect, QSpacerItem,
-							 QDesktopWidget, QHBoxLayout, QVBoxLayout, QWidget)
-from PyQt5.QtGui import QPixmap, QFont, QColor, QCursor, QPainter, QMovie
+							 QDesktopWidget, QHBoxLayout, QVBoxLayout, QWidget, QPushButton)
+from PyQt5.QtGui import QPixmap, QFont, QColor, QCursor, QPainter, QMovie, QIcon
 
 from deepinesStore.core import set_blur
 # Para obtener aplicaciones random
@@ -1102,13 +1102,63 @@ def center_window(widget):
 	# Mover el widget al centro de la pantalla
 	widget.move(screen_center - widget_center)
 
-class LoadingScreen(QMainWindow):
+class LoadingScreen(QMainWindow, EventsMixin):
 	def __init__(self):
 		super().__init__()
-		self.setWindowFlags(Qt.SplashScreen | QtCore.FramelessWindowHint)
-		self.setStyleSheet("background-color: rgba(30, 30, 30, 200); color: #b5c5d1;")
+		self.setWindowFlags(Qt.Window | QtCore.FramelessWindowHint)
+		self.setFocus()
+		self.setObjectName("LoadingScreen")
+		self.setStyleSheet("""
+		#LoadingScreen{
+			background-color: rgba(30, 30, 30, 200);
+		}
+		#btn_close{
+			min-width: 36px;
+			min-height: 36px;
+			border-radius: 10px;
+			background-color: transparent;
+		}
+		#btn_minimize{
+			min-width: 36px;
+			min-height: 36px;
+			border-radius: 10px;
+			background-color: transparent;
+		}
+		#btn_minimize:hover,
+		#btn_close:hover{
+			background-color: rgba(50, 50, 50, 100);
+		}
+		QLabel{
+			color: #b5c5d1;
+		}
+		""")
 
 		layout = QVBoxLayout()
+		
+		top_layout = QHBoxLayout()
+		top_layout.setContentsMargins(0, 0, 0, 0)
+		top_layout.addStretch()
+
+		self.btn_minimize = QPushButton()
+		self.btn_minimize.setObjectName("btn_minimize")
+		icon_min = QIcon()
+		icon_min.addPixmap(QPixmap(get_res('minimizar', ext='.svg')), QIcon.Normal, QIcon.Off)
+		self.btn_minimize.setIcon(icon_min)
+		self.btn_minimize.setIconSize(QSize(13, 13))
+		self.btn_minimize.clicked.connect(self.showMinimized)
+		top_layout.addWidget(self.btn_minimize)
+
+		self.btn_close = QPushButton()
+		self.btn_close.setObjectName("btn_close")
+		icon_close = QIcon()
+		icon_close.addPixmap(QPixmap(get_res('cerrar', ext='.svg')), QIcon.Normal, QIcon.Off)
+		self.btn_close.setIcon(icon_close)
+		self.btn_close.setIconSize(QSize(20, 20))
+		self.btn_close.clicked.connect(self.close)
+		top_layout.addWidget(self.btn_close)
+
+		layout.addLayout(top_layout)
+
 		self.label_title = QLabel(self)
 		self.label_title.setText(self.windowTitle())
 		self.label_title.setAlignment(QtCore.AlignCenter)
@@ -1177,7 +1227,7 @@ class LoadingScreen(QMainWindow):
 		self.main_window.calcular_anchos()
 		set_blur(self.main_window)
 		self.main_window.show()
-		self.close()
+		QTimer.singleShot(200, self.close) # wait! dde-shell dock is buggy, keep the icon there!
 
 def run_gui():
 	app = QApplication(sys.argv)
