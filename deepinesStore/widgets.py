@@ -1,5 +1,5 @@
 from PyQt5 import QtGui, QtWidgets as w
-from PyQt5.QtCore import pyqtSignal, Qt, QTimer, QEasingCurve, QPropertyAnimation, QEvent, pyqtSlot
+from PyQt5.QtCore import pyqtSignal, Qt, QTimer, QEasingCurve, QPropertyAnimation, QEvent, pyqtSlot, QSize
 from PyQt5.QtGui import QLinearGradient, QPainter, QBrush, QColor, QPalette
 
 from deepinesStore.demoted_actions import browse, open_telegram_link
@@ -225,3 +225,121 @@ def add_people_to_list(people, list_widget):
 	list_widget.set_skip_item_action_indices([0, len(people) + 1])
 
 	return list_widget
+
+
+class StateOverlayWidget(w.QWidget):
+	def __init__(self, parent=None):
+		super().__init__(parent)
+		self.verticalLayout = w.QVBoxLayout(self)
+		self.verticalLayout.setContentsMargins(0, 0, 0, 0)
+		self.verticalLayout.setSpacing(10)
+
+		self.topSpacer = w.QSpacerItem(20, 40, w.QSizePolicy.Policy.Minimum, w.QSizePolicy.Policy.Expanding)
+		self.verticalLayout.addItem(self.topSpacer)
+
+		# Media (Movie/Pixmap)
+		self.media_label = w.QLabel(self)
+		self.media_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+		self.verticalLayout.addWidget(self.media_label, alignment=Qt.AlignmentFlag.AlignHCenter)
+
+		# Primary Text (LinkLabel)
+		self.primary_label = LinkLabel(self)
+		font = self.primary_label.font()
+		font.setPointSize(16)
+		self.primary_label.setFont(font)
+		self.primary_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+		self.primary_label.setWordWrap(False)
+		self.primary_label.setSizePolicy(w.QSizePolicy.Policy.Expanding, w.QSizePolicy.Policy.Minimum)
+		self.primary_label.setStyleSheet("color: #fff; background-color: rgba(0, 0, 0, 0);")
+		self.verticalLayout.addWidget(self.primary_label, alignment=Qt.AlignmentFlag.AlignHCenter)
+
+		# Secondary Text (QLabel)
+		self.secondary_label = w.QLabel(self)
+		font2 = self.secondary_label.font()
+		font2.setPointSize(14)
+		self.secondary_label.setFont(font2)
+		self.secondary_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+		self.secondary_label.setWordWrap(False)
+		self.secondary_label.setSizePolicy(w.QSizePolicy.Policy.Expanding, w.QSizePolicy.Policy.Minimum)
+		self.secondary_label.setStyleSheet("color: #fff; background-color: rgba(0, 0, 0, 0);")
+		self.secondary_label.hide()
+		self.verticalLayout.addWidget(self.secondary_label, alignment=Qt.AlignmentFlag.AlignHCenter)
+
+		# Action Button
+		self.action_button = w.QPushButton(self)
+		self.action_button.hide()
+		self.action_button.setStyleSheet("""
+			QPushButton {
+				padding: 8px 16px;
+				border-radius: 5px;
+				background-color: rgb(45, 45, 45);
+				border: 2px solid rgb(65, 159, 217);
+				color: white;
+				font-size: 14px;
+			}
+			QPushButton:hover {
+				background-color: rgb(65, 159, 217);
+			}
+		""")
+		self.verticalLayout.addWidget(self.action_button, alignment=Qt.AlignmentFlag.AlignHCenter)
+
+		self.verticalSpacer = w.QSpacerItem(20, 40, w.QSizePolicy.Policy.Minimum, w.QSizePolicy.Policy.Expanding)
+		self.verticalLayout.addItem(self.verticalSpacer)
+		self.current_movie = None
+
+	def set_media(self, media_path, is_movie=False, size=150):
+		if self.current_movie:
+			self.current_movie.stop()
+			self.current_movie = None
+
+		if not media_path:
+			self.media_label.hide()
+			return
+
+		self.media_label.show()
+
+		# Reset any previous fixed sizes
+		self.media_label.setMinimumSize(0, 0)
+		self.media_label.setMaximumSize(16777215, 16777215)
+		self.media_label.setSizePolicy(w.QSizePolicy.Policy.Preferred, w.QSizePolicy.Policy.Preferred)
+
+		if is_movie:
+			self.current_movie = QtGui.QMovie(media_path)
+			self.current_movie.setScaledSize(QSize(size, size))
+			self.media_label.setMovie(self.current_movie)
+			self.current_movie.start()
+		else:
+			self.media_label.setMinimumSize(size, size)
+			self.media_label.setMaximumSize(size, size)
+			self.media_label.setSizePolicy(w.QSizePolicy.Policy.Fixed, w.QSizePolicy.Policy.Fixed)
+			pixmap = QtGui.QPixmap(media_path)
+			self.media_label.setPixmap(pixmap)
+			self.media_label.setScaledContents(True)
+
+	def set_text(self, primary_text, secondary_text=None):
+		if primary_text:
+			self.primary_label.setText(primary_text)
+			self.primary_label.adjustSize()
+			self.primary_label.show()
+		else:
+			self.primary_label.hide()
+
+		if secondary_text:
+			self.secondary_label.setText(secondary_text)
+			self.secondary_label.adjustSize()
+			self.secondary_label.show()
+		else:
+			self.secondary_label.hide()
+
+	def set_action(self, button_text, callback=None):
+		if button_text:
+			self.action_button.setText(button_text)
+			self.action_button.show()
+			try:
+				self.action_button.clicked.disconnect()
+			except TypeError:
+				pass
+			if callback:
+				self.action_button.clicked.connect(callback)
+		else:
+			self.action_button.hide()

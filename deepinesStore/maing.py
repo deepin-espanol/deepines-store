@@ -408,6 +408,10 @@ class Ui_MainWindow(object):
 		self.uninstall_app_text = self.__tr("Uninstall")
 		self.uninstalled_app_text = self.__tr("Uninstalled")
 		self.update_available_app_text = self.__tr("Update")
+		self.no_updates_available_text = self.__tr("No updates available")
+		self.checking_updates_text = self.__tr("Checking for updates...")
+		self.check_updates_btn_text = self.__tr("Check for updates")
+		self.no_apps_found_text = self.__tr("No apps found")
 		self.single_app_text = self.__tr("{app_count} app selected, click here to review it")
 		self.multi_apps_text = self.__tr("{app_count} apps selected, click here to review them")
 		self.error_no_server_text = self.__tr("Unable to establish connection with the server, <br>"

@@ -25,7 +25,7 @@ from deepinesStore.flatpak.get_apps_flatpak import app_list_flatpak
 from deepinesStore.deb.get_apps_deb import fetch_list_app_deb
 from deepinesStore.install_progress import InstallThread
 from deepinesStore import setup
-from deepinesStore.widgets import LinkLabel
+from deepinesStore.widgets import LinkLabel, StateOverlayWidget
 from deepinesStore.demoted_actions import write_file, config_dir, get_resource
 
 class EventsMixin:
@@ -72,6 +72,63 @@ global list_app_exclude, list_app_deepines, list_app_deb, list_app_flatpak
 global selected_apps, installed, columnas, tamanio, list_app_updatable
 
 
+class CheckUpdatesThread(QThread):
+	finished_signal = pyqtSignal(list)
+
+	def __init__(self, list_app_deb, list_app_flatpak):
+		super().__init__()
+		self.list_app_deb = list_app_deb
+		self.list_app_flatpak = list_app_flatpak
+
+	def run(self):
+		list_updatable = list()
+
+		# Check for deb updates via apt using a subprocess to avoid locking the GIL
+		try:
+			import subprocess
+			import json
+			script = "import apt, json; c=apt.Cache(); print(json.dumps({p.name: p.candidate.version for p in c if p.is_installed and p.is_upgradable}))"
+			proc = subprocess.Popen(['python3', '-c', script], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+			stdout, stderr = proc.communicate()
+			
+			if proc.returncode == 0 and stdout.strip():
+				upgradable_pkgs = json.loads(stdout.strip())
+				for app_item in self.list_app_deb:
+					if app_item.state == AppState.INSTALLED and app_item.id in upgradable_pkgs:
+						app_item.available_version = upgradable_pkgs[app_item.id]
+						app_item.state = AppState.UPDATABLE
+						app_item.process = ProcessType.UPDATE
+						list_updatable.append(app_item)
+			else:
+				print(f"Error checking deb updates: {stderr}")
+		except Exception as e:
+			print(f"Exception checking deb updates: {e}")
+
+		# Check for Flatpak updates
+		import deepinesStore.demoted_actions as demoted
+		if self.list_app_flatpak and hasattr(demoted, 'DEF'):
+			try:
+				flatpak_proc = demoted.run_cmd(demoted.DEF, cmd=['flatpak', 'remote-ls', '--updates', '--columns=application,version'])
+				lines = flatpak_proc.stdout.readlines()
+				update_map = {}
+				for line in lines:
+					parts = line.strip().split('\t')
+					if len(parts) >= 2:
+						update_map[parts[0]] = parts[1]
+					elif len(parts) == 1 and parts[0]:
+						update_map[parts[0]] = None
+
+				for app_item in self.list_app_flatpak:
+					if app_item.id in update_map and app_item.state == AppState.INSTALLED:
+						app_item.available_version = update_map[app_item.id]
+						app_item.state = AppState.UPDATABLE
+						app_item.process = ProcessType.UPDATE
+						list_updatable.append(app_item)
+			except Exception as e:
+				print(f"Error checking Flatpak updates: {e}")
+
+		self.finished_signal.emit(list_updatable)
+
 class StoreMWindow(QMainWindow, EventsMixin):
 	def __init__(self):
 		super(StoreMWindow, self).__init__()
@@ -114,9 +171,14 @@ class StoreMWindow(QMainWindow, EventsMixin):
 				self.primer_inicio = True
 				self.show_apps_selected = False
 			else:
-				self.error(ui.error_no_server_text)
+				self.show_overlay('raccoon', ui.error_no_server_text, blocking=True)
 		else:
-			self.error(ui.error_no_deepines_repo_text)
+			self.show_overlay('raccoon', ui.error_no_deepines_repo_text, blocking=True)
+
+		self.overlay_widget = StateOverlayWidget(self)
+		self.is_checking_updates = False
+		self.has_checked_updates = False
+		self.start_check_updates()
 
 
 		ui.btn_install.setEnabled(False)
@@ -142,46 +204,50 @@ class StoreMWindow(QMainWindow, EventsMixin):
 		center_window(self)
 
 	################################################
-	#			 Control de errores			   #
+	#			 Control de errores / Overlays     #
 
-	def error(self, text: str):
-		self.verticalLayout = QVBoxLayout()
-		self.verticalLayout.setContentsMargins(0, 0, 0, 0)
-		self.verticalLayout.setSpacing(10)
-		self.verticalLayout.setObjectName("verticalLayout")
+	def show_overlay(self, media_name, primary_text, is_movie=False, secondary_text=None, blocking=False, button_text=None, button_callback=None):
+		self.clear_gridLayout()
+		# Configure the widget
+		if is_movie:
+			media_path = get_res(media_name, ext='.gif')
+		else:
+			media_path = get_res(media_name)
+		# Always create a new instance because clear_gridLayout deletes the old one
+		self.overlay_widget = StateOverlayWidget(self)
 
-		self.raccoon = QLabel(self)
-		self.raccoon.setText("")
-		self.raccoon.setMinimumSize(300, 300)
-		self.raccoon.setMaximumSize(300, 300)
-		self.raccoon.setObjectName("raccoon")
-		self.raccoon.setStyleSheet("#raccoon{ background-color: transparent;}")
-		self.raccoon.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-		self.raccoon.adjustSize()
-		self.raccoon.setAlignment(QtCore.AlignCenter)
+		self.overlay_widget.set_media(media_path, is_movie)
+		self.overlay_widget.set_text(primary_text, secondary_text)
+		self.overlay_widget.set_action(button_text, button_callback)
 
-		ruta = get_res('raccoon')
-		pixmap = QPixmap(ruta)
-		self.raccoon.setPixmap(pixmap)
-		self.verticalLayout.addWidget(self.raccoon, alignment=QtCore.AlignHCenter)
+		ui.gridLayout.addWidget(self.overlay_widget, 0, 0, 1, 1)
 
-		self.label_error = LinkLabel(self)
-		font = QFont()
-		font.setPointSize(16)
-		self.label_error.setFont(font)
-		self.label_error.setText(text)
-		self.label_error.setEnabled(True)
-		self.label_error.setAlignment(QtCore.AlignCenter)
-		self.label_error.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-		self.label_error.adjustSize()
-		self.label_error.setObjectName("label_error")
-		self.label_error.setStyleSheet("#label_error{ color: #fff; background-color: rgba(0, 0, 0, 0);}")
-		self.verticalLayout.addWidget(self.label_error)
+		self.status_widgets(not blocking)
 
-		ui.gridLayout.addLayout(self.verticalLayout, 0, 0, 1, 1)
-		self.status_widgets(False)
+	def start_check_updates(self):
+		if self.is_checking_updates:
+			return
+		self.is_checking_updates = True
+		self.is_checking_updates = True
+		if ui.lw_categories.currentRow() == 12:
+			self.show_overlay('Deepines', ui.checking_updates_text, is_movie=True)
 
-	#			 /Control de errores			  #
+		self.check_updates_thread = CheckUpdatesThread(self.lista_app_deb, self.lista_app_flatpak)
+		self.check_updates_thread.finished_signal.connect(self.on_check_updates_finished)
+		# Defer starting the thread so the UI has time to render the spinner
+		# before apt.Cache() locks the Python GIL and freezes the main thread.
+		QTimer.singleShot(100, self.check_updates_thread.start)
+
+	def on_check_updates_finished(self, list_updatable):
+		global list_app_updatable
+		list_app_updatable = list_updatable
+		self.is_checking_updates = False
+		self.has_checked_updates = True
+		# Refresh UI if updates tab is currently selected
+		if ui.lw_categories.currentRow() == 12:
+			self.do_list_apps(list_app_updatable)
+
+	#			 /Control de errores / Overlays    #
 	################################################
 
 	def status_widgets(self, status = False):
@@ -287,8 +353,9 @@ class StoreMWindow(QMainWindow, EventsMixin):
 					indice = self.lista_app_flatpak.index(app_item)
 					item = self.lista_app_flatpak[indice]
 					lista_search.append(item)
-			else:
-				list_app_show_temp = lista_search
+			list_app_show_temp = lista_search
+		else:
+			list_app_show_temp = lista_inicio
 
 		self.do_list_apps(list_app_show_temp)
 
@@ -386,6 +453,8 @@ class StoreMWindow(QMainWindow, EventsMixin):
 			if item is not None:
 				widget = item.widget()
 				if widget is not None:
+					widget.hide()
+					widget.setParent(None)
 					widget.deleteLater()
 				else:
 					# If the item is another layout, clear it recursively
@@ -416,6 +485,17 @@ class StoreMWindow(QMainWindow, EventsMixin):
 			item.setSelected(True)
 
 		self.clear_gridLayout()
+
+		if not lista:
+			index = ui.lw_categories.currentRow()
+			if index == 12: # Updates
+				if getattr(self, 'is_checking_updates', False):
+					self.show_overlay('Deepines', ui.checking_updates_text, is_movie=True)
+				else:
+					self.show_overlay('deepines', ui.no_updates_available_text, button_text=ui.check_updates_btn_text, button_callback=self.start_check_updates)
+			else:
+				self.show_overlay('magnifying-glass', ui.no_apps_found_text)
+			return
 
 		y = 0  # Creamos la coordenada y
 		x = 0  # Creamos la coordenada x
@@ -593,68 +673,33 @@ class StoreMWindow(QMainWindow, EventsMixin):
 		self.do_list_apps(selected_apps)
 
 	def window_install(self):
-		self.clear_gridLayout()
-
-		layout = QVBoxLayout()
-
-		self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
-		layout.addItem(self.verticalSpacer)
-
-		spinner = get_res('Deepines', ext='.gif')
-		self.spinner_label = QLabel(self)
-		self.spinner = QMovie(spinner)
-		self.spinner_label.setMovie(self.spinner)
-		self.spinner_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-		max_size = 300
-		original_size = self.spinner.scaledSize()
-		aspect_ratio = original_size.width() / original_size.height()
-
-		if original_size.width() > original_size.height():
-			new_width = max_size
-			new_height = new_width / aspect_ratio
-		else:
-			new_height = max_size
-			new_width = new_height * aspect_ratio
-
-		self.spinner.setScaledSize(QSize(int(new_width), int(new_height)))
-		self.spinner.start()
-		layout.addWidget(self.spinner_label)
-
-		self.process_label = QLabel(ui.process_install_text, self)
-		self.process_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-		self.process_label.setWordWrap(True)
-		self.process_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Minimum)
-		self.process_label.adjustSize()
-		self.process_label.setObjectName("process_label")
-		self.process_label.setStyleSheet("#process_label{color: #fff; font-size: 22px;}")
-		layout.addWidget(self.process_label)
-
-		self.status_label = QLabel(ui.status_ready_to_install_text, self)
-		self.status_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-		self.status_label.setWordWrap(True)
-		self.status_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Minimum)
-		self.status_label.adjustSize()
-		self.status_label.setObjectName("status_label")
-		self.status_label.setStyleSheet("#status_label{color: #fff; font-size: 18px;}")
-		layout.addWidget(self.status_label)
-
-		self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
-		layout.addItem(self.verticalSpacer)
-
-		ui.gridLayout.addLayout(layout, 0, 0)
+		self.show_overlay('Deepines', ui.process_install_text, is_movie=True, secondary_text=ui.status_ready_to_install_text, blocking=True)
 		ui.btn_install.setText(ui.process_install_text)
-		self.status_widgets(False)
 		self.start_installation()
 
 	def update_status(self, message):
-		if self.status_label:
-			self.status_label.setText(message)
+		if hasattr(self, 'overlay_widget'):
+			try:
+				if self.overlay_widget.isVisible():
+					self.overlay_widget.set_text(self.overlay_widget.primary_label.text(), message)
+			except RuntimeError:
+				pass
 
 	def change_process_name(self, name):
-		self.process_label.setText(name)
+		if hasattr(self, 'overlay_widget'):
+			try:
+				if self.overlay_widget.isVisible():
+					self.overlay_widget.set_text(name, self.overlay_widget.secondary_label.text())
+			except RuntimeError:
+				pass
 
 	def start_installation(self):
-		self.status_label.setText(ui.status_starting_install_text)
+		if hasattr(self, 'overlay_widget'):
+			try:
+				if self.overlay_widget.isVisible():
+					self.overlay_widget.set_text(self.overlay_widget.primary_label.text(), ui.status_starting_install_text)
+			except RuntimeError:
+				pass
 		if hasattr(self, 'install_thread') and self.install_thread and self.install_thread.isRunning():
 			self.install_thread.stop()
 			self.install_thread.wait()
@@ -666,27 +711,23 @@ class StoreMWindow(QMainWindow, EventsMixin):
 		self.install_thread.start()
 
 	def change_spinner(self, new_spinner_name):
-		# 1. Detener la animación actual
-		self.spinner.stop()
-
-		# 2. Cargar el nuevo GIF
-		new_spinner_path = get_res(new_spinner_name, ext='.gif')
-		new_spinner = QMovie(new_spinner_path)
-
-		# 3. Establecer el nuevo GIF en el QLabel
-		self.spinner_label.setMovie(new_spinner)
-
-		# 4. Iniciar la nueva animación
-		new_spinner.start()
-
-		# 5. Actualizar la referencia al spinner actual
-		self.spinner = new_spinner
+		if hasattr(self, 'overlay_widget'):
+			try:
+				if self.overlay_widget.isVisible():
+					self.overlay_widget.set_media(get_res(new_spinner_name, ext='.gif'), is_movie=True)
+			except RuntimeError:
+				pass
 
 	def installation_finished(self, success):
 		if success:
 			self.installation_completed()
 		else:
-			self.process_label.setText(ui.process_install_failed_text)
+			if hasattr(self, 'overlay_widget'):
+				try:
+					if self.overlay_widget.isVisible():
+						self.overlay_widget.set_text(ui.process_install_failed_text, self.overlay_widget.secondary_label.text())
+				except RuntimeError:
+					pass
 
 			self.change_color_btn_install()
 			self.change_spinner('strawhats-one-piece')
@@ -1069,7 +1110,7 @@ class LoaderThread(QThread):
 		list_app_flatpak = app_list_flatpak()
 		self.progress.emit(self.parent.finalizingString)
 		installed = setup.get_installed_apps(list_app_deb, list_app_flatpak)
-		list_app_updatable = setup.get_updatable_apps(list_app_deb, list_app_flatpak)
+		list_app_updatable = list()
 		self.finished.emit()
 
 class LoadingScreen(QMainWindow):
