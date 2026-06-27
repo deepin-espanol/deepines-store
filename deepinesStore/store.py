@@ -205,10 +205,11 @@ class StoreMWindow(QMainWindow, EventsMixin):
 
 	def resizeEvent(self, event):
 		# is running a process
-		if self.install_thread and self.install_thread.isRunning():
+		if hasattr(self, 'install_thread') and self.install_thread and self.install_thread.isRunning():
 			return
 		else:
-			event.accept()
+			self.drag_position = None
+			super().resizeEvent(event)
 			if hasattr(self, 'primer_inicio') and self.primer_inicio:
 				self.primer_inicio = False
 			if 'list_app_show_temp' in globals():
@@ -836,6 +837,7 @@ class Card(QFrame):
 		self.cd.lbl_name_app.clicked.connect(
 			lambda: self.select_app())
 		self.cd.btn_select_app.clicked.connect(lambda: self.select_app())
+		self.cd.btn_secondary_action.clicked.connect(lambda: self.select_secondary_app_action())
 
 	def fixed_banner_pixmap(self, banner_path):
 		pixmap = QPixmap(banner_path)
@@ -952,6 +954,28 @@ class Card(QFrame):
 
 		self.parentWindow.contar_apps()
 
+	def select_secondary_app_action(self):
+		global lista_global, selected_apps, installed
+
+		lista_global_temp = lista_global
+		if (self.application.type == AppType.DEB_PACKAGE):
+			lista_global = self.parentWindow.lista_app_deb
+		if (self.application.type == AppType.FLATPAK_APP):
+			lista_global = self.parentWindow.lista_app_flatpak
+		indice = lista_global.index(self.application)
+
+		if self.application not in selected_apps and self.application.state == AppState.UPDATABLE:
+			selected_apps.append(self.application)
+			new_state = AppState.UNINSTALL
+		else:
+			return
+
+		self.installEventFilter(self)
+		lista_global[indice].state = new_state
+		lista_global = lista_global_temp
+		self.update_app_card_status(new_state)
+		self.parentWindow.contar_apps()
+
 	def update_app_card_status(self, state: AppState):
 		color_map = {
 			AppState.SELECTED: (0, 255, 255, "#00bbc8", ui.selected_to_install_app_text),
@@ -966,10 +990,26 @@ class Card(QFrame):
 
 		text_color = "#000" if state == AppState.SELECTED else "#fff"
 
+		if state == AppState.UPDATABLE:
+			self.cd.btn_secondary_action.setText(ui.uninstall_app_text)
+			self.cd.btn_secondary_action.show()
+			btn_secondary_style = ("QPushButton#btn_secondary_action{"
+					"color: #fff;"
+					"background-color: rgb(234, 93, 41);"
+					"margin: 5px 10px 5px 2px;"
+					"border-width: 0px;"
+					"border-radius: 10px;"
+					"}")
+			margin_primary = "margin: 5px 2px 5px 10px;"
+		else:
+			self.cd.btn_secondary_action.hide()
+			btn_secondary_style = ""
+			margin_primary = "margin: 5px 10px;"
+
 		btn_select_app_style = ("QPushButton#btn_select_app{"
 					"color: " + text_color + ";"
 					"background-color: rgb(" + str(r) + ", " + str(g) + ", " + str(b) + ");"
-					"margin: 5px 10px;"
+					+ margin_primary +
 					"border-width: 0px;"
 					"border-radius: 10px;"
 					"}")
@@ -983,7 +1023,7 @@ class Card(QFrame):
 						   "border-color: " + border_color + ";"
 						   "border-width: 1px;"
 						   "border-style: solid;"
-						   "}" + btn_select_app_style)
+						   "}" + btn_select_app_style + btn_secondary_style)
 
 		color = QColor(r, g, b)
 		shadow = set_shadow(self, color, 20)

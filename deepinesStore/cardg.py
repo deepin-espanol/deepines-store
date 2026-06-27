@@ -45,10 +45,21 @@ class Ui_Frame(object):
 		self.lbl_version.setAlignment(Qt.AlignCenter)
 		self.lbl_version.setObjectName("lbl_version")
 		self.verticalLayout.addWidget(self.lbl_version)
+		self.horizontalLayout = QtWidgets.QHBoxLayout()
+		self.horizontalLayout.setSpacing(5)
+		self.horizontalLayout.setObjectName("horizontalLayout")
+		
 		self.btn_select_app = QtWidgets.QPushButton(Frame)
 		self.btn_select_app.setObjectName(u"btn_select_app")
-		self.btn_select_app.setMinimumSize(QSize(100, 30))
-		self.verticalLayout.addWidget(self.btn_select_app)
+		self.btn_select_app.setMinimumSize(QSize(40, 30))
+		self.horizontalLayout.addWidget(self.btn_select_app)
+
+		self.btn_secondary_action = QtWidgets.QPushButton(Frame)
+		self.btn_secondary_action.setObjectName(u"btn_secondary_action")
+		self.btn_secondary_action.setMinimumSize(QSize(40, 30))
+		self.horizontalLayout.addWidget(self.btn_secondary_action)
+
+		self.verticalLayout.addLayout(self.horizontalLayout)
 
 		self.retranslateUi(Frame)
 		QMetaObject.connectSlotsByName(Frame)
