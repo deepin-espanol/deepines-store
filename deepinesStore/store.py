@@ -6,11 +6,11 @@ import glob
 from typing import Dict, List
 # PyQt5 modules
 from PyQt5.Qt import Qt
-from PyQt5.QtCore import QTranslator, QLocale, QSize, QPointF, QEvent, QTimer, Qt as QtCore, pyqtSignal, QThread, QCoreApplication
+from PyQt5.QtCore import QTranslator, QLocale, QSize, QPointF, QEvent, QTimer, Qt as QtCore, QCoreApplication
 from PyQt5.QtWidgets import (QMainWindow, QApplication, QFrame, QLabel,
 							 QSizePolicy, QGraphicsDropShadowEffect, QSpacerItem,
 							 QDesktopWidget, QHBoxLayout, QVBoxLayout, QWidget, QPushButton)
-from PyQt5.QtGui import QPixmap, QFont, QColor, QCursor, QPainter, QMovie, QIcon
+from PyQt5.QtGui import QPixmap, QColor, QCursor, QPainter, QMovie, QIcon
 
 from deepinesStore.core import set_blur
 # Para obtener aplicaciones random
@@ -22,57 +22,18 @@ from deepinesStore.workers import CheckUpdatesThread, LoaderThread
 from deepinesStore.cardg import Ui_Frame
 from deepinesStore.about import AboutDialog
 from deepinesStore.core import get_res, get_app_icon, get_dl
-from deepinesStore.flatpak.get_apps_flatpak import app_list_flatpak
-from deepinesStore.deb.get_apps_deb import fetch_list_app_deb
 from deepinesStore.install_progress import InstallThread
 from deepinesStore import setup
 from deepinesStore.widgets import LinkLabel, StateOverlayWidget
 from deepinesStore.demoted_actions import write_file, config_dir, get_resource
-
-class EventsMixin:
-	def __init__(self):
-		self.drag_position = None
-
-	def mousePressEvent(self, event):
-		if event.button() == Qt.LeftButton:
-			self.setProperty("previous_position", self.pos())
-			self.drag_position = event.globalPos() - self.frameGeometry().topLeft()
-		event.accept()
-
-	def mouseMoveEvent(self, event):
-		if event.buttons() == Qt.LeftButton and self.drag_position is not None:
-			self.setCursor(Qt.SizeAllCursor)
-			if not self.isMaximized():
-				self.move(event.globalPos() - self.drag_position)
-			else:
-				self.showNormal()
-		event.accept()
-
-	def mouseReleaseEvent(self, event):
-		self.setCursor(Qt.ArrowCursor)
-		self.drag_position = None
-
-	def keyPressEvent(self, event):
-		if self.drag_position is not None and event.key() == Qt.Key_Escape:
-			previous_position = self.property("previous_position")
-			self.setCursor(Qt.ArrowCursor)
-			if previous_position is not None:
-				self.move(previous_position)
-				self.drag_position = None
-			event.accept()
-		else:
-			event.ignore()
-
-	def resizeEvent(self, event):
-		self.drag_position = None
-		event.accept()
+from deepinesStore.mixins import EventsMixin, GeometryMixin
 
 # Global variables
 global lista_inicio, lista_global, list_app_show_temp, uninstalled
 global list_app_exclude, list_app_deepines, list_app_deb, list_app_flatpak
 global selected_apps, installed, columnas, tamanio, list_app_updatable
 
-class StoreMWindow(QMainWindow, EventsMixin):
+class StoreMWindow(GeometryMixin, EventsMixin, QMainWindow):
 	def __init__(self):
 		super(StoreMWindow, self).__init__()
 		# Inicializamos la gui
@@ -1102,7 +1063,7 @@ def center_window(widget):
 	# Mover el widget al centro de la pantalla
 	widget.move(screen_center - widget_center)
 
-class LoadingScreen(QMainWindow, EventsMixin):
+class LoadingScreen(EventsMixin, QMainWindow):
 	def __init__(self):
 		super().__init__()
 		self.setWindowFlags(Qt.Window | QtCore.FramelessWindowHint)
