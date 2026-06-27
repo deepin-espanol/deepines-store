@@ -85,10 +85,24 @@ class InstallThread(QThread):
 						cache = apt.Cache()
 						self.name_process_signal.emit(self.__tr("Updating package list..."))
 						self.update_signal.emit(self.__tr("Updating package list..."))
+						import warnings
 						try:
-							cache.update(fetch_progress=ProgressHandler(self.update_signal))
+							with warnings.catch_warnings(record=True) as w:
+								warnings.simplefilter("always")
+								cache.update(fetch_progress=ProgressHandler(self.update_signal))
+								
+								if w:
+									warning_msgs = [str(warn.message) for warn in w]
+									# Emit warnings but don't fail if it's just warnings and update succeeded
+									# Wait, if an exception is raised, it's handled below
 						except apt.cache.FetchFailedException as e:
-							error_msg = self.__tr("Error during cache update: {error}").format(error=str(e))
+							error_str = str(e).strip()
+							# Check if we caught any warnings that provide more context
+							if 'w' in locals() and w:
+								error_str = "\n".join([str(warn.message) for warn in w])
+							if not error_str:
+								error_str = self.__tr("Failed to fetch repositories. Check network connection.")
+							error_msg = self.__tr("Error during cache update: {error}").format(error=error_str)
 							self.update_signal.emit(error_msg)
 							self.finished_signal.emit(False)
 							return
@@ -148,7 +162,8 @@ class InstallThread(QThread):
 				self.update_signal.emit(self.__tr("Marking {package} for installation...").format(package=package_name))
 				pkg.mark_install()
 			except apt.cache.DependencyError as e:
-				error_msg = self.__tr("Dependency error for {package}: {error}").format(package=package_name, error=str(e))
+				error_str = str(e).strip() if str(e).strip() else self.__tr("Unmet dependencies.")
+				error_msg = self.__tr("Dependency error for {package}: {error}").format(package=package_name, error=error_str)
 				self.update_signal.emit(error_msg)
 				self.finished_signal.emit(False)
 				return False
@@ -168,22 +183,26 @@ class InstallThread(QThread):
 					self.finished_signal.emit(False)
 					return False
 			except apt.cache.LockFailedException as e:
-				error_msg = self.__tr("Lock error during installation: {error}").format(error=str(e))
+				error_str = str(e).strip() if str(e).strip() else self.__tr("Apt is locked by another process.")
+				error_msg = self.__tr("Lock error during installation: {error}").format(error=error_str)
 				self.update_signal.emit(error_msg)
 				self.finished_signal.emit(False)
 				return False
 			except apt.cache.FetchFailedException as e:
-				error_msg = self.__tr("Download error during installation: {error}").format(error=str(e))
+				error_str = str(e).strip() if str(e).strip() else self.__tr("Failed to download package. Check your network.")
+				error_msg = self.__tr("Download error during installation: {error}").format(error=error_str)
 				self.update_signal.emit(error_msg)
 				self.finished_signal.emit(False)
 				return False
 			except apt.cache.FetchCancelledException as e:
-				error_msg = self.__tr("Download cancelled: {error}").format(error=str(e))
+				error_str = str(e).strip() if str(e).strip() else self.__tr("Cancelled.")
+				error_msg = self.__tr("Download cancelled: {error}").format(error=error_str)
 				self.update_signal.emit(error_msg)
 				self.finished_signal.emit(False)
 				return False
 			except SystemError as e:
-				error_msg = self.__tr("System error during installation: {error}").format(error=str(e))
+				error_str = str(e).strip() if str(e).strip() else self.__tr("Unknown system error.")
+				error_msg = self.__tr("System error during installation: {error}").format(error=error_str)
 				self.update_signal.emit(error_msg)
 				self.finished_signal.emit(False)
 				return False
@@ -218,7 +237,8 @@ class InstallThread(QThread):
 			self.update_signal.emit(self.__tr("Marking {package} for upgrade...").format(package=package_name))
 			pkg.mark_upgrade()
 		except apt.cache.DependencyError as e:
-			error_msg = self.__tr("Dependency error for {package}: {error}").format(package=package_name, error=str(e))
+			error_str = str(e).strip() if str(e).strip() else self.__tr("Unmet dependencies.")
+			error_msg = self.__tr("Dependency error for {package}: {error}").format(package=package_name, error=error_str)
 			self.update_signal.emit(error_msg)
 			self.finished_signal.emit(False)
 			return False
@@ -238,27 +258,32 @@ class InstallThread(QThread):
 				self.finished_signal.emit(False)
 				return False
 		except apt.cache.LockFailedException as e:
-			error_msg = self.__tr("Lock error during update: {error}").format(error=str(e))
+			error_str = str(e).strip() if str(e).strip() else self.__tr("Apt is locked by another process.")
+			error_msg = self.__tr("Lock error during update: {error}").format(error=error_str)
 			self.update_signal.emit(error_msg)
 			self.finished_signal.emit(False)
 			return False
 		except apt.cache.FetchFailedException as e:
-			error_msg = self.__tr("Download error during update: {error}").format(error=str(e))
+			error_str = str(e).strip() if str(e).strip() else self.__tr("Failed to download package. Check your network.")
+			error_msg = self.__tr("Download error during update: {error}").format(error=error_str)
 			self.update_signal.emit(error_msg)
 			self.finished_signal.emit(False)
 			return False
 		except apt.cache.FetchCancelledException as e:
-			error_msg = self.__tr("Download cancelled: {error}").format(error=str(e))
+			error_str = str(e).strip() if str(e).strip() else self.__tr("Cancelled.")
+			error_msg = self.__tr("Download cancelled: {error}").format(error=error_str)
 			self.update_signal.emit(error_msg)
 			self.finished_signal.emit(False)
 			return False
 		except SystemError as e:
-			error_msg = self.__tr("System error during update: {error}").format(error=str(e))
+			error_str = str(e).strip() if str(e).strip() else self.__tr("Unknown system error.")
+			error_msg = self.__tr("System error during update: {error}").format(error=error_str)
 			self.update_signal.emit(error_msg)
 			self.finished_signal.emit(False)
 			return False
 		except Exception as e:
-			error_msg = self.__tr("Unexpected error: {error}").format(error=str(e))
+			error_str = str(e).strip() if str(e).strip() else self.__tr("Unknown error.")
+			error_msg = self.__tr("Unexpected error: {error}").format(error=error_str)
 			self.update_signal.emit(error_msg)
 			self.finished_signal.emit(False)
 			return False
@@ -296,22 +321,32 @@ class InstallThread(QThread):
 					self.finished_signal.emit(False)
 					return False
 			except apt.cache.LockFailedException as e:
-				error_msg = self.__tr("Lock error during uninstallation: {error}").format(error=str(e))
+				error_str = str(e).strip() if str(e).strip() else self.__tr("Apt is locked by another process.")
+				error_msg = self.__tr("Lock error during uninstallation: {error}").format(error=error_str)
 				self.update_signal.emit(error_msg)
 				self.finished_signal.emit(False)
 				return False
 			except apt.cache.FetchFailedException as e:
-				error_msg = self.__tr("Download error during uninstallation: {error}").format(error=str(e))
+				error_str = str(e).strip() if str(e).strip() else self.__tr("Failed to download package. Check your network.")
+				error_msg = self.__tr("Download error during uninstallation: {error}").format(error=error_str)
+				self.update_signal.emit(error_msg)
+				self.finished_signal.emit(False)
+				return False
+			except apt.cache.FetchCancelledException as e:
+				error_str = str(e).strip() if str(e).strip() else self.__tr("Cancelled.")
+				error_msg = self.__tr("Download cancelled: {error}").format(error=error_str)
 				self.update_signal.emit(error_msg)
 				self.finished_signal.emit(False)
 				return False
 			except SystemError as e:
-				error_msg = self.__tr("System error during uninstallation: {error}").format(error=str(e))
+				error_str = str(e).strip() if str(e).strip() else self.__tr("Unknown system error.")
+				error_msg = self.__tr("System error during uninstallation: {error}").format(error=error_str)
 				self.update_signal.emit(error_msg)
 				self.finished_signal.emit(False)
 				return False
 			except Exception as e:
-				error_msg = self.__tr("Unexpected error: {error}").format(error=str(e))
+				error_str = str(e).strip() if str(e).strip() else self.__tr("Unknown error.")
+				error_msg = self.__tr("Unexpected error: {error}").format(error=error_str)
 				self.update_signal.emit(error_msg)
 				self.finished_signal.emit(False)
 				return False

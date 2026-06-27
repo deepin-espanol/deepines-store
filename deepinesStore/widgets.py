@@ -251,11 +251,11 @@ class StateOverlayWidget(w.QWidget):
 		font.setPointSize(16)
 		self.primary_label.setFont(font)
 		self.primary_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-		self.primary_label.setWordWrap(False)
+		self.primary_label.setWordWrap(True)
 		self.primary_label.setSizePolicy(w.QSizePolicy.Policy.Expanding, w.QSizePolicy.Policy.Minimum)
 		self.primary_label.setStyleSheet("color: #fff; background-color: rgba(0, 0, 0, 0);")
 		self.primary_label.setTextInteractionFlags(Qt.TextSelectableByMouse | Qt.LinksAccessibleByMouse)
-		self.verticalLayout.addWidget(self.primary_label, alignment=Qt.AlignmentFlag.AlignHCenter)
+		self.verticalLayout.addWidget(self.primary_label)
 
 		# Secondary Text (QLabel)
 		self.secondary_label = w.QLabel(self)
@@ -263,12 +263,12 @@ class StateOverlayWidget(w.QWidget):
 		font2.setPointSize(14)
 		self.secondary_label.setFont(font2)
 		self.secondary_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-		self.secondary_label.setWordWrap(False)
+		self.secondary_label.setWordWrap(True)
 		self.secondary_label.setSizePolicy(w.QSizePolicy.Policy.Expanding, w.QSizePolicy.Policy.Minimum)
 		self.secondary_label.setStyleSheet("color: #fff; background-color: rgba(0, 0, 0, 0);")
 		self.secondary_label.setTextInteractionFlags(Qt.TextSelectableByMouse | Qt.LinksAccessibleByMouse)
 		self.secondary_label.hide()
-		self.verticalLayout.addWidget(self.secondary_label, alignment=Qt.AlignmentFlag.AlignHCenter)
+		self.verticalLayout.addWidget(self.secondary_label)
 
 		# Action Button
 		self.action_button = w.QPushButton(self)
@@ -317,27 +317,30 @@ class StateOverlayWidget(w.QWidget):
 
 		if is_movie:
 			self.current_movie = QtGui.QMovie(media_path)
-			self.current_movie.setScaledSize(QSize(size, size))
+			reader = QtGui.QImageReader(media_path)
+			orig_size = reader.size()
+			if orig_size.isValid():
+				scaled_size = orig_size.scaled(size, size, Qt.KeepAspectRatio)
+				self.current_movie.setScaledSize(scaled_size)
 			self.media_label.setMovie(self.current_movie)
 			self.current_movie.start()
 		else:
 			pixmap = QtGui.QPixmap(media_path)
+			pixmap = pixmap.scaled(size, size, Qt.KeepAspectRatio, Qt.SmoothTransformation)
 			self.media_label.setPixmap(pixmap)
-			self.media_label.setScaledContents(True)
+			self.media_label.setScaledContents(False)
 
 	def set_text(self, primary_text, secondary_text=None):
 		if primary_text:
 			if '<a ' in primary_text or '&lt;a ' in primary_text:
 				primary_text = f"<style>a {{ color: #00c0ff; text-decoration: none; }}</style>{primary_text}"
 			self.primary_label.setText(primary_text)
-			self.primary_label.adjustSize()
 			self.primary_label.show()
 		else:
 			self.primary_label.hide()
 
 		if secondary_text:
 			self.secondary_label.setText(secondary_text)
-			self.secondary_label.adjustSize()
 			self.secondary_label.show()
 		else:
 			self.secondary_label.hide()
