@@ -69,7 +69,7 @@ class EventsMixin:
 # Global variables
 global lista_inicio, lista_global, list_app_show_temp, uninstalled
 global list_app_exclude, list_app_deepines, list_app_deb, list_app_flatpak
-global selected_apps, installed, columnas, tamanio
+global selected_apps, installed, columnas, tamanio, list_app_updatable
 
 
 class StoreMWindow(QMainWindow, EventsMixin):
@@ -317,18 +317,21 @@ class StoreMWindow(QMainWindow, EventsMixin):
 			8: ["admin", "python", "system", "utility"],
 			9: ["other", "education", "science"],
 
-			11: ["installed"]
+			11: ["installed"],
+			12: ["updates"]
 		}
 
 		index = ui.lw_categories.currentRow()
 		filter.extend(filter_mapping.get(index, []))
 
-		if "home" not in filter and "installed" not in filter:
+		if "home" not in filter and "installed" not in filter and "updates" not in filter:
 			# TODO: Change the way of filtering apps to a dictionary of lists when loading the store.
 			global list_app_show_temp
 			list_app_show_temp = self.Get_App_Filter(lista_global, filter)
 		elif "installed" in filter:
 			list_app_show_temp = installed
+		elif "updates" in filter:
+			list_app_show_temp = list_app_updatable
 		else:
 			if selected_type_app == AppType.DEB_PACKAGE:
 				list_app_show_temp = self.inicio_apps_deb
@@ -725,6 +728,22 @@ class StoreMWindow(QMainWindow, EventsMixin):
 
 				if app in uninstalled:
 					uninstalled.remove(app)
+			elif app.process == ProcessType.UPDATE:
+				# After update, the app is now installed with the latest version
+				if app.type == AppType.DEB_PACKAGE:
+					index = self.lista_app_deb.index(app)
+					self.lista_app_deb[index].state = AppState.INSTALLED
+					self.lista_app_deb[index].process = ProcessType.UNINSTALL
+					self.lista_app_deb[index].version = app.available_version
+					self.lista_app_deb[index].available_version = None
+				else:
+					index = self.lista_app_flatpak.index(app)
+					self.lista_app_flatpak[index].state = AppState.INSTALLED
+					self.lista_app_flatpak[index].process = ProcessType.UNINSTALL
+					self.lista_app_flatpak[index].version = app.available_version
+					self.lista_app_flatpak[index].available_version = None
+				if app in list_app_updatable:
+					list_app_updatable.remove(app)
 			elif app.process == ProcessType.UNINSTALL:
 				installed.remove(app)
 				uninstalled.append(app)
@@ -786,10 +805,17 @@ class Card(QFrame):
 		self.setMaximumSize(QSize(tamanio+30, int((tamanio+155)*0.72222)))
 		self.cd.image_app.setMinimumSize(QSize(tamanio, int(tamanio*0.72222)))
 		if self.application.version:
-			self.cd.lbl_version.setText("v: {}".format(self.application.version))
+			if self.application.available_version:
+				self.cd.lbl_version.setText("v: {} → {}".format(self.application.version, self.application.available_version))
+			else:
+				self.cd.lbl_version.setText("v: {}".format(self.application.version))
 
 		global installed, uninstalled
-		if self.application not in installed:
+		if self.application.state == AppState.UPDATABLE:
+			state = AppState.UPDATABLE
+			if self.application in selected_apps:
+				state = AppState.SELECTED
+		elif self.application not in installed:
 			state = AppState.DEFAULT
 			if self.application in selected_apps:
 				state = AppState.SELECTED
@@ -850,7 +876,7 @@ class Card(QFrame):
 	def eventFilter(self, object, event):
 		if event.type() == QEvent.Enter:
 			radius = 20
-		elif event.type() == QEvent.Leave and not (self.application in selected_apps or self.application in installed or self.application in uninstalled):
+		elif event.type() == QEvent.Leave and not (self.application in selected_apps or self.application in installed or self.application in uninstalled or self.application.state == AppState.UPDATABLE):
 			radius = 0
 		else:
 			return False
@@ -863,6 +889,8 @@ class Card(QFrame):
 			shadow_color = QColor(0, 212, 0)
 		elif self.application.state == AppState.UNINSTALLED:
 			shadow_color = QColor(238, 81, 56)
+		elif self.application.state == AppState.UPDATABLE:
+			shadow_color = QColor(255, 152, 0)
 		else:
 			shadow_color = QColor(255, 255, 255)
 
@@ -923,7 +951,10 @@ class Card(QFrame):
 			lista_global = self.parentWindow.lista_app_flatpak
 		indice = lista_global.index(self.application)
 
-		if self.application not in selected_apps and self.application not in installed:
+		if self.application not in selected_apps and self.application.state == AppState.UPDATABLE:
+			selected_apps.append(self.application)
+			new_state = AppState.SELECTED
+		elif self.application not in selected_apps and self.application not in installed:
 			selected_apps.append(self.application)
 			new_state = AppState.SELECTED
 		elif self.application not in selected_apps and self.application in installed:
@@ -931,7 +962,9 @@ class Card(QFrame):
 			new_state = AppState.UNINSTALL
 		else:
 			selected_apps.remove(self.application)
-			if self.application not in installed:
+			if self.application.process == ProcessType.UPDATE:
+				new_state = AppState.UPDATABLE
+			elif self.application not in installed:
 				new_state = AppState.DEFAULT
 			else:
 				new_state = AppState.INSTALLED
@@ -950,6 +983,7 @@ class Card(QFrame):
 			AppState.UNINSTALL: (234, 93, 41, "#ea4329", ui.uninstall_app_text),
 			AppState.INSTALLED: (0, 212, 0, "#009800", ui.selected_installed_app_text),
 			AppState.UNINSTALLED: (238, 81, 56, "#d54000", ui.uninstalled_app_text),
+			AppState.UPDATABLE: (255, 152, 0, "#ff9800", ui.update_available_app_text),
 			AppState.DEFAULT: (30, 30, 30, "transparent", ui.select_app_text)
 		}
 
@@ -1025,7 +1059,7 @@ class LoaderThread(QThread):
 
 	def run(self):
 		global list_app_deepines, list_app_deb, \
-		list_app_flatpak, installed
+		list_app_flatpak, installed, list_app_updatable
 		self.progress.emit(self.parent.fetchingString)
 		setup.download_control()
 		list_app_deepines = setup.Get_App_Deepines()
@@ -1035,6 +1069,7 @@ class LoaderThread(QThread):
 		list_app_flatpak = app_list_flatpak()
 		self.progress.emit(self.parent.finalizingString)
 		installed = setup.get_installed_apps(list_app_deb, list_app_flatpak)
+		list_app_updatable = setup.get_updatable_apps(list_app_deb, list_app_flatpak)
 		self.finished.emit()
 
 class LoadingScreen(QMainWindow, EventsMixin):

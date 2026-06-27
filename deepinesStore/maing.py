@@ -41,6 +41,7 @@ class Ui_MainWindow(object):
 		svg_computer = get_res('computer')
 		svg_pamela = get_res('pamela')
 		svg_installed = get_res('installed')
+		svg_updates = get_res('update')
 		svg_search = get_res('magnifying-glass')
 		svg_car = get_res('carDisable')
 		svg_minimizar = get_res('minimizar')
@@ -166,7 +167,8 @@ class Ui_MainWindow(object):
 		add_icon_item(self, None, Qt.NoItemFlags) # Empty item (separator)
 		self.lw_categories.set_skip_item_action_indices([len(icons)])
 
-		add_icon_item(self, svg_installed, flags)  # Last item (Installed apps)
+		add_icon_item(self, svg_installed, flags)  # Installed apps
+		add_icon_item(self, svg_updates, flags)  # Updates
 		# Tercer item, lista de filtros
 		self.verticalLayout.addWidget(self.lw_categories)
 
@@ -382,7 +384,8 @@ class Ui_MainWindow(object):
 
 		item_texts = [self.__tr("Home"), self.__tr("Deepines"), self.__tr("Internet"), self.__tr("Multimedia"),
 		self.__tr("Graphics"), self.__tr("Games"), self.__tr("Office automation"), self.__tr("Development"),
-		self.__tr("System"), self.__tr("Other"), self.__tr(""), self.__tr("Installed apps")]
+		self.__tr("System"), self.__tr("Other"), self.__tr(""), self.__tr("Installed apps"),
+		self.__tr("Updates")]
 		for i in range(self.lw_categories.count()):
 			item = self.lw_categories.item(i)
 			item.setText(item_texts[i])
@@ -404,6 +407,7 @@ class Ui_MainWindow(object):
 		self.selected_installed_app_text = self.__tr("Installed")
 		self.uninstall_app_text = self.__tr("Uninstall")
 		self.uninstalled_app_text = self.__tr("Uninstalled")
+		self.update_available_app_text = self.__tr("Update")
 		self.single_app_text = self.__tr("{app_count} app selected, click here to review it")
 		self.multi_apps_text = self.__tr("{app_count} apps selected, click here to review them")
 		self.error_no_server_text = self.__tr("Unable to establish connection with the server, <br>"

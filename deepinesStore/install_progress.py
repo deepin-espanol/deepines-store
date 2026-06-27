@@ -54,6 +54,8 @@ class InstallProgressHandler(apt.progress.base.InstallProgress):
 	def status_change(self, pkg, percent, status):
 		if self.process_type == ProcessType.INSTALL:
 			process = self.__tr("Installing")
+		elif self.process_type == ProcessType.UPDATE:
+			process = self.__tr("Updating")
 		else:
 			process = self.__tr("Uninstalling")
 		self.update_signal.emit(self.__tr("{process}: {status} - {percent}%").format(process=process, status=status, percent=percent))
@@ -97,6 +99,9 @@ class InstallThread(QThread):
 					if self.package_process == ProcessType.INSTALL:
 						if not self._install_package(cache, package_name):
 							return  # Stop execution if installation fails
+					elif self.package_process == ProcessType.UPDATE:
+						if not self._install_package(cache, package_name):
+							return  # Stop execution if update fails (upgrade uses same apt path)
 					elif self.package_process == ProcessType.UNINSTALL:
 						if not self._uninstall_package(cache, package_name):
 							return  # Stop execution if uninstallation fails
@@ -106,6 +111,9 @@ class InstallThread(QThread):
 					if self.package_process == ProcessType.INSTALL:
 						if not self._install_flatpak(app_id):
 							return  # Stop execution if installation fails
+					elif self.package_process == ProcessType.UPDATE:
+						if not self._update_flatpak(app_id):
+							return  # Stop execution if update fails
 					elif self.package_process == ProcessType.UNINSTALL:
 						if not self._uninstall_flatpak(app_id):
 							return  # Stop execution if uninstallation fails
@@ -317,6 +325,47 @@ class InstallThread(QThread):
 			self.update_signal.emit(success_msg)
 		else:
 			error_msg = self.__tr("Error uninstalling {app}: {error}").format(app=app_id, error=stderr.strip())
+			self.update_signal.emit(error_msg)
+			self.finished_signal.emit(False)
+			return False
+
+		return True
+
+	def _update_flatpak(self, app_id):
+		updating_msg = self.__tr("Updating {app} from Flathub...").format(app=app_id)
+		self.name_process_signal.emit(updating_msg)
+		self.update_signal.emit(updating_msg)
+
+		# Prefer system-wide update when system Flathub appstream exists
+		use_system = os.path.exists('/var/lib/flatpak/appstream/flathub')
+		if use_system:
+			if os.geteuid() == 0:
+				cmd = ['flatpak', 'update', '--system', '-y', app_id]
+			else:
+				cmd = ['/usr/bin/pkexec', '/usr/bin/flatpak', 'update', '--system', '-y', app_id]
+		else:
+			cmd = ['flatpak', 'update', '-y', app_id]
+		process = sp.Popen(cmd, stdout=sp.PIPE, stderr=sp.PIPE, text=True)
+
+		while True:
+			if not self._is_running:
+				process.terminate()
+				break
+			output = process.stdout.readline()
+			if output == '' and process.poll() is not None:
+				break
+			if output:
+				self.update_signal.emit(output.strip())
+
+		stderr = process.communicate()[1]
+		if stderr:
+			self.update_signal.emit(stderr.strip())
+
+		if process.returncode == 0:
+			success_msg = self.__tr("{app} has been updated successfully.").format(app=app_id)
+			self.update_signal.emit(success_msg)
+		else:
+			error_msg = self.__tr("Error updating {app}: {error}").format(app=app_id, error=stderr.strip())
 			self.update_signal.emit(error_msg)
 			self.finished_signal.emit(False)
 			return False

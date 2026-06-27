@@ -75,3 +75,47 @@ def get_installed_apps(list_app_deb, list_app_flatpak):
 				list_app_flatpak[indice].process = ProcessType.UNINSTALL
 
 	return(list_installed)
+
+def get_updatable_apps(list_app_deb, list_app_flatpak):
+	list_updatable = list()
+
+	# Check for deb updates via apt
+	try:
+		import apt
+		cache = apt.Cache()
+		cache.open()
+		for app_item in list_app_deb:
+			if app_item.state == AppState.INSTALLED:
+				if app_item.id in cache:
+					pkg = cache[app_item.id]
+					if pkg.is_upgradable:
+						app_item.available_version = pkg.candidate.version
+						app_item.state = AppState.UPDATABLE
+						app_item.process = ProcessType.UPDATE
+						list_updatable.append(app_item)
+	except Exception as e:
+		print(f"Error checking deb updates: {e}")
+
+	# Check for Flatpak updates
+	if list_app_flatpak and hasattr(demoted, 'DEF'):
+		try:
+			flatpak_proc = demoted.run_cmd(demoted.DEF, cmd=['flatpak', 'remote-ls', '--updates', '--columns=application,version'])
+			lines = flatpak_proc.stdout.readlines()
+			update_map = {}
+			for line in lines:
+				parts = line.strip().split('\t')
+				if len(parts) >= 2:
+					update_map[parts[0]] = parts[1]
+				elif len(parts) == 1 and parts[0]:
+					update_map[parts[0]] = None
+
+			for app_item in list_app_flatpak:
+				if app_item.id in update_map and app_item.state == AppState.INSTALLED:
+					app_item.available_version = update_map[app_item.id]
+					app_item.state = AppState.UPDATABLE
+					app_item.process = ProcessType.UPDATE
+					list_updatable.append(app_item)
+		except Exception as e:
+			print(f"Error checking Flatpak updates: {e}")
+
+	return list_updatable
