@@ -230,6 +230,9 @@ def add_people_to_list(people, list_widget):
 class StateOverlayWidget(w.QWidget):
 	def __init__(self, parent=None):
 		super().__init__(parent)
+		self.parent = parent
+		self.setStyleSheet("background-color: transparent;")
+
 		self.verticalLayout = w.QVBoxLayout(self)
 		self.verticalLayout.setContentsMargins(0, 0, 0, 0)
 		self.verticalLayout.setSpacing(10)
@@ -251,6 +254,7 @@ class StateOverlayWidget(w.QWidget):
 		self.primary_label.setWordWrap(False)
 		self.primary_label.setSizePolicy(w.QSizePolicy.Policy.Expanding, w.QSizePolicy.Policy.Minimum)
 		self.primary_label.setStyleSheet("color: #fff; background-color: rgba(0, 0, 0, 0);")
+		self.primary_label.setTextInteractionFlags(Qt.TextSelectableByMouse | Qt.LinksAccessibleByMouse)
 		self.verticalLayout.addWidget(self.primary_label, alignment=Qt.AlignmentFlag.AlignHCenter)
 
 		# Secondary Text (QLabel)
@@ -262,6 +266,7 @@ class StateOverlayWidget(w.QWidget):
 		self.secondary_label.setWordWrap(False)
 		self.secondary_label.setSizePolicy(w.QSizePolicy.Policy.Expanding, w.QSizePolicy.Policy.Minimum)
 		self.secondary_label.setStyleSheet("color: #fff; background-color: rgba(0, 0, 0, 0);")
+		self.secondary_label.setTextInteractionFlags(Qt.TextSelectableByMouse | Qt.LinksAccessibleByMouse)
 		self.secondary_label.hide()
 		self.verticalLayout.addWidget(self.secondary_label, alignment=Qt.AlignmentFlag.AlignHCenter)
 
@@ -298,10 +303,17 @@ class StateOverlayWidget(w.QWidget):
 
 		self.media_label.show()
 
-		# Reset any previous fixed sizes
-		self.media_label.setMinimumSize(0, 0)
-		self.media_label.setMaximumSize(16777215, 16777215)
-		self.media_label.setSizePolicy(w.QSizePolicy.Policy.Preferred, w.QSizePolicy.Policy.Preferred)
+		if media_path: # Hardcoded for now...
+			if 'strawhats-one-piece' in media_path:
+				size = 350
+			elif 'raccoon' in media_path:
+				size = 300
+			elif 'Deepines' in media_path:
+				size = 300
+
+		self.media_label.setMinimumSize(size, size)
+		self.media_label.setMaximumSize(size, size)
+		self.media_label.setSizePolicy(w.QSizePolicy.Policy.Fixed, w.QSizePolicy.Policy.Fixed)
 
 		if is_movie:
 			self.current_movie = QtGui.QMovie(media_path)
@@ -309,15 +321,14 @@ class StateOverlayWidget(w.QWidget):
 			self.media_label.setMovie(self.current_movie)
 			self.current_movie.start()
 		else:
-			self.media_label.setMinimumSize(size, size)
-			self.media_label.setMaximumSize(size, size)
-			self.media_label.setSizePolicy(w.QSizePolicy.Policy.Fixed, w.QSizePolicy.Policy.Fixed)
 			pixmap = QtGui.QPixmap(media_path)
 			self.media_label.setPixmap(pixmap)
 			self.media_label.setScaledContents(True)
 
 	def set_text(self, primary_text, secondary_text=None):
 		if primary_text:
+			if '<a ' in primary_text or '&lt;a ' in primary_text:
+				primary_text = f"<style>a {{ color: #00c0ff; text-decoration: none; }}</style>{primary_text}"
 			self.primary_label.setText(primary_text)
 			self.primary_label.adjustSize()
 			self.primary_label.show()

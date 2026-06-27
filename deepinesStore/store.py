@@ -58,10 +58,6 @@ class EventsMixin:
 			self.setCursor(Qt.ArrowCursor)
 			if previous_position is not None:
 				self.move(previous_position)
-				self.drag_position = None
-			event.accept()
-		else:
-			event.ignore()
 
 	def resizeEvent(self, event):
 		self.drag_position = None
@@ -189,7 +185,9 @@ class StoreMWindow(QMainWindow, EventsMixin):
 		self.has_checked_updates = True
 		# Refresh UI if updates tab is currently selected
 		if ui.lw_categories.currentRow() == 12:
-			self.do_list_apps(list_app_updatable)
+			global list_app_show_temp
+			list_app_show_temp = list_app_updatable
+			self.do_list_apps(list_app_show_temp)
 
 	#			 /Control de errores / Overlays    #
 	################################################
@@ -434,7 +432,8 @@ class StoreMWindow(QMainWindow, EventsMixin):
 
 		if not lista:
 			index = ui.lw_categories.currentRow()
-			if index == 12: # Updates
+			is_searching = len(ui.lineEdit.text().strip()) > 0
+			if index == 12 and not is_searching: # Updates
 				if getattr(self, 'is_checking_updates', False):
 					self.show_overlay('Deepines', ui.checking_updates_text, is_movie=True)
 				else:
@@ -616,6 +615,8 @@ class StoreMWindow(QMainWindow, EventsMixin):
 		self.change_color_btn_start_install()
 		self.show_apps_selected = True
 		ui.lw_categories.clearSelection()
+		global list_app_show_temp
+		list_app_show_temp = selected_apps
 		self.do_list_apps(selected_apps)
 
 	def window_install(self):
@@ -634,7 +635,7 @@ class StoreMWindow(QMainWindow, EventsMixin):
 	def start_installation(self):
 		if self.overlay_widget and self.overlay_widget.isVisible():
 			self.overlay_widget.set_text(self.overlay_widget.primary_label.text(), ui.status_starting_install_text)
-		
+
 		if hasattr(self, 'install_thread') and self.install_thread and self.install_thread.isRunning():
 			self.install_thread.stop()
 			self.install_thread.wait()
@@ -731,6 +732,8 @@ class StoreMWindow(QMainWindow, EventsMixin):
 		selected_apps = list()
 		self.contar_apps()
 		self.change_color_btn_install()
+		global list_app_show_temp
+		list_app_show_temp = lista_complete
 		self.do_list_apps(lista_complete)
 
 	#			  /New installed apps 			   #
