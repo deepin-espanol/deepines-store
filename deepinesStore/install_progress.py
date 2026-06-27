@@ -100,8 +100,8 @@ class InstallThread(QThread):
 						if not self._install_package(cache, package_name):
 							return  # Stop execution if installation fails
 					elif self.package_process == ProcessType.UPDATE:
-						if not self._install_package(cache, package_name):
-							return  # Stop execution if update fails (upgrade uses same apt path)
+						if not self._update_package(cache, package_name):
+							return  # Stop execution if update fails
 					elif self.package_process == ProcessType.UNINSTALL:
 						if not self._uninstall_package(cache, package_name):
 							return  # Stop execution if uninstallation fails
@@ -192,6 +192,76 @@ class InstallThread(QThread):
 				self.update_signal.emit(error_msg)
 				self.finished_signal.emit(False)
 				return False
+
+		return True
+
+	def _update_package(self, cache, package_name):
+		self.name_process_signal.emit(self.__tr('Updating: {package}').format(package=package_name))
+		self.update_signal.emit(self.__tr("Searching for package {package}...").format(package=package_name))
+		if package_name not in cache:
+			error_msg = self.__tr("Package {package} not found").format(package=package_name)
+			self.update_signal.emit(error_msg)
+			self.finished_signal.emit(False)
+			return False
+
+		pkg = cache[package_name]
+		if not pkg.is_installed:
+			self.update_signal.emit(self.__tr("{package} is not installed, cannot update.").format(package=package_name))
+			self.finished_signal.emit(False)
+			return False
+
+		if not pkg.is_upgradable:
+			self.update_signal.emit(self.__tr("{package} is already at the latest version.").format(package=package_name))
+			return True
+
+		try:
+			self.update_signal.emit(self.__tr("Marking {package} for upgrade...").format(package=package_name))
+			pkg.mark_upgrade()
+		except apt.cache.DependencyError as e:
+			error_msg = self.__tr("Dependency error for {package}: {error}").format(package=package_name, error=str(e))
+			self.update_signal.emit(error_msg)
+			self.finished_signal.emit(False)
+			return False
+
+		self.update_signal.emit(self.__tr("Downloading and updating {package}...").format(package=package_name))
+		try:
+			cache.commit(fetch_progress=ProgressHandler(self.update_signal),
+						install_progress=InstallProgressHandler(self.update_signal, self.package_process))
+
+			# Verify the update
+			cache.open(progress=UpdateProgress(self.update_signal))
+			if not cache[package_name].is_upgradable:
+				self.update_signal.emit(self.__tr("{package} has been updated successfully.").format(package=package_name))
+			else:
+				error_msg = self.__tr("{package} could not be updated correctly.").format(package=package_name)
+				self.update_signal.emit(error_msg)
+				self.finished_signal.emit(False)
+				return False
+		except apt.cache.LockFailedException as e:
+			error_msg = self.__tr("Lock error during update: {error}").format(error=str(e))
+			self.update_signal.emit(error_msg)
+			self.finished_signal.emit(False)
+			return False
+		except apt.cache.FetchFailedException as e:
+			error_msg = self.__tr("Download error during update: {error}").format(error=str(e))
+			self.update_signal.emit(error_msg)
+			self.finished_signal.emit(False)
+			return False
+		except apt.cache.FetchCancelledException as e:
+			error_msg = self.__tr("Download cancelled: {error}").format(error=str(e))
+			self.update_signal.emit(error_msg)
+			self.finished_signal.emit(False)
+			return False
+		except SystemError as e:
+			error_msg = self.__tr("System error during update: {error}").format(error=str(e))
+			self.update_signal.emit(error_msg)
+			self.finished_signal.emit(False)
+			return False
+		except Exception as e:
+			error_msg = self.__tr("Unexpected error: {error}").format(error=str(e))
+			self.update_signal.emit(error_msg)
+			self.finished_signal.emit(False)
+			return False
 
 		return True
 
