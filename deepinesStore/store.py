@@ -18,6 +18,7 @@ from random import sample
 # GUI o modulos locales
 from deepinesStore.app_info import AppInfo, AppType, AppState, ProcessType
 from deepinesStore.maing import Ui_MainWindow
+from deepinesStore.workers import CheckUpdatesThread, LoaderThread
 from deepinesStore.cardg import Ui_Frame
 from deepinesStore.about import AboutDialog
 from deepinesStore.core import get_res, get_app_icon, get_dl
@@ -71,64 +72,6 @@ global lista_inicio, lista_global, list_app_show_temp, uninstalled
 global list_app_exclude, list_app_deepines, list_app_deb, list_app_flatpak
 global selected_apps, installed, columnas, tamanio, list_app_updatable
 
-
-class CheckUpdatesThread(QThread):
-	finished_signal = pyqtSignal(list)
-
-	def __init__(self, list_app_deb, list_app_flatpak):
-		super().__init__()
-		self.list_app_deb = list_app_deb
-		self.list_app_flatpak = list_app_flatpak
-
-	def run(self):
-		list_updatable = list()
-
-		# Check for deb updates via apt using a subprocess to avoid locking the GIL
-		try:
-			import subprocess
-			import json
-			script = "import apt, json; c=apt.Cache(); print(json.dumps({p.name: p.candidate.version for p in c if p.is_installed and p.is_upgradable}))"
-			proc = subprocess.Popen(['python3', '-c', script], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-			stdout, stderr = proc.communicate()
-			
-			if proc.returncode == 0 and stdout.strip():
-				upgradable_pkgs = json.loads(stdout.strip())
-				for app_item in self.list_app_deb:
-					if app_item.state == AppState.INSTALLED and app_item.id in upgradable_pkgs:
-						app_item.available_version = upgradable_pkgs[app_item.id]
-						app_item.state = AppState.UPDATABLE
-						app_item.process = ProcessType.UPDATE
-						list_updatable.append(app_item)
-			else:
-				print(f"Error checking deb updates: {stderr}")
-		except Exception as e:
-			print(f"Exception checking deb updates: {e}")
-
-		# Check for Flatpak updates
-		import deepinesStore.demoted_actions as demoted
-		if self.list_app_flatpak and hasattr(demoted, 'DEF'):
-			try:
-				flatpak_proc = demoted.run_cmd(demoted.DEF, cmd=['flatpak', 'remote-ls', '--updates', '--columns=application,version'])
-				lines = flatpak_proc.stdout.readlines()
-				update_map = {}
-				for line in lines:
-					parts = line.strip().split('\t')
-					if len(parts) >= 2:
-						update_map[parts[0]] = parts[1]
-					elif len(parts) == 1 and parts[0]:
-						update_map[parts[0]] = None
-
-				for app_item in self.list_app_flatpak:
-					if app_item.id in update_map and app_item.state == AppState.INSTALLED:
-						app_item.available_version = update_map[app_item.id]
-						app_item.state = AppState.UPDATABLE
-						app_item.process = ProcessType.UPDATE
-						list_updatable.append(app_item)
-			except Exception as e:
-				print(f"Error checking Flatpak updates: {e}")
-
-		self.finished_signal.emit(list_updatable)
-
 class StoreMWindow(QMainWindow, EventsMixin):
 	def __init__(self):
 		super(StoreMWindow, self).__init__()
@@ -136,6 +79,7 @@ class StoreMWindow(QMainWindow, EventsMixin):
 		global ui
 		ui = Ui_MainWindow(width, height)
 		ui.setupUi(self)
+		self.overlay_widget = None
 		self.setWindowFlags(self.windowFlags() | Qt.FramelessWindowHint)
 		self.setAttribute(Qt.WA_TranslucentBackground, True)
 		self.install_thread = None
@@ -453,6 +397,8 @@ class StoreMWindow(QMainWindow, EventsMixin):
 			if item is not None:
 				widget = item.widget()
 				if widget is not None:
+					if widget == self.overlay_widget:
+						self.overlay_widget = None
 					widget.hide()
 					widget.setParent(None)
 					widget.deleteLater()
@@ -678,28 +624,17 @@ class StoreMWindow(QMainWindow, EventsMixin):
 		self.start_installation()
 
 	def update_status(self, message):
-		if hasattr(self, 'overlay_widget'):
-			try:
-				if self.overlay_widget.isVisible():
-					self.overlay_widget.set_text(self.overlay_widget.primary_label.text(), message)
-			except RuntimeError:
-				pass
+		if self.overlay_widget and self.overlay_widget.isVisible():
+			self.overlay_widget.set_text(self.overlay_widget.primary_label.text(), message)
 
 	def change_process_name(self, name):
-		if hasattr(self, 'overlay_widget'):
-			try:
-				if self.overlay_widget.isVisible():
-					self.overlay_widget.set_text(name, self.overlay_widget.secondary_label.text())
-			except RuntimeError:
-				pass
+		if self.overlay_widget and self.overlay_widget.isVisible():
+			self.overlay_widget.set_text(name, self.overlay_widget.secondary_label.text())
 
 	def start_installation(self):
-		if hasattr(self, 'overlay_widget'):
-			try:
-				if self.overlay_widget.isVisible():
-					self.overlay_widget.set_text(self.overlay_widget.primary_label.text(), ui.status_starting_install_text)
-			except RuntimeError:
-				pass
+		if self.overlay_widget and self.overlay_widget.isVisible():
+			self.overlay_widget.set_text(self.overlay_widget.primary_label.text(), ui.status_starting_install_text)
+		
 		if hasattr(self, 'install_thread') and self.install_thread and self.install_thread.isRunning():
 			self.install_thread.stop()
 			self.install_thread.wait()
@@ -711,23 +646,15 @@ class StoreMWindow(QMainWindow, EventsMixin):
 		self.install_thread.start()
 
 	def change_spinner(self, new_spinner_name):
-		if hasattr(self, 'overlay_widget'):
-			try:
-				if self.overlay_widget.isVisible():
-					self.overlay_widget.set_media(get_res(new_spinner_name, ext='.gif'), is_movie=True)
-			except RuntimeError:
-				pass
+		if self.overlay_widget and self.overlay_widget.isVisible():
+			self.overlay_widget.set_media(get_res(new_spinner_name, ext='.gif'), is_movie=True)
 
 	def installation_finished(self, success):
 		if success:
 			self.installation_completed()
 		else:
-			if hasattr(self, 'overlay_widget'):
-				try:
-					if self.overlay_widget.isVisible():
-						self.overlay_widget.set_text(ui.process_install_failed_text, self.overlay_widget.secondary_label.text())
-				except RuntimeError:
-					pass
+			if self.overlay_widget and self.overlay_widget.isVisible():
+				self.overlay_widget.set_text(ui.process_install_failed_text, self.overlay_widget.secondary_label.text())
 
 			self.change_color_btn_install()
 			self.change_spinner('strawhats-one-piece')
@@ -1090,29 +1017,6 @@ def center_window(widget):
 	# Mover el widget al centro de la pantalla
 	widget.move(screen_center - widget_center)
 
-class LoaderThread(QThread):
-	progress = pyqtSignal(str)
-	finished = pyqtSignal()
-
-	def __init__(self, parent):
-		super().__init__()
-		self.parent = parent
-
-	def run(self):
-		global list_app_deepines, list_app_deb, \
-		list_app_flatpak, installed, list_app_updatable
-		self.progress.emit(self.parent.fetchingString)
-		setup.download_control()
-		list_app_deepines = setup.Get_App_Deepines()
-		list_app_exclude = setup.Get_App_Exclude()
-		self.progress.emit(self.parent.initializingString)
-		list_app_deb = fetch_list_app_deb(list_app_exclude)
-		list_app_flatpak = app_list_flatpak()
-		self.progress.emit(self.parent.finalizingString)
-		installed = setup.get_installed_apps(list_app_deb, list_app_flatpak)
-		list_app_updatable = list()
-		self.finished.emit()
-
 class LoadingScreen(QMainWindow):
 	def __init__(self):
 		super().__init__()
@@ -1158,10 +1062,10 @@ class LoadingScreen(QMainWindow):
 
 		self.retranslateUi()
 
-		self.loader_thread = LoaderThread(self)
-		self.loader_thread.progress.connect(self.update_progress)
-		self.loader_thread.finished.connect(self.on_finish)
-		self.loader_thread.start()
+		self.worker_thread = LoaderThread(self)
+		self.worker_thread.progress.connect(self.update_progress)
+		self.worker_thread.finished_data.connect(self.on_loader_finished)
+		self.worker_thread.start()
 
 	def retranslateUi(self):
 		_translate = QCoreApplication.translate
@@ -1176,7 +1080,14 @@ class LoadingScreen(QMainWindow):
 	def update_progress(self, message):
 		self.progress_label.setText(message)
 
-	def on_finish(self):
+	def on_loader_finished(self, d_deepines, d_deb, d_flatpak, d_installed, d_updatable):
+		global list_app_deepines, list_app_deb, list_app_flatpak, installed, list_app_updatable
+		list_app_deepines = d_deepines
+		list_app_deb = d_deb
+		list_app_flatpak = d_flatpak
+		installed = d_installed
+		list_app_updatable = d_updatable
+
 		self.main_window = StoreMWindow()
 		self.main_window.calcular_anchos()
 		set_blur(self.main_window)
