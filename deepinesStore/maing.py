@@ -53,7 +53,6 @@ class Ui_MainWindow(object):
 		MainWindow.resize(self.width_screen, self.height_screen)
 		self.centralwidget = QtWidgets.QWidget(MainWindow)
 		self.centralwidget.setObjectName("centralwidget")
-		self.centralwidget.setStyleSheet("#centralwidget{background-color: rgba(30, 30, 30, 200); border: 1.5px solid rgba(60, 60, 60, 120); border-radius: 4px;}")
 
 		# Grilla principal
 		self.gridLayout_2 = QtWidgets.QGridLayout(self.centralwidget)
@@ -233,21 +232,7 @@ class Ui_MainWindow(object):
 				background-color: transparent;
 				color: #b5c5d1;
 			}
-			#btn_close{
-				margin-right: 10px;
-				min-width: 36px;
-				min-height: 36px;
-			}
-			#btn_zoom{
-				min-width: 36px;
-				min-height: 36px;
-				margin-right: 3px;
-				margin-left: 3px;
-			}
-			#btn_minimize{
-				min-width: 36px;
-				min-height: 36px;
-			}
+
 			QPushButton{
 				border-radius: 10px;
 				background-color: transparent;

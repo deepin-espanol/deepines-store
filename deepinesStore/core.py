@@ -64,13 +64,6 @@ def tr(m, txt, disambiguation=None, n=-1):
 	from PyQt5.QtCore import QCoreApplication
 	return QCoreApplication.translate(m.__class__.__name__, txt, disambiguation, n)
 
-def set_blur(win):
-	import platform
-	if platform.system() == 'Windows':
-		pass
-	else:  # Linux?, maybe more later...
-		from os import system
-		system('xprop -f _KDE_NET_WM_BLUR_BEHIND_REGION 32c -set _KDE_NET_WM_BLUR_BEHIND_REGION 0 -id {}'.format(int(win.winId())))
 
 if name == 'nt':
 	try:

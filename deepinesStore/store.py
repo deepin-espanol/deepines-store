@@ -12,7 +12,6 @@ from PyQt5.QtWidgets import (QMainWindow, QApplication, QFrame, QLabel,
 							 QDesktopWidget, QHBoxLayout, QVBoxLayout, QWidget, QPushButton)
 from PyQt5.QtGui import QPixmap, QColor, QCursor, QPainter, QMovie, QIcon
 
-from deepinesStore.core import set_blur
 # Para obtener aplicaciones random
 from random import sample
 # GUI o modulos locales
@@ -26,14 +25,14 @@ from deepinesStore.install_progress import InstallThread
 from deepinesStore import setup
 from deepinesStore.widgets import LinkLabel, StateOverlayWidget
 from deepinesStore.demoted_actions import write_file, config_dir, get_resource
-from deepinesStore.mixins import EventsMixin, GeometryMixin
+from deepinesStore.mixins import EventsMixin, GeometryMixin, AppearanceMixin
 
 # Global variables
 global lista_inicio, lista_global, list_app_show_temp, uninstalled
 global list_app_exclude, list_app_deepines, list_app_deb, list_app_flatpak
 global selected_apps, installed, columnas, tamanio, list_app_updatable
 
-class StoreMWindow(GeometryMixin, EventsMixin, QMainWindow):
+class StoreMWindow(GeometryMixin, EventsMixin, AppearanceMixin, QMainWindow):
 	def __init__(self):
 		super(StoreMWindow, self).__init__()
 		# Inicializamos la gui
@@ -1063,38 +1062,20 @@ def center_window(widget):
 	# Mover el widget al centro de la pantalla
 	widget.move(screen_center - widget_center)
 
-class LoadingScreen(EventsMixin, QMainWindow):
+class LoadingScreen(EventsMixin, AppearanceMixin, QMainWindow):
 	def __init__(self):
 		super().__init__()
 		self.setWindowFlags(Qt.Window | QtCore.FramelessWindowHint)
+		self.setAttribute(Qt.WA_TranslucentBackground, True)
 		self.setFocus()
 		self.setObjectName("LoadingScreen")
-		self.setStyleSheet("""
-		#LoadingScreen{
-			background-color: rgba(30, 30, 30, 200);
-		}
-		#btn_close{
-			min-width: 36px;
-			min-height: 36px;
-			border-radius: 10px;
-			background-color: transparent;
-		}
-		#btn_minimize{
-			min-width: 36px;
-			min-height: 36px;
-			border-radius: 10px;
-			background-color: transparent;
-		}
-		#btn_minimize:hover,
-		#btn_close:hover{
-			background-color: rgba(50, 50, 50, 100);
-		}
-		QLabel{
-			color: #b5c5d1;
-		}
-		""")
 
 		layout = QVBoxLayout()
+		
+		widget = QWidget()
+		widget.setObjectName("LoadingScreen_central")
+		widget.setLayout(layout)
+		self.setCentralWidget(widget)
 		
 		top_layout = QHBoxLayout()
 		top_layout.setContentsMargins(0, 0, 0, 0)
@@ -1152,10 +1133,6 @@ class LoadingScreen(EventsMixin, QMainWindow):
 		layout.addWidget(self.spinner_label)
 		layout.addWidget(self.progress_label)
 
-		container = QWidget()
-		container.setLayout(layout)
-		self.setCentralWidget(container)
-
 		self.retranslateUi()
 
 		self.worker_thread = LoaderThread(self)
@@ -1186,7 +1163,6 @@ class LoadingScreen(EventsMixin, QMainWindow):
 
 		self.main_window = StoreMWindow()
 		self.main_window.calcular_anchos()
-		set_blur(self.main_window)
 		self.main_window.show()
 		QTimer.singleShot(200, self.close) # wait! dde-shell dock is buggy, keep the icon there!
 
