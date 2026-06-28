@@ -24,17 +24,17 @@
     <message>
         <location filename="../deepinesStore/install_progress.py" line="56"/>
         <source>Installing</source>
-        <translation type="unfinished"></translation>
+        <translation>நிறுவுதல்</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="58"/>
         <source>Uninstalling</source>
-        <translation type="unfinished"></translation>
+        <translation>நிறுவல் நீக்குகிறது</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="59"/>
         <source>{process}: {status} - {percent}%</source>
-        <translation type="unfinished"></translation>
+        <translation>{process}: {status} - {percent}%</translation>
     </message>
 </context>
 <context>
@@ -42,163 +42,164 @@
     <message>
         <location filename="../deepinesStore/install_progress.py" line="85"/>
         <source>Updating package list...</source>
-        <translation type="unfinished"></translation>
+        <translation>Updating தொகுப்பு list...</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="89"/>
         <source>Error during cache update: {error}</source>
-        <translation type="unfinished"></translation>
+        <translation>கேச் புதுப்பிப்பின் போது பிழை: {error}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="118"/>
         <source>Error: {error}
 {traceback}</source>
-        <translation type="unfinished"></translation>
+        <translation>பிழை: {error} 
+{traceback}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="127"/>
         <source>Installing: {package} from Deepines repository</source>
-        <translation type="unfinished"></translation>
+        <translation>நிறுவுகிறது: Deepines களஞ்சியத்திலிருந்து {package}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="192"/>
         <source>Searching for package {package}...</source>
-        <translation type="unfinished"></translation>
+        <translation>தொகுப்பு {package}ஐத் தேடுகிறது...</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="194"/>
         <source>Package {package} not found</source>
-        <translation type="unfinished"></translation>
+        <translation>Package {package} not found</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="137"/>
         <source>{package} is already installed.</source>
-        <translation type="unfinished"></translation>
+        <translation>{package} is already installed.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="140"/>
         <source>Marking {package} for installation...</source>
-        <translation type="unfinished"></translation>
+        <translation>Marking {package} க்கு installation...</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="143"/>
         <source>Dependency error for {package}: {error}</source>
-        <translation type="unfinished"></translation>
+        <translation>Dependency பிழை க்கு {package}: {error}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="148"/>
         <source>Downloading and installing {package}...</source>
-        <translation type="unfinished"></translation>
+        <translation>பதிவிறக்கி நிறுவுகிறது {package}...</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="156"/>
         <source>{package} has been installed successfully.</source>
-        <translation type="unfinished"></translation>
+        <translation>{package} has been installed successfully.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="158"/>
         <source>{package} could not be installed correctly, possibly due to dependency errors.</source>
-        <translation type="unfinished"></translation>
+        <translation>{package} could not be installed correctly, possibly due பெறுநர் dependency errors.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="163"/>
         <source>Lock error during installation: {error}</source>
-        <translation type="unfinished"></translation>
+        <translation>Lock பிழை during installation: {error}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="168"/>
         <source>Download error during installation: {error}</source>
-        <translation type="unfinished"></translation>
+        <translation>பதிவிறக்கம் பிழை during installation: {error}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="173"/>
         <source>Download cancelled: {error}</source>
-        <translation type="unfinished"></translation>
+        <translation>பதிவிறக்கம் ரத்து செய்யப்பட்டது: {error}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="178"/>
         <source>System error during installation: {error}</source>
-        <translation type="unfinished"></translation>
+        <translation>மண்டலம் பிழை during installation: {error}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="236"/>
         <source>Unexpected error: {error}</source>
-        <translation type="unfinished"></translation>
+        <translation>எதிர்பாராத பிழை: {error}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="191"/>
         <source>Uninstalling: {package}.</source>
-        <translation type="unfinished"></translation>
+        <translation>நிறுவல் நீக்குகிறது: {package}.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="201"/>
         <source>{package} is not installed.</source>
-        <translation type="unfinished"></translation>
+        <translation>{package} நிறுவப்படவில்லை.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="203"/>
         <source>Marking {package} for removal...</source>
-        <translation type="unfinished"></translation>
+        <translation>அகற்றுவதற்காக {package} குறிக்கப்படுகிறது...</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="206"/>
         <source>Uninstalling {package}...</source>
-        <translation type="unfinished"></translation>
+        <translation>{package}ஐ நிறுவல் நீக்குகிறது...</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="214"/>
         <source>{package} has been uninstalled successfully.</source>
-        <translation type="unfinished"></translation>
+        <translation>{package} வெற்றிகரமாக நிறுவல் நீக்கப்பட்டது.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="216"/>
         <source>{package} could not be uninstalled correctly.</source>
-        <translation type="unfinished"></translation>
+        <translation>{package} ஐ சரியாக நிறுவல் நீக்க முடியவில்லை.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="221"/>
         <source>Lock error during uninstallation: {error}</source>
-        <translation type="unfinished"></translation>
+        <translation>நிறுவல் நீக்கும் போது பூட்டுப் பிழை: {error}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="226"/>
         <source>Download error during uninstallation: {error}</source>
-        <translation type="unfinished"></translation>
+        <translation>நிறுவல் நீக்கும் போது பதிவிறக்கப் பிழை: {error}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="231"/>
         <source>System error during uninstallation: {error}</source>
-        <translation type="unfinished"></translation>
+        <translation>நிறுவல் நீக்கும் போது கணினி பிழை: {error}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="244"/>
         <source>Installing {app} from Flathub...</source>
-        <translation type="unfinished"></translation>
+        <translation>Flathub இலிருந்து {app} ஐ நிறுவுகிறது...</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="275"/>
         <source>{app} has been installed successfully.</source>
-        <translation type="unfinished"></translation>
+        <translation>{app} வெற்றிகரமாக நிறுவப்பட்டது.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="278"/>
         <source>Error installing {app}: {error}</source>
-        <translation type="unfinished"></translation>
+        <translation>{app} ஐ நிறுவுவதில் பிழை: {error}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="286"/>
         <source>Uninstalling {app} from Flathub...</source>
-        <translation type="unfinished"></translation>
+        <translation>Flathub இலிருந்து {app}ஐ நிறுவல் நீக்குகிறது...</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="316"/>
         <source>{app} has been uninstalled successfully.</source>
-        <translation type="unfinished"></translation>
+        <translation>{app} has been uninstalled successfully.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="319"/>
         <source>Error uninstalling {app}: {error}</source>
-        <translation type="unfinished"></translation>
+        <translation>{app}ஐ நிறுவல் நீக்குவதில் பிழை: {error}</translation>
     </message>
 </context>
 <context>
@@ -234,17 +235,17 @@
     <message>
         <location filename="../deepinesStore/install_progress.py" line="22"/>
         <source>Downloading... {percent}% ({current:.2f}/{total:.2f} MB)</source>
-        <translation type="unfinished"></translation>
+        <translation>பதிவிறக்குகிறது... {percent}% ({current:.2f}/{total:.2f} MB)</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="26"/>
         <source>Starting download...</source>
-        <translation type="unfinished"></translation>
+        <translation>பதிவிறக்கம் தொடங்குகிறது...</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="29"/>
         <source>Download completed</source>
-        <translation type="unfinished"></translation>
+        <translation>பதிவிறக்கம் முடிந்தது</translation>
     </message>
 </context>
 <context>
@@ -445,12 +446,12 @@ Version: {version}</source>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="41"/>
         <source>Updating cache... {percent:.2f}%</source>
-        <translation type="unfinished"></translation>
+        <translation>தற்காலிக சேமிப்பைப் புதுப்பிக்கிறது... {percent:.2f}%</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="43"/>
         <source>Updating cache...</source>
-        <translation type="unfinished"></translation>
+        <translation>தற்காலிக சேமிப்பை புதுப்பிக்கிறது...</translation>
     </message>
 </context>
 </TS>

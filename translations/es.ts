@@ -446,12 +446,12 @@ Versión: {version}</translation>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="41"/>
         <source>Updating cache... {percent:.2f}%</source>
-        <translation type="unfinished"></translation>
+        <translation>Actualizando caché... {percent:.2f}%</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="43"/>
         <source>Updating cache...</source>
-        <translation type="unfinished"></translation>
+        <translation>Actualizando caché...</translation>
     </message>
 </context>
 </TS>
