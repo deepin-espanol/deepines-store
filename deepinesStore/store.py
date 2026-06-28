@@ -498,7 +498,7 @@ class StoreMWindow(GeometryMixin, EventsMixin, AppearanceMixin, QMainWindow):
 				preview_to_install = ui.multi_apps_text
 			else:
 				preview_to_install = ui.single_app_text
-			
+
 			install_count = sum(1 for app in selected_apps if app.process == ProcessType.INSTALL)
 			uninstall_count = sum(1 for app in selected_apps if app.process == ProcessType.UNINSTALL)
 			update_count = sum(1 for app in selected_apps if app.process == ProcessType.UPDATE)
@@ -753,7 +753,7 @@ class Card(QFrame):
 				self.cd.lbl_version.setText("v: {}".format(self.application.version))
 
 		global installed, uninstalled
-		
+
 		if self.application in selected_apps:
 			if self.application.process == ProcessType.UPDATE:
 				state = AppState.SELECTED
@@ -1071,12 +1071,12 @@ class LoadingScreen(EventsMixin, AppearanceMixin, QMainWindow):
 		self.setObjectName("LoadingScreen")
 
 		layout = QVBoxLayout()
-		
+
 		widget = QWidget()
 		widget.setObjectName("LoadingScreen_central")
 		widget.setLayout(layout)
 		self.setCentralWidget(widget)
-		
+
 		top_layout = QHBoxLayout()
 		top_layout.setContentsMargins(0, 0, 0, 0)
 		top_layout.addStretch()

@@ -90,7 +90,7 @@ class InstallThread(QThread):
 							with warnings.catch_warnings(record=True) as w:
 								warnings.simplefilter("always")
 								cache.update(fetch_progress=ProgressHandler(self.update_signal))
-								
+		
 								if w:
 									warning_msgs = [str(warn.message) for warn in w]
 									# Emit warnings but don't fail if it's just warnings and update succeeded

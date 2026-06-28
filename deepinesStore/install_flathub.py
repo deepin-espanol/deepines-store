@@ -24,7 +24,7 @@ if _lang.startswith("es"):
 	INSTALLING_FAILED = " falló:\n"
 	FLATHUB_NOT_FOUND = "flatpak no encontrado, omitiendo configuración de Flathub.\n"
 	FLATHUB_CONTINUE = "Continuando sin Flathub.\n"
-	
+
 	RECOMMENDATION = "Se recomienda reiniciar el equipo para que los accesos .desktop se muestren en el lanzador."
 	RESTART_TITLE = "Reinicio requerido"
 	LATER_LABEL = "Más tarde"

@@ -48,7 +48,7 @@ class Ui_Frame(object):
 		self.horizontalLayout = QtWidgets.QHBoxLayout()
 		self.horizontalLayout.setSpacing(5)
 		self.horizontalLayout.setObjectName("horizontalLayout")
-		
+
 		self.btn_select_app = QtWidgets.QPushButton(Frame)
 		self.btn_select_app.setObjectName(u"btn_select_app")
 		self.btn_select_app.setMinimumSize(QSize(40, 30))
