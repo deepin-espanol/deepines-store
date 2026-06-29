@@ -8,16 +8,6 @@ from PyQt5.QtWidgets import QApplication
 from deepinesStore.settings import SettingsManager
 from deepinesStore.appearance import AppearanceManager
 
-class EventsMixin:
-	def __init__(self, *args, **kwargs):
-		super().__init__(*args, **kwargs)
-
-	def mousePressEvent(self, event):
-		if event.button() == Qt.LeftButton:
-			window = self.windowHandle()
-			if window:
-				window.startSystemMove()
-		super().mousePressEvent(event)
 
 class AppearanceMixin:
 	def __init__(self, *args, **kwargs):
@@ -76,6 +66,13 @@ class AppearanceMixin:
 	def resizeEvent(self, event):
 		super().resizeEvent(event)
 		self.update_blur_region()
+
+	def mousePressEvent(self, event):
+		if event.button() == Qt.LeftButton:
+			window = self.windowHandle()
+			if window:
+				window.startSystemMove()
+		super().mousePressEvent(event)
 
 	def changeEvent(self, event):
 		from PyQt5.QtCore import QEvent

@@ -25,14 +25,14 @@ from deepinesStore.install_progress import InstallThread
 from deepinesStore import setup
 from deepinesStore.widgets import LinkLabel, StateOverlayWidget
 from deepinesStore.demoted_actions import write_file, config_dir, get_resource
-from deepinesStore.mixins import EventsMixin, GeometryMixin, AppearanceMixin
+from deepinesStore.mixins import GeometryMixin, AppearanceMixin
 
 # Global variables
 global lista_inicio, lista_global, list_app_show_temp, uninstalled
 global list_app_exclude, list_app_deepines, list_app_deb, list_app_flatpak
 global selected_apps, installed, columnas, tamanio, list_app_updatable
 
-class StoreMWindow(GeometryMixin, EventsMixin, AppearanceMixin, QMainWindow):
+class StoreMWindow(GeometryMixin, AppearanceMixin, QMainWindow):
 	def __init__(self):
 		super(StoreMWindow, self).__init__()
 		# Inicializamos la gui
@@ -1087,7 +1087,7 @@ def center_window(widget):
 	# Mover el widget al centro de la pantalla
 	widget.move(screen_center - widget_center)
 
-class LoadingScreen(EventsMixin, AppearanceMixin, QMainWindow):
+class LoadingScreen(AppearanceMixin, QMainWindow):
 	def __init__(self):
 		super().__init__()
 		self.setWindowFlags(Qt.Window | QtCore.FramelessWindowHint)
