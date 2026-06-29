@@ -373,9 +373,12 @@ class FlowLayout(w.QLayout):
 		self.setContentsMargins(margin, margin, margin, margin)
 
 	def __del__(self):
-		item = self.takeAt(0)
-		while item:
+		try:
 			item = self.takeAt(0)
+			while item:
+				item = self.takeAt(0)
+		except (RuntimeError, TypeError):
+			pass
 
 	def addItem(self, item):
 		self.itemList.append(item)

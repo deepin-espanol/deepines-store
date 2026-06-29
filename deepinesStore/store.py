@@ -332,7 +332,7 @@ class StoreMWindow(GeometryMixin, AppearanceMixin, QMainWindow):
 			12: ["updates"]
 		}
 
-		index = ui.lw_categories.currentRow()
+		index = ui.lw_categories.row(item)
 
 		# Hidden shortcut: Ctrl + Click on Updates checks for updates manually
 		if index == 12:
