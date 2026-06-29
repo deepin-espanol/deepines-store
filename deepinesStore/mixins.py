@@ -11,44 +11,13 @@ from deepinesStore.appearance import AppearanceManager
 class EventsMixin:
 	def __init__(self, *args, **kwargs):
 		super().__init__(*args, **kwargs)
-		self.drag_position = None
-		self._user_modified_geometry = False
 
 	def mousePressEvent(self, event):
 		if event.button() == Qt.LeftButton:
-			self.setProperty("previous_position", self.pos())
-			self.drag_position = event.globalPos() - self.frameGeometry().topLeft()
-		event.accept()
-
-	def mouseMoveEvent(self, event):
-		if event.buttons() == Qt.LeftButton and self.drag_position is not None:
-			self.setCursor(Qt.SizeAllCursor)
-			if not self.isMaximized():
-				self.move(event.globalPos() - self.drag_position)
-				self._user_modified_geometry = True
-			else:
-				self.showNormal()
-		event.accept()
-
-	def mouseReleaseEvent(self, event):
-		self.setCursor(Qt.ArrowCursor)
-		self.drag_position = None
-
-	def keyPressEvent(self, event):
-		if self.drag_position is not None and event.key() == Qt.Key_Escape:
-			previous_position = self.property("previous_position")
-			self.setCursor(Qt.ArrowCursor)
-			if previous_position is not None:
-				self.move(previous_position)
-				self.drag_position = None
-			event.accept()
-		else:
-			event.ignore()
-
-	def resizeEvent(self, event):
-		self.drag_position = None
-		event.accept()
-		super().resizeEvent(event)
+			window = self.windowHandle()
+			if window:
+				window.startSystemMove()
+		super().mousePressEvent(event)
 
 class AppearanceMixin:
 	def __init__(self, *args, **kwargs):
