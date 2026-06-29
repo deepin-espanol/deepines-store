@@ -24,22 +24,22 @@
     <message>
         <location filename="../deepinesStore/install_progress.py" line="56"/>
         <source>Installing</source>
-        <translation type="unfinished"></translation>
+        <translation>Installing</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="60"/>
         <source>Uninstalling</source>
-        <translation type="unfinished"></translation>
+        <translation>Uninstalling</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="61"/>
         <source>{process}: {status} - {percent}%</source>
-        <translation type="unfinished"></translation>
+        <translation>{process}: {status} - {percent}%</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="58"/>
         <source>Updating</source>
-        <translation type="unfinished"></translation>
+        <translation>Frissítés folyamatban</translation>
     </message>
 </context>
 <context>
@@ -47,289 +47,290 @@
     <message>
         <location filename="../deepinesStore/install_progress.py" line="87"/>
         <source>Updating package list...</source>
-        <translation type="unfinished"></translation>
+        <translation>Updating package list...</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="105"/>
         <source>Error during cache update: {error}</source>
-        <translation type="unfinished"></translation>
+        <translation>Error during cache update: {error}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="140"/>
         <source>Error: {error}
 {traceback}</source>
-        <translation type="unfinished"></translation>
+        <translation>Error: {error}
+{traceback}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="149"/>
         <source>Installing: {package} from Deepines repository</source>
-        <translation type="unfinished"></translation>
+        <translation>Installing: {package} from Deepines repository</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="295"/>
         <source>Searching for package {package}...</source>
-        <translation type="unfinished"></translation>
+        <translation>Searching for package {package}...</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="297"/>
         <source>Package {package} not found</source>
-        <translation type="unfinished"></translation>
+        <translation>Package {package} not found</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="159"/>
         <source>{package} is already installed.</source>
-        <translation type="unfinished"></translation>
+        <translation>{package} is already installed.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="162"/>
         <source>Marking {package} for installation...</source>
-        <translation type="unfinished"></translation>
+        <translation>Marking {package} for installation...</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="241"/>
         <source>Dependency error for {package}: {error}</source>
-        <translation type="unfinished"></translation>
+        <translation>Dependency error for {package}: {error}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="171"/>
         <source>Downloading and installing {package}...</source>
-        <translation type="unfinished"></translation>
+        <translation>Downloading and installing {package}...</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="179"/>
         <source>{package} has been installed successfully.</source>
-        <translation type="unfinished"></translation>
+        <translation>{package} has been installed successfully.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="181"/>
         <source>{package} could not be installed correctly, possibly due to dependency errors.</source>
-        <translation type="unfinished"></translation>
+        <translation>{package} could not be installed correctly, possibly due to dependency errors.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="187"/>
         <source>Lock error during installation: {error}</source>
-        <translation type="unfinished"></translation>
+        <translation>Lock error during installation: {error}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="193"/>
         <source>Download error during installation: {error}</source>
-        <translation type="unfinished"></translation>
+        <translation>Download error during installation: {error}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="337"/>
         <source>Download cancelled: {error}</source>
-        <translation type="unfinished"></translation>
+        <translation>Download cancelled: {error}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="205"/>
         <source>System error during installation: {error}</source>
-        <translation type="unfinished"></translation>
+        <translation>System error during installation: {error}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="349"/>
         <source>Unexpected error: {error}</source>
-        <translation type="unfinished"></translation>
+        <translation>Unexpected error: {error}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="294"/>
         <source>Uninstalling: {package}.</source>
-        <translation type="unfinished"></translation>
+        <translation>Uninstalling: {package}.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="304"/>
         <source>{package} is not installed.</source>
-        <translation type="unfinished"></translation>
+        <translation>{package} is not installed.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="306"/>
         <source>Marking {package} for removal...</source>
-        <translation type="unfinished"></translation>
+        <translation>Marking {package} for removal...</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="309"/>
         <source>Uninstalling {package}...</source>
-        <translation type="unfinished"></translation>
+        <translation>Uninstalling {package}...</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="317"/>
         <source>{package} has been uninstalled successfully.</source>
-        <translation type="unfinished"></translation>
+        <translation>{package} has been uninstalled successfully.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="319"/>
         <source>{package} could not be uninstalled correctly.</source>
-        <translation type="unfinished"></translation>
+        <translation>{package} could not be uninstalled correctly.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="325"/>
         <source>Lock error during uninstallation: {error}</source>
-        <translation type="unfinished"></translation>
+        <translation>Lock error during uninstallation: {error}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="331"/>
         <source>Download error during uninstallation: {error}</source>
-        <translation type="unfinished"></translation>
+        <translation>Download error during uninstallation: {error}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="343"/>
         <source>System error during uninstallation: {error}</source>
-        <translation type="unfinished"></translation>
+        <translation>System error during uninstallation: {error}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="357"/>
         <source>Installing {app} from Flathub...</source>
-        <translation type="unfinished"></translation>
+        <translation>Installing {app} from Flathub...</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="388"/>
         <source>{app} has been installed successfully.</source>
-        <translation type="unfinished"></translation>
+        <translation>{app} has been installed successfully.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="391"/>
         <source>Error installing {app}: {error}</source>
-        <translation type="unfinished"></translation>
+        <translation>Error installing {app}: {error}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="399"/>
         <source>Uninstalling {app} from Flathub...</source>
-        <translation type="unfinished"></translation>
+        <translation>Uninstalling {app} from Flathub...</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="429"/>
         <source>{app} has been uninstalled successfully.</source>
-        <translation type="unfinished"></translation>
+        <translation>{app} has been uninstalled successfully.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="432"/>
         <source>Error uninstalling {app}: {error}</source>
-        <translation type="unfinished"></translation>
+        <translation>Error uninstalling {app}: {error}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="104"/>
         <source>Failed to fetch repositories. Check network connection.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nem sikerült lekérni a tárolókat. Ellenőrizze a hálózati kapcsolatot.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="240"/>
         <source>Unmet dependencies.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kielégítetlen függőségek.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="324"/>
         <source>Apt is locked by another process.</source>
-        <translation type="unfinished"></translation>
+        <translation>Az apt-t egy másik folyamat zárolta.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="330"/>
         <source>Failed to download package. Check your network.</source>
-        <translation type="unfinished"></translation>
+        <translation>A csomag letöltése sikertelen. Ellenőrizze a hálózatot.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="336"/>
         <source>Cancelled.</source>
-        <translation type="unfinished"></translation>
+        <translation>Megszakítva.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="342"/>
         <source>Unknown system error.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ismeretlen rendszerhiba.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="218"/>
         <source>Updating: {package}</source>
-        <translation type="unfinished"></translation>
+        <translation>Frissítés: {package}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="228"/>
         <source>{package} is not installed, cannot update.</source>
-        <translation type="unfinished"></translation>
+        <translation>A(z) {package} nincs telepítve, nem lehet frissíteni.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="233"/>
         <source>{package} is already at the latest version.</source>
-        <translation type="unfinished"></translation>
+        <translation>A(z) {package} már a legújabb verzión van.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="237"/>
         <source>Marking {package} for upgrade...</source>
-        <translation type="unfinished"></translation>
+        <translation>{package} megjelölése frissítésre...</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="246"/>
         <source>Downloading and updating {package}...</source>
-        <translation type="unfinished"></translation>
+        <translation>A(z) {package} letöltése és frissítése...</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="254"/>
         <source>{package} has been updated successfully.</source>
-        <translation type="unfinished"></translation>
+        <translation>A(z) {package} sikeresen frissítve.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="256"/>
         <source>{package} could not be updated correctly.</source>
-        <translation type="unfinished"></translation>
+        <translation>A(z) {package} nem frissíthető megfelelően.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="262"/>
         <source>Lock error during update: {error}</source>
-        <translation type="unfinished"></translation>
+        <translation>Zárolási hiba frissítés közben: {error}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="268"/>
         <source>Download error during update: {error}</source>
-        <translation type="unfinished"></translation>
+        <translation>Letöltési hiba frissítés közben: {error}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="280"/>
         <source>System error during update: {error}</source>
-        <translation type="unfinished"></translation>
+        <translation>Rendszerhiba frissítés közben: {error}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="348"/>
         <source>Unknown error.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ismeretlen hiba.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="440"/>
         <source>Updating {app} from Flathub...</source>
-        <translation type="unfinished"></translation>
+        <translation>{app} frissítése a Flathubról...</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="470"/>
         <source>{app} has been updated successfully.</source>
-        <translation type="unfinished"></translation>
+        <translation>{app} sikeresen frissítve.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="473"/>
         <source>Error updating {app}: {error}</source>
-        <translation type="unfinished"></translation>
+        <translation>Hiba a(z) {app} frissítésekor: {error}</translation>
     </message>
 </context>
 <context>
     <name>LoadingScreen</name>
     <message>
-        <location filename="../deepinesStore/store.py" line="1147"/>
+        <location filename="../deepinesStore/store.py" line="1182"/>
         <source>Starting...</source>
         <translation>Indítás...</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="1149"/>
+        <location filename="../deepinesStore/store.py" line="1184"/>
         <source>Fetching files...</source>
         <translation>Fájlok lekérése...</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="1150"/>
+        <location filename="../deepinesStore/store.py" line="1185"/>
         <source>Initializing components...</source>
         <translation>Összetevők inicializálása...</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="1151"/>
+        <location filename="../deepinesStore/store.py" line="1186"/>
         <source>Finalizing setup...</source>
         <translation>A beállítás befejezése...</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="1145"/>
+        <location filename="../deepinesStore/store.py" line="1180"/>
         <source>Loading...</source>
         <translation>Betöltés...</translation>
     </message>
@@ -339,17 +340,17 @@
     <message>
         <location filename="../deepinesStore/install_progress.py" line="22"/>
         <source>Downloading... {percent}% ({current:.2f}/{total:.2f} MB)</source>
-        <translation type="unfinished"></translation>
+        <translation>Downloading... {percent}% ({current:.2f}/{total:.2f} MB)</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="26"/>
         <source>Starting download...</source>
-        <translation type="unfinished"></translation>
+        <translation>Starting download...</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="29"/>
         <source>Download completed</source>
-        <translation type="unfinished"></translation>
+        <translation>Download completed</translation>
     </message>
 </context>
 <context>
@@ -430,7 +431,7 @@ Vezió: {version}</translation>
         <translation>Iroda automatizálás</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="1146"/>
+        <location filename="../deepinesStore/store.py" line="1181"/>
         <source>Deepines Store</source>
         <translation>Deepines Áruház</translation>
     </message>
@@ -490,12 +491,12 @@ Vezió: {version}</translation>
         <translation>Eltávolítva</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="404"/>
+        <location filename="../deepinesStore/maing.py" line="406"/>
         <source>Unable to establish connection with the server, &lt;br&gt;please check your internet connection.&lt;br&gt;If the problem persists, please contact us via Telegram &lt;br&gt;at {atTlURL}.&lt;br&gt;&lt;br&gt;Visit Deepin en Español for more information: {siteURL}</source>
         <translation>Nem sikerült kapcsolatot létesíteni a szerverrel, &lt;br&gt;ellenőrizze internetkapcsolatát.&lt;br&gt;Ha a probléma továbbra is fennáll, kérjük, lépjen velünk kapcsolatba a Telegramon keresztül &lt;br&gt;a következő címen: {atTlURL}.&lt;br&gt;&lt;br&gt;Továbbiakért keresse fel a Deepin en Español oldalt. információ: {siteURL}</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="409"/>
+        <location filename="../deepinesStore/maing.py" line="411"/>
         <source>Deepines repository is not installed on your system,&lt;br&gt;Deepines Store needs this repository to work.&lt;br&gt;In the following link you will find the instructions to install it:&lt;br&gt;&lt;br&gt;{repoURL}</source>
         <translation>A Deepines tároló nincs telepítve a rendszerére,&lt;br&gt;a Deepines Store működéséhez szüksége van erre a tárolóra.&lt;br&gt;A következő linken megtalálja a telepítéshez szükséges utasításokat:&lt;br&gt;&lt;br&gt;{repoURL}</translation>
     </message>
@@ -505,79 +506,89 @@ Vezió: {version}</translation>
         <translation>Folyamat indítása</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="413"/>
+        <location filename="../deepinesStore/maing.py" line="415"/>
         <source>Installing...</source>
         <translation>Telepítés...</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="414"/>
+        <location filename="../deepinesStore/maing.py" line="416"/>
         <source>Installation failed!</source>
         <translation>A telepítés sikertelen!</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="415"/>
+        <location filename="../deepinesStore/maing.py" line="417"/>
         <source>Ready to install</source>
         <translation>Telepítésre kész</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="416"/>
+        <location filename="../deepinesStore/maing.py" line="418"/>
         <source>Starting installation...</source>
         <translation>Telepítés indítása...</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="373"/>
         <source>Updates</source>
-        <translation type="unfinished"></translation>
+        <translation>Frissítések</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="390"/>
         <source>Install</source>
-        <translation type="unfinished"></translation>
+        <translation>Telepítés</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="391"/>
         <source>To install</source>
-        <translation type="unfinished"></translation>
+        <translation>Telepítésre vár</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="392"/>
         <source>To uninstall</source>
-        <translation type="unfinished"></translation>
+        <translation>Eltávolításra vár</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="393"/>
         <source>To update</source>
-        <translation type="unfinished"></translation>
+        <translation>Frissítésre vár</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="397"/>
         <source>Update</source>
-        <translation type="unfinished"></translation>
+        <translation>Frissítés</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="398"/>
         <source>No updates available</source>
-        <translation type="unfinished"></translation>
+        <translation>Nincsenek elérhető frissítések</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="399"/>
         <source>Checking for updates...</source>
-        <translation type="unfinished"></translation>
+        <translation>Frissítések keresése...</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="400"/>
         <source>Check for updates</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../deepinesStore/maing.py" line="401"/>
-        <source>No apps found</source>
-        <translation type="unfinished"></translation>
+        <translation>Frissítések keresése</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="403"/>
+        <source>No apps found</source>
+        <translation>Nem találhatók alkalmazások</translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/maing.py" line="405"/>
         <source>{install_count} to install, {uninstall_count} to uninstall, {update_count} to update</source>
-        <translation type="unfinished"></translation>
+        <translation>{install_count} telepítésre, {uninstall_count} eltávolításra, {update_count} frissítésre vár</translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/maing.py" line="401"/>
+        <source>Failed to fetch remote updates.</source>
+        <translation>Nem sikerült lekérni a távoli frissítéseket.</translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/maing.py" line="402"/>
+        <source>Continue with local cache</source>
+        <translation>Folytatás a helyi gyorsítótárral</translation>
     </message>
 </context>
 <context>
@@ -585,12 +596,12 @@ Vezió: {version}</translation>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="41"/>
         <source>Updating cache... {percent:.2f}%</source>
-        <translation type="unfinished"></translation>
+        <translation>Updating cache... {percent:.2f}%</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="43"/>
         <source>Updating cache...</source>
-        <translation type="unfinished"></translation>
+        <translation>Updating cache...</translation>
     </message>
 </context>
 </TS>

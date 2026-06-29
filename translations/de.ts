@@ -39,7 +39,7 @@
     <message>
         <location filename="../deepinesStore/install_progress.py" line="58"/>
         <source>Updating</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktualisieren</translation>
     </message>
 </context>
 <context>
@@ -209,128 +209,128 @@
     <message>
         <location filename="../deepinesStore/install_progress.py" line="104"/>
         <source>Failed to fetch repositories. Check network connection.</source>
-        <translation type="unfinished"></translation>
+        <translation>Repositories konnten nicht abgerufen werden. Netzwerkverbindung prüfen.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="240"/>
         <source>Unmet dependencies.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nicht erfüllte Abhängigkeiten.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="324"/>
         <source>Apt is locked by another process.</source>
-        <translation type="unfinished"></translation>
+        <translation>Apt ist durch einen anderen Prozess gesperrt.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="330"/>
         <source>Failed to download package. Check your network.</source>
-        <translation type="unfinished"></translation>
+        <translation>Paket konnte nicht heruntergeladen werden. Netzwerk überprüfen.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="336"/>
         <source>Cancelled.</source>
-        <translation type="unfinished"></translation>
+        <translation>Abgebrochen.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="342"/>
         <source>Unknown system error.</source>
-        <translation type="unfinished"></translation>
+        <translation>Unbekannter Systemfehler.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="218"/>
         <source>Updating: {package}</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktualisiere: {package}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="228"/>
         <source>{package} is not installed, cannot update.</source>
-        <translation type="unfinished"></translation>
+        <translation>{package} ist nicht installiert und kann nicht aktualisiert werden.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="233"/>
         <source>{package} is already at the latest version.</source>
-        <translation type="unfinished"></translation>
+        <translation>{package} ist bereits auf dem neuesten Stand.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="237"/>
         <source>Marking {package} for upgrade...</source>
-        <translation type="unfinished"></translation>
+        <translation>{package} für das Upgrade vormerken...</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="246"/>
         <source>Downloading and updating {package}...</source>
-        <translation type="unfinished"></translation>
+        <translation>Herunterladen und Aktualisieren von {package}...</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="254"/>
         <source>{package} has been updated successfully.</source>
-        <translation type="unfinished"></translation>
+        <translation>{package} wurde erfolgreich aktualisiert.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="256"/>
         <source>{package} could not be updated correctly.</source>
-        <translation type="unfinished"></translation>
+        <translation>{package} konnte nicht korrekt aktualisiert werden.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="262"/>
         <source>Lock error during update: {error}</source>
-        <translation type="unfinished"></translation>
+        <translation>Sperrfehler während des Updates: {error}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="268"/>
         <source>Download error during update: {error}</source>
-        <translation type="unfinished"></translation>
+        <translation>Download-Fehler während des Updates: {error}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="280"/>
         <source>System error during update: {error}</source>
-        <translation type="unfinished"></translation>
+        <translation>Systemfehler während des Updates: {error}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="348"/>
         <source>Unknown error.</source>
-        <translation type="unfinished"></translation>
+        <translation>Unbekannter Fehler.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="440"/>
         <source>Updating {app} from Flathub...</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktualisiere {app} von Flathub...</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="470"/>
         <source>{app} has been updated successfully.</source>
-        <translation type="unfinished"></translation>
+        <translation>{app} wurde erfolgreich aktualisiert.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="473"/>
         <source>Error updating {app}: {error}</source>
-        <translation type="unfinished"></translation>
+        <translation>Fehler beim Aktualisieren von {app}: {error}</translation>
     </message>
 </context>
 <context>
     <name>LoadingScreen</name>
     <message>
-        <location filename="../deepinesStore/store.py" line="1147"/>
+        <location filename="../deepinesStore/store.py" line="1182"/>
         <source>Starting...</source>
         <translation>Startend…</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="1149"/>
+        <location filename="../deepinesStore/store.py" line="1184"/>
         <source>Fetching files...</source>
         <translation>Dateien holend…</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="1150"/>
+        <location filename="../deepinesStore/store.py" line="1185"/>
         <source>Initializing components...</source>
         <translation>Komponenten initiaisierend…</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="1151"/>
+        <location filename="../deepinesStore/store.py" line="1186"/>
         <source>Finalizing setup...</source>
         <translation>Einrichtung abschließen…</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="1145"/>
+        <location filename="../deepinesStore/store.py" line="1180"/>
         <source>Loading...</source>
         <translation>Lädt…</translation>
     </message>
@@ -431,7 +431,7 @@ Version: {version}</translation>
         <translation>Büro</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="1146"/>
+        <location filename="../deepinesStore/store.py" line="1181"/>
         <source>Deepines Store</source>
         <translation></translation>
     </message>
@@ -466,7 +466,7 @@ Version: {version}</translation>
         <translation>Apps .deb</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="409"/>
+        <location filename="../deepinesStore/maing.py" line="411"/>
         <source>Deepines repository is not installed on your system,&lt;br&gt;Deepines Store needs this repository to work.&lt;br&gt;In the following link you will find the instructions to install it:&lt;br&gt;&lt;br&gt;{repoURL}</source>
         <translation>Deepines Paketquelle ist auf Ihrem System nicht installiert, &lt;br&gt;Deepines Store funktioniert nur mit dieser Paketquelle.&lt;br&gt; Im folgenden Link finden sie eine Installationsanleitung:&lt;br&gt;&lt;br&gt;{repoURL}</translation>
     </message>
@@ -496,7 +496,7 @@ Version: {version}</translation>
         <translation>Deinstalliert</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="404"/>
+        <location filename="../deepinesStore/maing.py" line="406"/>
         <source>Unable to establish connection with the server, &lt;br&gt;please check your internet connection.&lt;br&gt;If the problem persists, please contact us via Telegram &lt;br&gt;at {atTlURL}.&lt;br&gt;&lt;br&gt;Visit Deepin en Español for more information: {siteURL}</source>
         <translation>Es konnte keine Verbindung zum Server hergestellt werden, &lt;br&gt;bitte überprüfen Sie ihre Internetverbindung.&lt;br&gt;Falls das Problem weiter besteht, kontaktieren Sie uns bitte über Telegram &lt;br&gt;unter {atTlURL}.&lt;br&gt;&lt;br&gt;Besuchen Sie Deepin en Español für weitere Informationen: {siteURL}</translation>
     </message>
@@ -506,79 +506,89 @@ Version: {version}</translation>
         <translation>Startprozess</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="413"/>
+        <location filename="../deepinesStore/maing.py" line="415"/>
         <source>Installing...</source>
         <translation>Installierend…</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="414"/>
+        <location filename="../deepinesStore/maing.py" line="416"/>
         <source>Installation failed!</source>
         <translation>Installation fehlgeschlagen!</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="415"/>
+        <location filename="../deepinesStore/maing.py" line="417"/>
         <source>Ready to install</source>
         <translation>Bereit zur Installation</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="416"/>
+        <location filename="../deepinesStore/maing.py" line="418"/>
         <source>Starting installation...</source>
         <translation>Installation beginnt…</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="373"/>
         <source>Updates</source>
-        <translation type="unfinished"></translation>
+        <translation>Updates</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="390"/>
         <source>Install</source>
-        <translation type="unfinished"></translation>
+        <translation>Installieren</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="391"/>
         <source>To install</source>
-        <translation type="unfinished"></translation>
+        <translation>Zur Installation</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="392"/>
         <source>To uninstall</source>
-        <translation type="unfinished"></translation>
+        <translation>Zur Deinstallation</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="393"/>
         <source>To update</source>
-        <translation type="unfinished"></translation>
+        <translation>Zum Aktualisieren</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="397"/>
         <source>Update</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktualisieren</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="398"/>
         <source>No updates available</source>
-        <translation type="unfinished"></translation>
+        <translation>Keine Updates verfügbar</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="399"/>
         <source>Checking for updates...</source>
-        <translation type="unfinished"></translation>
+        <translation>Suche nach Updates...</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="400"/>
         <source>Check for updates</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../deepinesStore/maing.py" line="401"/>
-        <source>No apps found</source>
-        <translation type="unfinished"></translation>
+        <translation>Nach Updates suchen</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="403"/>
+        <source>No apps found</source>
+        <translation>Keine Apps gefunden</translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/maing.py" line="405"/>
         <source>{install_count} to install, {uninstall_count} to uninstall, {update_count} to update</source>
-        <translation type="unfinished"></translation>
+        <translation>{install_count} zur Installation, {uninstall_count} zur Deinstallation, {update_count} zum Aktualisieren</translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/maing.py" line="401"/>
+        <source>Failed to fetch remote updates.</source>
+        <translation>Remote-Updates konnten nicht abgerufen werden.</translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/maing.py" line="402"/>
+        <source>Continue with local cache</source>
+        <translation>Mit lokalem Cache fortfahren</translation>
     </message>
 </context>
 <context>

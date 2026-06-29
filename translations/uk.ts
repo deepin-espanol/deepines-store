@@ -39,7 +39,7 @@
     <message>
         <location filename="../deepinesStore/install_progress.py" line="58"/>
         <source>Updating</source>
-        <translation type="unfinished"></translation>
+        <translation>Оновлення</translation>
     </message>
 </context>
 <context>
@@ -209,128 +209,128 @@
     <message>
         <location filename="../deepinesStore/install_progress.py" line="104"/>
         <source>Failed to fetch repositories. Check network connection.</source>
-        <translation type="unfinished"></translation>
+        <translation>Не вдалося отримати репозиторії. Перевірте з'єднання з мережею.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="240"/>
         <source>Unmet dependencies.</source>
-        <translation type="unfinished"></translation>
+        <translation>Незадоволені залежності.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="324"/>
         <source>Apt is locked by another process.</source>
-        <translation type="unfinished"></translation>
+        <translation>Apt заблоковано іншим процесом.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="330"/>
         <source>Failed to download package. Check your network.</source>
-        <translation type="unfinished"></translation>
+        <translation>Не вдалося завантажити пакет. Перевірте мережу.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="336"/>
         <source>Cancelled.</source>
-        <translation type="unfinished"></translation>
+        <translation>Скасовано.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="342"/>
         <source>Unknown system error.</source>
-        <translation type="unfinished"></translation>
+        <translation>Невідома системна помилка.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="218"/>
         <source>Updating: {package}</source>
-        <translation type="unfinished"></translation>
+        <translation>Оновлення: {package}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="228"/>
         <source>{package} is not installed, cannot update.</source>
-        <translation type="unfinished"></translation>
+        <translation>{package} не встановлено, оновлення неможливе.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="233"/>
         <source>{package} is already at the latest version.</source>
-        <translation type="unfinished"></translation>
+        <translation>{package} вже має найновішу версію.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="237"/>
         <source>Marking {package} for upgrade...</source>
-        <translation type="unfinished"></translation>
+        <translation>Позначення {package} для оновлення...</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="246"/>
         <source>Downloading and updating {package}...</source>
-        <translation type="unfinished"></translation>
+        <translation>Завантаження та оновлення {package}...</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="254"/>
         <source>{package} has been updated successfully.</source>
-        <translation type="unfinished"></translation>
+        <translation>{package} успішно оновлено.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="256"/>
         <source>{package} could not be updated correctly.</source>
-        <translation type="unfinished"></translation>
+        <translation>{package} не вдалося оновити належним чином.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="262"/>
         <source>Lock error during update: {error}</source>
-        <translation type="unfinished"></translation>
+        <translation>Помилка блокування під час оновлення: {error}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="268"/>
         <source>Download error during update: {error}</source>
-        <translation type="unfinished"></translation>
+        <translation>Помилка завантаження під час оновлення: {error}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="280"/>
         <source>System error during update: {error}</source>
-        <translation type="unfinished"></translation>
+        <translation>Системна помилка під час оновлення: {error}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="348"/>
         <source>Unknown error.</source>
-        <translation type="unfinished"></translation>
+        <translation>Невідома помилка.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="440"/>
         <source>Updating {app} from Flathub...</source>
-        <translation type="unfinished"></translation>
+        <translation>Оновлення {app} з Flathub...</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="470"/>
         <source>{app} has been updated successfully.</source>
-        <translation type="unfinished"></translation>
+        <translation>{app} успішно оновлено.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="473"/>
         <source>Error updating {app}: {error}</source>
-        <translation type="unfinished"></translation>
+        <translation>Помилка оновлення {app}: {error}</translation>
     </message>
 </context>
 <context>
     <name>LoadingScreen</name>
     <message>
-        <location filename="../deepinesStore/store.py" line="1147"/>
+        <location filename="../deepinesStore/store.py" line="1182"/>
         <source>Starting...</source>
         <translation>Розпочнемо...</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="1149"/>
+        <location filename="../deepinesStore/store.py" line="1184"/>
         <source>Fetching files...</source>
         <translation>Отримання файлів...</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="1150"/>
+        <location filename="../deepinesStore/store.py" line="1185"/>
         <source>Initializing components...</source>
         <translation>Ініціалізація компонентів...</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="1151"/>
+        <location filename="../deepinesStore/store.py" line="1186"/>
         <source>Finalizing setup...</source>
         <translation>Завершення налаштування...</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="1145"/>
+        <location filename="../deepinesStore/store.py" line="1180"/>
         <source>Loading...</source>
         <translation>Завантаження...</translation>
     </message>
@@ -431,7 +431,7 @@ Version: {version}</source>
         <translation>Автоматизація офісу</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="1146"/>
+        <location filename="../deepinesStore/store.py" line="1181"/>
         <source>Deepines Store</source>
         <translation>Deepines Store</translation>
     </message>
@@ -491,12 +491,12 @@ Version: {version}</source>
         <translation>Видалено</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="404"/>
+        <location filename="../deepinesStore/maing.py" line="406"/>
         <source>Unable to establish connection with the server, &lt;br&gt;please check your internet connection.&lt;br&gt;If the problem persists, please contact us via Telegram &lt;br&gt;at {atTlURL}.&lt;br&gt;&lt;br&gt;Visit Deepin en Español for more information: {siteURL}</source>
         <translation>Не вдається встановити з'єднання з сервером, &lt;br&gt;перевірте своє інтернет-з'єднання. &lt;br&gt;Якщо проблема не зникне, будь ласка, зв'яжіться з нами через Telegram: &lt;br&gt;{atTlURL}.&lt;br&gt;&lt;br&gt; Відвідайте Deepin en Español для отримання додаткової інформації: {siteURL}</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="409"/>
+        <location filename="../deepinesStore/maing.py" line="411"/>
         <source>Deepines repository is not installed on your system,&lt;br&gt;Deepines Store needs this repository to work.&lt;br&gt;In the following link you will find the instructions to install it:&lt;br&gt;&lt;br&gt;{repoURL}</source>
         <translation>Репозиторій Deepines не встановлено у вашій системі,&lt;br&gt;Для роботи Deepines Store потрібен цей репозиторій.&lt;br&gt;За наступним посиланням ви знайдете інструкції з його встановлення:&lt;br&gt;&lt;br&gt;{repoURL}</translation>
     </message>
@@ -506,79 +506,89 @@ Version: {version}</source>
         <translation>Початок процесу</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="413"/>
+        <location filename="../deepinesStore/maing.py" line="415"/>
         <source>Installing...</source>
         <translation>Встановлення...</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="414"/>
+        <location filename="../deepinesStore/maing.py" line="416"/>
         <source>Installation failed!</source>
         <translation>Не вдалося встановити!</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="415"/>
+        <location filename="../deepinesStore/maing.py" line="417"/>
         <source>Ready to install</source>
         <translation>Готово до встановлення</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="416"/>
+        <location filename="../deepinesStore/maing.py" line="418"/>
         <source>Starting installation...</source>
         <translation>Початок встановлення...</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="373"/>
         <source>Updates</source>
-        <translation type="unfinished"></translation>
+        <translation>Оновлення</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="390"/>
         <source>Install</source>
-        <translation type="unfinished"></translation>
+        <translation>Встановити</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="391"/>
         <source>To install</source>
-        <translation type="unfinished"></translation>
+        <translation>До встановлення</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="392"/>
         <source>To uninstall</source>
-        <translation type="unfinished"></translation>
+        <translation>До видалення</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="393"/>
         <source>To update</source>
-        <translation type="unfinished"></translation>
+        <translation>До оновлення</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="397"/>
         <source>Update</source>
-        <translation type="unfinished"></translation>
+        <translation>Оновити</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="398"/>
         <source>No updates available</source>
-        <translation type="unfinished"></translation>
+        <translation>Немає доступних оновлень</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="399"/>
         <source>Checking for updates...</source>
-        <translation type="unfinished"></translation>
+        <translation>Перевірка оновлень...</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="400"/>
         <source>Check for updates</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../deepinesStore/maing.py" line="401"/>
-        <source>No apps found</source>
-        <translation type="unfinished"></translation>
+        <translation>Перевірити наявність оновлень</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="403"/>
+        <source>No apps found</source>
+        <translation>Програми не знайдено</translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/maing.py" line="405"/>
         <source>{install_count} to install, {uninstall_count} to uninstall, {update_count} to update</source>
-        <translation type="unfinished"></translation>
+        <translation>{install_count} для встановлення, {uninstall_count} для видалення, {update_count} для оновлення</translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/maing.py" line="401"/>
+        <source>Failed to fetch remote updates.</source>
+        <translation>Не вдалося отримати віддалені оновлення.</translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/maing.py" line="402"/>
+        <source>Continue with local cache</source>
+        <translation>Продовжити з локальним кешем</translation>
     </message>
 </context>
 <context>

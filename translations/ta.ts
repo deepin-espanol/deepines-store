@@ -39,7 +39,7 @@
     <message>
         <location filename="../deepinesStore/install_progress.py" line="58"/>
         <source>Updating</source>
-        <translation type="unfinished"></translation>
+        <translation>புதுப்பிக்கப்படுகிறது</translation>
     </message>
 </context>
 <context>
@@ -209,128 +209,128 @@
     <message>
         <location filename="../deepinesStore/install_progress.py" line="104"/>
         <source>Failed to fetch repositories. Check network connection.</source>
-        <translation type="unfinished"></translation>
+        <translation>களஞ்சியங்களைப் பெற முடியவில்லை. நெட்வொர்க் இணைப்பை சரிபார்க்கவும்.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="240"/>
         <source>Unmet dependencies.</source>
-        <translation type="unfinished"></translation>
+        <translation>பூர்த்தி செய்யப்படாத சார்புகள்.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="324"/>
         <source>Apt is locked by another process.</source>
-        <translation type="unfinished"></translation>
+        <translation>Apt மற்றொரு செயலால் பூட்டப்பட்டுள்ளது.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="330"/>
         <source>Failed to download package. Check your network.</source>
-        <translation type="unfinished"></translation>
+        <translation>தொகுப்பைப் பதிவிறக்க முடியவில்லை. நெட்வொர்க்கை சரிபார்க்கவும்.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="336"/>
         <source>Cancelled.</source>
-        <translation type="unfinished"></translation>
+        <translation>ரத்து செய்யப்பட்டது.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="342"/>
         <source>Unknown system error.</source>
-        <translation type="unfinished"></translation>
+        <translation>தெரியாத கணினி பிழை.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="218"/>
         <source>Updating: {package}</source>
-        <translation type="unfinished"></translation>
+        <translation>புதுப்பிக்கப்படுகிறது: {package}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="228"/>
         <source>{package} is not installed, cannot update.</source>
-        <translation type="unfinished"></translation>
+        <translation>{package} நிறுவப்படவில்லை, புதுப்பிக்க முடியாது.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="233"/>
         <source>{package} is already at the latest version.</source>
-        <translation type="unfinished"></translation>
+        <translation>{package} ஏற்கனவே சமீபத்திய பதிப்பில் உள்ளது.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="237"/>
         <source>Marking {package} for upgrade...</source>
-        <translation type="unfinished"></translation>
+        <translation>{package}-ஐ மேம்படுத்த குறிக்கிறது...</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="246"/>
         <source>Downloading and updating {package}...</source>
-        <translation type="unfinished"></translation>
+        <translation>{package}-ஐ பதிவிறக்கி புதுப்பிக்கிறது...</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="254"/>
         <source>{package} has been updated successfully.</source>
-        <translation type="unfinished"></translation>
+        <translation>{package} வெற்றிகரமாக புதுப்பிக்கப்பட்டது.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="256"/>
         <source>{package} could not be updated correctly.</source>
-        <translation type="unfinished"></translation>
+        <translation>{package}-ஐ சரியாக புதுப்பிக்க முடியவில்லை.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="262"/>
         <source>Lock error during update: {error}</source>
-        <translation type="unfinished"></translation>
+        <translation>புதுப்பிக்கும் போது பூட்டு பிழை: {error}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="268"/>
         <source>Download error during update: {error}</source>
-        <translation type="unfinished"></translation>
+        <translation>புதுப்பிக்கும் போது பதிவிறக்க பிழை: {error}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="280"/>
         <source>System error during update: {error}</source>
-        <translation type="unfinished"></translation>
+        <translation>புதுப்பிக்கும் போது கணினி பிழை: {error}</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="348"/>
         <source>Unknown error.</source>
-        <translation type="unfinished"></translation>
+        <translation>தெரியாத பிழை.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="440"/>
         <source>Updating {app} from Flathub...</source>
-        <translation type="unfinished"></translation>
+        <translation>Flathub-லிருந்து {app}-ஐ புதுப்பிக்கிறது...</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="470"/>
         <source>{app} has been updated successfully.</source>
-        <translation type="unfinished"></translation>
+        <translation>{app} வெற்றிகரமாக புதுப்பிக்கப்பட்டது.</translation>
     </message>
     <message>
         <location filename="../deepinesStore/install_progress.py" line="473"/>
         <source>Error updating {app}: {error}</source>
-        <translation type="unfinished"></translation>
+        <translation>{app}-ஐ புதுப்பிப்பதில் பிழை: {error}</translation>
     </message>
 </context>
 <context>
     <name>LoadingScreen</name>
     <message>
-        <location filename="../deepinesStore/store.py" line="1147"/>
+        <location filename="../deepinesStore/store.py" line="1182"/>
         <source>Starting...</source>
         <translation>தொடங்குகிறது ...</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="1149"/>
+        <location filename="../deepinesStore/store.py" line="1184"/>
         <source>Fetching files...</source>
         <translation>கோப்புகளைப் பெறுதல் ...</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="1150"/>
+        <location filename="../deepinesStore/store.py" line="1185"/>
         <source>Initializing components...</source>
         <translation>கூறுகளைத் தொடங்குதல் ...</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="1151"/>
+        <location filename="../deepinesStore/store.py" line="1186"/>
         <source>Finalizing setup...</source>
         <translation>அமைப்பை இறுதி செய்தல் ...</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="1145"/>
+        <location filename="../deepinesStore/store.py" line="1180"/>
         <source>Loading...</source>
         <translation>ஏற்றுகிறது ...</translation>
     </message>
@@ -431,7 +431,7 @@ Version: {version}</source>
         <translation>அலுவலக ஆட்டோமேசன்</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="1146"/>
+        <location filename="../deepinesStore/store.py" line="1181"/>
         <source>Deepines Store</source>
         <translation>டீபைன்ச் கடை</translation>
     </message>
@@ -466,7 +466,7 @@ Version: {version}</source>
         <translation>பயன்பாடுகள் .deb</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="409"/>
+        <location filename="../deepinesStore/maing.py" line="411"/>
         <source>Deepines repository is not installed on your system,&lt;br&gt;Deepines Store needs this repository to work.&lt;br&gt;In the following link you will find the instructions to install it:&lt;br&gt;&lt;br&gt;{repoURL}</source>
         <translation>உங்கள் கணினியில் டீபைன்ச் களஞ்சியம் நிறுவப்படவில்லை, &lt;br&gt; டீப்ன்ச் கடை வேலை செய்ய இந்த களஞ்சியம் தேவை. &lt;br&gt; பின்வரும் இணைப்பில் அதை நிறுவுவதற்கான வழிமுறைகளைக் காண்பீர்கள்: &lt;br&gt; &lt;br&gt; {{repoURL}</translation>
     </message>
@@ -496,7 +496,7 @@ Version: {version}</source>
         <translation>நிறுவல் நீக்கப்பட்டது</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="404"/>
+        <location filename="../deepinesStore/maing.py" line="406"/>
         <source>Unable to establish connection with the server, &lt;br&gt;please check your internet connection.&lt;br&gt;If the problem persists, please contact us via Telegram &lt;br&gt;at {atTlURL}.&lt;br&gt;&lt;br&gt;Visit Deepin en Español for more information: {siteURL}</source>
         <translation>சேவையகத்துடன் இணைப்பை நிறுவ முடியவில்லை, &lt;br&gt; தயவுசெய்து உங்கள் இணைய இணைப்பைச் சரிபார்க்கவும். &lt;br&gt; சிக்கல் தொடர்ந்தால், தயவுசெய்து எங்களை டெலிகிராம் வழியாகத் தொடர்பு கொள்ளவும் &lt;br&gt; {atTlURL}. &lt;br&gt; &lt;br&gt; மேலும் தகவல்: {siteURL}</translation>
     </message>
@@ -506,79 +506,89 @@ Version: {version}</source>
         <translation>தொடக்க செயல்முறை</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="413"/>
+        <location filename="../deepinesStore/maing.py" line="415"/>
         <source>Installing...</source>
         <translation>நிறுவுதல் ...</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="414"/>
+        <location filename="../deepinesStore/maing.py" line="416"/>
         <source>Installation failed!</source>
         <translation>நிறுவல் தோல்வியடைந்தது!</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="415"/>
+        <location filename="../deepinesStore/maing.py" line="417"/>
         <source>Ready to install</source>
         <translation>நிறுவ தயாராக உள்ளது</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="416"/>
+        <location filename="../deepinesStore/maing.py" line="418"/>
         <source>Starting installation...</source>
         <translation>நிறுவலைத் தொடங்குகிறது ...</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="373"/>
         <source>Updates</source>
-        <translation type="unfinished"></translation>
+        <translation>புதுப்பிப்புகள்</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="390"/>
         <source>Install</source>
-        <translation type="unfinished"></translation>
+        <translation>நிறுவு</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="391"/>
         <source>To install</source>
-        <translation type="unfinished"></translation>
+        <translation>நிறுவ</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="392"/>
         <source>To uninstall</source>
-        <translation type="unfinished"></translation>
+        <translation>நிறுவல் நீக்க</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="393"/>
         <source>To update</source>
-        <translation type="unfinished"></translation>
+        <translation>புதுப்பிக்க</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="397"/>
         <source>Update</source>
-        <translation type="unfinished"></translation>
+        <translation>புதுப்பி</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="398"/>
         <source>No updates available</source>
-        <translation type="unfinished"></translation>
+        <translation>புதுப்பிப்புகள் ஏதுமில்லை</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="399"/>
         <source>Checking for updates...</source>
-        <translation type="unfinished"></translation>
+        <translation>புதுப்பிப்புகளை சரிபார்க்கிறது...</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="400"/>
         <source>Check for updates</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../deepinesStore/maing.py" line="401"/>
-        <source>No apps found</source>
-        <translation type="unfinished"></translation>
+        <translation>புதுப்பிப்புகளை சரிபார்க்கவும்</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="403"/>
+        <source>No apps found</source>
+        <translation>பயன்பாடுகள் காணப்படவில்லை</translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/maing.py" line="405"/>
         <source>{install_count} to install, {uninstall_count} to uninstall, {update_count} to update</source>
-        <translation type="unfinished"></translation>
+        <translation>நிறுவ {install_count}, நீக்க {uninstall_count}, புதுப்பிக்க {update_count}</translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/maing.py" line="401"/>
+        <source>Failed to fetch remote updates.</source>
+        <translation>தொலைநிலை புதுப்பிப்புகளைப் பெற முடியவில்லை.</translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/maing.py" line="402"/>
+        <source>Continue with local cache</source>
+        <translation>உள்ளூர் தற்காலிக நினைவகத்துடன் தொடரவும்</translation>
     </message>
 </context>
 <context>
