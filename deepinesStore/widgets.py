@@ -1,5 +1,5 @@
 from PyQt5 import QtGui, QtWidgets as w
-from PyQt5.QtCore import pyqtSignal, Qt, QTimer, QEasingCurve, QPropertyAnimation, QEvent, pyqtSlot, QSize
+from PyQt5.QtCore import pyqtSignal, Qt, QTimer, QEasingCurve, QPropertyAnimation, QEvent, pyqtSlot, QSize, QRect, QPoint
 from PyQt5.QtGui import QLinearGradient, QPainter, QBrush, QColor, QPalette
 
 from deepinesStore.demoted_actions import browse, open_telegram_link
@@ -357,3 +357,143 @@ class StateOverlayWidget(w.QWidget):
 				self.action_button.clicked.connect(callback)
 		else:
 			self.action_button.hide()
+
+class FlowLayout(w.QLayout):
+	def __init__(self, parent=None, margin=-1, hSpacing=-1, vSpacing=-1):
+		super().__init__(parent)
+		self._hSpace = hSpacing
+		self._vSpace = vSpacing
+		self.itemList = []
+		self.setContentsMargins(margin, margin, margin, margin)
+
+	def __del__(self):
+		item = self.takeAt(0)
+		while item:
+			item = self.takeAt(0)
+
+	def addItem(self, item):
+		self.itemList.append(item)
+
+	def horizontalSpacing(self):
+		if self._hSpace >= 0:
+			return self._hSpace
+		return self.smartSpacing(w.QStyle.PixelMetric.PM_LayoutHorizontalSpacing)
+
+	def verticalSpacing(self):
+		if self._vSpace >= 0:
+			return self._vSpace
+		return self.smartSpacing(w.QStyle.PixelMetric.PM_LayoutVerticalSpacing)
+
+	def count(self):
+		return len(self.itemList)
+
+	def itemAt(self, index):
+		if 0 <= index < len(self.itemList):
+			return self.itemList[index]
+		return None
+
+	def takeAt(self, index):
+		if 0 <= index < len(self.itemList):
+			return self.itemList.pop(index)
+		return None
+
+	def expandingDirections(self):
+		return Qt.Orientations(Qt.Orientation(0))
+
+	def hasHeightForWidth(self):
+		return True
+
+	def heightForWidth(self, width):
+		height = self.doLayout(QRect(0, 0, width, 0), True)
+		return height
+
+	def setGeometry(self, rect):
+		super().setGeometry(rect)
+		self.doLayout(rect, False)
+
+	def sizeHint(self):
+		return self.minimumSize()
+
+	def minimumSize(self):
+		size = QSize()
+		for item in self.itemList:
+			size = size.expandedTo(item.minimumSize())
+		left, top, right, bottom = self.getContentsMargins()
+		size += QSize(left + right, top + bottom)
+		return size
+
+	def doLayout(self, rect, testOnly):
+		x = rect.x()
+		y = rect.y()
+		lineHeight = 0
+		spacing = self.horizontalSpacing()
+
+		# Phase 1: Group items into rows
+		rows = []
+		current_row = []
+		current_row_width = 0
+
+		for item in self.itemList:
+			item_width = item.sizeHint().width()
+			if current_row and x + item_width > rect.right():
+				rows.append((current_row, current_row_width))
+				current_row = []
+				x = rect.x()
+				current_row_width = 0
+
+			current_row.append(item)
+			x += item_width + spacing
+			current_row_width += item_width + spacing
+
+		if current_row:
+			rows.append((current_row, current_row_width))
+
+		# Calculate total height for vertical centering
+		total_height = 0
+		for row, _ in rows:
+			rowHeight = max([item.sizeHint().height() for item in row]) if row else 0
+			total_height += rowHeight + self.verticalSpacing()
+		if rows:
+			total_height -= self.verticalSpacing()
+
+		vertical_offset = (rect.height() - total_height) // 2 if rect.height() > total_height else 0
+
+		# Phase 2: Layout rows with centering and animations
+		y = rect.y() + vertical_offset
+		for row, row_width in rows:
+			actual_row_width = row_width - spacing if row_width > 0 else 0
+			x_offset = rect.x() + (rect.width() - actual_row_width) // 2
+			x_offset = max(rect.x(), x_offset)
+			lineHeight = 0
+
+			for item in row:
+				lineHeight = max(lineHeight, item.sizeHint().height())
+				if not testOnly:
+					target_rect = QRect(QPoint(x_offset, y), item.sizeHint())
+					wid = item.widget()
+					if wid:
+						if not hasattr(wid, '_flow_anim'):
+							wid._flow_anim = QPropertyAnimation(wid, b"geometry")
+							wid._flow_anim.setDuration(300)
+							wid._flow_anim.setEasingCurve(QEasingCurve.OutCubic)
+							wid.setGeometry(target_rect)
+						else:
+							if wid.geometry() != target_rect:
+								wid._flow_anim.stop()
+								wid._flow_anim.setStartValue(wid.geometry())
+								wid._flow_anim.setEndValue(target_rect)
+								wid._flow_anim.start()
+				x_offset += item.sizeHint().width() + spacing
+
+			y += lineHeight + self.verticalSpacing()
+
+		return total_height
+
+	def smartSpacing(self, pm):
+		parent = self.parent()
+		if not parent:
+			return -1
+		elif parent.isWidgetType():
+			return parent.style().pixelMetric(pm, None, parent)
+		else:
+			return parent.spacing()

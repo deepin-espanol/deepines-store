@@ -128,7 +128,7 @@ class StoreMWindow(GeometryMixin, EventsMixin, AppearanceMixin, QMainWindow):
 		self.overlay_widget.set_text(primary_text, secondary_text)
 		self.overlay_widget.set_action(button_text, button_callback)
 
-		ui.gridLayout.addWidget(self.overlay_widget, 0, 0, 1, 1)
+		ui.flowLayout.addWidget(self.overlay_widget)
 
 		self.status_widgets(not blocking)
 
@@ -199,8 +199,8 @@ class StoreMWindow(GeometryMixin, EventsMixin, AppearanceMixin, QMainWindow):
 			super().resizeEvent(event)
 			if hasattr(self, 'primer_inicio') and self.primer_inicio:
 				self.primer_inicio = False
-			if 'list_app_show_temp' in globals():
-				self.refresh_app_grid_timer.start(200)
+				# Go Home
+				QTimer.singleShot(200, lambda: self.listwidgetclicked(ui.lw_categories.item(0)))
 
 	def refresh_app_grid(self):
 		try:
@@ -390,8 +390,8 @@ class StoreMWindow(GeometryMixin, EventsMixin, AppearanceMixin, QMainWindow):
 	#		   Listar aplicaciones			  #
 
 	def clear_gridLayout(self):
-		while ui.gridLayout.count():
-			item = ui.gridLayout.takeAt(0)
+		while ui.flowLayout.count():
+			item = ui.flowLayout.takeAt(0)
 			if item is not None:
 				widget = item.widget()
 				if widget is not None:
@@ -442,75 +442,12 @@ class StoreMWindow(GeometryMixin, EventsMixin, AppearanceMixin, QMainWindow):
 				self.show_overlay('magnifying-glass', ui.no_apps_found_text)
 			return
 
-		y = 0  # Creamos la coordenada y
-		x = 0  # Creamos la coordenada x
-		# Estas para establecer la ubicacion de la tarjetas en la grilla
-		i = 0
-		self.calcular_columnas()
-		for item in lista:  # Recorremos la lista con los elementos
-			i += 1  # Contador para agregar el espaciador horizontal
-			# Consultamos si ya tenemos tres tarjetas en y
-			if y % columnas == 0 and y != 0:
-				y = 0  # Reiniciamos y
-				x += 1  # Agregamos otra columna
-			y += 1  # agregamos 1 a la coordenada y
-
-			# Creamos una instancia de la clase card
+		for item in lista:
 			carta = Card(item, self)
-			# Agregamos dicha instancia a la grilla
-			ui.gridLayout.addWidget(carta, x, y, 1, 1)
-		ui.frame.verticalScrollBar().setSliderPosition(0)
+			ui.flowLayout.addWidget(carta)
+			ui.frame.verticalScrollBar().setSliderPosition(0)
 
-		# Espaciador vertical
-		spacerItem9 = QSpacerItem(
-			0, 0, QSizePolicy.Minimum, QSizePolicy.Expanding)
-		ui.gridLayout.addItem(spacerItem9, (x+1), 1, 1, 1)
 
-		# Si tenemos menos apps que las columnas, agregamos el espaciador
-		if i < columnas:
-			# Espaciador horizontal
-			spacerItem8 = QSpacerItem(
-				0, 0, QSizePolicy.Expanding, QSizePolicy.Minimum)
-			ui.gridLayout.addItem(spacerItem8, x, columnas, 1, 10)
-
-	#				/Lista de apps				#
-	################################################
-
-	################################################
-	#			  Calcular columnas			   #
-	def calcular_columnas(self):
-		if width < 1360:
-			base = 180
-		elif width >= 1360 and width < 2500:
-			base = 210
-		elif width > 2500:
-			base = 420
-
-		ancho = ui.frame.frameGeometry().width()
-		global columnas, tamanio
-
-		if ancho < 700:
-			ancho = ancho_inicio
-
-		columnas = ancho // (base + 40)
-		restante = ancho % (base + 40)
-		tamanio = base + (restante // columnas)
-
-	def calcular_anchos(self):
-		width_screen = int(width * 0.7)
-		if width_screen < 945:
-			width_screen = 945
-
-		size_frame = int(width * 0.14)
-		if size_frame < 200:
-			size_frame = 200
-		if size_frame > 300:
-			size_frame = 300
-		global ancho_inicio
-		ancho_inicio = width_screen - size_frame
-
-	#			  /Calcular columnas			  #
-	################################################
 
 	def contar_apps(self):
 		global selected_apps
@@ -778,6 +715,7 @@ class Card(QFrame):
 		self.cd.image_app.setToolTip(
 			"<p wrap='hard'>{}</p>".format(self.descripcion))
 		self.cd.image_app.setWordWrap(True)
+		tamanio = 210
 		self.setMinimumSize(QSize(tamanio+30, int((tamanio+115)*0.72222)))
 		self.setMaximumSize(QSize(tamanio+30, int((tamanio+155)*0.72222)))
 		self.cd.image_app.setMinimumSize(QSize(tamanio, int(tamanio*0.72222)))
@@ -1197,7 +1135,6 @@ class LoadingScreen(EventsMixin, AppearanceMixin, QMainWindow):
 		list_app_updatable = d_updatable
 
 		self.main_window = StoreMWindow()
-		self.main_window.calcular_anchos()
 		self.main_window.show()
 		QTimer.singleShot(200, self.close) # wait! dde-shell dock is buggy, keep the icon there!
 

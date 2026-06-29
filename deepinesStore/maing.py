@@ -4,29 +4,12 @@ from PyQt5 import QtGui, QtWidgets
 from PyQt5.QtCore import QMetaObject, QRect, QSize, Qt
 
 from deepinesStore.core import get_res, tr, get_text_link, STORE_VERSION
-from deepinesStore.widgets import ClickableLabel, ClickableList
+from deepinesStore.widgets import ClickableLabel, ClickableList, FlowLayout
 
 class Ui_MainWindow(object):
 
 	def __init__(self, width, height):
-		#print("El ancho del monitor es: {}".format(width))
-
-		self.width_screen = int(width * 0.7)
-		if self.width_screen < 945:
-			self.width_screen = 945
-		#print("El width_screen ({}*0.7) es: {}".format(width, self.width_screen))
-
-		self.height_screen = int(height * 0.85)
-		if self.height_screen < 700:
-			self.height_screen = 700
-		#print("El height_screen ({}*0.8) es: {}".format(height, self.height_screen))
-
-		self.size_frame = int(width * 0.14)
-		if self.size_frame < 200:
-			self.size_frame = 200
-		if self.size_frame > 300:
-			self.size_frame = 300
-		#print("El frame ({}*0.14) es: {}".format(width, self.size_frame))
+		pass
 
 	def setupUi(self, MainWindow):
 		svg_fondo = get_res('icono')
@@ -50,7 +33,7 @@ class Ui_MainWindow(object):
 
 		MainWindow.setObjectName("MainWindow")
 		MainWindow.setMinimumSize(QSize(960, 634))
-		MainWindow.resize(self.width_screen, self.height_screen)
+		MainWindow.resize(960, 700)
 		self.centralwidget = QtWidgets.QWidget(MainWindow)
 		self.centralwidget.setObjectName("centralwidget")
 
@@ -116,8 +99,8 @@ class Ui_MainWindow(object):
 
 		# Frame side bar
 		self.frame_2 = QtWidgets.QFrame(self.centralwidget)
-		self.frame_2.setMinimumSize(QSize(self.size_frame, 0))
-		self.frame_2.setMaximumSize(QSize(self.size_frame, 16777215))
+		self.frame_2.setMinimumSize(QSize(200, 0))
+		self.frame_2.setMaximumSize(QSize(200, 16777215))
 		self.verticalLayout = QtWidgets.QVBoxLayout(self.frame_2)
 		spacerItem2 = QtWidgets.QSpacerItem(20, 2,
 											QtWidgets.QSizePolicy.Minimum,
@@ -214,9 +197,9 @@ class Ui_MainWindow(object):
 		self.scroll_apps.setObjectName("scroll_apps")
 		self.scroll_apps.setStyleSheet(
 			"#scroll_apps{ padding-left: 30px; padding-right: 30px; background-color: transparent;}")
-		self.gridLayout = QtWidgets.QGridLayout(self.scroll_apps)
-		self.gridLayout.setContentsMargins(0, 0, 0, 0)
-		self.gridLayout.setSpacing(2)
+		self.flowLayout = FlowLayout(self.scroll_apps)
+		self.flowLayout.setContentsMargins(0, 0, 0, 0)
+		self.flowLayout.setSpacing(2)
 		self.frame.setWidget(self.scroll_apps)
 		self.gridLayout_2.addWidget(self.frame, 1, 1, 1, 1)
 
@@ -247,8 +230,8 @@ class Ui_MainWindow(object):
 		self.horizontalLayout_4.setSpacing(20)
 
 		self.frame_4 = QtWidgets.QFrame(self.widget_1)
-		self.frame_4.setMinimumSize(QSize((self.size_frame-20), 35))
-		self.frame_4.setMaximumSize(QSize(16777215, 35))
+		self.frame_4.setMinimumSize(QSize(180, 35))
+		self.frame_4.setMaximumSize(QSize(180, 35))
 		self.frame_4.setStyleSheet("border-radius: 15px;\n"
 								   "background-color: rgba(16, 16, 16, 122);\n"
 								   "color: white;")
