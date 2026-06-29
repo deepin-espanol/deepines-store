@@ -14,7 +14,8 @@ class SettingsManager:
 		self.settings_file = config_dir / 'settings.json'
 		self._data = {
 			"auto_update": True,
-			"geometry": None
+			"geometry": None,
+			"home_apps_count": 8
 		}
 		self._load()
 

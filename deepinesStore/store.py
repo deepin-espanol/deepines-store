@@ -384,7 +384,8 @@ class StoreMWindow(GeometryMixin, EventsMixin, AppearanceMixin, QMainWindow):
 
 	#		   Aplicaciones Inicio			  #
 	def Apps_inicio(self, lista_app: List[AppInfo]):
-		num_to_select = min(len(lista_app), 8)
+		count = SettingsManager.get_instance().get("home_apps_count", 8)
+		num_to_select = min(len(lista_app), count)
 		return sample(lista_app, num_to_select)
 
 	#		   Listar aplicaciones			  #
