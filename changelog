@@ -1,3 +1,29 @@
+deepines-store (1.4.8) stable; urgency=low
+
+  * Recommend reboot and rename restart helper.
+  * Fix logout_notify_helper.py indentation.
+  * Fix apt purge rmdir failure.
+
+ -- Amaro Martínez <xoas@airmail.cc>  Sat, 31 Jan 2026 16:52:08 -0500
+
+deepines-store (1.4.7) stable; urgency=low
+
+  * Ensure control files are downloaded before attempting to read them.
+  * Add extra clean up after removal.
+  * Update repo URL fallback to v6 + debug prints.
+  * Add Flatpak .desktop notification prompt.
+
+ -- Amaro Martínez <xoas@airmail.cc>  Wed, 24 Dec 2025 03:40:39 -0500
+
+deepines-store (1.4.6) stable; urgency=low
+
+  * Add support for Deepin 25 (Deepines 6).
+  * Add purge case for user-downloaded banners.
+  * Add partial Flathub support for other architectures.
+  * Fix regression: stdout not logging.
+
+ -- Amaro Martínez <xoas@airmail.cc>  Wed, 17 Dec 2025 23:36:34 -0500
+
 deepines-store (1.4.0) stable; urgency=low
 
   * Added support for Flatpak apps from the Flathub repository.
