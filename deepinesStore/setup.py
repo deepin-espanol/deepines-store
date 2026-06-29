@@ -59,20 +59,26 @@ def get_installed_apps(list_app_deb, list_app_flatpak):
 	# platforms where `DEF` isn't available (e.g., Windows) or when
 	# AppStream/Flatpak data is missing.
 	installed_ids = []
+	installed_info = {}
 	if list_app_flatpak and hasattr(demoted, 'DEF'):
 		try:
-			flatpak_proc = demoted.run_cmd(demoted.DEF, cmd=['flatpak', 'list', '--columns=application'])
-			installed_ids = [line.rstrip("\n") for line in flatpak_proc.stdout.readlines()]
+			flatpak_proc = demoted.run_cmd(demoted.DEF, cmd=['flatpak', 'list', '--columns=application,version'])
+			for line in flatpak_proc.stdout.readlines():
+				parts = line.rstrip("\n").split("\t")
+				if len(parts) >= 1:
+					installed_info[parts[0]] = parts[1] if len(parts) > 1 else ""
 		except Exception:
-			installed_ids = []
+			pass
 
-	for installed_id in installed_ids:
+	for installed_id, installed_version in installed_info.items():
 		for app_item in list_app_flatpak:
 			if installed_id == app_item.id:
 				list_installed.append(app_item)
 				indice = list_app_flatpak.index(app_item)
 				list_app_flatpak[indice].state = AppState.INSTALLED
 				list_app_flatpak[indice].process = ProcessType.UNINSTALL
+				if installed_version:
+					list_app_flatpak[indice].version = installed_version
 
 	return(list_installed)
 
