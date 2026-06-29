@@ -1,13 +1,11 @@
 # -*- coding: utf-8 -*-
-import json
-import math
 import platform
 from os import system
 from PyQt5.Qt import Qt
 from PyQt5.QtCore import QRect, QTimer, QRectF, pyqtSlot
 from PyQt5.QtGui import QPainterPath, QRegion
 from PyQt5.QtWidgets import QApplication
-from deepinesStore.demoted_actions import write_file, config_dir
+from deepinesStore.settings import SettingsManager
 from deepinesStore.appearance import AppearanceManager
 
 class EventsMixin:
@@ -161,22 +159,22 @@ class AppearanceMixin:
 
 class GeometryMixin:
 	def showEvent(self, event):
-		geom_file = config_dir / 'geometry.json'
-		if geom_file.exists() and not hasattr(self, '_geometry_restored'):
+		settings = SettingsManager.get_instance()
+		geometry_data = settings.get("geometry")
+		
+		if geometry_data and not hasattr(self, '_geometry_restored'):
 			try:
-				with open(geom_file, 'r') as f:
-					data = json.load(f)
-					if all(k in data for k in ("x", "y", "w", "h")):
-						target_rect = QRect(data["x"], data["y"], data["w"], data["h"])
-						valid = False
-						app = QApplication.instance()
-						desktop = app.desktop()
-						for i in range(desktop.screenCount()):
-							if desktop.screenGeometry(i).contains(target_rect.center()):
-								valid = True
-								break
-						if valid:
-							self.setGeometry(target_rect)
+				if all(k in geometry_data for k in ("x", "y", "w", "h")):
+					target_rect = QRect(geometry_data["x"], geometry_data["y"], geometry_data["w"], geometry_data["h"])
+					valid = False
+					app = QApplication.instance()
+					desktop = app.desktop()
+					for i in range(desktop.screenCount()):
+						if desktop.screenGeometry(i).contains(target_rect.center()):
+							valid = True
+							break
+					if valid:
+						self.setGeometry(target_rect)
 			except Exception as e:
 				print(f"Failed to load geometry: {e}")
 			self._geometry_restored = True
@@ -197,11 +195,6 @@ class GeometryMixin:
 				"w": geom.width(),
 				"h": geom.height()
 			}
-			geom_file = config_dir / 'geometry.json'
-			try:
-				json_bytes = json.dumps(data).encode('utf-8')
-				dummy = type('obj', (object,), {'content': json_bytes})
-				write_file(dummy, geom_file)
-			except Exception as e:
-				print(f"Failed to save geometry: {e}")
+			settings = SettingsManager.get_instance()
+			settings.set("geometry", data)
 		super().closeEvent(event)

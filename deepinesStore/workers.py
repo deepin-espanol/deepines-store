@@ -38,7 +38,7 @@ class CheckUpdatesThread(QThread):
 				print(f"Exception checking deb updates: {result}")
 			else:
 				for app_item in self.list_app_deb:
-					if app_item.state == AppState.INSTALLED and app_item.id in result:
+					if app_item.state in (AppState.INSTALLED, AppState.UPDATABLE) and app_item.id in result:
 						app_item.available_version = result[app_item.id]
 						app_item.state = AppState.UPDATABLE
 						app_item.process = ProcessType.UPDATE
@@ -61,7 +61,7 @@ class CheckUpdatesThread(QThread):
 						update_map[parts[0]] = None
 
 				for app_item in self.list_app_flatpak:
-					if app_item.state == AppState.INSTALLED and app_item.id in update_map:
+					if app_item.state in (AppState.INSTALLED, AppState.UPDATABLE) and app_item.id in update_map:
 						app_item.available_version = update_map[app_item.id] or ""
 						app_item.state = AppState.UPDATABLE
 						app_item.process = ProcessType.UPDATE

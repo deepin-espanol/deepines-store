@@ -18,6 +18,7 @@ from random import sample
 from deepinesStore.app_info import AppInfo, AppType, AppState, ProcessType
 from deepinesStore.maing import Ui_MainWindow
 from deepinesStore.workers import CheckUpdatesThread, LoaderThread
+from deepinesStore.settings import SettingsManager
 from deepinesStore.cardg import Ui_Frame
 from deepinesStore.about import AboutDialog
 from deepinesStore.core import get_res, get_app_icon, get_dl
@@ -84,6 +85,13 @@ class StoreMWindow(GeometryMixin, EventsMixin, AppearanceMixin, QMainWindow):
 		self.has_checked_updates = False
 		self.start_check_updates()
 
+		# Initialize Auto-Update Polling
+		self.settings = SettingsManager.get_instance()
+		if self.settings.get("auto_update", True):
+			self.auto_update_timer = QTimer(self)
+			self.auto_update_timer.timeout.connect(lambda: self.start_check_updates(auto=True))
+			self.auto_update_timer.start(5 * 60 * 1000) # 5 minutes
+
 
 		ui.btn_install.setEnabled(False)
 		ui.btn_install.clicked.connect(self.confirm_app_installation)
@@ -128,12 +136,11 @@ class StoreMWindow(GeometryMixin, EventsMixin, AppearanceMixin, QMainWindow):
 
 		self.status_widgets(not blocking)
 
-	def start_check_updates(self):
+	def start_check_updates(self, auto=False):
 		if self.is_checking_updates:
 			return
 		self.is_checking_updates = True
-		self.is_checking_updates = True
-		if ui.lw_categories.currentRow() == 12:
+		if not auto and ui.lw_categories.currentRow() == 12:
 			self.show_overlay('Deepines', ui.checking_updates_text, is_movie=True)
 
 		self.check_updates_thread = CheckUpdatesThread(self.lista_app_deb, self.lista_app_flatpak)
@@ -296,6 +303,14 @@ class StoreMWindow(GeometryMixin, EventsMixin, AppearanceMixin, QMainWindow):
 		}
 
 		index = ui.lw_categories.currentRow()
+		
+		# Hidden shortcut: Ctrl + Click on Updates checks for updates manually
+		if index == 12:
+			modifiers = QApplication.keyboardModifiers()
+			if modifiers == Qt.ControlModifier:
+				self.is_checking_updates = False # Force bypass gate
+				self.start_check_updates(auto=False)
+				
 		filter.extend(filter_mapping.get(index, []))
 
 		if "home" not in filter and "installed" not in filter and "updates" not in filter:
