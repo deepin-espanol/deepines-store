@@ -1,3 +1,20 @@
+deepines-store (1.5.0) stable; urgency=low
+
+  * Make the store be able to update itself.
+  * Add auto update support and unify settings.
+  * Force refresh apt/flatpak on demand and at launch.
+  * Sync window radius via DBus.
+  * Save window position and reorganize mixins.
+  * Add secondary button for uninstalling when update is available.
+  * Fix update listing, error reporting, and better error handling.
+  * Fix version reporting for installed Flatpak apps.
+  * Fix workers not dying early and being stuck.
+  * Alternative LoadingScreen fix + close, minimize support.
+  * Update banners and app icons.
+  * Update translations.
+
+ -- Amaro Martínez <xoas@airmail.cc>  Mon, 29 Jun 2026 00:59:16 -0500
+
 deepines-store (1.4.8) stable; urgency=low
 
   * Recommend reboot and rename restart helper.
