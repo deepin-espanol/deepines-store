@@ -13,3 +13,4 @@ deemix
 deepines-win-usb-installer
 deepines-security-patch
 webapps-creator-ui
+deepines-store
