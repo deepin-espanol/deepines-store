@@ -9,18 +9,6 @@ class G:
 		self.name = name
 		self.contact = contact
 
-class NoClickableStyle(w.QProxyStyle):
-	def __init__(self, parent=None, skip_indices=[]):
-		super().__init__(parent)
-		self.skip_indices = skip_indices
-
-	def drawControl(self, element, option, painter, widget=None):
-		if element == w.QStyle.CE_ItemViewItem:
-			index = option.index
-			if index.isValid() and index.row() in self.skip_indices:
-				option.state &= ~w.QStyle.State_Enabled
-				option.state &= ~w.QStyle.State_MouseOver
-		super().drawControl(element, option, painter, widget)
 
 class ClickableList(w.QListWidget):
 	def __init__(self, parent=None):
@@ -37,9 +25,6 @@ class ClickableList(w.QListWidget):
 			event.ignore()
 		else:
 			super().mouseMoveEvent(event)
-
-	def set_skip_item_action_indices(self, skip_indices=[]):
-		self.setStyle(NoClickableStyle(self.style(), skip_indices))
 
 	# Accessibility!!
 	def keyPressEvent(self, event):
@@ -68,7 +53,7 @@ class CreditsListWidget(w.QListWidget):
 		self.fade_height = 50  # Height of fade effect at top and bottom
 
 		# Setup animation for smooth scrolling
-		self.scroll_animation = QPropertyAnimation(self.verticalScrollBar(), b"value")
+		self.scroll_animation = QPropertyAnimation(self.verticalScrollBar(), b"value", self)
 		self.scroll_animation.setDuration(1000)  # 1 second for smooth scroll
 		self.scroll_animation.setEasingCurve(QEasingCurve.OutQuad)
 
@@ -76,11 +61,15 @@ class CreditsListWidget(w.QListWidget):
 		self.updateStyleSheet()
 		# if palette changes...
 		self.app_instance.paletteChanged.connect(self.onPaletteChanged)
+		self.destroyed.connect(self.on_destroyed)
+
+	def on_destroyed(self):
+		try:
+			self.app_instance.paletteChanged.disconnect(self.onPaletteChanged)
+		except Exception:
+			pass
 
 	def event(self, event):
-		if event.type() == QEvent.Move:
-			self.updateStyleSheet()
-
 		return super().event(event)
 
 	@pyqtSlot()
@@ -112,9 +101,6 @@ class CreditsListWidget(w.QListWidget):
 		}}
 		""")
 
-	def set_skip_item_action_indices(self, skip_indices=[]):
-		self.setStyle(NoClickableStyle(self.style(), skip_indices))
-
 	def paintEvent(self, event):
 		super().paintEvent(event)
 		# Get window color from parent's palette
@@ -133,6 +119,13 @@ class CreditsListWidget(w.QListWidget):
 
 		# Draw gradient overlay
 		painter.fillRect(self.rect(), QBrush(gradient))
+		painter.end()
+
+	def hideEvent(self, event):
+		self.timer.stop()
+		if hasattr(self, 'scroll_animation'):
+			self.scroll_animation.stop()
+		super().hideEvent(event)
 
 	def mousePressEvent(self, event):
 		if event.buttons() == Qt.LeftButton:
@@ -222,15 +215,14 @@ def add_people_to_list(people, list_widget):
 	list_widget.addItem(empty_item)
 	empty_item.setFlags(Qt.NoItemFlags)
 
-	list_widget.set_skip_item_action_indices([0, len(people) + 1])
-
 	return list_widget
 
 
-class StateOverlayWidget(w.QWidget):
+class StateOverlayWidget(w.QFrame):
 	def __init__(self, parent=None):
 		super().__init__(parent)
 		self.parent = parent
+		self.setAttribute(Qt.WA_StyledBackground, True)
 		self.setStyleSheet("background-color: transparent;")
 
 		self.verticalLayout = w.QVBoxLayout(self)
@@ -267,8 +259,15 @@ class StateOverlayWidget(w.QWidget):
 		self.secondary_label.setSizePolicy(w.QSizePolicy.Policy.Expanding, w.QSizePolicy.Policy.Minimum)
 		self.secondary_label.setStyleSheet("color: #fff; background-color: rgba(0, 0, 0, 0);")
 		self.secondary_label.setTextInteractionFlags(Qt.TextSelectableByMouse | Qt.LinksAccessibleByMouse)
+		self.secondary_label.setOpenExternalLinks(True)
 		self.secondary_label.hide()
 		self.verticalLayout.addWidget(self.secondary_label)
+
+		# Custom Widget Layout
+		self.custom_layout = w.QVBoxLayout()
+		self.custom_layout.setContentsMargins(0, 0, 0, 0)
+		self.custom_layout.setSpacing(10)
+		self.verticalLayout.addLayout(self.custom_layout)
 
 		# Action Button
 		self.action_button = w.QPushButton(self)
@@ -292,12 +291,17 @@ class StateOverlayWidget(w.QWidget):
 		self.verticalLayout.addItem(self.verticalSpacer)
 		self.current_movie = None
 
-	def set_media(self, media_path, is_movie=False, size=150):
+	def set_media(self, media_path: str, is_movie: bool = False, size=150, pixmap=None):
 		if self.current_movie:
 			self.current_movie.stop()
 			self.current_movie = None
 
-		if not media_path:
+		if is_movie and media_path:
+			self.current_movie = QtGui.QMovie(media_path, parent=self)
+			self.current_movie.setScaledSize(QSize(size, size))
+			self.media_label.setMovie(self.current_movie)
+			self.current_movie.start()
+		elif not media_path and not pixmap:
 			self.media_label.hide()
 			return
 
@@ -315,13 +319,12 @@ class StateOverlayWidget(w.QWidget):
 		self.media_label.setMaximumSize(size, size)
 		self.media_label.setSizePolicy(w.QSizePolicy.Policy.Fixed, w.QSizePolicy.Policy.Fixed)
 
-		if is_movie:
+		if pixmap:
+			self.media_label.setPixmap(pixmap)
+			self.media_label.setScaledContents(False)
+		elif is_movie:
 			self.current_movie = QtGui.QMovie(media_path)
-			reader = QtGui.QImageReader(media_path)
-			orig_size = reader.size()
-			if orig_size.isValid():
-				scaled_size = orig_size.scaled(size, size, Qt.KeepAspectRatio)
-				self.current_movie.setScaledSize(scaled_size)
+			self.current_movie.setScaledSize(QSize(size, size))
 			self.media_label.setMovie(self.current_movie)
 			self.current_movie.start()
 		else:
@@ -329,6 +332,9 @@ class StateOverlayWidget(w.QWidget):
 			pixmap = pixmap.scaled(size, size, Qt.KeepAspectRatio, Qt.SmoothTransformation)
 			self.media_label.setPixmap(pixmap)
 			self.media_label.setScaledContents(False)
+
+	def add_custom_widget(self, widget):
+		self.custom_layout.addWidget(widget, alignment=Qt.AlignmentFlag.AlignHCenter)
 
 	def set_text(self, primary_text, secondary_text=None):
 		if primary_text:
@@ -373,6 +379,7 @@ class FlowLayout(w.QLayout):
 
 	def addItem(self, item):
 		self.itemList.append(item)
+		self.invalidate()
 
 	def horizontalSpacing(self):
 		if self._hSpace >= 0:
@@ -394,7 +401,9 @@ class FlowLayout(w.QLayout):
 
 	def takeAt(self, index):
 		if 0 <= index < len(self.itemList):
-			return self.itemList.pop(index)
+			item = self.itemList.pop(index)
+			self.invalidate()
+			return item
 		return None
 
 	def expandingDirections(self):

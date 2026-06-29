@@ -6,17 +6,22 @@
     <message>
         <location filename="../deepinesStore/about.py" line="65"/>
         <source>About</source>
-        <translation>حول</translation>
+        <translation type="obsolete">حول</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/about.py" line="67"/>
+        <location filename="../deepinesStore/store.py" line="638"/>
         <source>Version {version}</source>
         <translation>الإصدار {version}</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/about.py" line="68"/>
+        <location filename="../deepinesStore/store.py" line="639"/>
         <source>The App Store of Deepin en Español</source>
         <translation>متجر تطبيقات Deepin en Español</translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/store.py" line="657"/>
+        <source>Close</source>
+        <translation type="unfinished">أغلق</translation>
     </message>
 </context>
 <context>
@@ -310,27 +315,27 @@
 <context>
     <name>LoadingScreen</name>
     <message>
-        <location filename="../deepinesStore/store.py" line="1182"/>
+        <location filename="../deepinesStore/store.py" line="1172"/>
         <source>Starting...</source>
         <translation>جاري البدء...</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="1184"/>
+        <location filename="../deepinesStore/store.py" line="1174"/>
         <source>Fetching files...</source>
         <translation>جاري جلب الملفات...</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="1185"/>
+        <location filename="../deepinesStore/store.py" line="1175"/>
         <source>Initializing components...</source>
         <translation>جاري تهيئة المكونات...</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="1186"/>
+        <location filename="../deepinesStore/store.py" line="1176"/>
         <source>Finalizing setup...</source>
         <translation>جاري إنهاء الإعداد...</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="1180"/>
+        <location filename="../deepinesStore/store.py" line="1170"/>
         <source>Loading...</source>
         <translation>جاري التحميل...</translation>
     </message>
@@ -364,229 +369,229 @@
 <context>
     <name>Ui_MainWindow</name>
     <message>
-        <location filename="../deepinesStore/maing.py" line="370"/>
+        <location filename="../deepinesStore/maing.py" line="352"/>
         <source>Home</source>
         <translation>الرئيسية</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="371"/>
+        <location filename="../deepinesStore/maing.py" line="353"/>
         <source>Games</source>
         <translation>الالعاب</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="372"/>
+        <location filename="../deepinesStore/maing.py" line="354"/>
         <source>Other</source>
         <translation>أخرى</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="379"/>
+        <location filename="../deepinesStore/maing.py" line="361"/>
         <source>About 
 Version: {version}</source>
         <translation>حول.
 الأصدار: {version}</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="371"/>
+        <location filename="../deepinesStore/maing.py" line="353"/>
         <source>Development</source>
         <translation>التطوير</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="378"/>
+        <location filename="../deepinesStore/maing.py" line="360"/>
         <source>Search</source>
         <translation>ابحث</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="370"/>
+        <location filename="../deepinesStore/maing.py" line="352"/>
         <source>Internet</source>
         <translation>الانترنت</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="372"/>
+        <location filename="../deepinesStore/maing.py" line="354"/>
         <source>System</source>
         <translation>النظام</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="371"/>
+        <location filename="../deepinesStore/maing.py" line="353"/>
         <source>Graphics</source>
         <translation>الرسوميات</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="364"/>
+        <location filename="../deepinesStore/maing.py" line="346"/>
         <source>About us</source>
         <translation>من نحن</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="370"/>
+        <location filename="../deepinesStore/maing.py" line="352"/>
         <source>Multimedia</source>
         <translation>الملتميديا</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="370"/>
+        <location filename="../deepinesStore/maing.py" line="352"/>
         <source>Deepines</source>
         <translation>ديبين</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="371"/>
+        <location filename="../deepinesStore/maing.py" line="353"/>
         <source>Office automation</source>
         <translation>أتمتة المكاتب</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="1181"/>
+        <location filename="../deepinesStore/store.py" line="1171"/>
         <source>Deepines Store</source>
         <translation>متجر ديبين</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="394"/>
+        <location filename="../deepinesStore/maing.py" line="376"/>
         <source>Installed</source>
         <translation>مثبت</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="389"/>
+        <location filename="../deepinesStore/maing.py" line="371"/>
         <source>Select the apps to install</source>
         <translation>حدد التطبيقات لتثبيت</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="380"/>
+        <location filename="../deepinesStore/maing.py" line="362"/>
         <source>Minimize</source>
         <translation>تصغير</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="381"/>
+        <location filename="../deepinesStore/maing.py" line="363"/>
         <source>Zoom</source>
         <translation>تقريب</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="382"/>
+        <location filename="../deepinesStore/maing.py" line="364"/>
         <source>Close</source>
         <translation>أغلق</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="366"/>
+        <location filename="../deepinesStore/maing.py" line="348"/>
         <source>Review apps</source>
         <translation>مراجعة التطبيقات</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="372"/>
+        <location filename="../deepinesStore/maing.py" line="354"/>
         <source>Installed apps</source>
         <translation>التطبيقات المثبتة</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="384"/>
+        <location filename="../deepinesStore/maing.py" line="366"/>
         <source>Apps .deb</source>
         <translation>تطبيقات .deb</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="385"/>
+        <location filename="../deepinesStore/maing.py" line="367"/>
         <source>Apps Flatpak</source>
         <translation>تطبيقات Flatpak</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="395"/>
+        <location filename="../deepinesStore/maing.py" line="377"/>
         <source>Uninstall</source>
         <translation>إلغاء التثبيت</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="396"/>
+        <location filename="../deepinesStore/maing.py" line="378"/>
         <source>Uninstalled</source>
         <translation>تم إلغاء التثبيت</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="406"/>
+        <location filename="../deepinesStore/maing.py" line="388"/>
         <source>Unable to establish connection with the server, &lt;br&gt;please check your internet connection.&lt;br&gt;If the problem persists, please contact us via Telegram &lt;br&gt;at {atTlURL}.&lt;br&gt;&lt;br&gt;Visit Deepin en Español for more information: {siteURL}</source>
         <translation>تعذر إنشاء اتصال بالخادم، &lt;br&gt;يرجى التحقق من اتصالك بالإنترنت.&lt;br&gt;إذا استمرت المشكلة، يرجى الاتصال بنا عبر Telegram &lt;br&gt;على {atTlURL}.&lt;br&gt;&lt;br&gt;تفضل بزيارة Deepin en Español لمزيد من المعلومات: {siteURL}</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="411"/>
+        <location filename="../deepinesStore/maing.py" line="393"/>
         <source>Deepines repository is not installed on your system,&lt;br&gt;Deepines Store needs this repository to work.&lt;br&gt;In the following link you will find the instructions to install it:&lt;br&gt;&lt;br&gt;{repoURL}</source>
         <translation>مستودع Deepines غير مثبت على نظامك،&lt;br&gt;متجر Deepines يحتاج إلى هذا المستودع ليعمل.&lt;br&gt;في الرابط التالي ستجد تعليمات التثبيت:&lt;br&gt;&lt;br&gt;{repoURL}</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="367"/>
+        <location filename="../deepinesStore/maing.py" line="349"/>
         <source>Start process</source>
         <translation>بدء العملية</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="415"/>
+        <location filename="../deepinesStore/maing.py" line="397"/>
         <source>Installing...</source>
         <translation>جاري التثبيت...</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="416"/>
+        <location filename="../deepinesStore/maing.py" line="398"/>
         <source>Installation failed!</source>
         <translation>فشل التثبيت!</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="417"/>
+        <location filename="../deepinesStore/maing.py" line="399"/>
         <source>Ready to install</source>
         <translation>جاهز للتثبيت</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="418"/>
+        <location filename="../deepinesStore/maing.py" line="400"/>
         <source>Starting installation...</source>
         <translation>بدء التثبيت...</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="373"/>
+        <location filename="../deepinesStore/maing.py" line="355"/>
         <source>Updates</source>
         <translation>التحديثات</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="390"/>
+        <location filename="../deepinesStore/maing.py" line="372"/>
         <source>Install</source>
         <translation>تثبيت</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="391"/>
+        <location filename="../deepinesStore/maing.py" line="373"/>
         <source>To install</source>
         <translation>للتثبيت</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="392"/>
+        <location filename="../deepinesStore/maing.py" line="374"/>
         <source>To uninstall</source>
         <translation>لإلغاء التثبيت</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="393"/>
+        <location filename="../deepinesStore/maing.py" line="375"/>
         <source>To update</source>
         <translation>للتحديث</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="397"/>
+        <location filename="../deepinesStore/maing.py" line="379"/>
         <source>Update</source>
         <translation>تحديث</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="398"/>
+        <location filename="../deepinesStore/maing.py" line="380"/>
         <source>No updates available</source>
         <translation>لا توجد تحديثات متاحة</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="399"/>
+        <location filename="../deepinesStore/maing.py" line="381"/>
         <source>Checking for updates...</source>
         <translation>جاري التحقق من التحديثات...</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="400"/>
+        <location filename="../deepinesStore/maing.py" line="382"/>
         <source>Check for updates</source>
         <translation>التحقق من وجود تحديثات</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="403"/>
+        <location filename="../deepinesStore/maing.py" line="385"/>
         <source>No apps found</source>
         <translation>لم يتم العثور على تطبيقات</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="405"/>
+        <location filename="../deepinesStore/maing.py" line="387"/>
         <source>{install_count} to install, {uninstall_count} to uninstall, {update_count} to update</source>
         <translation>{install_count} للتثبيت، {uninstall_count} لإلغاء التثبيت، {update_count} للتحديث</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="401"/>
+        <location filename="../deepinesStore/maing.py" line="383"/>
         <source>Failed to fetch remote updates.</source>
         <translation>فشل في جلب التحديثات عن بُعد.</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="402"/>
+        <location filename="../deepinesStore/maing.py" line="384"/>
         <source>Continue with local cache</source>
         <translation>المتابعة مع ذاكرة التخزين المؤقت المحلية</translation>
     </message>

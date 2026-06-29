@@ -6,17 +6,22 @@
     <message>
         <location filename="../deepinesStore/about.py" line="65"/>
         <source>About</source>
-        <translation>Про застосунок</translation>
+        <translation type="obsolete">Про застосунок</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/about.py" line="67"/>
+        <location filename="../deepinesStore/store.py" line="638"/>
         <source>Version {version}</source>
         <translation>Версія {version}</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/about.py" line="68"/>
+        <location filename="../deepinesStore/store.py" line="639"/>
         <source>The App Store of Deepin en Español</source>
         <translation>App Store Deepin en Español</translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/store.py" line="657"/>
+        <source>Close</source>
+        <translation type="unfinished">Закрити</translation>
     </message>
 </context>
 <context>
@@ -310,27 +315,27 @@
 <context>
     <name>LoadingScreen</name>
     <message>
-        <location filename="../deepinesStore/store.py" line="1182"/>
+        <location filename="../deepinesStore/store.py" line="1172"/>
         <source>Starting...</source>
         <translation>Розпочнемо...</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="1184"/>
+        <location filename="../deepinesStore/store.py" line="1174"/>
         <source>Fetching files...</source>
         <translation>Отримання файлів...</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="1185"/>
+        <location filename="../deepinesStore/store.py" line="1175"/>
         <source>Initializing components...</source>
         <translation>Ініціалізація компонентів...</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="1186"/>
+        <location filename="../deepinesStore/store.py" line="1176"/>
         <source>Finalizing setup...</source>
         <translation>Завершення налаштування...</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="1180"/>
+        <location filename="../deepinesStore/store.py" line="1170"/>
         <source>Loading...</source>
         <translation>Завантаження...</translation>
     </message>
@@ -364,229 +369,229 @@
 <context>
     <name>Ui_MainWindow</name>
     <message>
-        <location filename="../deepinesStore/maing.py" line="370"/>
+        <location filename="../deepinesStore/maing.py" line="352"/>
         <source>Home</source>
         <translation>Головна</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="371"/>
+        <location filename="../deepinesStore/maing.py" line="353"/>
         <source>Games</source>
         <translation>Ігри</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="372"/>
+        <location filename="../deepinesStore/maing.py" line="354"/>
         <source>Other</source>
         <translation>Інше</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="379"/>
+        <location filename="../deepinesStore/maing.py" line="361"/>
         <source>About 
 Version: {version}</source>
         <translation>Про 
 Версія: {version}</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="371"/>
+        <location filename="../deepinesStore/maing.py" line="353"/>
         <source>Development</source>
         <translation>Розробка</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="378"/>
+        <location filename="../deepinesStore/maing.py" line="360"/>
         <source>Search</source>
         <translation>Пошук</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="370"/>
+        <location filename="../deepinesStore/maing.py" line="352"/>
         <source>Internet</source>
         <translation>Інтернет</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="372"/>
+        <location filename="../deepinesStore/maing.py" line="354"/>
         <source>System</source>
         <translation>Системний</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="371"/>
+        <location filename="../deepinesStore/maing.py" line="353"/>
         <source>Graphics</source>
         <translation>Графіка</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="364"/>
+        <location filename="../deepinesStore/maing.py" line="346"/>
         <source>About us</source>
         <translation>Про нас</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="370"/>
+        <location filename="../deepinesStore/maing.py" line="352"/>
         <source>Multimedia</source>
         <translation>Мультимедіа</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="370"/>
+        <location filename="../deepinesStore/maing.py" line="352"/>
         <source>Deepines</source>
         <translation>Deepines</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="371"/>
+        <location filename="../deepinesStore/maing.py" line="353"/>
         <source>Office automation</source>
         <translation>Автоматизація офісу</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="1181"/>
+        <location filename="../deepinesStore/store.py" line="1171"/>
         <source>Deepines Store</source>
         <translation>Deepines Store</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="394"/>
+        <location filename="../deepinesStore/maing.py" line="376"/>
         <source>Installed</source>
         <translation>Встановлено</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="389"/>
+        <location filename="../deepinesStore/maing.py" line="371"/>
         <source>Select the apps to install</source>
         <translation>Виберіть застосунки для встановлення</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="380"/>
+        <location filename="../deepinesStore/maing.py" line="362"/>
         <source>Minimize</source>
         <translation>Згорнути</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="381"/>
+        <location filename="../deepinesStore/maing.py" line="363"/>
         <source>Zoom</source>
         <translation>Збільшити</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="382"/>
+        <location filename="../deepinesStore/maing.py" line="364"/>
         <source>Close</source>
         <translation>Закрити</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="366"/>
+        <location filename="../deepinesStore/maing.py" line="348"/>
         <source>Review apps</source>
         <translation>Переглянути застосунки</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="372"/>
+        <location filename="../deepinesStore/maing.py" line="354"/>
         <source>Installed apps</source>
         <translation>Встановлені застосунки</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="384"/>
+        <location filename="../deepinesStore/maing.py" line="366"/>
         <source>Apps .deb</source>
         <translation>Застосунки .deb</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="385"/>
+        <location filename="../deepinesStore/maing.py" line="367"/>
         <source>Apps Flatpak</source>
         <translation>Застосунки Flatpak</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="395"/>
+        <location filename="../deepinesStore/maing.py" line="377"/>
         <source>Uninstall</source>
         <translation>Видалити</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="396"/>
+        <location filename="../deepinesStore/maing.py" line="378"/>
         <source>Uninstalled</source>
         <translation>Видалено</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="406"/>
+        <location filename="../deepinesStore/maing.py" line="388"/>
         <source>Unable to establish connection with the server, &lt;br&gt;please check your internet connection.&lt;br&gt;If the problem persists, please contact us via Telegram &lt;br&gt;at {atTlURL}.&lt;br&gt;&lt;br&gt;Visit Deepin en Español for more information: {siteURL}</source>
         <translation>Не вдається встановити з'єднання з сервером, &lt;br&gt;перевірте своє інтернет-з'єднання. &lt;br&gt;Якщо проблема не зникне, будь ласка, зв'яжіться з нами через Telegram: &lt;br&gt;{atTlURL}.&lt;br&gt;&lt;br&gt; Відвідайте Deepin en Español для отримання додаткової інформації: {siteURL}</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="411"/>
+        <location filename="../deepinesStore/maing.py" line="393"/>
         <source>Deepines repository is not installed on your system,&lt;br&gt;Deepines Store needs this repository to work.&lt;br&gt;In the following link you will find the instructions to install it:&lt;br&gt;&lt;br&gt;{repoURL}</source>
         <translation>Репозиторій Deepines не встановлено у вашій системі,&lt;br&gt;Для роботи Deepines Store потрібен цей репозиторій.&lt;br&gt;За наступним посиланням ви знайдете інструкції з його встановлення:&lt;br&gt;&lt;br&gt;{repoURL}</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="367"/>
+        <location filename="../deepinesStore/maing.py" line="349"/>
         <source>Start process</source>
         <translation>Початок процесу</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="415"/>
+        <location filename="../deepinesStore/maing.py" line="397"/>
         <source>Installing...</source>
         <translation>Встановлення...</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="416"/>
+        <location filename="../deepinesStore/maing.py" line="398"/>
         <source>Installation failed!</source>
         <translation>Не вдалося встановити!</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="417"/>
+        <location filename="../deepinesStore/maing.py" line="399"/>
         <source>Ready to install</source>
         <translation>Готово до встановлення</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="418"/>
+        <location filename="../deepinesStore/maing.py" line="400"/>
         <source>Starting installation...</source>
         <translation>Початок встановлення...</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="373"/>
+        <location filename="../deepinesStore/maing.py" line="355"/>
         <source>Updates</source>
         <translation>Оновлення</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="390"/>
+        <location filename="../deepinesStore/maing.py" line="372"/>
         <source>Install</source>
         <translation>Встановити</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="391"/>
+        <location filename="../deepinesStore/maing.py" line="373"/>
         <source>To install</source>
         <translation>До встановлення</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="392"/>
+        <location filename="../deepinesStore/maing.py" line="374"/>
         <source>To uninstall</source>
         <translation>До видалення</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="393"/>
+        <location filename="../deepinesStore/maing.py" line="375"/>
         <source>To update</source>
         <translation>До оновлення</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="397"/>
+        <location filename="../deepinesStore/maing.py" line="379"/>
         <source>Update</source>
         <translation>Оновити</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="398"/>
+        <location filename="../deepinesStore/maing.py" line="380"/>
         <source>No updates available</source>
         <translation>Немає доступних оновлень</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="399"/>
+        <location filename="../deepinesStore/maing.py" line="381"/>
         <source>Checking for updates...</source>
         <translation>Перевірка оновлень...</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="400"/>
+        <location filename="../deepinesStore/maing.py" line="382"/>
         <source>Check for updates</source>
         <translation>Перевірити наявність оновлень</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="403"/>
+        <location filename="../deepinesStore/maing.py" line="385"/>
         <source>No apps found</source>
         <translation>Програми не знайдено</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="405"/>
+        <location filename="../deepinesStore/maing.py" line="387"/>
         <source>{install_count} to install, {uninstall_count} to uninstall, {update_count} to update</source>
         <translation>{install_count} для встановлення, {uninstall_count} для видалення, {update_count} для оновлення</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="401"/>
+        <location filename="../deepinesStore/maing.py" line="383"/>
         <source>Failed to fetch remote updates.</source>
         <translation>Не вдалося отримати віддалені оновлення.</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="402"/>
+        <location filename="../deepinesStore/maing.py" line="384"/>
         <source>Continue with local cache</source>
         <translation>Продовжити з локальним кешем</translation>
     </message>

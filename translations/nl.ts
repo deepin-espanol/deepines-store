@@ -6,17 +6,22 @@
     <message>
         <location filename="../deepinesStore/about.py" line="65"/>
         <source>About</source>
-        <translation>Over</translation>
+        <translation type="obsolete">Over</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/about.py" line="67"/>
+        <location filename="../deepinesStore/store.py" line="638"/>
         <source>Version {version}</source>
         <translation>Versie {version}</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/about.py" line="68"/>
+        <location filename="../deepinesStore/store.py" line="639"/>
         <source>The App Store of Deepin en Español</source>
         <translation>De appwinkel van Deepin en Español</translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/store.py" line="657"/>
+        <source>Close</source>
+        <translation type="unfinished">Sluiten</translation>
     </message>
 </context>
 <context>
@@ -310,27 +315,27 @@
 <context>
     <name>LoadingScreen</name>
     <message>
-        <location filename="../deepinesStore/store.py" line="1182"/>
+        <location filename="../deepinesStore/store.py" line="1172"/>
         <source>Starting...</source>
         <translation>Bezig met starten…</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="1184"/>
+        <location filename="../deepinesStore/store.py" line="1174"/>
         <source>Fetching files...</source>
         <translation>Bezig met ophalen van bestanden…</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="1185"/>
+        <location filename="../deepinesStore/store.py" line="1175"/>
         <source>Initializing components...</source>
         <translation>Bezig met laden van onderdelen…</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="1186"/>
+        <location filename="../deepinesStore/store.py" line="1176"/>
         <source>Finalizing setup...</source>
         <translation>Bezig met afronden…</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="1180"/>
+        <location filename="../deepinesStore/store.py" line="1170"/>
         <source>Loading...</source>
         <translation>Bezig met laden…</translation>
     </message>
@@ -364,229 +369,229 @@
 <context>
     <name>Ui_MainWindow</name>
     <message>
-        <location filename="../deepinesStore/maing.py" line="370"/>
+        <location filename="../deepinesStore/maing.py" line="352"/>
         <source>Home</source>
         <translation>Uitgelicht</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="371"/>
+        <location filename="../deepinesStore/maing.py" line="353"/>
         <source>Games</source>
         <translation>Games</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="372"/>
+        <location filename="../deepinesStore/maing.py" line="354"/>
         <source>Other</source>
         <translation>Overig</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="379"/>
+        <location filename="../deepinesStore/maing.py" line="361"/>
         <source>About 
 Version: {version}</source>
         <translation>Over
 Versie: {version}</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="371"/>
+        <location filename="../deepinesStore/maing.py" line="353"/>
         <source>Development</source>
         <translation>Ontwikkeling</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="378"/>
+        <location filename="../deepinesStore/maing.py" line="360"/>
         <source>Search</source>
         <translation>Zoeken</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="370"/>
+        <location filename="../deepinesStore/maing.py" line="352"/>
         <source>Internet</source>
         <translation>Internet</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="372"/>
+        <location filename="../deepinesStore/maing.py" line="354"/>
         <source>System</source>
         <translation>Systeem</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="371"/>
+        <location filename="../deepinesStore/maing.py" line="353"/>
         <source>Graphics</source>
         <translation>Grafisch</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="364"/>
+        <location filename="../deepinesStore/maing.py" line="346"/>
         <source>About us</source>
         <translation>Over ons</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="370"/>
+        <location filename="../deepinesStore/maing.py" line="352"/>
         <source>Multimedia</source>
         <translation>Multimedia</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="370"/>
+        <location filename="../deepinesStore/maing.py" line="352"/>
         <source>Deepines</source>
         <translation>Deepines</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="371"/>
+        <location filename="../deepinesStore/maing.py" line="353"/>
         <source>Office automation</source>
         <translation>Kantoorautomatisering</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="1181"/>
+        <location filename="../deepinesStore/store.py" line="1171"/>
         <source>Deepines Store</source>
         <translation>Deepines-winkel</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="394"/>
+        <location filename="../deepinesStore/maing.py" line="376"/>
         <source>Installed</source>
         <translation>Geïnstalleerd</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="389"/>
+        <location filename="../deepinesStore/maing.py" line="371"/>
         <source>Select the apps to install</source>
         <translation>Selecteer de te installeren programma's</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="380"/>
+        <location filename="../deepinesStore/maing.py" line="362"/>
         <source>Minimize</source>
         <translation>Minimaliseren</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="381"/>
+        <location filename="../deepinesStore/maing.py" line="363"/>
         <source>Zoom</source>
         <translation>Zoomen</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="382"/>
+        <location filename="../deepinesStore/maing.py" line="364"/>
         <source>Close</source>
         <translation>Sluiten</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="384"/>
+        <location filename="../deepinesStore/maing.py" line="366"/>
         <source>Apps .deb</source>
         <translation>Apps (.deb)</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="411"/>
+        <location filename="../deepinesStore/maing.py" line="393"/>
         <source>Deepines repository is not installed on your system,&lt;br&gt;Deepines Store needs this repository to work.&lt;br&gt;In the following link you will find the instructions to install it:&lt;br&gt;&lt;br&gt;{repoURL}</source>
         <translation>De Deepines-pakketbron is niet aanwezig op het systeem.&lt;br&gt;Voor het gebruik van de appwinkel is deze bron vereist.&lt;br&gt;Voeg de pakketbron aan de hand van de instructies in de link toe:&lt;br&gt;&lt;br&gt;{repoURL}</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="366"/>
+        <location filename="../deepinesStore/maing.py" line="348"/>
         <source>Review apps</source>
         <translation>Programma's beoordelen</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="372"/>
+        <location filename="../deepinesStore/maing.py" line="354"/>
         <source>Installed apps</source>
         <translation>Geïnstalleerde programma's</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="385"/>
+        <location filename="../deepinesStore/maing.py" line="367"/>
         <source>Apps Flatpak</source>
         <translation>Apps (Flatpak)</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="395"/>
+        <location filename="../deepinesStore/maing.py" line="377"/>
         <source>Uninstall</source>
         <translation>Verwijderen</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="396"/>
+        <location filename="../deepinesStore/maing.py" line="378"/>
         <source>Uninstalled</source>
         <translation>Verwijderd</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="406"/>
+        <location filename="../deepinesStore/maing.py" line="388"/>
         <source>Unable to establish connection with the server, &lt;br&gt;please check your internet connection.&lt;br&gt;If the problem persists, please contact us via Telegram &lt;br&gt;at {atTlURL}.&lt;br&gt;&lt;br&gt;Visit Deepin en Español for more information: {siteURL}</source>
         <translation>Er kan geen verbinding worden gemaakt met de server.&lt;br&gt;Controleer je internetverbinding.&lt;br&gt;Als het probleem zich blijft voordoen, neem dan contact met ons op via Telegram&lt;br&gt;op {atTlURL}.&lt;br&gt;&lt;br&gt;Ga voor meer informatie naar de Deepin en Español-website: {siteURL}</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="367"/>
+        <location filename="../deepinesStore/maing.py" line="349"/>
         <source>Start process</source>
         <translation>Starten</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="415"/>
+        <location filename="../deepinesStore/maing.py" line="397"/>
         <source>Installing...</source>
         <translation>Bezig met installeren…</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="416"/>
+        <location filename="../deepinesStore/maing.py" line="398"/>
         <source>Installation failed!</source>
         <translation>De installatie is mislukt!</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="417"/>
+        <location filename="../deepinesStore/maing.py" line="399"/>
         <source>Ready to install</source>
         <translation>Klaar om te installeren</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="418"/>
+        <location filename="../deepinesStore/maing.py" line="400"/>
         <source>Starting installation...</source>
         <translation>Bezig met starten van installatie…</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="373"/>
+        <location filename="../deepinesStore/maing.py" line="355"/>
         <source>Updates</source>
         <translation>Updates</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="390"/>
+        <location filename="../deepinesStore/maing.py" line="372"/>
         <source>Install</source>
         <translation>Installeren</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="391"/>
+        <location filename="../deepinesStore/maing.py" line="373"/>
         <source>To install</source>
         <translation>Te installeren</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="392"/>
+        <location filename="../deepinesStore/maing.py" line="374"/>
         <source>To uninstall</source>
         <translation>Te verwijderen</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="393"/>
+        <location filename="../deepinesStore/maing.py" line="375"/>
         <source>To update</source>
         <translation>Te updaten</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="397"/>
+        <location filename="../deepinesStore/maing.py" line="379"/>
         <source>Update</source>
         <translation>Bijwerken</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="398"/>
+        <location filename="../deepinesStore/maing.py" line="380"/>
         <source>No updates available</source>
         <translation>Geen updates beschikbaar</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="399"/>
+        <location filename="../deepinesStore/maing.py" line="381"/>
         <source>Checking for updates...</source>
         <translation>Controleren op updates...</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="400"/>
+        <location filename="../deepinesStore/maing.py" line="382"/>
         <source>Check for updates</source>
         <translation>Controleer op updates</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="403"/>
+        <location filename="../deepinesStore/maing.py" line="385"/>
         <source>No apps found</source>
         <translation>Geen apps gevonden</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="405"/>
+        <location filename="../deepinesStore/maing.py" line="387"/>
         <source>{install_count} to install, {uninstall_count} to uninstall, {update_count} to update</source>
         <translation>{install_count} te installeren, {uninstall_count} te verwijderen, {update_count} te updaten</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="401"/>
+        <location filename="../deepinesStore/maing.py" line="383"/>
         <source>Failed to fetch remote updates.</source>
         <translation>Ophalen van updates op afstand mislukt.</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="402"/>
+        <location filename="../deepinesStore/maing.py" line="384"/>
         <source>Continue with local cache</source>
         <translation>Doorgaan met lokale cache</translation>
     </message>

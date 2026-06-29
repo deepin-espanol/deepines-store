@@ -6,17 +6,22 @@
     <message>
         <location filename="../deepinesStore/about.py" line="65"/>
         <source>About</source>
-        <translation>About</translation>
+        <translation type="obsolete">About</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/about.py" line="67"/>
+        <location filename="../deepinesStore/store.py" line="638"/>
         <source>Version {version}</source>
         <translation>Version {version}</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/about.py" line="68"/>
+        <location filename="../deepinesStore/store.py" line="639"/>
         <source>The App Store of Deepin en Español</source>
         <translation>The App Store of Deepin en Español</translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/store.py" line="657"/>
+        <source>Close</source>
+        <translation type="unfinished">Lukk</translation>
     </message>
 </context>
 <context>
@@ -310,27 +315,27 @@
 <context>
     <name>LoadingScreen</name>
     <message>
-        <location filename="../deepinesStore/store.py" line="1182"/>
+        <location filename="../deepinesStore/store.py" line="1172"/>
         <source>Starting...</source>
         <translation>Starting...</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="1184"/>
+        <location filename="../deepinesStore/store.py" line="1174"/>
         <source>Fetching files...</source>
         <translation>Fetching files...</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="1185"/>
+        <location filename="../deepinesStore/store.py" line="1175"/>
         <source>Initializing components...</source>
         <translation>Initializing components...</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="1186"/>
+        <location filename="../deepinesStore/store.py" line="1176"/>
         <source>Finalizing setup...</source>
         <translation>Finalizing setup...</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="1180"/>
+        <location filename="../deepinesStore/store.py" line="1170"/>
         <source>Loading...</source>
         <translation>Loading...</translation>
     </message>
@@ -364,229 +369,229 @@
 <context>
     <name>Ui_MainWindow</name>
     <message>
-        <location filename="../deepinesStore/maing.py" line="370"/>
+        <location filename="../deepinesStore/maing.py" line="352"/>
         <source>Home</source>
         <translation>Hjem</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="371"/>
+        <location filename="../deepinesStore/maing.py" line="353"/>
         <source>Games</source>
         <translation>Spill</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="372"/>
+        <location filename="../deepinesStore/maing.py" line="354"/>
         <source>Other</source>
         <translation>Annet</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="379"/>
+        <location filename="../deepinesStore/maing.py" line="361"/>
         <source>About 
 Version: {version}</source>
         <translation>Om
 Versjon: {version}</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="371"/>
+        <location filename="../deepinesStore/maing.py" line="353"/>
         <source>Development</source>
         <translation>Utvikling</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="378"/>
+        <location filename="../deepinesStore/maing.py" line="360"/>
         <source>Search</source>
         <translation>Søk</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="370"/>
+        <location filename="../deepinesStore/maing.py" line="352"/>
         <source>Internet</source>
         <translation>Internett</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="372"/>
+        <location filename="../deepinesStore/maing.py" line="354"/>
         <source>System</source>
         <translation>System</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="371"/>
+        <location filename="../deepinesStore/maing.py" line="353"/>
         <source>Graphics</source>
         <translation>Grafikk</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="364"/>
+        <location filename="../deepinesStore/maing.py" line="346"/>
         <source>About us</source>
         <translation>Om oss</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="370"/>
+        <location filename="../deepinesStore/maing.py" line="352"/>
         <source>Multimedia</source>
         <translation>Multimedia</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="370"/>
+        <location filename="../deepinesStore/maing.py" line="352"/>
         <source>Deepines</source>
         <translation>Deepines</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="371"/>
+        <location filename="../deepinesStore/maing.py" line="353"/>
         <source>Office automation</source>
         <translation>Kontor-automasjon</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="1181"/>
+        <location filename="../deepinesStore/store.py" line="1171"/>
         <source>Deepines Store</source>
         <translation>Deepines-butikken</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="394"/>
+        <location filename="../deepinesStore/maing.py" line="376"/>
         <source>Installed</source>
         <translation>Installert</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="389"/>
+        <location filename="../deepinesStore/maing.py" line="371"/>
         <source>Select the apps to install</source>
         <translation>Velg programmer å installere</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="380"/>
+        <location filename="../deepinesStore/maing.py" line="362"/>
         <source>Minimize</source>
         <translation>Minimer</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="381"/>
+        <location filename="../deepinesStore/maing.py" line="363"/>
         <source>Zoom</source>
         <translation>Forstørrelse</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="382"/>
+        <location filename="../deepinesStore/maing.py" line="364"/>
         <source>Close</source>
         <translation>Lukk</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="384"/>
+        <location filename="../deepinesStore/maing.py" line="366"/>
         <source>Apps .deb</source>
         <translation>Apps .deb</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="411"/>
+        <location filename="../deepinesStore/maing.py" line="393"/>
         <source>Deepines repository is not installed on your system,&lt;br&gt;Deepines Store needs this repository to work.&lt;br&gt;In the following link you will find the instructions to install it:&lt;br&gt;&lt;br&gt;{repoURL}</source>
         <translation>Deepines repository is not installed on your system,&lt;br&gt;Deepines Store needs this repository to work.&lt;br&gt;In the following link you will find the instructions to install it:&lt;br&gt;&lt;br&gt;{repoURL}</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="366"/>
+        <location filename="../deepinesStore/maing.py" line="348"/>
         <source>Review apps</source>
         <translation>Review apps</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="372"/>
+        <location filename="../deepinesStore/maing.py" line="354"/>
         <source>Installed apps</source>
         <translation>Installed apps</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="385"/>
+        <location filename="../deepinesStore/maing.py" line="367"/>
         <source>Apps Flatpak</source>
         <translation>Apps Flatpak</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="395"/>
+        <location filename="../deepinesStore/maing.py" line="377"/>
         <source>Uninstall</source>
         <translation>Uninstall</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="396"/>
+        <location filename="../deepinesStore/maing.py" line="378"/>
         <source>Uninstalled</source>
         <translation>Uninstalled</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="406"/>
+        <location filename="../deepinesStore/maing.py" line="388"/>
         <source>Unable to establish connection with the server, &lt;br&gt;please check your internet connection.&lt;br&gt;If the problem persists, please contact us via Telegram &lt;br&gt;at {atTlURL}.&lt;br&gt;&lt;br&gt;Visit Deepin en Español for more information: {siteURL}</source>
         <translation>Unable to establish connection with the server, &lt;br&gt;please check your internet connection.&lt;br&gt;If the problem persists, please contact us via Telegram &lt;br&gt;at {atTlURL}.&lt;br&gt;&lt;br&gt;Visit Deepin en Español for more information: {siteURL}</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="367"/>
+        <location filename="../deepinesStore/maing.py" line="349"/>
         <source>Start process</source>
         <translation>Start process</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="415"/>
+        <location filename="../deepinesStore/maing.py" line="397"/>
         <source>Installing...</source>
         <translation>Installing...</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="416"/>
+        <location filename="../deepinesStore/maing.py" line="398"/>
         <source>Installation failed!</source>
         <translation>Installation failed!</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="417"/>
+        <location filename="../deepinesStore/maing.py" line="399"/>
         <source>Ready to install</source>
         <translation>Ready to install</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="418"/>
+        <location filename="../deepinesStore/maing.py" line="400"/>
         <source>Starting installation...</source>
         <translation>Starting installation...</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="373"/>
+        <location filename="../deepinesStore/maing.py" line="355"/>
         <source>Updates</source>
         <translation>Updates</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="390"/>
+        <location filename="../deepinesStore/maing.py" line="372"/>
         <source>Install</source>
         <translation>Install</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="391"/>
+        <location filename="../deepinesStore/maing.py" line="373"/>
         <source>To install</source>
         <translation>To install</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="392"/>
+        <location filename="../deepinesStore/maing.py" line="374"/>
         <source>To uninstall</source>
         <translation>To uninstall</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="393"/>
+        <location filename="../deepinesStore/maing.py" line="375"/>
         <source>To update</source>
         <translation>To update</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="397"/>
+        <location filename="../deepinesStore/maing.py" line="379"/>
         <source>Update</source>
         <translation>Update</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="398"/>
+        <location filename="../deepinesStore/maing.py" line="380"/>
         <source>No updates available</source>
         <translation>No updates available</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="399"/>
+        <location filename="../deepinesStore/maing.py" line="381"/>
         <source>Checking for updates...</source>
         <translation>Checking for updates...</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="400"/>
+        <location filename="../deepinesStore/maing.py" line="382"/>
         <source>Check for updates</source>
         <translation>Check for updates</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="403"/>
+        <location filename="../deepinesStore/maing.py" line="385"/>
         <source>No apps found</source>
         <translation>No apps found</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="405"/>
+        <location filename="../deepinesStore/maing.py" line="387"/>
         <source>{install_count} to install, {uninstall_count} to uninstall, {update_count} to update</source>
         <translation>{install_count} to install, {uninstall_count} to uninstall, {update_count} to update</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="401"/>
+        <location filename="../deepinesStore/maing.py" line="383"/>
         <source>Failed to fetch remote updates.</source>
         <translation>Failed to fetch remote updates.</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/maing.py" line="402"/>
+        <location filename="../deepinesStore/maing.py" line="384"/>
         <source>Continue with local cache</source>
         <translation>Continue with local cache</translation>
     </message>

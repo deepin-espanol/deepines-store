@@ -20,8 +20,7 @@ from deepinesStore.maing import Ui_MainWindow
 from deepinesStore.workers import CheckUpdatesThread, LoaderThread
 from deepinesStore.settings import SettingsManager
 from deepinesStore.cardg import Ui_Frame
-from deepinesStore.about import AboutDialog
-from deepinesStore.core import get_res, get_app_icon, get_dl
+from deepinesStore.core import get_res, get_app_icon, get_dl, get_text_link, STORE_VERSION, tr
 from deepinesStore.install_progress import InstallThread
 from deepinesStore import setup
 from deepinesStore.widgets import LinkLabel, StateOverlayWidget
@@ -97,7 +96,6 @@ class StoreMWindow(GeometryMixin, EventsMixin, AppearanceMixin, QMainWindow):
 		ui.lbl_list_apps.clicked.connect(self.confirm_app_installation)
 		ui.lw_categories.itemClicked.connect(self.listwidgetclicked)
 		ui.lineEdit.textChanged.connect(self.search_app)
-		self.about_dialog = AboutDialog(self) #  Intentional preloading.
 		ui.label_2.clicked.connect(self.show_about_dialog)
 		ui.btn_close.clicked.connect(self.close)
 		ui.btn_zoom.clicked.connect(self.maximize)
@@ -111,20 +109,25 @@ class StoreMWindow(GeometryMixin, EventsMixin, AppearanceMixin, QMainWindow):
 
 		center_window(self)
 
+	def __tr(self, txt, disambiguation=None, n=-1):
+		return tr(self, txt, disambiguation, n)
+
 	################################################
 	#			 Control de errores / Overlays     #
 
-	def show_overlay(self, media_name, primary_text, is_movie=False, secondary_text=None, blocking=False, button_text=None, button_callback=None):
+	def show_overlay(self, media_name, primary_text, is_movie=False, secondary_text=None, blocking=False, button_text=None, button_callback=None, pixmap=None):
 		self.clear_gridLayout()
 		# Configure the widget
-		if is_movie:
+		if pixmap:
+			media_path = None
+		elif is_movie:
 			media_path = get_res(media_name, ext='.gif')
 		else:
 			media_path = get_res(media_name)
 		# Always create a new instance because clear_gridLayout deletes the old one
 		self.overlay_widget = StateOverlayWidget(self)
 
-		self.overlay_widget.set_media(media_path, is_movie)
+		self.overlay_widget.set_media(media_path, is_movie, pixmap=pixmap)
 		self.overlay_widget.set_text(primary_text, secondary_text)
 		self.overlay_widget.set_action(button_text, button_callback)
 
@@ -163,7 +166,7 @@ class StoreMWindow(GeometryMixin, EventsMixin, AppearanceMixin, QMainWindow):
 	def on_check_updates_error(self, error_msg):
 		self.is_checking_updates = False
 		self.has_checked_updates = False
-		
+
 		if ui.lw_categories.currentRow() == 12:
 			self.show_overlay(
 				'raccoon', 
@@ -204,9 +207,15 @@ class StoreMWindow(GeometryMixin, EventsMixin, AppearanceMixin, QMainWindow):
 
 	def refresh_app_grid(self):
 		try:
+			self.setUpdatesEnabled(False)
 			self.clear_gridLayout()
 			self.do_list_apps(list_app_show_temp)
+			ui.scroll_apps.update()
+			self.setUpdatesEnabled(True)
+			if hasattr(self, 'update_dynamic_stylesheet'):
+				self.update_dynamic_stylesheet()
 		except NameError:
+			self.setUpdatesEnabled(True)
 			pass  # There are no apps?
 
 
@@ -303,6 +312,7 @@ class StoreMWindow(GeometryMixin, EventsMixin, AppearanceMixin, QMainWindow):
 	#				Filtro de apps				#
 
 	def listwidgetclicked(self, item):
+		self._about_is_open = False
 		filter = list()
 		global lista_global, list_app_show_temp
 
@@ -323,14 +333,14 @@ class StoreMWindow(GeometryMixin, EventsMixin, AppearanceMixin, QMainWindow):
 		}
 
 		index = ui.lw_categories.currentRow()
-		
+
 		# Hidden shortcut: Ctrl + Click on Updates checks for updates manually
 		if index == 12:
 			modifiers = QApplication.keyboardModifiers()
 			if modifiers == Qt.ControlModifier:
 				self.is_checking_updates = False # Force bypass gate
 				self.start_check_updates(auto=False)
-				
+
 		filter.extend(filter_mapping.get(index, []))
 
 		if "home" not in filter and "installed" not in filter and "updates" not in filter:
@@ -614,8 +624,49 @@ class StoreMWindow(GeometryMixin, EventsMixin, AppearanceMixin, QMainWindow):
 	#				     About   				  #
 
 	def show_about_dialog(self):
-		if not self.about_dialog.isVisible():
-			self.about_dialog.show()
+		if getattr(self, '_about_is_open', False):
+			return
+
+		self._about_is_open = True
+		self.last_category_item = ui.lw_categories.currentItem()
+		self.last_scroll_pos = ui.frame.verticalScrollBar().value()
+
+		ui.lw_categories.clearSelection()
+		self.clear_gridLayout()
+
+		app_name_text = f"<b>{self.windowTitle()}</b>"
+		app_version_text = QCoreApplication.translate("AboutDialog", "Version {version}").format(version=STORE_VERSION)
+		description_text = QCoreApplication.translate("AboutDialog", "The App Store of Deepin en Español")
+		web_text = get_text_link("deepinenespañol.org", additional_style="color: #419fd9;")
+
+		self.overlay_widget = StateOverlayWidget(self)
+		self.overlay_widget.set_media(None, False, pixmap=get_app_icon().pixmap(120, 120))
+		self.overlay_widget.set_text(app_name_text, f"{app_version_text}<br>{description_text}<br><br>{web_text}")
+
+		def close_overlay():
+			self._about_is_open = False
+			if hasattr(self, 'last_category_item') and self.last_category_item is not None:
+				self.last_category_item.setSelected(True)
+				self.listwidgetclicked(self.last_category_item)
+				if hasattr(self, 'last_scroll_pos'):
+					QTimer.singleShot(10, lambda: ui.frame.verticalScrollBar().setValue(self.last_scroll_pos))
+			else:
+				# Fallback to home
+				self.listwidgetclicked(ui.lw_categories.item(0))
+
+		self.overlay_widget.set_action(QCoreApplication.translate("AboutDialog", "Close"), close_overlay)
+
+		from deepinesStore.about import people
+		from deepinesStore.widgets import CreditsListWidget, add_people_to_list
+
+		list_ppl = CreditsListWidget(self.overlay_widget)
+		list_ppl.setSpacing(2)
+		list_ppl.setFixedSize(360, 200)
+		add_people_to_list(people, list_ppl)
+
+		self.overlay_widget.add_custom_widget(list_ppl)
+		ui.flowLayout.addWidget(self.overlay_widget)
+
 
 	#				     /About   				  #
 	################################################

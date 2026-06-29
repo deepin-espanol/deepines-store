@@ -130,7 +130,7 @@ class GeometryMixin:
 	def showEvent(self, event):
 		settings = SettingsManager.get_instance()
 		geometry_data = settings.get("geometry")
-		
+
 		if geometry_data and not hasattr(self, '_geometry_restored'):
 			try:
 				if all(k in geometry_data for k in ("x", "y", "w", "h")):

@@ -147,7 +147,6 @@ class Ui_MainWindow(object):
 			add_icon_item(self, icon, flags)
 
 		add_icon_item(self, None, Qt.NoItemFlags) # Empty item (separator)
-		self.lw_categories.set_skip_item_action_indices([len(icons)])
 
 		add_icon_item(self, svg_installed, flags)  # Installed apps
 		add_icon_item(self, svg_updates, flags)  # Updates
