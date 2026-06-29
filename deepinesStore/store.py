@@ -85,12 +85,8 @@ class StoreMWindow(GeometryMixin, EventsMixin, AppearanceMixin, QMainWindow):
 		self.has_checked_updates = False
 		self.start_check_updates()
 
-		# Initialize Auto-Update Polling
+		# Initialize Settings (polling starts sequentially after first check finishes)
 		self.settings = SettingsManager.get_instance()
-		if self.settings.get("auto_update", True):
-			self.auto_update_timer = QTimer(self)
-			self.auto_update_timer.timeout.connect(lambda: self.start_check_updates(auto=True))
-			self.auto_update_timer.start(5 * 60 * 1000) # 5 minutes
 
 
 		ui.btn_install.setEnabled(False)
@@ -145,6 +141,7 @@ class StoreMWindow(GeometryMixin, EventsMixin, AppearanceMixin, QMainWindow):
 
 		self.check_updates_thread = CheckUpdatesThread(self.lista_app_deb, self.lista_app_flatpak, force_refresh=not auto)
 		self.check_updates_thread.finished_signal.connect(self.on_check_updates_finished)
+		self.check_updates_thread.error_signal.connect(self.on_check_updates_error)
 		# Defer starting the thread so the UI has time to render the spinner
 		# before apt.Cache() locks the Python GIL and freezes the main thread.
 		QTimer.singleShot(100, self.check_updates_thread.start)
@@ -159,6 +156,29 @@ class StoreMWindow(GeometryMixin, EventsMixin, AppearanceMixin, QMainWindow):
 			global list_app_show_temp
 			list_app_show_temp = list_app_updatable
 			self.do_list_apps(list_app_show_temp)
+
+		if getattr(self, 'settings', None) and self.settings.get("auto_update", True):
+			QTimer.singleShot(60 * 1000, lambda: self.start_check_updates(auto=True))
+
+	def on_check_updates_error(self, error_msg):
+		self.is_checking_updates = False
+		self.has_checked_updates = False
+		
+		if ui.lw_categories.currentRow() == 12:
+			self.show_overlay(
+				'raccoon', 
+				ui.error_apt_update_failed_text, 
+				secondary_text=error_msg, 
+				button_text=ui.continue_local_cache_text, 
+				button_callback=self.check_local_cache
+			)
+		else:
+			print(f"Apt update failed: {error_msg}. Falling back to local cache.")
+			self.check_local_cache()
+
+	def check_local_cache(self):
+		self.is_checking_updates = False
+		self.start_check_updates(auto=True)
 
 	#			 /Control de errores / Overlays    #
 	################################################

@@ -398,6 +398,8 @@ class Ui_MainWindow(object):
 		self.no_updates_available_text = self.__tr("No updates available")
 		self.checking_updates_text = self.__tr("Checking for updates...")
 		self.check_updates_btn_text = self.__tr("Check for updates")
+		self.error_apt_update_failed_text = self.__tr("Failed to fetch remote updates.")
+		self.continue_local_cache_text = self.__tr("Continue with local cache")
 		self.no_apps_found_text = self.__tr("No apps found")
 		self.single_app_text = self.__tr("{install_count} to install, {uninstall_count} to uninstall, {update_count} to update")
 		self.multi_apps_text = self.__tr("{install_count} to install, {uninstall_count} to uninstall, {update_count} to update")

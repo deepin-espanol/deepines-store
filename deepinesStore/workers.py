@@ -9,7 +9,12 @@ def _fetch_apt_updates(queue, force_refresh):
 		import apt
 		cache = apt.Cache()
 		if force_refresh:
-			cache.update()
+			try:
+				cache.update()
+			except apt.cache.FetchFailedException as update_err:
+				print(f"Non-fatal fetch warning during apt update: {update_err}")
+			except apt.cache.LockFailedException as lock_err:
+				raise lock_err
 			cache.open(None)
 		upgradable = {p.name: p.candidate.version for p in cache if p.is_installed and p.is_upgradable}
 		queue.put(upgradable)
@@ -18,6 +23,7 @@ def _fetch_apt_updates(queue, force_refresh):
 
 class CheckUpdatesThread(QThread):
 	finished_signal = pyqtSignal(list)
+	error_signal = pyqtSignal(str)
 
 	def __init__(self, list_app_deb, list_app_flatpak, force_refresh=False):
 		super().__init__()
@@ -39,14 +45,20 @@ class CheckUpdatesThread(QThread):
 		if not queue.empty():
 			result = queue.get()
 			if isinstance(result, Exception):
-				print(f"Exception checking deb updates: {result}")
+				self.error_signal.emit(str(result))
+				return # Abort update processing on fatal error
 			else:
 				for app_item in self.list_app_deb:
-					if app_item.state in (AppState.INSTALLED, AppState.UPDATABLE) and app_item.id in result:
-						app_item.available_version = result[app_item.id]
-						app_item.state = AppState.UPDATABLE
-						app_item.process = ProcessType.UPDATE
-						list_updatable.append(app_item)
+					if app_item.state in (AppState.INSTALLED, AppState.UPDATABLE):
+						if app_item.id in result:
+							app_item.available_version = result[app_item.id]
+							app_item.state = AppState.UPDATABLE
+							app_item.process = ProcessType.UPDATE
+							list_updatable.append(app_item)
+						elif app_item.state == AppState.UPDATABLE:
+							app_item.state = AppState.INSTALLED
+							app_item.process = ProcessType.UNINSTALL
+							app_item.available_version = ""
 		else:
 			print("Error: apt update worker returned no data.")
 
@@ -71,11 +83,16 @@ class CheckUpdatesThread(QThread):
 						update_map[parts[0]] = None
 
 				for app_item in self.list_app_flatpak:
-					if app_item.state in (AppState.INSTALLED, AppState.UPDATABLE) and app_item.id in update_map:
-						app_item.available_version = update_map[app_item.id] or ""
-						app_item.state = AppState.UPDATABLE
-						app_item.process = ProcessType.UPDATE
-						list_updatable.append(app_item)
+					if app_item.state in (AppState.INSTALLED, AppState.UPDATABLE):
+						if app_item.id in update_map:
+							app_item.available_version = update_map[app_item.id] or ""
+							app_item.state = AppState.UPDATABLE
+							app_item.process = ProcessType.UPDATE
+							list_updatable.append(app_item)
+						elif app_item.state == AppState.UPDATABLE:
+							app_item.state = AppState.INSTALLED
+							app_item.process = ProcessType.UNINSTALL
+							app_item.available_version = ""
 			except Exception as e:
 				print(f"Error checking flatpak updates: {e}")
 
