@@ -456,8 +456,8 @@ class StoreMWindow(GeometryMixin, AppearanceMixin, QMainWindow):
 		for item in lista:
 			carta = Card(item, self)
 			ui.flowLayout.addWidget(carta)
-			ui.frame.verticalScrollBar().setSliderPosition(0)
 
+		ui.frame.verticalScrollBar().setSliderPosition(0)
 
 
 	def contar_apps(self):
@@ -815,10 +815,13 @@ class Card(QFrame):
 			alt_app_names = list(set([alt_app_name_1, alt_app_name_2, alt_app_name_3, alt_app_name_4]))
 			app_banner_path = self.get_banner_path(self.application.id, alt_app_names, self.application.icons)
 			app_banner = self.fixed_banner_pixmap(app_banner_path)
-			app_overlay = QPixmap(get_res('flatpak'))
+
+			if not hasattr(Card, 'flatpak_overlay') or Card.flatpak_overlay is None:
+				Card.flatpak_overlay = QPixmap(get_res('flatpak'))
+
 			app_pixmap = QPixmap(app_banner)
 			painter = QPainter(app_pixmap)
-			painter.drawPixmap(0, 0, app_overlay)
+			painter.drawPixmap(0, 0, Card.flatpak_overlay)
 			painter.end()
 			self.cd.image_app.setPixmap(app_pixmap)
 
@@ -901,11 +904,19 @@ class Card(QFrame):
 			remote_icon_path = get_resource(cached_icon_name, 'apps', ext='')
 			if remote_icon_path:
 				return remote_icon_path
+
+			global _flatpak_icon_dirs
+			if '_flatpak_icon_dirs' not in globals():
+				_flatpak_icon_dirs = {
+					size: glob.glob(f'/var/lib/flatpak/appstream/flathub/*/active/icons/flatpak/{size}x{size}/')
+					for size in ['128', '64']
+				}
+
 			for size in ['128', '64']:
-				pattern = f'/var/lib/flatpak/appstream/flathub/*/active/icons/flatpak/{size}x{size}/{cached_icon_name}'
-				matches = glob.glob(pattern)
-				if matches:
-					return matches[0]
+				for d in _flatpak_icon_dirs[size]:
+					p = os.path.join(d, cached_icon_name)
+					if os.path.exists(p):
+						return p
 
 		remote_icon_urls = icons.get('remote') or []
 		for remote_icon_url in remote_icon_urls:
