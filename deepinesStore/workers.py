@@ -4,10 +4,13 @@ import deepinesStore.setup as setup
 from deepinesStore.deb.get_apps_deb import fetch_list_app_deb
 from deepinesStore.flatpak.get_apps_flatpak import app_list_flatpak
 
-def _fetch_apt_updates(queue):
+def _fetch_apt_updates(queue, force_refresh):
 	try:
 		import apt
 		cache = apt.Cache()
+		if force_refresh:
+			cache.update()
+			cache.open(None)
 		upgradable = {p.name: p.candidate.version for p in cache if p.is_installed and p.is_upgradable}
 		queue.put(upgradable)
 	except Exception as e:
@@ -16,10 +19,11 @@ def _fetch_apt_updates(queue):
 class CheckUpdatesThread(QThread):
 	finished_signal = pyqtSignal(list)
 
-	def __init__(self, list_app_deb, list_app_flatpak):
+	def __init__(self, list_app_deb, list_app_flatpak, force_refresh=False):
 		super().__init__()
 		self.list_app_deb = list_app_deb
 		self.list_app_flatpak = list_app_flatpak
+		self.force_refresh = force_refresh
 
 	def run(self):
 		list_updatable = list()
@@ -27,7 +31,7 @@ class CheckUpdatesThread(QThread):
 		# Check for deb updates via apt using a clean multiprocessing Process
 		import multiprocessing
 		queue = multiprocessing.Queue()
-		p = multiprocessing.Process(target=_fetch_apt_updates, args=(queue,))
+		p = multiprocessing.Process(target=_fetch_apt_updates, args=(queue, self.force_refresh))
 		p.daemon = True
 		p.start()
 		p.join()
@@ -50,7 +54,13 @@ class CheckUpdatesThread(QThread):
 		import deepinesStore.demoted_actions as demoted
 		if self.list_app_flatpak and hasattr(demoted, 'DEF'):
 			try:
-				flatpak_proc = demoted.run_cmd(demoted.DEF, cmd=['flatpak', 'remote-ls', '--updates', '--columns=application,version'])
+				if self.force_refresh:
+					demoted.run_cmd(demoted.DEF, cmd=['flatpak', 'update', '--appstream'])
+					cmd = ['flatpak', 'remote-ls', '--updates', '--columns=application,version']
+				else:
+					cmd = ['flatpak', 'remote-ls', '--updates', '--cached', '--columns=application,version']
+
+				flatpak_proc = demoted.run_cmd(demoted.DEF, cmd=cmd)
 				lines = flatpak_proc.stdout.readlines()
 				update_map = {}
 				for line in lines:

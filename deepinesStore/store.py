@@ -143,7 +143,7 @@ class StoreMWindow(GeometryMixin, EventsMixin, AppearanceMixin, QMainWindow):
 		if not auto and ui.lw_categories.currentRow() == 12:
 			self.show_overlay('Deepines', ui.checking_updates_text, is_movie=True)
 
-		self.check_updates_thread = CheckUpdatesThread(self.lista_app_deb, self.lista_app_flatpak)
+		self.check_updates_thread = CheckUpdatesThread(self.lista_app_deb, self.lista_app_flatpak, force_refresh=not auto)
 		self.check_updates_thread.finished_signal.connect(self.on_check_updates_finished)
 		# Defer starting the thread so the UI has time to render the spinner
 		# before apt.Cache() locks the Python GIL and freezes the main thread.
