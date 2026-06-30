@@ -200,7 +200,7 @@ MakeCopyright >usr/share/doc/$PKG_NAME/copyright
 echo "Generating changelog..."
 Open "$SH_DIR/changelog" # (-m) Manually update the changelog file.
 # TODO: Use dch (devscripts package) if available.
-gzip -9n <"$SH_DIR/changelog" >usr/share/doc/$PKG_NAME/changelog.gz
+gzip -9n <"$SH_DIR/changelog" >usr/share/doc/$PKG_NAME/changelog.Debian.gz
 
 BIN_UPPER=$(echo "deepines" | tr '[:lower:]' '[:upper:]')
 

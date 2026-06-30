@@ -1,3 +1,19 @@
+deepines-store (1.5.0-1) stable; urgency=low
+
+  * Add flow layout and card animations.
+  * Use startSystemMove() to move the window.
+  * Add setting to change the number of Home apps.
+  * Merge about dialog inside the main window.
+  * Refactor: Merge EventsMixin in AppearanceMixin.
+  * Fix leaking, use subprocess, and select row item.
+  * Card loading optimizations.
+  * Optimize downloading icons for Flatpak.
+  * Fix the display and download of cards.
+  * Add support for local version, compare with remote.
+  * Rename "Review apps" to "Review actions".
+
+ -- Amaro Martínez <xoas@airmail.cc>  Mon, 29 Jun 2026 22:02:26 -0500
+
 deepines-store (1.5.0) stable; urgency=low
 
   * Make the store be able to update itself.
