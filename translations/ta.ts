@@ -9,19 +9,27 @@
         <translation type="obsolete">பற்றி</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="638"/>
+        <location filename="../deepinesStore/store.py" line="672"/>
         <source>Version {version}</source>
         <translation>பதிப்பு {version}</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="639"/>
+        <location filename="../deepinesStore/store.py" line="673"/>
         <source>The App Store of Deepin en Español</source>
         <translation>ச்பானிச் மொழியில் டீப்பினின் ஆப் கடை</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="657"/>
+        <location filename="../deepinesStore/store.py" line="691"/>
         <source>Close</source>
-        <translation type="unfinished">மூடு</translation>
+        <translation>மூடு</translation>
+    </message>
+</context>
+<context>
+    <name>Card</name>
+    <message>
+        <location filename="../deepinesStore/store.py" line="828"/>
+        <source>Local version is newer than the repository</source>
+        <translation>களஞ்சியத்தை விட உள்ளூர் பதிப்பு புதியது</translation>
     </message>
 </context>
 <context>
@@ -315,27 +323,27 @@
 <context>
     <name>LoadingScreen</name>
     <message>
-        <location filename="../deepinesStore/store.py" line="1172"/>
+        <location filename="../deepinesStore/store.py" line="1250"/>
         <source>Starting...</source>
         <translation>தொடங்குகிறது ...</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="1174"/>
+        <location filename="../deepinesStore/store.py" line="1252"/>
         <source>Fetching files...</source>
         <translation>கோப்புகளைப் பெறுதல் ...</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="1175"/>
+        <location filename="../deepinesStore/store.py" line="1253"/>
         <source>Initializing components...</source>
         <translation>கூறுகளைத் தொடங்குதல் ...</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="1176"/>
+        <location filename="../deepinesStore/store.py" line="1254"/>
         <source>Finalizing setup...</source>
         <translation>அமைப்பை இறுதி செய்தல் ...</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="1170"/>
+        <location filename="../deepinesStore/store.py" line="1248"/>
         <source>Loading...</source>
         <translation>ஏற்றுகிறது ...</translation>
     </message>
@@ -436,7 +444,7 @@ Version: {version}</source>
         <translation>அலுவலக ஆட்டோமேசன்</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="1171"/>
+        <location filename="../deepinesStore/store.py" line="1249"/>
         <source>Deepines Store</source>
         <translation>டீபைன்ச் கடை</translation>
     </message>
@@ -478,7 +486,7 @@ Version: {version}</source>
     <message>
         <location filename="../deepinesStore/maing.py" line="348"/>
         <source>Review apps</source>
-        <translation>பயன்பாடுகளை மதிப்பாய்வு செய்யவும்</translation>
+        <translation type="obsolete">பயன்பாடுகளை மதிப்பாய்வு செய்யவும்</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="354"/>
@@ -594,6 +602,11 @@ Version: {version}</source>
         <location filename="../deepinesStore/maing.py" line="384"/>
         <source>Continue with local cache</source>
         <translation>உள்ளூர் தற்காலிக நினைவகத்துடன் தொடரவும்</translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/maing.py" line="348"/>
+        <source>Review actions</source>
+        <translation>செயல்களை மதிப்பாய்வு செய்யவும்</translation>
     </message>
 </context>
 <context>

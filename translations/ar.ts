@@ -9,19 +9,27 @@
         <translation type="obsolete">حول</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="638"/>
+        <location filename="../deepinesStore/store.py" line="672"/>
         <source>Version {version}</source>
         <translation>الإصدار {version}</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="639"/>
+        <location filename="../deepinesStore/store.py" line="673"/>
         <source>The App Store of Deepin en Español</source>
         <translation>متجر تطبيقات Deepin en Español</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="657"/>
+        <location filename="../deepinesStore/store.py" line="691"/>
         <source>Close</source>
-        <translation type="unfinished">أغلق</translation>
+        <translation>إغلاق</translation>
+    </message>
+</context>
+<context>
+    <name>Card</name>
+    <message>
+        <location filename="../deepinesStore/store.py" line="828"/>
+        <source>Local version is newer than the repository</source>
+        <translation>الإصدار المحلي أحدث من المستودع</translation>
     </message>
 </context>
 <context>
@@ -315,27 +323,27 @@
 <context>
     <name>LoadingScreen</name>
     <message>
-        <location filename="../deepinesStore/store.py" line="1172"/>
+        <location filename="../deepinesStore/store.py" line="1250"/>
         <source>Starting...</source>
         <translation>جاري البدء...</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="1174"/>
+        <location filename="../deepinesStore/store.py" line="1252"/>
         <source>Fetching files...</source>
         <translation>جاري جلب الملفات...</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="1175"/>
+        <location filename="../deepinesStore/store.py" line="1253"/>
         <source>Initializing components...</source>
         <translation>جاري تهيئة المكونات...</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="1176"/>
+        <location filename="../deepinesStore/store.py" line="1254"/>
         <source>Finalizing setup...</source>
         <translation>جاري إنهاء الإعداد...</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="1170"/>
+        <location filename="../deepinesStore/store.py" line="1248"/>
         <source>Loading...</source>
         <translation>جاري التحميل...</translation>
     </message>
@@ -436,7 +444,7 @@ Version: {version}</source>
         <translation>أتمتة المكاتب</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="1171"/>
+        <location filename="../deepinesStore/store.py" line="1249"/>
         <source>Deepines Store</source>
         <translation>متجر ديبين</translation>
     </message>
@@ -468,7 +476,7 @@ Version: {version}</source>
     <message>
         <location filename="../deepinesStore/maing.py" line="348"/>
         <source>Review apps</source>
-        <translation>مراجعة التطبيقات</translation>
+        <translation type="obsolete">مراجعة التطبيقات</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="354"/>
@@ -594,6 +602,11 @@ Version: {version}</source>
         <location filename="../deepinesStore/maing.py" line="384"/>
         <source>Continue with local cache</source>
         <translation>المتابعة مع ذاكرة التخزين المؤقت المحلية</translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/maing.py" line="348"/>
+        <source>Review actions</source>
+        <translation>مراجعة الإجراءات</translation>
     </message>
 </context>
 <context>

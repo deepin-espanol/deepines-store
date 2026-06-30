@@ -345,7 +345,7 @@ class Ui_MainWindow(object):
 		MainWindow.setWindowTitle(self.__tr("Deepines Store"))
 		self.label_2.setToolTip(self.__tr("About us"))
 		self.label_3.setText(self.__tr("Deepines Store"))
-		self.btn_install_review_text = self.__tr("Review apps")
+		self.btn_install_review_text = self.__tr("Review actions")
 		self.btn_install_start_text = self.__tr("Start process")
 		self.btn_install.setText(self.btn_install_review_text)
 

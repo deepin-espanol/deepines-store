@@ -9,19 +9,27 @@
         <translation type="obsolete">О сайте</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="638"/>
+        <location filename="../deepinesStore/store.py" line="672"/>
         <source>Version {version}</source>
         <translation>Версия {version}</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="639"/>
+        <location filename="../deepinesStore/store.py" line="673"/>
         <source>The App Store of Deepin en Español</source>
         <translation>Магазин приложений Deepin на испанском языке</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="657"/>
+        <location filename="../deepinesStore/store.py" line="691"/>
         <source>Close</source>
-        <translation type="unfinished">Закрыть</translation>
+        <translation>Закрыть</translation>
+    </message>
+</context>
+<context>
+    <name>Card</name>
+    <message>
+        <location filename="../deepinesStore/store.py" line="828"/>
+        <source>Local version is newer than the repository</source>
+        <translation>Локальная версия новее, чем в репозитории</translation>
     </message>
 </context>
 <context>
@@ -315,27 +323,27 @@
 <context>
     <name>LoadingScreen</name>
     <message>
-        <location filename="../deepinesStore/store.py" line="1172"/>
+        <location filename="../deepinesStore/store.py" line="1250"/>
         <source>Starting...</source>
         <translation>Запуск...</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="1174"/>
+        <location filename="../deepinesStore/store.py" line="1252"/>
         <source>Fetching files...</source>
         <translation>Получение файлов...</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="1175"/>
+        <location filename="../deepinesStore/store.py" line="1253"/>
         <source>Initializing components...</source>
         <translation>Инициализация компонентов...</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="1176"/>
+        <location filename="../deepinesStore/store.py" line="1254"/>
         <source>Finalizing setup...</source>
         <translation>Завершаем настройку...</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="1170"/>
+        <location filename="../deepinesStore/store.py" line="1248"/>
         <source>Loading...</source>
         <translation>Загрузка...</translation>
     </message>
@@ -436,7 +444,7 @@ Version: {version}</source>
         <translation>Автоматизация офиса</translation>
     </message>
     <message>
-        <location filename="../deepinesStore/store.py" line="1171"/>
+        <location filename="../deepinesStore/store.py" line="1249"/>
         <source>Deepines Store</source>
         <translation>Магазин Deepines</translation>
     </message>
@@ -478,7 +486,7 @@ Version: {version}</source>
     <message>
         <location filename="../deepinesStore/maing.py" line="348"/>
         <source>Review apps</source>
-        <translation>Обзор приложений</translation>
+        <translation type="obsolete">Обзор приложений</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="354"/>
@@ -594,6 +602,11 @@ Version: {version}</source>
         <location filename="../deepinesStore/maing.py" line="384"/>
         <source>Continue with local cache</source>
         <translation>Продолжить с локальным кэшем</translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/maing.py" line="348"/>
+        <source>Review actions</source>
+        <translation>Просмотр действий</translation>
     </message>
 </context>
 <context>
