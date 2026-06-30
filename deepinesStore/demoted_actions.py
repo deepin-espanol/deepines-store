@@ -19,13 +19,6 @@ def get_real_uid():
 		return uid
 
 
-def set(uid: int, gid: int):
-	def new_ids():
-		os.setgid(gid)
-		os.setuid(uid)
-	return new_ids
-
-
 class UserDefault:
 	def __init__(self, uid: int):
 		import pwd
@@ -39,7 +32,7 @@ class UserDefault:
 
 
 def run_cmd(user: UserDefault, cmd):
-	return Popen(cmd, env=user.env, preexec_fn=set(user.uid, user.gid), stderr=PIPE, stdout=PIPE, encoding='utf8', universal_newlines=True)
+	return Popen(cmd, env=user.env, user=user.uid, group=user.gid, stderr=PIPE, stdout=PIPE, encoding='utf8', universal_newlines=True)
 
 
 def get_user_home_path() -> Path:
@@ -89,12 +82,13 @@ def create_folder(path: Path):
 
 
 def write_file(b, to):
+	with open(to, 'wb') as ftw:
+		ftw.write(b.content)
 	if platform.system() == 'Linux':
-		p = Popen(['tee', str(to)], env=DEF.env, preexec_fn=set(DEF.uid, DEF.gid), stdin=PIPE, stdout=PIPE, stderr=PIPE)
-		p.communicate(input=b.content)
-	else:
-		with open(to, 'wb') as ftw:
-			ftw.write(b.content)
+		try:
+			os.chown(str(to), DEF.uid, DEF.gid)
+		except Exception:
+			pass
 
 
 def get_user_home():

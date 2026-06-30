@@ -47,6 +47,10 @@ class StoreMWindow(GeometryMixin, AppearanceMixin, QMainWindow):
 		self.refresh_app_grid_timer.setSingleShot(True)
 		self.refresh_app_grid_timer.timeout.connect(self.refresh_app_grid)
 
+		self._lazy_load_queue = []
+		self._lazy_loading = False
+		ui.frame.verticalScrollBar().valueChanged.connect(self.on_scroll_lazy_load)
+
 		global selected_apps, installed,\
 			lista_inicio, lista_global, \
 			selected_type_app, uninstalled, list_app_deepines, \
@@ -453,11 +457,41 @@ class StoreMWindow(GeometryMixin, AppearanceMixin, QMainWindow):
 				self.show_overlay('magnifying-glass', ui.no_apps_found_text)
 			return
 
-		for item in lista:
+		if not hasattr(self, '_load_generation'):
+			self._load_generation = 0
+		self._load_generation += 1
+
+		items_to_load = list(lista)
+
+		# Instantly load the first 30 cards to completely fill the user's viewport
+		initial_batch = items_to_load[:30]
+		self._lazy_load_queue = items_to_load[30:]
+		
+		ui.frame.setUpdatesEnabled(False)
+		for item in initial_batch:
 			carta = Card(item, self)
 			ui.flowLayout.addWidget(carta)
-
+		ui.frame.setUpdatesEnabled(True)
 		ui.frame.verticalScrollBar().setSliderPosition(0)
+
+	def on_scroll_lazy_load(self, value):
+		if not self._lazy_load_queue or self._lazy_loading:
+			return
+			
+		scrollbar = ui.frame.verticalScrollBar()
+		if value >= scrollbar.maximum() - 300:
+			self._lazy_loading = True
+			
+			batch = self._lazy_load_queue[:20]
+			del self._lazy_load_queue[:20]
+			
+			ui.frame.setUpdatesEnabled(False)
+			for item in batch:
+				carta = Card(item, self)
+				ui.flowLayout.addWidget(carta)
+			ui.frame.setUpdatesEnabled(True)
+			
+			self._lazy_loading = False
 
 
 	def contar_apps(self):
@@ -826,8 +860,11 @@ class Card(QFrame):
 		self.cd.btn_secondary_action.clicked.connect(lambda: self.select_secondary_app_action())
 
 	def set_icon_path(self, path: str):
+		tamanio = 210
+		w, h = tamanio, int(tamanio * 0.72222)
 		if self.application.type == AppType.DEB_PACKAGE:
 			app_banner = QPixmap(path)
+			app_banner = app_banner.scaled(w, h, Qt.KeepAspectRatio, Qt.SmoothTransformation)
 			self.cd.image_app.setPixmap(app_banner)
 		elif self.application.type == AppType.FLATPAK_APP:
 			app_banner = self.fixed_banner_pixmap(path)
@@ -839,7 +876,13 @@ class Card(QFrame):
 			painter = QPainter(app_pixmap)
 			painter.drawPixmap(0, 0, Card.flatpak_overlay)
 			painter.end()
+
+			app_pixmap = app_pixmap.scaled(w, h, Qt.KeepAspectRatio, Qt.SmoothTransformation)
 			self.cd.image_app.setPixmap(app_pixmap)
+
+		# Disable scaledContents because we already scaled the image.
+		self.cd.image_app.setScaledContents(False)
+		self.cd.image_app.setAlignment(Qt.AlignCenter)
 
 	def fixed_banner_pixmap(self, banner_path):
 		pixmap = QPixmap(banner_path)
@@ -863,31 +906,30 @@ class Card(QFrame):
 			return False
 
 		if event.type() == QEvent.Enter:
-			radius = 20
-		elif event.type() == QEvent.Leave and not (self.application in selected_apps or self.application in installed or self.application in uninstalled or self.application.state == AppState.UPDATABLE):
-			radius = 0
-		else:
-			return False
-
-		if self.application.state == AppState.SELECTED:
-			if self.application.process == ProcessType.UPDATE:
-				shadow_color = QColor(255, 152, 0)
+			if self.application.state == AppState.SELECTED:
+				if self.application.process == ProcessType.UPDATE:
+					shadow_color = QColor(255, 152, 0)
+				else:
+					shadow_color = QColor(0, 255, 255)
+			elif self.application.state == AppState.UNINSTALL:
+				shadow_color = QColor(234, 93, 41)
+			elif self.application.state == AppState.INSTALLED:
+				shadow_color = QColor(0, 212, 0)
+			elif self.application.state == AppState.UNINSTALLED:
+				shadow_color = QColor(238, 81, 56)
+			elif self.application.state == AppState.UPDATABLE:
+				shadow_color = QColor(0, 212, 0)
 			else:
-				shadow_color = QColor(0, 255, 255)
-		elif self.application.state == AppState.UNINSTALL:
-			shadow_color = QColor(234, 93, 41)
-		elif self.application.state == AppState.INSTALLED:
-			shadow_color = QColor(0, 212, 0)
-		elif self.application.state == AppState.UNINSTALLED:
-			shadow_color = QColor(238, 81, 56)
-		elif self.application.state == AppState.UPDATABLE:
-			shadow_color = QColor(0, 212, 0)
-		else:
-			shadow_color = QColor(255, 255, 255)
+				shadow_color = QColor(255, 255, 255)
 
-		shadow = set_shadow(self, shadow_color,radius)
-		self.setGraphicsEffect(shadow)
-		return True
+			shadow = set_shadow(self, shadow_color, 20)
+			self.setGraphicsEffect(shadow)
+			return True
+		elif event.type() == QEvent.Leave:
+			self.update_app_card_status(self.application.state)
+			return True
+
+		return False
 
 	def get_banner_path(self, app_name: str, alt_app_names: List[str] = None, icons: Dict[str, str] = {}) -> str:
 		path = get_resource(app_name, 'apps')
@@ -934,8 +976,8 @@ class Card(QFrame):
 			if os.path.exists(remote_icon_path):
 				return remote_icon_path
 
-			# Async fetch
-			self.downloader = IconDownloader(remote_icon_url, remote_icon_path, self)
+			# Async fetch (No parent, so it doesn't crash if Card is deleted mid-download)
+			self.downloader = IconDownloader(remote_icon_url, remote_icon_path, None)
 			self.downloader.finished_download.connect(self.set_icon_path)
 			self.downloader.start()
 

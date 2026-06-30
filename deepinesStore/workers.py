@@ -119,6 +119,8 @@ class LoaderThread(QThread):
 		list_app_updatable = list()
 		self.finished_data.emit(list_app_deepines, list_app_deb, list_app_flatpak, installed, list_app_updatable)
 
+_active_downloaders = set()
+
 class IconDownloader(QThread):
 	finished_download = pyqtSignal(str)
 
@@ -126,6 +128,10 @@ class IconDownloader(QThread):
 		super().__init__(parent)
 		self.url = url
 		self.path = path
+
+	def start(self, *args, **kwargs):
+		_active_downloaders.add(self)
+		super().start(*args, **kwargs)
 
 	def run(self):
 		try:
@@ -137,3 +143,5 @@ class IconDownloader(QThread):
 				self.finished_download.emit(self.path)
 		except Exception as e:
 			print(f"Error downloading icon async: {e}")
+		finally:
+			_active_downloaders.discard(self)

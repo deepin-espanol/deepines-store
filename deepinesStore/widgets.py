@@ -468,14 +468,21 @@ class FlowLayout(w.QLayout):
 		if rows:
 			total_height -= self.verticalSpacing()
 
-		vertical_offset = (rect.height() - total_height) // 2 if rect.height() > total_height else 0
+		vertical_offset = 0
+		if len(self.itemList) == 1:
+			wid = self.itemList[0].widget()
+			if wid and wid.__class__.__name__ == "StateOverlayWidget":
+				vertical_offset = (rect.height() - total_height) // 2 if rect.height() > total_height else 0
 
 		# Phase 2: Layout rows with centering and animations
+		max_row_width = max([r[1] for r in rows]) if rows else 0
+		actual_max_width = max_row_width - spacing if max_row_width > 0 else 0
+		global_x_offset = rect.x() + (rect.width() - actual_max_width) // 2
+		global_x_offset = max(rect.x(), global_x_offset)
+
 		y = rect.y() + vertical_offset
 		for row, row_width in rows:
-			actual_row_width = row_width - spacing if row_width > 0 else 0
-			x_offset = rect.x() + (rect.width() - actual_row_width) // 2
-			x_offset = max(rect.x(), x_offset)
+			x_offset = global_x_offset
 			lineHeight = 0
 
 			for item in row:
@@ -491,10 +498,15 @@ class FlowLayout(w.QLayout):
 							wid.setGeometry(target_rect)
 						else:
 							if wid.geometry() != target_rect:
-								wid._flow_anim.stop()
-								wid._flow_anim.setStartValue(wid.geometry())
-								wid._flow_anim.setEndValue(target_rect)
-								wid._flow_anim.start()
+								# Snap instantly if the shift is very small (e.g. scrollbar appearance) to prevent micro-animation glitches
+								if abs(wid.geometry().x() - target_rect.x()) < 30 and abs(wid.geometry().y() - target_rect.y()) < 30:
+									wid._flow_anim.stop()
+									wid.setGeometry(target_rect)
+								else:
+									wid._flow_anim.stop()
+									wid._flow_anim.setStartValue(wid.geometry())
+									wid._flow_anim.setEndValue(target_rect)
+									wid._flow_anim.start()
 				x_offset += item.sizeHint().width() + spacing
 
 			y += lineHeight + self.verticalSpacing()
