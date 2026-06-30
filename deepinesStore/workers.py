@@ -118,3 +118,22 @@ class LoaderThread(QThread):
 		installed = setup.get_installed_apps(list_app_deb, list_app_flatpak)
 		list_app_updatable = list()
 		self.finished_data.emit(list_app_deepines, list_app_deb, list_app_flatpak, installed, list_app_updatable)
+
+class IconDownloader(QThread):
+	finished_download = pyqtSignal(str)
+
+	def __init__(self, url, path, parent=None):
+		super().__init__(parent)
+		self.url = url
+		self.path = path
+
+	def run(self):
+		try:
+			from deepinesStore.core import get_dl
+			from deepinesStore.demoted_actions import write_file
+			req = get_dl(self.url)
+			if req.status_code == 200:
+				write_file(req, to=self.path)
+				self.finished_download.emit(self.path)
+		except Exception as e:
+			print(f"Error downloading icon async: {e}")

@@ -8,7 +8,7 @@ from typing import Dict, List
 from PyQt5.Qt import Qt
 from PyQt5.QtCore import QTranslator, QLocale, QSize, QPointF, QEvent, QTimer, Qt as QtCore, QCoreApplication
 from PyQt5.QtWidgets import (QMainWindow, QApplication, QFrame, QLabel,
-							 QSizePolicy, QGraphicsDropShadowEffect, QSpacerItem,
+							 QGraphicsDropShadowEffect,
 							 QDesktopWidget, QHBoxLayout, QVBoxLayout, QWidget, QPushButton)
 from PyQt5.QtGui import QPixmap, QColor, QCursor, QPainter, QMovie, QIcon
 
@@ -17,14 +17,14 @@ from random import sample
 # GUI o modulos locales
 from deepinesStore.app_info import AppInfo, AppType, AppState, ProcessType
 from deepinesStore.maing import Ui_MainWindow
-from deepinesStore.workers import CheckUpdatesThread, LoaderThread
+from deepinesStore.workers import CheckUpdatesThread, LoaderThread, IconDownloader
 from deepinesStore.settings import SettingsManager
 from deepinesStore.cardg import Ui_Frame
-from deepinesStore.core import get_res, get_app_icon, get_dl, get_text_link, STORE_VERSION, tr
+from deepinesStore.core import get_res, get_app_icon, get_text_link, STORE_VERSION, tr
 from deepinesStore.install_progress import InstallThread
 from deepinesStore import setup
-from deepinesStore.widgets import LinkLabel, StateOverlayWidget
-from deepinesStore.demoted_actions import write_file, config_dir, get_resource
+from deepinesStore.widgets import StateOverlayWidget
+from deepinesStore.demoted_actions import config_dir, get_resource
 from deepinesStore.mixins import GeometryMixin, AppearanceMixin
 
 # Global variables
@@ -749,6 +749,7 @@ class StoreMWindow(GeometryMixin, AppearanceMixin, QMainWindow):
 
 class Card(QFrame):
 	no_banner = None
+	flatpak_overlay = None
 
 	def __init__(self, application: list, parent):
 		super(Card, self).__init__()
@@ -803,8 +804,7 @@ class Card(QFrame):
 
 		# Establecemos la imagen
 		if (self.application.type == AppType.DEB_PACKAGE):
-			app_banner = QPixmap(self.get_banner_path(self.application.id))
-			self.cd.image_app.setPixmap(app_banner)
+			app_banner_path = self.get_banner_path(self.application.id, None, self.application.icons)
 		if (self.application.type == AppType.FLATPAK_APP):
 			# use app id, if not found, then use the alternative app names
 			alt_app_name_1 = str(self.application.name).lower().replace(" ", "-")
@@ -814,16 +814,8 @@ class Card(QFrame):
 			# make unique
 			alt_app_names = list(set([alt_app_name_1, alt_app_name_2, alt_app_name_3, alt_app_name_4]))
 			app_banner_path = self.get_banner_path(self.application.id, alt_app_names, self.application.icons)
-			app_banner = self.fixed_banner_pixmap(app_banner_path)
 
-			if not hasattr(Card, 'flatpak_overlay') or Card.flatpak_overlay is None:
-				Card.flatpak_overlay = QPixmap(get_res('flatpak'))
-
-			app_pixmap = QPixmap(app_banner)
-			painter = QPainter(app_pixmap)
-			painter.drawPixmap(0, 0, Card.flatpak_overlay)
-			painter.end()
-			self.cd.image_app.setPixmap(app_pixmap)
+		self.set_icon_path(app_banner_path)
 
 		self.cd.lbl_version.clicked.connect(
 			lambda: self.select_app())
@@ -832,6 +824,22 @@ class Card(QFrame):
 			lambda: self.select_app())
 		self.cd.btn_select_app.clicked.connect(lambda: self.select_app())
 		self.cd.btn_secondary_action.clicked.connect(lambda: self.select_secondary_app_action())
+
+	def set_icon_path(self, path: str):
+		if self.application.type == AppType.DEB_PACKAGE:
+			app_banner = QPixmap(path)
+			self.cd.image_app.setPixmap(app_banner)
+		elif self.application.type == AppType.FLATPAK_APP:
+			app_banner = self.fixed_banner_pixmap(path)
+
+			if Card.flatpak_overlay is None:
+				Card.flatpak_overlay = QPixmap(get_res('flatpak'))
+
+			app_pixmap = QPixmap(app_banner)
+			painter = QPainter(app_pixmap)
+			painter.drawPixmap(0, 0, Card.flatpak_overlay)
+			painter.end()
+			self.cd.image_app.setPixmap(app_pixmap)
 
 	def fixed_banner_pixmap(self, banner_path):
 		pixmap = QPixmap(banner_path)
@@ -919,16 +927,17 @@ class Card(QFrame):
 						return p
 
 		remote_icon_urls = icons.get('remote') or []
-		for remote_icon_url in remote_icon_urls:
+		if remote_icon_urls:
+			remote_icon_url = remote_icon_urls[0]
 			remote_icon_path = os.path.join(config_dir, 'apps', f'{app_name}.png')
-			try:
-				print(f'Downloading icon from: {remote_icon_url}')
-				PNG_BANNER_REMOTE = get_dl(remote_icon_url)
-				if PNG_BANNER_REMOTE.status_code == 200:
-					write_file(PNG_BANNER_REMOTE, to=remote_icon_path)
-					return remote_icon_path
-			except Exception as e:
-				print(f'Error downloading icon: {e}')
+
+			if os.path.exists(remote_icon_path):
+				return remote_icon_path
+
+			# Async fetch
+			self.downloader = IconDownloader(remote_icon_url, remote_icon_path, self)
+			self.downloader.finished_download.connect(self.set_icon_path)
+			self.downloader.start()
 
 		return Card.no_banner
 
