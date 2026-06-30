@@ -26,6 +26,7 @@ class AppInfo:
 		self.icons = icons
 		self.description = description
 		self.version = version
+		self.remote_version = version
 		self.category = category
 		self.state = state
 		self.type = type

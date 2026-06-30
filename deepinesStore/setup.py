@@ -42,17 +42,20 @@ def Get_App_Deepines():
 def get_installed_apps(list_app_deb, list_app_flatpak):
 	list_installed = list()
 
-	dpkg_cmd = os.popen("dpkg --get-selections")
-	installed_debs = [line.split()[0] for line in dpkg_cmd.read().splitlines() if line.split()[1] == "install"]
+	dpkg_cmd = os.popen("dpkg-query -W -f='${Package}\\t${Version}\\n'")
+	installed_debs = {}
+	for line in dpkg_cmd.read().splitlines():
+		parts = line.split('\t')
+		if len(parts) == 2:
+			installed_debs[parts[0]] = parts[1]
 	dpkg_cmd.close()
 
-	for installed_deb in installed_debs:
-		for app_item in list_app_deb:
-			if installed_deb == app_item.id:
-				list_installed.append(app_item)
-				indice = list_app_deb.index(app_item)
-				list_app_deb[indice].state = AppState.INSTALLED
-				list_app_deb[indice].process = ProcessType.UNINSTALL
+	for app_item in list_app_deb:
+		if app_item.id in installed_debs:
+			list_installed.append(app_item)
+			app_item.state = AppState.INSTALLED
+			app_item.process = ProcessType.UNINSTALL
+			app_item.version = installed_debs[app_item.id]
 
 	# Only attempt to query Flatpak if we have Flatpak apps and the
 	# demoted environment (DEF) is defined. This avoids errors on

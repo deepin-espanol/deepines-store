@@ -466,7 +466,7 @@ class StoreMWindow(GeometryMixin, AppearanceMixin, QMainWindow):
 		# Instantly load the first 30 cards to completely fill the user's viewport
 		initial_batch = items_to_load[:30]
 		self._lazy_load_queue = items_to_load[30:]
-		
+
 		ui.frame.setUpdatesEnabled(False)
 		for item in initial_batch:
 			carta = Card(item, self)
@@ -477,20 +477,20 @@ class StoreMWindow(GeometryMixin, AppearanceMixin, QMainWindow):
 	def on_scroll_lazy_load(self, value):
 		if not self._lazy_load_queue or self._lazy_loading:
 			return
-			
+
 		scrollbar = ui.frame.verticalScrollBar()
 		if value >= scrollbar.maximum() - 300:
 			self._lazy_loading = True
-			
+
 			batch = self._lazy_load_queue[:20]
 			del self._lazy_load_queue[:20]
-			
+
 			ui.frame.setUpdatesEnabled(False)
 			for item in batch:
 				carta = Card(item, self)
 				ui.flowLayout.addWidget(carta)
 			ui.frame.setUpdatesEnabled(True)
-			
+
 			self._lazy_loading = False
 
 
@@ -807,10 +807,26 @@ class Card(QFrame):
 		self.setMaximumSize(QSize(tamanio+30, int((tamanio+155)*0.72222)))
 		self.cd.image_app.setMinimumSize(QSize(tamanio, int(tamanio*0.72222)))
 		if self.application.version:
+			is_newer = False
+			if hasattr(self.application, 'remote_version') and self.application.remote_version and self.application.version != self.application.remote_version:
+				try:
+					import apt_pkg
+					apt_pkg.init_system()
+					if apt_pkg.version_compare(self.application.version, self.application.remote_version) > 0:
+						is_newer = True
+				except Exception:
+					pass
+
 			if self.application.available_version:
 				self.cd.lbl_version.setText("v: {} → {}".format(self.application.version, self.application.available_version))
 			else:
 				self.cd.lbl_version.setText("v: {}".format(self.application.version))
+
+			if is_newer:
+				self.cd.lbl_version.setStyleSheet("background-color: transparent; color: #00aaff;")
+				from PyQt5.QtCore import QCoreApplication
+				tooltip = QCoreApplication.translate("Card", "Local version is newer than the repository")
+				self.cd.lbl_version.setToolTip(tooltip)
 
 		global installed, uninstalled
 
