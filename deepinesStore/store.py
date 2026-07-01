@@ -658,7 +658,7 @@ class StoreMWindow(GeometryMixin, AppearanceMixin, QMainWindow):
 	#				     About   				  #
 
 	def show_about_dialog(self):
-		if getattr(self, '_about_is_open', False):
+		if getattr(self, '_about_is_open', False) or (self.install_thread and self.install_thread.isRunning()):
 			return
 
 		self._about_is_open = True
@@ -940,10 +940,10 @@ class Card(QFrame):
 
 			shadow = set_shadow(self, shadow_color, 20)
 			self.setGraphicsEffect(shadow)
-			return True
+			return False
 		elif event.type() == QEvent.Leave:
 			self.update_app_card_status(self.application.state)
-			return True
+			return False
 
 		return False
 

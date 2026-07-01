@@ -356,7 +356,7 @@ class Ui_MainWindow(object):
 		for i in range(self.lw_categories.count()):
 			item = self.lw_categories.item(i)
 			item.setText(item_texts[i])
-
+		self.lw_categories.set_skip_item_action_indices([10]) # Drop the empty cat
 		self.lineEdit.setPlaceholderText(self.__tr("Search"))
 		self.about_version_text = self.__tr("About \nVersion: {version}")
 		self.btn_minimize.setToolTip(self.__tr("Minimize"))

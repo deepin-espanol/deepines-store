@@ -9,15 +9,31 @@ class G:
 		self.name = name
 		self.contact = contact
 
+class NoClickableStyle(w.QProxyStyle):
+	def __init__(self, parent=None, skip_indices=[]):
+		super().__init__(parent)
+		self.skip_indices = skip_indices
+
+	def drawControl(self, element, option, painter, widget=None):
+		if element == w.QStyle.CE_ItemViewItem:
+			if hasattr(option, 'index') and option.index.row() in self.skip_indices:
+				option.state &= ~w.QStyle.State_Selected
+				option.state &= ~w.QStyle.State_MouseOver
+		super().drawControl(element, option, painter, widget)
+
 
 class ClickableList(w.QListWidget):
 	def __init__(self, parent=None):
 		super().__init__(parent)
 		self.setAutoFillBackground(True)
 		self.setFrameShape(w.QFrame.Shape.NoFrame)
+		self.skip_indices = []
 
 	def mousePressEvent(self, event):
 		if event.button() == Qt.LeftButton:
+			item = self.itemAt(event.pos())
+			if item and self.row(item) in self.skip_indices:
+				return # Block click on skipped items
 			super().mousePressEvent(event)
 
 	def mouseMoveEvent(self, event):
@@ -25,6 +41,10 @@ class ClickableList(w.QListWidget):
 			event.ignore()
 		else:
 			super().mouseMoveEvent(event)
+
+	def set_skip_item_action_indices(self, skip_indices=[]):
+		self.skip_indices = skip_indices
+		self.setStyle(NoClickableStyle(self.style(), skip_indices))
 
 	# Accessibility!!
 	def keyPressEvent(self, event):
@@ -226,8 +246,8 @@ class StateOverlayWidget(w.QFrame):
 		self.setStyleSheet("background-color: transparent;")
 
 		self.verticalLayout = w.QVBoxLayout(self)
-		self.verticalLayout.setContentsMargins(0, 0, 0, 0)
-		self.verticalLayout.setSpacing(10)
+		self.verticalLayout.setContentsMargins(20, 20, 20, 20)
+		self.verticalLayout.setSpacing(15)
 
 		self.topSpacer = w.QSpacerItem(20, 40, w.QSizePolicy.Policy.Minimum, w.QSizePolicy.Policy.Expanding)
 		self.verticalLayout.addItem(self.topSpacer)
@@ -363,6 +383,10 @@ class StateOverlayWidget(w.QFrame):
 				self.action_button.clicked.connect(callback)
 		else:
 			self.action_button.hide()
+
+	def sizeHint(self):
+		from PyQt5.QtCore import QSize
+		return QSize(800, 600)
 
 class FlowLayout(w.QLayout):
 	def __init__(self, parent=None, margin=-1, hSpacing=-1, vSpacing=-1):
