@@ -70,10 +70,38 @@ class AppearanceMixin:
 
 	def mousePressEvent(self, event):
 		if event.button() == Qt.LeftButton:
-			window = self.windowHandle()
-			if window:
-				window.startSystemMove()
+			self._drag_pos = event.globalPos()
+			self._is_dragging = True
+			# A real click resets Qt's internal mouse state
+			self._stop_manual_hover_tracking()
 		super().mousePressEvent(event)
+
+	def mouseMoveEvent(self, event):
+		if getattr(self, '_is_dragging', False):
+			if (event.globalPos() - self._drag_pos).manhattanLength() > 3:
+				self._is_dragging = False
+				window = self.windowHandle()
+				if window:
+					window.startSystemMove()
+				# Qt's Enter/Leave tracking is broken after startSystemMove.
+				# Delegate to subclass for manual hover polling.
+				self._start_manual_hover_tracking()
+				event.accept()
+				return
+		super().mouseMoveEvent(event)
+
+	def mouseReleaseEvent(self, event):
+		if event.button() == Qt.LeftButton:
+			self._is_dragging = False
+		super().mouseReleaseEvent(event)
+
+	def _start_manual_hover_tracking(self):
+		"""Override in subclass to start cursor-position-based hover polling."""
+		pass
+
+	def _stop_manual_hover_tracking(self):
+		"""Override in subclass to stop manual hover polling."""
+		pass
 
 	def changeEvent(self, event):
 		from PyQt5.QtCore import QEvent

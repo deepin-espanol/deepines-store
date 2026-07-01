@@ -6,7 +6,7 @@ import glob
 from typing import Dict, List
 # PyQt5 modules
 from PyQt5.Qt import Qt
-from PyQt5.QtCore import QTranslator, QLocale, QSize, QPointF, QEvent, QTimer, Qt as QtCore, QCoreApplication
+from PyQt5.QtCore import QTranslator, QLocale, QSize, QPoint, QPointF, QEvent, QTimer, Qt as QtCore, QCoreApplication
 from PyQt5.QtWidgets import (QMainWindow, QApplication, QFrame, QLabel,
 							 QGraphicsDropShadowEffect,
 							 QDesktopWidget, QHBoxLayout, QVBoxLayout, QWidget, QPushButton)
@@ -494,6 +494,58 @@ class StoreMWindow(GeometryMixin, AppearanceMixin, QMainWindow):
 			self._lazy_loading = False
 
 
+	def _start_manual_hover_tracking(self):
+		"""Poll cursor position to manually trigger card hover effects.
+		This bypasses Qt's broken Enter/Leave tracking after startSystemMove()."""
+		if not hasattr(self, '_manual_hover_timer'):
+			self._manual_hover_timer = QTimer(self)
+			self._manual_hover_timer.timeout.connect(self._poll_card_hover)
+		self._manual_hover_card = None
+		self._manual_hover_timer.start(60)
+
+	def _stop_manual_hover_tracking(self):
+		"""Stop manual hover polling (called on next real click)."""
+		if hasattr(self, '_manual_hover_timer'):
+			self._manual_hover_timer.stop()
+		if getattr(self, '_manual_hover_card', None):
+			self._manual_hover_card.update_app_card_status(
+				self._manual_hover_card.application.state)
+			self._manual_hover_card = None
+
+	def _poll_card_hover(self):
+		"""Check cursor position against card geometries and apply hover."""
+		cursor_pos = QCursor.pos()
+
+		# Find which card is under the cursor
+		hovered_card = None
+		for i in range(ui.flowLayout.count()):
+			item = ui.flowLayout.itemAt(i)
+			if not item or not item.widget() or not isinstance(item.widget(), Card):
+				continue
+			card = item.widget()
+			if not card.isVisible():
+				continue
+			card_pos = card.mapToGlobal(QPoint(0, 0))
+			if (card_pos.x() <= cursor_pos.x() < card_pos.x() + card.width() and
+				card_pos.y() <= cursor_pos.y() < card_pos.y() + card.height()):
+				hovered_card = card
+				break
+
+		if hovered_card == self._manual_hover_card:
+			return
+
+		# Leave old card
+		if self._manual_hover_card:
+			leave = QEvent(QEvent.Leave)
+			self._manual_hover_card.eventFilter(self._manual_hover_card, leave)
+
+		# Enter new card
+		if hovered_card:
+			enter = QEvent(QEvent.Enter)
+			hovered_card.eventFilter(hovered_card, enter)
+
+		self._manual_hover_card = hovered_card
+
 	def contar_apps(self):
 		global selected_apps
 		cuenta = len(selected_apps)
@@ -926,29 +978,30 @@ class Card(QFrame):
 					self.cd.btn_select_app.setText(ui.selected_installed_app_text)
 			return False
 
-		if event.type() == QEvent.Enter:
-			if self.application.state == AppState.SELECTED:
-				if self.application.process == ProcessType.UPDATE:
-					shadow_color = QColor(255, 152, 0)
+		if object == self:
+			if event.type() == QEvent.Enter:
+				if self.application.state == AppState.SELECTED:
+					if self.application.process == ProcessType.UPDATE:
+						shadow_color = QColor(255, 152, 0)
+					else:
+						shadow_color = QColor(0, 255, 255)
+				elif self.application.state == AppState.UNINSTALL:
+					shadow_color = QColor(234, 93, 41)
+				elif self.application.state == AppState.INSTALLED:
+					shadow_color = QColor(0, 212, 0)
+				elif self.application.state == AppState.UNINSTALLED:
+					shadow_color = QColor(238, 81, 56)
+				elif self.application.state == AppState.UPDATABLE:
+					shadow_color = QColor(0, 212, 0)
 				else:
-					shadow_color = QColor(0, 255, 255)
-			elif self.application.state == AppState.UNINSTALL:
-				shadow_color = QColor(234, 93, 41)
-			elif self.application.state == AppState.INSTALLED:
-				shadow_color = QColor(0, 212, 0)
-			elif self.application.state == AppState.UNINSTALLED:
-				shadow_color = QColor(238, 81, 56)
-			elif self.application.state == AppState.UPDATABLE:
-				shadow_color = QColor(0, 212, 0)
-			else:
-				shadow_color = QColor(255, 255, 255)
+					shadow_color = QColor(255, 255, 255)
 
-			shadow = set_shadow(self, shadow_color, 20)
-			self.setGraphicsEffect(shadow)
-			return False
-		elif event.type() == QEvent.Leave:
-			self.update_app_card_status(self.application.state)
-			return False
+				shadow = set_shadow(self, shadow_color, 20)
+				self.setGraphicsEffect(shadow)
+				return False
+			elif event.type() == QEvent.Leave:
+				self.update_app_card_status(self.application.state)
+				return False
 
 		return False
 
@@ -1132,6 +1185,8 @@ class Card(QFrame):
 						   "}" + btn_select_app_style + btn_secondary_style)
 
 		color = QColor(r, g, b)
+		if state == AppState.DEFAULT:
+			color.setAlpha(0)
 		shadow = set_shadow(self, color, 20)
 		self.setGraphicsEffect(shadow)
 
