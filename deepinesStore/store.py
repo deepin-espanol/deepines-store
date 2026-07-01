@@ -30,7 +30,7 @@ from deepinesStore.mixins import GeometryMixin, AppearanceMixin
 # Global variables
 global lista_inicio, lista_global, list_app_show_temp, uninstalled
 global list_app_exclude, list_app_deepines, list_app_deb, list_app_flatpak
-global selected_apps, installed, columnas, tamanio, list_app_updatable
+global selected_apps, installed, columnas, list_app_updatable
 
 class StoreMWindow(GeometryMixin, AppearanceMixin, QMainWindow):
 	def __init__(self):
@@ -802,10 +802,14 @@ class Card(QFrame):
 		self.cd.image_app.setToolTip(
 			"<p wrap='hard'>{}</p>".format(self.descripcion))
 		self.cd.image_app.setWordWrap(True)
-		tamanio = 210
-		self.setMinimumSize(QSize(tamanio+30, int((tamanio+115)*0.72222)))
-		self.setMaximumSize(QSize(tamanio+30, int((tamanio+155)*0.72222)))
-		self.cd.image_app.setMinimumSize(QSize(tamanio, int(tamanio*0.72222)))
+		card_width = 238
+		img_width = card_width - 22 # 216
+		img_height = int(img_width * (234/324)) # 156
+		label_height = img_height + 10 # Account for margin-top: 10px on #image_app
+		self.setMinimumSize(QSize(card_width, label_height + 115))
+		self.setMaximumSize(QSize(card_width, label_height + 155))
+		self.cd.image_app.setMinimumSize(QSize(img_width, label_height))
+		self.cd.image_app.setMaximumSize(QSize(img_width, label_height))
 		if self.application.version:
 			is_newer = False
 			if hasattr(self.application, 'remote_version') and self.application.remote_version and self.application.version != self.application.remote_version:
@@ -876,8 +880,9 @@ class Card(QFrame):
 		self.cd.btn_secondary_action.clicked.connect(lambda: self.select_secondary_app_action())
 
 	def set_icon_path(self, path: str):
-		tamanio = 210
-		w, h = tamanio, int(tamanio * 0.72222)
+		card_width = 238
+		img_width = card_width - 22 # 216
+		w, h = img_width, int(img_width * (234/324))
 		if self.application.type == AppType.DEB_PACKAGE:
 			app_banner = QPixmap(path)
 			app_banner = app_banner.scaled(w, h, Qt.KeepAspectRatio, Qt.SmoothTransformation)
