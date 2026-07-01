@@ -854,14 +854,10 @@ class Card(QFrame):
 		self.cd.image_app.setToolTip(
 			"<p wrap='hard'>{}</p>".format(self.descripcion))
 		self.cd.image_app.setWordWrap(True)
-		card_width = 238
-		img_width = card_width - 22 # 216
-		img_height = int(img_width * (234/324)) # 156
-		label_height = img_height + 10 # Account for margin-top: 10px on #image_app
-		self.setMinimumSize(QSize(card_width, label_height + 115))
-		self.setMaximumSize(QSize(card_width, label_height + 155))
-		self.cd.image_app.setMinimumSize(QSize(img_width, label_height))
-		self.cd.image_app.setMaximumSize(QSize(img_width, label_height))
+		tamanio = 216
+		self.setMinimumSize(QSize(tamanio+22, int((tamanio+115)*0.72222)))
+		self.setMaximumSize(QSize(tamanio+22, int((tamanio+155)*0.72222)))
+		self.cd.image_app.setMinimumSize(QSize(tamanio, int(tamanio*0.72222)))
 		if self.application.version:
 			is_newer = False
 			if hasattr(self.application, 'remote_version') and self.application.remote_version and self.application.version != self.application.remote_version:
@@ -932,9 +928,8 @@ class Card(QFrame):
 		self.cd.btn_secondary_action.clicked.connect(lambda: self.select_secondary_app_action())
 
 	def set_icon_path(self, path: str):
-		card_width = 238
-		img_width = card_width - 22 # 216
-		w, h = img_width, int(img_width * (234/324))
+		tamanio = 216
+		w, h = tamanio, int(tamanio * 0.72222)
 		if self.application.type == AppType.DEB_PACKAGE:
 			app_banner = QPixmap(path)
 			app_banner = app_banner.scaled(w, h, Qt.KeepAspectRatio, Qt.SmoothTransformation)
