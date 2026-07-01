@@ -62,16 +62,17 @@ def browse(uri: str):
 
 
 def check_tg_handler():
-	p = b""
+	if platform.system() != 'Linux':
+		return False
 	try:
-		p = check_output(["xdg-mime", "query", "default", "x-scheme-handler/tg"], env=DEF.env, preexec_fn=set(DEF.uid, DEF.gid))
+		p = check_output(["xdg-mime", "query", "default", "x-scheme-handler/tg"], env=DEF.env, user=DEF.uid, group=DEF.gid)
 	except CalledProcessError as e:
 		if e.returncode != 1:
 			return True # May fail with 2 and still ok!
+		return False
 	if p.strip():
 		return True
-	else:
-		return False
+	return False
 
 
 def create_folder(path: Path):
