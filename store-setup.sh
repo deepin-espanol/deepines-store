@@ -164,7 +164,7 @@ echo "Writing 'postrm' script..."
 cat "$SH_DIR/data/control/postrm" >DEBIAN/postrm
 chmod 755 DEBIAN/postrm
 
-YEAR="2025"
+YEAR="2026"
 
 MakeCopyright() {
     cat <<EOF
