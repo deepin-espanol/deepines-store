@@ -394,7 +394,7 @@ class Ui_MainWindow(object):
 													 "Deepines Store needs this repository to work.<br>"
 													 "In the following link you will find the instructions to install it:<br><br>"
 													 "{repoURL}").format(repoURL=get_text_link("deepinenespañol.org/deepines/"))
-		self.process_install_text = self.__tr("Installing...")
+		self.process_performing_actions_text = self.__tr("Performing actions...")
 		self.process_install_failed_text = self.__tr("Installation failed!")
 		self.status_ready_to_install_text = self.__tr("Ready to install")
 		self.status_starting_install_text = self.__tr("Starting installation...")

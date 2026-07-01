@@ -521,7 +521,7 @@ Vezió: {version}</translation>
     <message>
         <location filename="../deepinesStore/maing.py" line="397"/>
         <source>Installing...</source>
-        <translation>Telepítés...</translation>
+        <translation type="obsolete">Telepítés...</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="398"/>
@@ -607,6 +607,11 @@ Vezió: {version}</translation>
         <location filename="../deepinesStore/maing.py" line="348"/>
         <source>Review actions</source>
         <translation>Műveletek áttekintése</translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/maing.py" line="397"/>
+        <source>Performing actions...</source>
+        <translation>Műveletek végrehajtása...</translation>
     </message>
 </context>
 <context>

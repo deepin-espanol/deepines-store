@@ -608,8 +608,8 @@ class StoreMWindow(GeometryMixin, AppearanceMixin, QMainWindow):
 		self.do_list_apps(selected_apps)
 
 	def window_install(self):
-		self.show_overlay('Deepines', ui.process_install_text, is_movie=True, secondary_text=ui.status_ready_to_install_text, blocking=True)
-		ui.btn_install.setText(ui.process_install_text)
+		self.show_overlay('Deepines', ui.process_performing_actions_text, is_movie=True, secondary_text=ui.status_ready_to_install_text, blocking=True)
+		ui.btn_install.setText(ui.process_performing_actions_text)
 		self.start_installation()
 
 	def update_status(self, message):

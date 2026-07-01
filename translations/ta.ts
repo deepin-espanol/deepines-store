@@ -521,7 +521,7 @@ Version: {version}</source>
     <message>
         <location filename="../deepinesStore/maing.py" line="397"/>
         <source>Installing...</source>
-        <translation>நிறுவுதல் ...</translation>
+        <translation type="obsolete">நிறுவுதல் ...</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="398"/>
@@ -607,6 +607,11 @@ Version: {version}</source>
         <location filename="../deepinesStore/maing.py" line="348"/>
         <source>Review actions</source>
         <translation>செயல்களை மதிப்பாய்வு செய்யவும்</translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/maing.py" line="397"/>
+        <source>Performing actions...</source>
+        <translation>செயல்களைச் செய்கிறது...</translation>
     </message>
 </context>
 <context>

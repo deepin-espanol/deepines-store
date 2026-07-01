@@ -521,7 +521,7 @@ Versão: {version}</translation>
     <message>
         <location filename="../deepinesStore/maing.py" line="397"/>
         <source>Installing...</source>
-        <translation>Instalando...</translation>
+        <translation type="obsolete">Instalando...</translation>
     </message>
     <message>
         <location filename="../deepinesStore/maing.py" line="398"/>
@@ -607,6 +607,11 @@ Versão: {version}</translation>
         <location filename="../deepinesStore/maing.py" line="348"/>
         <source>Review actions</source>
         <translation>Revisar ações</translation>
+    </message>
+    <message>
+        <location filename="../deepinesStore/maing.py" line="397"/>
+        <source>Performing actions...</source>
+        <translation>Realizando ações...</translation>
     </message>
 </context>
 <context>
