@@ -8,7 +8,7 @@ from typing import Dict, List
 from PyQt5.Qt import Qt
 from PyQt5.QtCore import QTranslator, QLocale, QSize, QPoint, QPointF, QEvent, QTimer, Qt as QtCore, QCoreApplication
 from PyQt5.QtWidgets import (QMainWindow, QApplication, QFrame, QLabel,
-							 QGraphicsDropShadowEffect,
+							 QGraphicsDropShadowEffect, QStyleFactory,
 							 QDesktopWidget, QHBoxLayout, QVBoxLayout, QWidget, QPushButton)
 from PyQt5.QtGui import QPixmap, QColor, QCursor, QPainter, QMovie, QIcon
 
@@ -98,7 +98,7 @@ class StoreMWindow(GeometryMixin, AppearanceMixin, QMainWindow):
 		ui.lbl_list_apps.setEnabled(False)
 		ui.icon_car.clicked.connect(self.confirm_app_installation)
 		ui.lbl_list_apps.clicked.connect(self.confirm_app_installation)
-		ui.lw_categories.itemClicked.connect(self.listwidgetclicked)
+		ui.lw_categories.currentItemChanged.connect(lambda current, previous: self.listwidgetclicked(current) if current else None)
 		ui.lineEdit.textChanged.connect(self.search_app)
 		ui.label_2.clicked.connect(self.show_about_dialog)
 		ui.btn_close.clicked.connect(self.close)
@@ -112,6 +112,13 @@ class StoreMWindow(GeometryMixin, AppearanceMixin, QMainWindow):
 		ui.btn_install.setGraphicsEffect(shadow)
 
 		center_window(self)
+
+	def closeEvent(self, event):
+		# Cleanly terminate the updates thread if it's running in the background when the app closes
+		if hasattr(self, 'check_updates_thread') and self.check_updates_thread.isRunning():
+			self.check_updates_thread.terminate()
+			self.check_updates_thread.wait()
+		super().closeEvent(event)
 
 	def __tr(self, txt, disambiguation=None, n=-1):
 		return tr(self, txt, disambiguation, n)
@@ -526,7 +533,7 @@ class StoreMWindow(GeometryMixin, AppearanceMixin, QMainWindow):
 		# Find which card is under the cursor
 		hovered_card = None
 		hovered_button = None
-		
+
 		for i in range(ui.flowLayout.count()):
 			item = ui.flowLayout.itemAt(i)
 			if not item or not item.widget() or not isinstance(item.widget(), Card):
@@ -534,12 +541,12 @@ class StoreMWindow(GeometryMixin, AppearanceMixin, QMainWindow):
 			card = item.widget()
 			if not card.isVisible():
 				continue
-				
+
 			card_pos = card.mapToGlobal(QPoint(0, 0))
 			if (card_pos.x() <= cursor_pos.x() < card_pos.x() + card.width() and
 				card_pos.y() <= cursor_pos.y() < card_pos.y() + card.height()):
 				hovered_card = card
-				
+
 				# Check if cursor is over the button specifically
 				btn = card.cd.btn_select_app
 				btn_pos = btn.mapToGlobal(QPoint(0, 0))
@@ -556,11 +563,11 @@ class StoreMWindow(GeometryMixin, AppearanceMixin, QMainWindow):
 				if hovered_card:
 					hovered_card._apply_hover()
 				self._manual_hover_card = hovered_card
-				
+
 			# Handle button hover
 			if not hasattr(self, '_manual_hover_button'):
 				self._manual_hover_button = None
-				
+
 			if hovered_button != self._manual_hover_button:
 				if self._manual_hover_button:
 					# Leave old button
@@ -608,8 +615,10 @@ class StoreMWindow(GeometryMixin, AppearanceMixin, QMainWindow):
 		pix_car = QPixmap(get_res(pix_car))
 		ui.icon_car.setPixmap(pix_car)
 
-		estilo = ("#btn_install{\n"
+		estilo = ("#btn_install:enabled{\n"
 				  "color: #fff;\n"
+				  "}\n"
+				  "#btn_install{\n"
 				  "padding: 2px;\n"
 				  "border-radius: 5px;\n"
 				  "background-color: rgb(45, 45, 45);\n"
@@ -641,8 +650,10 @@ class StoreMWindow(GeometryMixin, AppearanceMixin, QMainWindow):
 			ui.icon_car.setEnabled(True)
 			ui.btn_install.setText(ui.btn_install_review_text)
 			ui.btn_install.setStyleSheet(
-				"#btn_install{\n"
+				"#btn_install:enabled{\n"
 				"color: white;\n"
+				"}\n"
+				"#btn_install{\n"
 				"padding: 2px;\n"
 				"border-radius: 5px;\n"
 				"background-color: rgb(45, 45, 45);\n"
@@ -664,8 +675,10 @@ class StoreMWindow(GeometryMixin, AppearanceMixin, QMainWindow):
 		ui.icon_car.setEnabled(False)
 		ui.btn_install.setText(ui.btn_install_start_text)
 		ui.btn_install.setStyleSheet(
-			"#btn_install{\n"
+			"#btn_install:enabled{\n"
 			"color: white;\n"
+			"}\n"
+			"#btn_install{\n"
 			"padding: 2px;\n"
 			"border-radius: 5px;\n"
 			"background-color: rgb(45, 45, 45);\n"
@@ -1345,6 +1358,11 @@ class LoadingScreen(AppearanceMixin, QMainWindow):
 
 def run_gui():
 	app = QApplication(sys.argv)
+	for style_name in QStyleFactory.keys():
+		if style_name.lower() == "chameleon":
+			app.setStyle(style_name)
+			break
+
 	app.setWindowIcon(get_app_icon())
 
 	translator = QTranslator()

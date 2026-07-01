@@ -78,11 +78,13 @@ class Ui_MainWindow(object):
 		self.btn_install.setMinimumSize(QSize(80, 0))
 		self.btn_install.setMaximumSize(QSize(150, 16777215))
 		self.btn_install.setStyleSheet(
+			"#btn_install:enabled{\n"
+			"color: white;\n"
+			"}\n"
 			"#btn_install{\n"
 			"padding: 2px;\n"
 			"border-radius: 5px;\n"
 			"background-color: rgb(45, 45, 45);\n"
-			"color: lightgray;\n"
 			"border: 2px solid rgb(45, 45, 45);\n"
 			"}\n"
 			"#btn_install:hover{\n"
@@ -111,21 +113,25 @@ class Ui_MainWindow(object):
 		self.lw_categories = ClickableList(self.frame_2)
 		self.lw_categories.setStyleSheet(
 			"#lw_categories{\n"
-			"  padding-left:10px;\n"
-			"  padding-top:6px;\n"
-			"  padding-bottom:6px;\n"
+			"  padding: 6px 10px 6px 10px;\n"
 			"  border-radius: 15px;\n"
 			"  background-color: rgba(16, 16, 16, 163);\n"
-			"  color: white;\n"
 			"}\n"
 			"#lw_categories:item{\n"
-			# Top Right Bottom Left
-			"  padding: 3px 5px 3px 5px;\n"
+			"  padding: 5px 10px 5px 10px;\n"
+			"  border-radius: 10px;\n"
+			"  margin: 2px 0px 2px 0px;\n"
+			"  border: 1px solid transparent;\n"
+			"  color: white;\n"
+			"}\n"
+			"#lw_categories:item:hover{\n"
+			"  background-color: rgba(65, 159, 217, 20);\n"
+			"  border: 1px solid rgba(65, 159, 217, 150);\n"
 			"}\n"
 			"#lw_categories:item:selected{\n"
-			"  background-color: transparent;\n"
-			"  border: 0px solid transparent;\n"
-			"  color: #419fd9;\n"
+			"  background-color: rgba(65, 159, 217, 200);\n"
+			"  border: 1px solid rgba(65, 159, 217, 255);\n"
+			"  color: white;\n"
 			"}")
 		icons = [svg_star, svg_deepines, svg_internet, svg_music, svg_picture, svg_console, svg_board, svg_terminal, svg_computer, svg_pamela]
 		flags = Qt.ItemIsSelectable | Qt.ItemIsEnabled
@@ -355,7 +361,8 @@ class Ui_MainWindow(object):
 		self.__tr("Updates")]
 		for i in range(self.lw_categories.count()):
 			item = self.lw_categories.item(i)
-			item.setText(item_texts[i])
+			text = item_texts[i]
+			item.setText("  " + text if text else "")
 		self.lw_categories.set_skip_item_action_indices([10]) # Drop the empty cat
 		self.lineEdit.setPlaceholderText(self.__tr("Search"))
 		self.about_version_text = self.__tr("About \nVersion: {version}")
