@@ -507,10 +507,17 @@ class StoreMWindow(GeometryMixin, AppearanceMixin, QMainWindow):
 		"""Stop manual hover polling (called on next real click)."""
 		if hasattr(self, '_manual_hover_timer'):
 			self._manual_hover_timer.stop()
-		if getattr(self, '_manual_hover_card', None):
-			self._manual_hover_card.update_app_card_status(
-				self._manual_hover_card.application.state)
+		try:
+			if getattr(self, '_manual_hover_card', None):
+				self._manual_hover_card.update_app_card_status(
+					self._manual_hover_card.application.state)
+				self._manual_hover_card = None
+			if getattr(self, '_manual_hover_button', None):
+				QCoreApplication.sendEvent(self._manual_hover_button, QEvent(QEvent.Leave))
+				self._manual_hover_button = None
+		except RuntimeError:
 			self._manual_hover_card = None
+			self._manual_hover_button = None
 
 	def _poll_card_hover(self):
 		"""Check cursor position against card geometries and apply hover."""
@@ -518,6 +525,8 @@ class StoreMWindow(GeometryMixin, AppearanceMixin, QMainWindow):
 
 		# Find which card is under the cursor
 		hovered_card = None
+		hovered_button = None
+		
 		for i in range(ui.flowLayout.count()):
 			item = ui.flowLayout.itemAt(i)
 			if not item or not item.widget() or not isinstance(item.widget(), Card):
@@ -525,26 +534,45 @@ class StoreMWindow(GeometryMixin, AppearanceMixin, QMainWindow):
 			card = item.widget()
 			if not card.isVisible():
 				continue
+				
 			card_pos = card.mapToGlobal(QPoint(0, 0))
 			if (card_pos.x() <= cursor_pos.x() < card_pos.x() + card.width() and
 				card_pos.y() <= cursor_pos.y() < card_pos.y() + card.height()):
 				hovered_card = card
+				
+				# Check if cursor is over the button specifically
+				btn = card.cd.btn_select_app
+				btn_pos = btn.mapToGlobal(QPoint(0, 0))
+				if (btn_pos.x() <= cursor_pos.x() < btn_pos.x() + btn.width() and
+					btn_pos.y() <= cursor_pos.y() < btn_pos.y() + btn.height()):
+					hovered_button = btn
 				break
 
-		if hovered_card == self._manual_hover_card:
-			return
-
-		# Leave old card
-		if self._manual_hover_card:
-			leave = QEvent(QEvent.Leave)
-			self._manual_hover_card.eventFilter(self._manual_hover_card, leave)
-
-		# Enter new card
-		if hovered_card:
-			enter = QEvent(QEvent.Enter)
-			hovered_card.eventFilter(hovered_card, enter)
-
-		self._manual_hover_card = hovered_card
+		# Handle card hover
+		try:
+			if hovered_card != self._manual_hover_card:
+				if self._manual_hover_card:
+					self._manual_hover_card._remove_hover()
+				if hovered_card:
+					hovered_card._apply_hover()
+				self._manual_hover_card = hovered_card
+				
+			# Handle button hover
+			if not hasattr(self, '_manual_hover_button'):
+				self._manual_hover_button = None
+				
+			if hovered_button != self._manual_hover_button:
+				if self._manual_hover_button:
+					# Leave old button
+					QCoreApplication.sendEvent(self._manual_hover_button, QEvent(QEvent.Leave))
+				if hovered_button:
+					# Enter new button
+					QCoreApplication.sendEvent(hovered_button, QEvent(QEvent.Enter))
+				self._manual_hover_button = hovered_button
+		except RuntimeError:
+			# If a card was deleted in C++ while the timer fired (e.g. category switch), reset tracking
+			self._manual_hover_card = None
+			self._manual_hover_button = None
 
 	def contar_apps(self):
 		global selected_apps
@@ -899,7 +927,6 @@ class Card(QFrame):
 			else:
 				state = AppState.DEFAULT
 
-		self.installEventFilter(self)
 		self.cd.btn_select_app.installEventFilter(self)
 
 		self.update_app_card_status(state)
@@ -963,41 +990,40 @@ class Card(QFrame):
 			pixmap = new_pixmap
 		return pixmap
 
+	def _apply_hover(self):
+		"""Apply hover highlight shadow based on current app state."""
+		state = self.application.state
+		shadow_colors = {
+			AppState.SELECTED: QColor(255, 152, 0) if self.application.process == ProcessType.UPDATE else QColor(0, 255, 255),
+			AppState.UNINSTALL: QColor(234, 93, 41),
+			AppState.INSTALLED: QColor(0, 212, 0),
+			AppState.UNINSTALLED: QColor(238, 81, 56),
+			AppState.UPDATABLE: QColor(0, 212, 0),
+		}
+		shadow_color = shadow_colors.get(state, QColor(255, 255, 255))
+		self.setGraphicsEffect(set_shadow(self, shadow_color, 20))
+
+	def _remove_hover(self):
+		"""Remove hover highlight, restore default card state."""
+		self.update_app_card_status(self.application.state)
+
+	def enterEvent(self, event):
+		self._apply_hover()
+		super().enterEvent(event)
+
+	def leaveEvent(self, event):
+		self._remove_hover()
+		super().leaveEvent(event)
+
 	def eventFilter(self, object, event):
 		if object == self.cd.btn_select_app:
 			if event.type() == QEvent.Enter:
 				if self.application.state == AppState.INSTALLED:
-					self.cd.btn_select_app.setText(ui.uninstall_app_text)
+					self.update_app_card_status(self.application.state, button_hovered=True)
 			elif event.type() == QEvent.Leave:
 				if self.application.state == AppState.INSTALLED:
-					self.cd.btn_select_app.setText(ui.selected_installed_app_text)
+					self.update_app_card_status(self.application.state, button_hovered=False)
 			return False
-
-		if object == self:
-			if event.type() == QEvent.Enter:
-				if self.application.state == AppState.SELECTED:
-					if self.application.process == ProcessType.UPDATE:
-						shadow_color = QColor(255, 152, 0)
-					else:
-						shadow_color = QColor(0, 255, 255)
-				elif self.application.state == AppState.UNINSTALL:
-					shadow_color = QColor(234, 93, 41)
-				elif self.application.state == AppState.INSTALLED:
-					shadow_color = QColor(0, 212, 0)
-				elif self.application.state == AppState.UNINSTALLED:
-					shadow_color = QColor(238, 81, 56)
-				elif self.application.state == AppState.UPDATABLE:
-					shadow_color = QColor(0, 212, 0)
-				else:
-					shadow_color = QColor(255, 255, 255)
-
-				shadow = set_shadow(self, shadow_color, 20)
-				self.setGraphicsEffect(shadow)
-				return False
-			elif event.type() == QEvent.Leave:
-				self.update_app_card_status(self.application.state)
-				return False
-
 		return False
 
 	def get_banner_path(self, app_name: str, alt_app_names: List[str] = None, icons: Dict[str, str] = {}) -> str:
@@ -1082,8 +1108,6 @@ class Card(QFrame):
 			else:
 				new_state = AppState.INSTALLED
 				lista_global[indice].process = ProcessType.UNINSTALL
-		self.installEventFilter(self)
-
 		lista_global[indice].state = new_state
 		lista_global = lista_global_temp
 
@@ -1108,13 +1132,12 @@ class Card(QFrame):
 		else:
 			return
 
-		self.installEventFilter(self)
 		lista_global[indice].state = new_state
 		lista_global = lista_global_temp
 		self.update_app_card_status(new_state)
 		self.parentWindow.contar_apps()
 
-	def update_app_card_status(self, state: AppState):
+	def update_app_card_status(self, state: AppState, button_hovered: bool = False):
 		color_map = {
 			AppState.SELECTED: (0, 255, 255, "#00bbc8", ui.selected_to_install_app_text),
 			AppState.UNINSTALL: (234, 93, 41, "#ea4329", ui.selected_to_uninstall_app_text),
@@ -1125,9 +1148,7 @@ class Card(QFrame):
 		}
 
 		r, g, b, border_color, btn_text = color_map.get(state, color_map[AppState.DEFAULT])
-
 		btn_r, btn_g, btn_b = r, g, b
-
 		text_color = "#000" if state == AppState.SELECTED else "#fff"
 
 		if state == AppState.SELECTED and self.application.process == ProcessType.UPDATE:
@@ -1154,11 +1175,10 @@ class Card(QFrame):
 			btn_secondary_style = ""
 			margin_primary = "margin: 5px 10px;"
 
-		hover_style = ""
-		if state == AppState.INSTALLED:
-			hover_style = ("QPushButton#btn_select_app:hover{"
-						"background-color: rgb(234, 93, 41);"
-						"}")
+		# Handle INSTALLED hover state manually bypassing CSS :hover
+		if state == AppState.INSTALLED and button_hovered:
+			btn_r, btn_g, btn_b = 234, 93, 41
+			btn_text = ui.uninstall_app_text
 
 		btn_select_app_style = ("QPushButton#btn_select_app{"
 					"color: " + text_color + ";"
@@ -1166,7 +1186,7 @@ class Card(QFrame):
 					+ margin_primary +
 					"border-width: 0px;"
 					"border-radius: 10px;"
-					"}" + hover_style)
+					"}")
 
 		self.cd.btn_select_app.setText(btn_text)
 
