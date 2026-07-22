@@ -6,12 +6,12 @@
     <message>
         <location filename="deepines!message" line="0"/>
         <source>Deepines Store requires authentication</source>
-        <translation type="unfinished"></translation>
+        <translation>Deepines Store ຕ້ອງການການຢືນຢັນຕົວຕົນ</translation>
     </message>
     <message>
         <location filename="deepines!description" line="0"/>
         <source>Allows graphical installation of applications from the Deepines repository</source>
-        <translation type="unfinished"></translation>
+        <translation>ອະນຸຍາດໃຫ້ຕິດຕັ້ງແອັບພລິເຄຊັນແບບກາຟິກຈາກຄັງເກັບຊອບແວ Deepines</translation>
     </message>
 </context>
 </TS>
