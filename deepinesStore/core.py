@@ -1,6 +1,7 @@
 from os import environ as env, name
 import argparse
 import json
+from deepinesStore.security import filter_forwarded_environment
 
 
 def get_ver():
@@ -28,7 +29,8 @@ def get_app_icon():
 def get_dl(uri, params=None, **kwargs):
 	from requests import get
 	try:
-		response = get(uri, params=params, **kwargs)
+		timeout = kwargs.pop("timeout", (5, 30))
+		response = get(uri, params=params, timeout=timeout, **kwargs)
 		response.raise_for_status()
 		return response
 	except Exception as e:
@@ -80,6 +82,9 @@ args = parser.parse_args()
 default_env = env.copy()
 
 if args.env:
-	new_env = json.loads(args.env)
+	try:
+		new_env = filter_forwarded_environment(json.loads(args.env))
+	except (TypeError, ValueError, json.JSONDecodeError) as error:
+		parser.error(f"invalid --env value: {error}")
 	default_env.update(new_env)
-	env.update({k: v for k, v in default_env.items() if k != 'XDG_RUNTIME_DIR'})
+	env.update(default_env)

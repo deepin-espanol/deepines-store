@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import platform
-from os import system
 import subprocess
 from PyQt5.Qt import Qt
 from PyQt5.QtCore import QRect, QTimer, QRectF, pyqtSlot
@@ -117,7 +116,11 @@ class AppearanceMixin:
 			r = 0 if self.isMaximized() else self.border_radius
 
 			if r <= 0:
-				subprocess.Popen(f'xprop -f _KDE_NET_WM_BLUR_BEHIND_REGION 32c -set _KDE_NET_WM_BLUR_BEHIND_REGION 0 -id {int(self.winId())}', shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+				subprocess.Popen([
+					'xprop', '-f', '_KDE_NET_WM_BLUR_BEHIND_REGION', '32c',
+					'-set', '_KDE_NET_WM_BLUR_BEHIND_REGION', '0',
+					'-id', str(int(self.winId())),
+				], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 				return
 
 			path = QPainterPath()
@@ -150,7 +153,11 @@ class AppearanceMixin:
 				rects[best_idx] = merged
 
 			rect_str = ','.join([f"{rc.x()},{rc.y()},{rc.width()},{rc.height()}" for rc in rects])
-			subprocess.Popen(f'xprop -f _KDE_NET_WM_BLUR_BEHIND_REGION 32c -set _KDE_NET_WM_BLUR_BEHIND_REGION {rect_str} -id {int(self.winId())}', shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+			subprocess.Popen([
+				'xprop', '-f', '_KDE_NET_WM_BLUR_BEHIND_REGION', '32c',
+				'-set', '_KDE_NET_WM_BLUR_BEHIND_REGION', rect_str,
+				'-id', str(int(self.winId())),
+			], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
 class GeometryMixin:
 	def showEvent(self, event):

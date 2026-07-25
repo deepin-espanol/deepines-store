@@ -2,10 +2,10 @@
 
 from os.path import join, abspath, dirname, exists
 from os import listdir, remove
-from pathlib import Path
 from hashlib import md5
 from deepinesStore.core import get_dl, get_deepines_uri
 from deepinesStore.demoted_actions import config_dir, create_folder, write_file
+from deepinesStore.security import parse_remote_checksums
 import threading
 
 
@@ -18,7 +18,6 @@ class threading_svg(object):
 			create_folder(self.CONFIG_APPS_PATH)
 
 		self.RO_APPS_PATH = abspath(join(dirname(__file__), 'resources', 'apps'))
-		self.TEMP_PATH = config_dir / 'remote_svg.txt'
 
 		self.RO_APPS_CHECK = dict()
 		self.CONFIG_APPS_CHECK = dict()
@@ -36,10 +35,9 @@ class threading_svg(object):
 			self.get_local_checksum()
 			self.compare_check()
 			self.check_exists()
-			remove(self.TEMP_PATH)
 
 	def compute_md5(self, file_path):
-		hash_md5 = md5()
+		hash_md5 = md5(usedforsecurity=False)
 		with open(file_path, "rb") as f:
 			for chunk in iter(lambda: f.read(4096), b""):
 				hash_md5.update(chunk)
@@ -63,13 +61,8 @@ class threading_svg(object):
 
 		status_code = SVG_REMOTE.status_code
 		if status_code == 200:
-			write_file(SVG_REMOTE, to=self.TEMP_PATH)
-			with open(self.TEMP_PATH, 'r') as f:
-				for line in f:
-					line = line.replace('\n', '')
-					(check, space, name) = line.split(' ')
-					self.REMOTE_CHECK[name] = check
-					self.LIST_SVG_REMOTE.append(name)
+			self.REMOTE_CHECK = parse_remote_checksums(SVG_REMOTE.text)
+			self.LIST_SVG_REMOTE = list(self.REMOTE_CHECK)
 		else:
 			self.STATUS = False
 
@@ -92,7 +85,7 @@ class threading_svg(object):
 					remove(config_path) # I mean... why are you even here? Maybe a new package was released...
 			# If neither local copy matches remote, download
 			elif (ro_checksum != remote_checksum) and (config_checksum != remote_checksum):
-				self.download_svg(svg_name)
+				self.download_svg(svg_name, remote_checksum)
 
 		# Remove any local SVGs from config that are not in the remote list
 		for svg_name in list(self.CONFIG_APPS_CHECK.keys()):
@@ -108,9 +101,12 @@ class threading_svg(object):
 	def check_exists(self):
 		for svg_name in self.REMOTE_CHECK:
 			if svg_name not in self.RO_APPS_CHECK and svg_name not in self.CONFIG_APPS_CHECK:
-				self.download_svg(svg_name)
+				self.download_svg(svg_name, self.REMOTE_CHECK[svg_name])
 
-	def download_svg(self, name):
+	def download_svg(self, name, expected_checksum):
 		dl_svg = get_dl(get_deepines_uri(f'/store/svg/{name}'))
-		if dl_svg.status_code == 200:
+		checksum = md5(dl_svg.content, usedforsecurity=False).hexdigest()
+		if dl_svg.status_code == 200 and checksum == expected_checksum:
 			write_file(dl_svg, to=join(self.CONFIG_APPS_PATH, name))
+		elif dl_svg.status_code == 200:
+			print(f"Refusing SVG with an invalid checksum: {name}")
