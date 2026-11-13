@@ -1,0 +1,3 @@
+[submodule "deepinesStore/resources/apps"]
+	path = deepinesStore/resources/apps
+	url = https://github.com/deepin-espanol/deepines-store-apps
